@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Mystify</title>
-    <link>samueltangz.github.io/tags/</link>
+    <link>https://mystiz.hk/tags/</link>
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 09 Oct 2020 00:53:29 +0800</lastBuildDate>
     
-	<atom:link href="samueltangz.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>ctf</title>
-      <link>samueltangz.github.io/tags/ctf/</link>
+      <link>https://mystiz.hk/tags/ctf/</link>
       <pubDate>Fri, 09 Oct 2020 00:53:29 +0800</pubDate>
       
-      <guid>samueltangz.github.io/tags/ctf/</guid>
+      <guid>https://mystiz.hk/tags/ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>reverse-engineering</title>
-      <link>samueltangz.github.io/tags/reverse-engineering/</link>
+      <link>https://mystiz.hk/tags/reverse-engineering/</link>
       <pubDate>Tue, 08 Sep 2020 18:30:00 +0800</pubDate>
       
-      <guid>samueltangz.github.io/tags/reverse-engineering/</guid>
+      <guid>https://mystiz.hk/tags/reverse-engineering/</guid>
       <description></description>
     </item>
     
     <item>
       <title>crypto</title>
-      <link>samueltangz.github.io/tags/crypto/</link>
+      <link>https://mystiz.hk/tags/crypto/</link>
       <pubDate>Tue, 25 Aug 2020 16:15:00 +0800</pubDate>
       
-      <guid>samueltangz.github.io/tags/crypto/</guid>
+      <guid>https://mystiz.hk/tags/crypto/</guid>
       <description></description>
     </item>
     
     <item>
       <title>puzzlescript</title>
-      <link>samueltangz.github.io/tags/puzzlescript/</link>
+      <link>https://mystiz.hk/tags/puzzlescript/</link>
       <pubDate>Tue, 21 Apr 2020 20:25:00 +0800</pubDate>
       
-      <guid>samueltangz.github.io/tags/puzzlescript/</guid>
+      <guid>https://mystiz.hk/tags/puzzlescript/</guid>
       <description></description>
     </item>
     
