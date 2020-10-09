@@ -17,9 +17,9 @@
       <pubDate>Fri, 09 Oct 2020 00:53:29 +0800</pubDate>
       
       <guid>/posts/2020-09-23-twctf/</guid>
-      <description>This writeup is compiled by the members of Black Bauhinia: Ozetta (@02E774), harrier (@harrier_lcc), cire meat pop (@Khlung1) and Mystiz.
+      <description>This writeup is compiled by @blackb6a: cire meat pop (@Khlung1), harrier (@harrier_lcc), Ozetta (@02E774) and Mystiz (@mystiz613).
 urlcheck v1 (Web, 98 points) Solved by Ozetta.
-Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the pattern &#39;\A(\d+)\.(\d+)\.(\d+)\.(\d+)\Z&#39; and the first octet cannot be 0 or 127, and some other patterns for internal IP addresses. For some reason, int(&amp;quot;0177&amp;quot;) is still 177 instead of 127 in Python, so we can use http://0177.</description>
+Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the pattern &#39;\A(\d+)\.(\d+)\.(\d+)\.(\d+)\Z&#39; and the first octet cannot be 0 or 127, and some other patterns for internal IP addresses. For some reason, int(&amp;quot;0177&amp;quot;) is still 177 instead of 127 in Python, so we can use http://0177.0.0.1/admin-status</description>
     </item>
     
     <item>
@@ -28,8 +28,8 @@ Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the patt
       <pubDate>Tue, 08 Sep 2020 18:30:00 +0800</pubDate>
       
       <guid>/posts/2020-09-08-confidencectf-team-trees/</guid>
-      <description>This week, we have teamed up as Black Bauhinia to play CONFidence 2020 CTF. We end up ranked 15, but we are more proud of ourselves able to solve a reversing challenge called Team Trees (395 points, 5 solves).
-In particular, we are the first-to-solve to the challenge. It took us around two hours to win the flag. This writeup is written by harrier and Mystiz.
+      <description>This week, we have teamed up as @blackb6a to play CONFidence 2020 CTF. We end up ranked 15, but we are more proud of ourselves able to solve a reversing challenge called Team Trees (395 points, 5 solves).
+In particular, we are the first-to-solve to the challenge. It took us around two hours to win the flag. This writeup is written by @harrier_lcc and @mystiz613.
 Challenge Summary  We wanted to plant a lot of trees, but it&#39;s going kinda slow.</description>
     </item>
     
@@ -39,7 +39,7 @@ Challenge Summary  We wanted to plant a lot of trees, but it&#39;s going kinda s
       <pubDate>Tue, 25 Aug 2020 16:15:00 +0800</pubDate>
       
       <guid>/posts/2020-08-25-gctf-oracle/</guid>
-      <description>I was teamed-up with Black Bauhinia on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.
+      <description>I was teamed-up with @blackb6a on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.
 In particular, Oracle is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be very computation intensive, just because I would like to make everything clear.</description>
     </item>
     
@@ -49,7 +49,7 @@ In particular, Oracle is a crypto challenge with 13 solves. It has got me spendi
       <pubDate>Tue, 05 May 2020 20:36:00 +0800</pubDate>
       
       <guid>/posts/2020-05-05-de1ctf/</guid>
-      <description>I was teamed up with Shellphish this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with @DuSu and @fs0c.
+      <description>I was teamed up with @shellphish this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with DuSu and fs0c.
 I said that I&#39;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
 Homomorphic Challenge Summary This is a cryptography challenge with 465 points.</description>
     </item>
@@ -60,7 +60,7 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points.<
       <pubDate>Tue, 21 Apr 2020 20:25:00 +0800</pubDate>
       
       <guid>/posts/2020-04-21-plaidctf-puzzle/</guid>
-      <description>This challenge is solved with R3x and mahaloz as a part of Shellphish. Thanks toshi and perri for reviewing and giving me suggestions on this write-up.
+      <description>This challenge is solved with R3x and @mahal0z as a part of @shellphish. Thanks @piazzt and @perribus for reviewing and giving me suggestions on this write-up.
 Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the game, you are able to control as the player and you could move around and mess with a string. The game is available online on PuzzleScript.net. Below is a screenshot of the game:</description>
     </item>
     
@@ -70,7 +70,7 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
       <pubDate>Wed, 02 Oct 2019 23:20:00 +0800</pubDate>
       
       <guid>/posts/2019-10-02-pwnthybytes/</guid>
-      <description>This writeup is compiled on behalf as Black Bauhinia. In particular the writeup for Avec? is written by @harrier.
+      <description>This writeup is compiled on behalf as @blackb6a. In particular the writeup for &amp;quot;Avec?&amp;quot; is written by @harrier_lcc.
 Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a peculiar hash algorithm that generates 64-byte long hashes, which wraps of sha0, sha1, sha256 and ripemd160. The hash takes two arguments, salt (20 bytes) and password (22 bytes). We are allowed to control the salt, whilst the goal is to find the password within 1024 queries.</description>
     </item>
     
@@ -80,7 +80,7 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
       <pubDate>Thu, 06 Aug 2009 10:20:00 +0800</pubDate>
       
       <guid>/posts/2019-08-06-de1ctf/</guid>
-      <description>It has been a very long time that I&#39;ve compiled a writeup. This time I have played on my own as Black Bauhinia. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup too math-intensive.
+      <description>It has been a very long time that I&#39;ve compiled a writeup. This time I have played on my own as @blackb6a. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup too math-intensive.
 The solution scripts will be committed to my Github repository sooner or later, after I&#39;ve managed to prettify them.
 Babylfsr (Crypto, 338 points) This is an easy challenge.</description>
     </item>
