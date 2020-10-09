@@ -154,19 +154,19 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
   }
 
   .alert.success {
-    background-color: #22bb43;
+    background-color: #28a745;
   }
 
   .alert.info {
-    background-color: #5bc0de;
+    background-color: #17a2b8;
   }
 
   .alert.warning {
-    background-color: #f0ad4e;
+    background-color: #ffc107;
   }
 
   .alert.danger {
-    background-color: #bb2124;
+    background-color: #dc3545;
   }
 </style>
 
@@ -218,19 +218,19 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
   }
 
   .alert.success {
-    background-color: #22bb43;
+    background-color: #28a745;
   }
 
   .alert.info {
-    background-color: #5bc0de;
+    background-color: #17a2b8;
   }
 
   .alert.warning {
-    background-color: #f0ad4e;
+    background-color: #ffc107;
   }
 
   .alert.danger {
-    background-color: #bb2124;
+    background-color: #dc3545;
   }
 </style>
 
@@ -261,8 +261,7 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
 
 <p><span  class="math">\[b_1 \oplus b_4 \oplus b_5 \oplus b_8 = a_1 \oplus a_4 \oplus a_5 \oplus a_8 = a_4 \oplus a_5.\]</span></p>
 
-<script type="application/javascript" src="https://gist.github.com/samueltangz/e04cb533c2163bd9d188672056dd62cb.js"></script>
-
+<p>Writing the exploit script solving the challenge, we have the flag: <code>PTBCTF{420199e572e685af8e1782fde58fd0e9}</code>.</p>
 
 <h2 id="avec-cryptanalysis-856-points">Avec? (Cryptanalysis; 856 points)<a href="#avec-cryptanalysis-856-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
@@ -297,15 +296,9 @@ The key and nonce is not provided though, so we have to somehow reverse the <cod
 
 <p>So what we have done is a simple multi-thread Sage key generator and a Python solver. And it was <em>wayyyyyyyyyyyy</em> too slow... even with pypy.</p>
 
-<script type="application/javascript" src="https://gist.github.com/harrier-lcc/8f62767497da379e127cd4ab017fd8fb.js"></script>
-
-
 <p>Both the key generator and the pypy solver are terribly slow. I cannot find a simple GHASH implementation to do the brute-forcing part. Computing $2^{16}$ keys takes me more than 3 mins in pypy... I just wanted to use something fast to test through the keys. BearSSL saids it can process &gt;1000MBps according to its <a href="https://www.bearssl.org/speed.html">benchmark</a>. Maybe I should use a language with fast compiled code.</p>
 
 <p>I am a Rustacean, so why not to do it in Rust? The result is blazingly fast. It could be solved within an hour with a 64-core computer (from one of my teammates). Sage was then the bottleneck, and thus I did not bother to improve the performance of the Rust solver.</p>
-
-<script type="application/javascript" src="https://gist.github.com/harrier-lcc/fb4a34641ce42ef57a6ce0e9331191c0.js"></script>
-
 
 <p>I should use Rust to generate keys to speedup the whole thing, but anyway, we solved it! :)</p>
 
@@ -353,19 +346,19 @@ Under modulo $p(x)$, $x^{256} = -1486$ - so we have $$\sum_{i=256}^{510}\left(\s
   }
 
   .alert.success {
-    background-color: #22bb43;
+    background-color: #28a745;
   }
 
   .alert.info {
-    background-color: #5bc0de;
+    background-color: #17a2b8;
   }
 
   .alert.warning {
-    background-color: #f0ad4e;
+    background-color: #ffc107;
   }
 
   .alert.danger {
-    background-color: #bb2124;
+    background-color: #dc3545;
   }
 </style>
 
@@ -384,19 +377,19 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
   }
 
   .alert.success {
-    background-color: #22bb43;
+    background-color: #28a745;
   }
 
   .alert.info {
-    background-color: #5bc0de;
+    background-color: #17a2b8;
   }
 
   .alert.warning {
-    background-color: #f0ad4e;
+    background-color: #ffc107;
   }
 
   .alert.danger {
-    background-color: #bb2124;
+    background-color: #dc3545;
   }
 </style>
 
@@ -408,10 +401,7 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
 
 <p><span  class="math">\[\text{round}(b_{ki}) = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_j.\]</span></p>
 
-<p>Since there are 256 unknowns ($s_0, s_1, ..., s_{255}$) and 256 equations, we can hopefully solve the equation.</p>
-
-<script type="application/javascript" src="https://gist.github.com/samueltangz/81725254645642949ae42d139cdc74b9.js"></script>
-
+<p>Since there are 256 unknowns ($s_0, s_1, ..., s_{255}$) and 256 equations, we can hopefully solve the equation. This gives us the key, hence the flag.</p>
 
 <h2 id="lotr-cryptanalysis-936-points">LOTR (Cryptanalysis; 936 points)<a href="#lotr-cryptanalysis-936-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
@@ -445,19 +435,19 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
   }
 
   .alert.success {
-    background-color: #22bb43;
+    background-color: #28a745;
   }
 
   .alert.info {
-    background-color: #5bc0de;
+    background-color: #17a2b8;
   }
 
   .alert.warning {
-    background-color: #f0ad4e;
+    background-color: #ffc107;
   }
 
   .alert.danger {
-    background-color: #bb2124;
+    background-color: #dc3545;
   }
 </style>
 
@@ -481,26 +471,23 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
   }
 
   .alert.success {
-    background-color: #22bb43;
+    background-color: #28a745;
   }
 
   .alert.info {
-    background-color: #5bc0de;
+    background-color: #17a2b8;
   }
 
   .alert.warning {
-    background-color: #f0ad4e;
+    background-color: #ffc107;
   }
 
   .alert.danger {
-    background-color: #bb2124;
+    background-color: #dc3545;
   }
 </style>
 
 <p>The above equation is just an linear equation! Solving it we had the values of $x_k$'s. If $x_k = 0$ we pick $c_k$, and $c_k'$ otherwise. After all we have forged a signature.</p>
-
-<script type="application/javascript" src="https://gist.github.com/samueltangz/bd67c2ab249a2fdef23425fc2d5c6ddb.js"></script>
-
 
 <h2 id="primitive-obsession-reverse-engineering-936-points">Primitive Obsession (Reverse Engineering; 936 points)<a href="#primitive-obsession-reverse-engineering-936-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
@@ -515,9 +502,6 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
 <p><figure><img src="https://i.imgur.com/AHVRp7G.png" alt=""></figure></p>
 
 <p>That is, I have extracted the expressions one by one <em>manually</em> and pass them to z3. After all, I admit my stupidity - it took me <em>six</em> hours to solve it...</p>
-
-<script type="application/javascript" src="https://gist.github.com/samueltangz/ca9f1feed75605792c58d7d1dce17f38.js"></script>
-
 
       </div></div>
 
