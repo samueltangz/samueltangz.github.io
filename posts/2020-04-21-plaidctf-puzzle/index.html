@@ -10,23 +10,23 @@
 Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the game, you are able to control as the player and you could move around and mess with a string. The game is available online on PuzzleScript.net. Below is a screenshot of the game:" />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="https://mystiz.hk/posts/2020-04-21-plaidctf-puzzle/" />
+<link rel="canonical" href="/posts/2020-04-21-plaidctf-puzzle/" />
 
 
 
 
-<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css">
 
-  <link rel="stylesheet" href="https://mystiz.hk/assets/green.css">
-
-
+  <link rel="stylesheet" href="/assets/green.css">
 
 
 
 
-<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
 
-  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/green.png">
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/green.png">
 
 
 
@@ -44,10 +44,10 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
 <meta property="og:title" content="PlaidCTF 2020: A Plaid Puzzle">
 <meta property="og:description" content="This challenge is solved with R3x and mahaloz as a part of Shellphish. Thanks toshi and perri for reviewing and giving me suggestions on this write-up.
 Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the game, you are able to control as the player and you could move around and mess with a string. The game is available online on PuzzleScript.net. Below is a screenshot of the game:" />
-<meta property="og:url" content="https://mystiz.hk/posts/2020-04-21-plaidctf-puzzle/" />
+<meta property="og:url" content="/posts/2020-04-21-plaidctf-puzzle/" />
 <meta property="og:site_name" content="Mystify" />
 
-  <meta property="og:image" content="https://mystiz.hk">
+  <meta property="og:image" content="/">
 
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
@@ -70,7 +70,7 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
 <body class="green">
 
 
-<div class="container headings--one-size">
+<div class="container center headings--one-size">
 
   <header class="header">
   <div class="header__inner">
@@ -85,25 +85,6 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
     <div class="menu-trigger">menu</div>
   </div>
   
-  <script type="text/javascript">
-  MathJax = {
-    tex2jax: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']],
-      processEscapes: false
-    },
-    options: {
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-    }
-  };
-
-  window.addEventListener('load', (event) => {
-    document.querySelectorAll("mjx-container").forEach(function (x) {
-      x.parentElement.classList += 'has-jax'
-    })
-  });
-</script>
-<script type="text/javascript" id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.2/es5/tex-mml-chtml.js"></script>
 </header>
 
 
@@ -111,7 +92,7 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
     
 <div class="post">
   <h1 class="post-title">
-    <a href="https://mystiz.hk/posts/2020-04-21-plaidctf-puzzle/">PlaidCTF 2020: A Plaid Puzzle</a></h1>
+    <a href="/posts/2020-04-21-plaidctf-puzzle/">PlaidCTF 2020: A Plaid Puzzle</a></h1>
   <div class="post-meta">
     
       <span class="post-date">
@@ -126,11 +107,11 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
   
   <span class="post-tags">
     
-    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
     
-    #<a href="https://mystiz.hk/tags/reverse-engineering/">reverse-engineering</a>&nbsp;
+    #<a href="/tags/reverse-engineering/">reverse-engineering</a>&nbsp;
     
-    #<a href="https://mystiz.hk/tags/puzzlescript/">puzzlescript</a>&nbsp;
+    #<a href="/tags/puzzlescript/">puzzlescript</a>&nbsp;
     
   </span>
   
@@ -141,11 +122,17 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
 
   <div class="post-content"><div>
         <p>This challenge is solved with R3x and mahaloz as a part of <em>Shellphish</em>. Thanks toshi and perri for reviewing and giving me suggestions on this write-up.</p>
+
 <h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
 <p>A Plaid Puzzle is a RPG game written in <em>PuzzleScript</em>. In the game, you are able to control as the player and you could move around and mess with a string. The game is available online on <a href="https://www.puzzlescript.net/play.html?p=a7e867c17405726eb0962b6483f51e4b">PuzzleScript.net</a>. Below is a screenshot of the game:</p>
-<p><img src="https://i.imgur.com/T7qVs4r.png" alt=""></p>
+
+<p><figure><img src="https://i.imgur.com/T7qVs4r.png" alt=""></figure></p>
+
 <p>Wait, where is the player? Although it is invisible, you can easily spot him out as he is always surrounded by the blue arrows.</p>
+
 <p>Moreover, the source code of the game is available over there. After all, we are able to deal with it in white-box.</p>
+
 <p>This is what we can see in the source code:</p>
 <pre><code class="language-puzzlescript" data-lang="puzzlescript">title A Plaid Puzzle
 author PlaidCTF 2020
@@ -173,15 +160,19 @@ right [ kwyemxqbttvwszqq | ikewikkccpumwsgm ] -&gt; [ hbufavpezfamcjlw | ] again
 .⎏⎫⍚⍗⎎⍼⎏⎭⎗⍶⍿⍿⎥⍷⍟⍶⍮⎡⍡⍷⎛⌾⍷⎈⍧⍡⌶⌸⍓⌾⍰⎈⎫⎞⎚⎏⍉⍗⍓⍟⍅⍆⍭⍓⎩⌷
 .⎭⌾⍾⍦⍚⎌⎢⍌⎡⍩⎥⍀⌺⍠⍵⌳⎠⎌⎢⎫⎩⍼⎌⎏⌼⎥⍼⍶⍀⍗⍡⍉⎭⎥⍱⎎⍓⎞⎥⍗⍠⎈⎈⍠⎛⎨
 .⎕⍭⍵⍼⎇⍫⍵⎭⍑⍓⍶⍗⍀⎗⍧⎠⎕⎗⌳⌺⍿⌰⌳⌺⍧⎎⍡⍃⎈⍦⍱⌾⍶⍱⍂⎗⎛⎞⍇⍑⍂⎗⍾⎩⎀⍍
-...
-</code></pre><p>We will get into the details in the story.</p>
+...</code></pre>
+<p>We will get into the details in the story.</p>
+
 <h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
 <h3 id="part-i-making-sense-of-the-source-code">Part I: Making sense of the source code<a href="#part-i-making-sense-of-the-source-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
 <p>What is this gibberish thingy above? It looks obfuscated, and those weird symbols at the end of the script looks fishy.</p>
-<p>I was late to the party. I didn&rsquo;t try to understand the source code from the documentation, but instead messing around with the source code. There is the line that caught my attention:</p>
+
+<p>I was late to the party. I didn't try to understand the source code from the documentation, but instead messing around with the source code. There is the line that caught my attention:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ fljldviokmmfmqzd <span style="color:#f92672">|</span> iawjsmjfczakueqy ] <span style="color:#f92672">-&gt;</span> [ fljldviokmmfmqzd <span style="color:#f92672">|</span> ] message Good flag<span style="color:#f92672">!</span>
-[ ywmxqezdfjsufycd <span style="color:#f92672">|</span> iawjsmjfczakueqy ] <span style="color:#f92672">-&gt;</span> [ ywmxqezdfjsufycd <span style="color:#f92672">|</span> ] message Bad flag<span style="color:#f92672">!</span>
-</code></pre></div><p>Luckily @R3x and @mahaloz had already done enough to simplify the script. They have come up with a summary that helped a lot:</p>
+[ ywmxqezdfjsufycd <span style="color:#f92672">|</span> iawjsmjfczakueqy ] <span style="color:#f92672">-&gt;</span> [ ywmxqezdfjsufycd <span style="color:#f92672">|</span> ] message Bad flag<span style="color:#f92672">!</span></code></pre></div>
+<p>Luckily @R3x and @mahaloz had already done enough to simplify the script. They have come up with a summary that helped a lot:</p>
 <pre><code>each variable is a space
 
 [ ] have a condition
@@ -199,81 +190,95 @@ again =&gt; execute these instructions once again after an instruction
 Action =&gt; keyword activates when we press X
 
 * if we define v = v1 or v2 or v3 =&gt; [x1 | v] contains applies on all 
-* Objects on the same collision layer can't be on top of each other
-* Legend contains the initial positions of each of the &quot;variables&quot;
+* Objects on the same collision layer can&#39;t be on top of each other
+* Legend contains the initial positions of each of the &#34;variables&#34;
 * again commands execute only if there was some modification before
 * if we need to apply action to multiple objects we use action on both sides
 * better to call each variable an object
-* Rules apply repeatedly until they no longer can be applied. (Therefore there is no execution order)
-</code></pre><p>If the character <code>fljldviokmmfmqzd</code> is standing next to <code>iawjsmjfczakueqy</code>, <code>iawjsmjfczakueqy</code> will be eliminated and we are informed having the correct flag.
+* Rules apply repeatedly until they no longer can be applied. (Therefore there is no execution order)</code></pre>
+<p>If the character <code>fljldviokmmfmqzd</code> is standing next to <code>iawjsmjfczakueqy</code>, <code>iawjsmjfczakueqy</code> will be eliminated and we are informed having the correct flag.
 On a contrast, it would be bad if <code>ywmxqezdfjsufycd</code> is next to <code>iawjsmjfczakueqy</code>.</p>
+
 <p>In this stage, we have four main characters in this RPG game: <code>fljldviokmmfmqzd</code> (the <em>yes</em>), <code>ywmxqezdfjsufycd</code> (the <em>no</em>), <code>iawjsmjfczakueqy</code> (the <em>terminator</em>) and me. I searched for the occurrence of those characters. These are the points I summarize:</p>
+
 <ol>
-<li>We are able to find a bunch of lines in the below format.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ fljldviokmmfmqzd <span style="color:#f92672">|</span> tgykpmrvaltbuokz ] <span style="color:#f92672">-&gt;</span> [ ywmxqezdfjsufycd <span style="color:#f92672">|</span> ] again
-  yes <span style="color:#f92672">************</span>                           no <span style="color:#f92672">*************</span>
-<span style="color:#75715e"># Found 63 times</span>
-     
-[ ywmxqezdfjsufycd <span style="color:#f92672">|</span> kalmsmalpgkzhrpv ] <span style="color:#f92672">-&gt;</span> [ ywmxqezdfjsufycd <span style="color:#f92672">|</span> ] again
-  no <span style="color:#f92672">*************</span>                           no <span style="color:#f92672">*************</span>
-<span style="color:#75715e"># Found 64 times</span>
-  
-[ fljldviokmmfmqzd <span style="color:#f92672">|</span> kkavwvmbabfuqctz ] <span style="color:#f92672">-&gt;</span> [ fljldviokmmfmqzd <span style="color:#f92672">|</span> ] again
-  yes <span style="color:#f92672">************</span>                           yes <span style="color:#f92672">************</span>
-<span style="color:#75715e"># Found 1 time</span>
-</code></pre></div><p>Interestingly, those are exactly the lines right above the lines giving the verdict.</p>
-</li>
-<li>It seems that there is an area drawing the characters.
-<pre><code>fljldviokmmfmqzd
-transparent
-  
-ywmxqezdfjsufycd
-transparent
-   
-iawjsmjfczakueqy
-transparent
-</code></pre><p>I think it is inhumane to make our main characters transparent. Let&rsquo;s make them visible again!</p>
-<pre><code>fljldviokmmfmqzd
-green
-..0..
-.000.
-00000
-.000.
-..0..
-  
-ywmxqezdfjsufycd
-red
-..0..
-.000.
-00000
-.000.
-..0..
-   
-iawjsmjfczakueqy
-blue
-..0..
-.000.
-00000
-.000.
-..0..
-</code></pre></li>
+<li><p>We are able to find a bunch of lines in the below format.
+```r
+[ fljldviokmmfmqzd | tgykpmrvaltbuokz ] -&gt; [ ywmxqezdfjsufycd | ] again
+ yes ************                           no *************</p>
+
+<h1 id="found-63-times">Found 63 times<a href="#found-63-times" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1></li>
 </ol>
-<p><img src="https://i.imgur.com/XUw9eh1.gif" alt=""></p>
-<p>This is how it looks when I begin to check the flag. It was changed into red after a while - and we are told having the wrong input after a moment.</p>
-<p>But there is one more thing: <code>kkavwvmbabfuqctz</code> is the only character that makes the green icon intact. We are labelling it as well!</p>
-<p><img src="https://i.imgur.com/Bhz1AOG.gif" alt=""></p>
-<p>We see that yellow stars are randomly blinking now.</p>
-<p>At this moment, @R3x has made the source code more readable by replacing the character names into something less random (bye, <code>fljldviokmmfmqzd</code>!).</p>
-<h3 id="part-ii-the-code-structure-for-real">Part II: The code structure, for real<a href="#part-ii-the-code-structure-for-real" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<p>After having a basic insight on what we have right now, let&rsquo;s read the code line by line. Better not - there are around 10k lines to read and it doesn&rsquo;t sound fun at all! It is better for us to grasp the idea on what&rsquo;s going on.</p>
-<h4 id="the-header-the-prelude"><del>The header</del> The prelude<a href="#the-header-the-prelude" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">title A Plaid Puzzle
-author PlaidCTF <span style="color:#ae81ff">2020</span>
-homepage https<span style="color:#f92672">://</span>play.plaidctf.com
-zoomscreen <span style="color:#ae81ff">47</span>x3
-again_interval <span style="color:#ae81ff">0.01</span>
-run_rules_on_level_start
-</code></pre></div><p>This is just the header for the script - it contains a bunch of configuration and metadata that is rather self-explanatory.</p>
+
+<p>[ ywmxqezdfjsufycd | kalmsmalpgkzhrpv ] -&gt; [ ywmxqezdfjsufycd | ] again</p>
+<pre><code> no *************                           no *************</code></pre>
+<h1 id="found-64-times">Found 64 times<a href="#found-64-times" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+
+<p>[ fljldviokmmfmqzd | kkavwvmbabfuqctz ] -&gt; [ fljldviokmmfmqzd | ] again</p>
+<pre><code> yes ************                           yes ************</code></pre>
+<h1 id="found-1-time">Found 1 time<a href="#found-1-time" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<pre><code>Interestingly, those are exactly the lines right above the lines giving the verdict.
+2. It seems that there is an area drawing the characters.</code></pre>
+<p>fljldviokmmfmqzd
+   transparent</p>
+
+<p>ywmxqezdfjsufycd
+   transparent</p>
+
+<p>iawjsmjfczakueqy
+   transparent</p>
+<pre><code>I think it is inhumane to make our main characters transparent. Let&#39;s make them visible again!</code></pre>
+<p>fljldviokmmfmqzd
+   green
+   ..0..
+   .000.
+   00000
+   .000.
+   ..0..</p>
+
+<p>ywmxqezdfjsufycd
+   red
+   ..0..
+   .000.
+   00000
+   .000.
+   ..0..</p>
+
+<p>iawjsmjfczakueqy
+   blue
+   ..0..
+   .000.
+   00000
+   .000.
+   ..0..</p>
+<pre><code>![](https://i.imgur.com/XUw9eh1.gif)
+
+This is how it looks when I begin to check the flag. It was changed into red after a while - and we are told having the wrong input after a moment.
+
+But there is one more thing: `kkavwvmbabfuqctz` is the only character that makes the green icon intact. We are labelling it as well!
+
+![](https://i.imgur.com/Bhz1AOG.gif)
+
+We see that yellow stars are randomly blinking now.
+
+At this moment, @R3x has made the source code more readable by replacing the character names into something less random (bye, `fljldviokmmfmqzd`!).
+
+### Part II: The code structure, for real
+
+After having a basic insight on what we have right now, let&#39;s read the code line by line. Better not - there are around 10k lines to read and it doesn&#39;t sound fun at all! It is better for us to grasp the idea on what&#39;s going on.
+
+
+#### ~~The header~~ The prelude
+
+```r
+title A Plaid Puzzle
+author PlaidCTF 2020
+homepage https://play.plaidctf.com
+zoomscreen 47x3
+again_interval 0.01
+run_rules_on_level_start</code></pre>
+<p>This is just the header for the script - it contains a bunch of configuration and metadata that is rather self-explanatory.</p>
+
 <h4 id="the-objects">The objects<a href="#the-objects" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">========</span>
 OBJECTS
@@ -311,14 +316,15 @@ transparent
 var_24
 transparent
 
-<span style="color:#66d9ef">...</span>
-</code></pre></div><p>This segment describes the characters - I am not sure if they support multiple colors, but at least you could do single-color pixel arts if you wish to. In short, there are in the below format:</p>
+<span style="color:#66d9ef">...</span></code></pre></div>
+<p>This segment describes the characters - I am not sure if they support multiple colors, but at least you could do single-color pixel arts if you wish to. In short, there are in the below format:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">character
 color
-<span style="color:#a6e22e">pixels </span>(optional)
-</code></pre></div><h4 id="the-legend">The legend<a href="#the-legend" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<p><img src="https://i.imgur.com/4nN8OPy.png" alt="">
-<em>Oops. This is not funny at all&hellip;</em></p>
+<span style="color:#a6e22e">pixels </span>(optional)</code></pre></div>
+<h4 id="the-legend">The legend<a href="#the-legend" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p><figure><img src="https://i.imgur.com/4nN8OPy.png" alt=""></figure>
+<em>Oops. This is not funny at all...</em></p>
 <pre><code>=======
 LEGEND
 =======
@@ -327,12 +333,15 @@ LEGEND
 ⍊ = val_23
 ⍤ = val_9
 ⍵ = val_45
-⌶ = val_65
-</code></pre><p>This aliases the characters into one character so that we are able to define them in levels.</p>
-<pre><code>p = Player and x_0
-</code></pre><p>&hellip;and we can define the properties of characters as well.</p>
+⌶ = val_65</code></pre>
+<p>This aliases the characters into one character so that we are able to define them in levels.</p>
+<pre><code>p = Player and x_0</code></pre>
+<p>...and we can define the properties of characters as well.</p>
+
 <h4 id="rules">Rules<a href="#rules" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
 <p>It consists of a bunch of rules. It will be described later.</p>
+
 <h4 id="levels">Levels<a href="#levels" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <pre><code>.F.............................................
 .⍑⎙⎎⍵⍉⍟⎗⍩⍭⍶⌸⍿⎒⎢⍃⍭⍚⎡⍷⎞⍂⍏⍮⎇⍢⍭⍃⎙⎅⎥⍂⍠⎎⍩⎥⍶⍫⌳⎭⍓⎅⍰⍢⍓⌺⎄
@@ -342,8 +351,8 @@ LEGEND
 C⍱⎌⎯⍾⎛⍦⎢⎅⎗⎥⍃⎛⍵⍟⎇⍡⍂⍡⎙⎛⍑⍉⍵⎢⍌⎗⎈⍩⎃⎕⎚⍾⎒⎭⎀⍉⍟⍠⎠⍌⌰⍡⎫⍱⎥⍔
 ###############################################
 Xp00000000000000000000000000000000000000000000X
-###############################################
-</code></pre><p>This is the actual map you can see in the game. It maps with the legend - and this is the actual characters in the map:</p>
+###############################################</code></pre>
+<p>This is the actual map you can see in the game. It maps with the legend - and this is the actual characters in the map:</p>
 <pre><code>background v_final    background ... background
 background val_81     val_58     ... val_167
                     ...
@@ -351,18 +360,27 @@ background val_165    val_46     ... val_143
 v_ok       val_113    val_146    ... val_161
 wall       wall       wall       ... wall
 imp_3      player     x_0        ... x_0
-wall       wall       wall       ... wall
-</code></pre><p>They are very packed indeed and should practice social distancing.</p>
+wall       wall       wall       ... wall</code></pre>
+<p>They are very packed indeed and should practice social distancing.</p>
+
 <h3 id="part-iii-how-we-are-misled">Part III: How we are misled<a href="#part-iii-how-we-are-misled" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
 <p>I would surely not define myself as a reverser. I was so tempted to consider the whole game as a black-box. At some time I tried to send <code>PCTF{AAAA...AAA}</code> - There is a larger delay for the green character to become red! We were excited and would try a timing attack.</p>
-<p>Turns out it isn&rsquo;t the right way to go. If I have to reason why this happened, I would think the clock was a bit unstable, causing such an illusion.</p>
+
+<p>Turns out it isn't the right way to go. If I have to reason why this happened, I would think the clock was a bit unstable, causing such an illusion.</p>
+
 <h3 id="part-iv-more-reverse-engineering-random-walk-fast-forwarded">Part IV: <del>More reverse engineering</del> random walk, fast forwarded<a href="#part-iv-more-reverse-engineering-random-walk-fast-forwarded" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
 <p>We have been playing around with the source code since then. The first advancement happens when we make two changes to the code:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#f92672">- zoomscreen 47x3
 </span><span style="color:#f92672"></span><span style="color:#a6e22e">+ zoomscreen 47x50
-</span></code></pre></div><p>Changing all the occurrence of <code>transparent</code> into <code>gray</code> - liberate all the characters!</p>
-<p><img src="https://i.imgur.com/ybRpM0U.gif" alt=""></p>
+</span></code></pre></div>
+<p>Changing all the occurrence of <code>transparent</code> into <code>gray</code> - liberate all the characters!</p>
+
+<p><figure><img src="https://i.imgur.com/ybRpM0U.gif" alt=""></figure></p>
+
 <p>It was so satisfying that I have watched the animation for more than 10 times during the CTF.</p>
+
 <p>In the source code, there are three type of rules which seems important:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ val_135 <span style="color:#f92672">|</span> x_56 ] <span style="color:#f92672">-&gt;</span> [ val_50 <span style="color:#f92672">|</span> x_56 ] again
 <span style="color:#75715e"># 4096 instructions - &#34;conversion&#34;</span>
@@ -371,11 +389,15 @@ right [ val_125 <span style="color:#f92672">|</span> val_70 ] <span style="color
 <span style="color:#75715e"># 4096 instructions - &#34;elimination&#34;</span>
 
 [ v_no <span style="color:#f92672">|</span> val_180 ] <span style="color:#f92672">-&gt;</span> [ v_no <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># 128 instructions - &#34;final&#34;</span>
-</code></pre></div><p>There is a bunch of final instructions that converts <code>v_yes</code> (the green character a.k.a. <code>fljldviokmmfmqzd</code>) into <code>v_no</code>. Why don&rsquo;t we label them red, indicating that they are bad?</p>
-<p><img src="https://i.imgur.com/GiGW0ew.gif" alt=""></p>
-<p>Woah. So they are all initially on the rightmost of the board. We tried a bunch of things: encode them into runes, classify the characters into classes&hellip; and we end up with this amazing thingy:</p>
-<p><img src="https://i.imgur.com/avbDSfG.gif" alt=""></p>
+<span style="color:#75715e"># 128 instructions - &#34;final&#34;</span></code></pre></div>
+<p>There is a bunch of final instructions that converts <code>v_yes</code> (the green character a.k.a. <code>fljldviokmmfmqzd</code>) into <code>v_no</code>. Why don't we label them red, indicating that they are bad?</p>
+
+<p><figure><img src="https://i.imgur.com/GiGW0ew.gif" alt=""></figure></p>
+
+<p>Woah. So they are all initially on the rightmost of the board. We tried a bunch of things: encode them into runes, classify the characters into classes... and we end up with this amazing thingy:</p>
+
+<p><figure><img src="https://i.imgur.com/avbDSfG.gif" alt=""></figure></p>
+
 <p>We have to explain how can we classify characters into groups. Recalled from two minutes ago that we have three types of rules:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ a_i <span style="color:#f92672">|</span> x_k ] <span style="color:#f92672">-&gt;</span> [ c_j <span style="color:#f92672">|</span> x_k ] again
 <span style="color:#75715e"># 4096 instructions - &#34;conversion&#34;</span>
@@ -384,39 +406,54 @@ right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f9267
 <span style="color:#75715e"># 4096 instructions - &#34;elimination&#34;</span>
 
 [ v_no <span style="color:#f92672">|</span> b_i ] <span style="color:#f92672">-&gt;</span> [ v_no <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># 128 instructions - &#34;final&#34;</span>
-</code></pre></div><p>Mathematically, we have $A$, $B$ and $C$ being three classes of characters. In particular, $b_0\in B$ is the only element that keeps <code>v_yes</code> intact.</p>
+<span style="color:#75715e"># 128 instructions - &#34;final&#34;</span></code></pre></div>
+<p>Mathematically, we have $A$, $B$ and $C$ being three classes of characters. In particular, $b_0\in B$ is the only element that keeps <code>v_yes</code> intact.</p>
+
 <ol>
 <li><strong>[Conversion]</strong> When $a_i\in A$ meets an input character, it will be replaced into some $c_j\in C$.</li>
 <li><strong>[Elimination]</strong> When $b_i\in B$ meets $c_k\in C$, $c_k$ will be eliminated. And $b_i$ will be replaced to some $b_j\in B$.</li>
 <li><strong>[Final]</strong> When $b_i\in B$ meets <code>v_yes</code> or <code>v_no</code>, it will be consumed. <code>v_yes</code> will remain unchanged only if the $b = b_0$.</li>
 </ol>
-<p>I&rsquo;ve labelled $A$ in brown, $B$ in red (except $b_0$ which is in green) and $C$ in blue.</p>
+
+<p>I've labelled $A$ in brown, $B$ in red (except $b_0$ which is in green) and $C$ in blue.</p>
+
 <p>It looks like $b\in B$ would consume an entire row of $c$'s while it moves to the left. That makes me thinking: is it equivalent to a system of linear equations?</p>
+
 <p>:::warning
-<strong>Why?</strong> I don&rsquo;t know&hellip; I think there must be a relationship between $b$ and $c$. Otherwise, we will be unable to find an efficient algorithm to solve for the flag.
+<strong>Why?</strong> I don't know... I think there must be a relationship between $b$ and $c$. Otherwise, we will be unable to find an efficient algorithm to solve for the flag.
 :::</p>
-<h3 id="part-v-lets-get-mathy">Part V: Let&rsquo;s get mathy<a href="#part-v-lets-get-mathy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h3 id="part-v-lets-get-mathy">Part V: Let's get mathy<a href="#part-v-lets-get-mathy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
 <p>I have just assumed that it is a linear system. But how can it be related? To begin, reimagine what actually are <em>conversion</em>, <em>elimination</em> and <em>final</em>. Here comes a linear system:</p>
-<p>$$
+
+<p><span  class="math">\[
 \begin{cases}\begin{matrix}
-a_{11}x_1 &amp;+&amp; a_{12}x_2 &amp;+&amp; &hellip; &amp;+&amp; a_{1n}x_n &amp;=&amp; b_1 \<br>
-a_{21}x_1 &amp;+&amp; a_{22}x_2 &amp;+&amp; &hellip; &amp;+&amp; a_{2n}x_n &amp;=&amp; b_2 \<br>
-&amp;&amp;&amp;&amp; \vdots &amp;&amp;&amp;&amp; \<br>
-a_{n1}x_1 &amp;+&amp; a_{n2}x_2 &amp;+&amp; &hellip; &amp;+&amp; a_{nn}x_n &amp;=&amp; b_n
+a_{11}x_1 &+& a_{12}x_2 &+& ... &+& a_{1n}x_n &=& b_1 \\\\\\
+a_{21}x_1 &+& a_{22}x_2 &+& ... &+& a_{2n}x_n &=& b_2 \\\\\\
+&&&& \vdots &&&& \\\\\\
+a_{n1}x_1 &+& a_{n2}x_2 &+& ... &+& a_{nn}x_n &=& b_n
 \end{matrix}\end{cases}
-$$</p>
+\]</span></p>
+
 <p>Take a look on the map below. Is there a similarity?</p>
-<p><img src="https://i.imgur.com/3E2qjqo.png" alt=""></p>
+
+<p><figure><img src="https://i.imgur.com/3E2qjqo.png" alt=""></figure></p>
+
 <p><em>The cursor is mine. Forgive me for not removing the cursor inside the picture.</em></p>
-<p><img src="https://i.imgur.com/zCrmVL4.png" alt=""></p>
+
+<p><figure><img src="https://i.imgur.com/zCrmVL4.png" alt=""></figure></p>
+
 <p><em>This is the first frame when the game starts verifying my flag. Again the cursor is mine.</em></p>
-<p>The brown runes are $a_{ij}$'s, the red (or green) ones are $b_i$'s in the linear system. The blue runes are evident now: they represents $a_{ij}x_j$'s. Therefore,</p>
+
+<p>The brown runes are $a_{ij}$'s, the red (or green) ones are $b<em>i$'s in the linear system. The blue runes are evident now: they represents $a</em>{ij}x_j$'s. Therefore,</p>
+
 <ol>
 <li>the <em>conversion</em> property (that changes brown runes into blue when it meets a character) is a <strong>multiplication</strong>,</li>
 <li>the <em>elimination</em> property is a <strong>summation</strong>,</li>
 <li>the <em>final</em> property is to <strong>verify</strong> if the summation equals $b_0$.</li>
 </ol>
+
 <p>We can now convert those instructions into math:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ a_i <span style="color:#f92672">|</span> x_k ] <span style="color:#f92672">-&gt;</span> [ c_j <span style="color:#f92672">|</span> x_k ] again
 <span style="color:#75715e"># a_i * x_k = c_j</span>
@@ -425,47 +462,60 @@ right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f9267
 <span style="color:#75715e"># b_i + c_k = b_j</span>
 
 [ v_yes <span style="color:#f92672">|</span> b_0 ] <span style="color:#f92672">-&gt;</span> [ v_yes <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># assume that the summation equals 0</span>
-</code></pre></div><hr>
+<span style="color:#75715e"># assume that the summation equals 0</span></code></pre></div>
+<hr>
+
 <p>How do I know if my guess is correct?</p>
+
 <p>I was first looking for the <em>elimination</em> (or <em>summation</em>) instruction. To be exact, I want to find invariants:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f92672">-&gt;</span> [ b_i <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e">#             ***        *** those are equal              </span>
-</code></pre></div><p>It is made possible by the regex <code>right \[ c\d+ \| b(\d+) \] -&gt; \[ b\1 \| \] again</code>.</p>
+<span style="color:#75715e">#             ***        *** those are equal              </span></code></pre></div>
+<p>It is made possible by the regex <code>right \[ c\d+ \| b(\d+) \] -&gt; \[ b\1 \| \] again</code>.</p>
+
 <p>There are 64 matches. Here are some of the results:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">right [ c44 <span style="color:#f92672">|</span> b7  ] <span style="color:#f92672">-&gt;</span> [ b7  <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b7  = b7</span>
 right [ c44 <span style="color:#f92672">|</span> b21 ] <span style="color:#f92672">-&gt;</span> [ b21 <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b21 = b21</span>
 right [ c44 <span style="color:#f92672">|</span> b8  ] <span style="color:#f92672">-&gt;</span> [ b8  <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b8  = b8</span>
 right [ c44 <span style="color:#f92672">|</span> b31 ] <span style="color:#f92672">-&gt;</span> [ b31 <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b31 = b31</span>
-<span style="color:#66d9ef">...</span>
-</code></pre></div><p><code>c44</code> appears in all of the matches! If $c_{44} + b_i = b_i$ for all $i$, we can imply that $c_{44} = 0$.</p>
+<span style="color:#66d9ef">...</span></code></pre></div>
+<p><code>c44</code> appears in all of the matches! If $c_{44} + b_i = b<em>i$ for all $i$, we can imply that $c</em>{44} = 0$.</p>
+
 <p>With this piece of fact, we can find the <code>i</code>'s and <code>j</code>'s with <code>a_i * x_j = c_44 = 0</code>. There are 127 matches, including:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ a46 <span style="color:#f92672">|</span> x23 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x23 ] again <span style="color:#75715e"># a46 * x23 = c44</span>
 [ a46 <span style="color:#f92672">|</span> x63 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x63 ] again <span style="color:#75715e"># a46 * x63 = c44</span>
 [ a46 <span style="color:#f92672">|</span> x48 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x48 ] again <span style="color:#75715e"># a46 * x48 = c44</span>
 [ a40 <span style="color:#f92672">|</span> x36 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x36 ] again <span style="color:#75715e"># a40 * x36 = c44</span>
 [ a4  <span style="color:#f92672">|</span> x36 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x36 ] again <span style="color:#75715e"># x4  * x36 = c44</span>
-<span style="color:#66d9ef">...</span>
-</code></pre></div><p>From the matches, I can see that <code>a_i * x_j = c_44 = 0</code> if and only if <code>i = 46</code> or <code>j = 36</code>.</p>
+<span style="color:#66d9ef">...</span></code></pre></div>
+<p>From the matches, I can see that <code>a_i * x_j = c_44 = 0</code> if and only if <code>i = 46</code> or <code>j = 36</code>.</p>
+
 <p>As there are 64 distinct elements, I could think of two possibilities: Either it is taken under modulo 64, or it is operated under $\text{GF}(2^6)$ (the finite field of 64 elements).</p>
+
 <p>However, it is definitely not under modulo 64. The multiplication property shows $ax = 0$ happens if and only if either $a=0\ \text{or}\ x=0$.
 This is not the case for operations under modulo 64. There are non-trivial solutions (where $a$ and $x$ are both non-zero): When $a=32$ and $x=4$, $ax = 32\times 4 = 128 \equiv 0\ (\text{mod}\ 64)$.</p>
+
 <p>Eliminating the possibility being modulo 64 operated, we are assuming that the linear system is taken under $\text{GF}(2^6)$.</p>
+
 <p>:::warning
-<strong>What if $\text{GF}(2^6)$ doesn&rsquo;t check out as well?</strong> Well&hellip; that means my instinct is incorrect. This whole part is then redundant and meaningless.
+<strong>What if $\text{GF}(2^6)$ doesn't check out as well?</strong> Well... that means my instinct is incorrect. This whole part is then redundant and meaningless.
 :::</p>
-<p>We can safely assume that $b_0 = 0$. We have already deduced that $a_{46} = x_{36} = c_{44} = 0$ as well. Knowing all the pairs of $(i, j, k)$ with $a_ix_j = c_k$ and $b_i + c_k = b_j$, we can find a mapping between $A, B, C, X$ and $\text{GF}(2^6)$.</p>
-<p>Note that $g$ is a generator element for $\text{GF}(2^6)\setminus{0}$ and can be any element from the set. We can write $\text{GF}(2^6) = {0, 1, g, g^2, &hellip;, g^{62}}$.</p>
+
+<p>We can safely assume that $b<em>0 = 0$. We have already deduced that $a</em>{46} = x_{36} = c_{44} = 0$ as well. Knowing all the pairs of $(i, j, k)$ with $a_ix_j = c_k$ and $b_i + c_k = b_j$, we can find a mapping between $A, B, C, X$ and $\text{GF}(2^6)$.</p>
+
+<p>Note that $g$ is a generator element for $\text{GF}(2^6)\setminus{0}$ and can be any element from the set. We can write $\text{GF}(2^6) = {0, 1, g, g^2, ..., g^{62}}$.</p>
+
 <p>:::warning
 <strong>How?</strong> We can assume that $a_p = 1$, $a_q = g$ and $x_r = 1$. This would allow us to find every single element of $A, B, C$ and $X$. We can find a correct solution by brute-forcing $p, q, r$ (there are less than $2^{18}$ combinations), and more importantly, there are multiple (a lot of) correct answers.
 :::</p>
+
 <p>For example, this is one of the possible solutions:</p>
 <pre><code>    ┌ g^48 g^16 ... g^28 ┐      ┌ g^56 ┐
     │ g^60 g^61 ... g^7  │      │ g^50 │
 A = │ g^15 g^62 ... g^26 │, b = │ g^14 │
     │           ...      │      │ ...  │
-    └ g^10 g^46 ... g^20 ┘      └ g^6  ┘
-</code></pre><h3 id="part-vi-the-finale">Part VI: The finale<a href="#part-vi-the-finale" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+    └ g^10 g^46 ... g^20 ┘      └ g^6  ┘</code></pre>
+<h3 id="part-vi-the-finale">Part VI: The finale<a href="#part-vi-the-finale" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
 <p>Converting the whole thing in Sagemath, it is:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">F<span style="color:#f92672">.&lt;</span>g<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">6</span>)
 
@@ -521,12 +571,12 @@ b <span style="color:#f92672">=</span> vector(F,  [g<span style="color:#f92672">
 <span style="color:#75715e"># this means that &#34;A&#34; is a g^0, &#34;B&#34; is g^16, &#34;C&#34; is g^48, etc.</span>
 list_x <span style="color:#f92672">=</span> [g<span style="color:#f92672">^</span><span style="color:#ae81ff">0</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">16</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">48</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">60</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">37</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">51</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">56</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">1</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">21</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">11</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">52</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">46</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">54</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">44</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">17</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">61</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">28</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">27</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">53</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">59</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">19</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">55</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">25</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">12</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">50</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">5</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">20</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">45</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">33</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">18</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">58</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">23</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">24</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">41</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">36</span>, <span style="color:#ae81ff">0</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">47</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">39</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">34</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">13</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">8</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">10</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">32</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">29</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">6</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">43</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">62</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">40</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">38</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">42</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">14</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">7</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">49</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">26</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">30</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">22</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">35</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">31</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">57</span>, g<span style="color:#f92672">^</span><span style="color:#ae81ff">15</span>]
 
-charmap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}&#39;</span>
-</code></pre></div><p>Finally we have revealed what $a_{ij}$'s and $b_i$'s are. We can solve the linear system with Sagemath and it will return the corresponding vector $(x_1, &hellip;, x_n)$ - and this is our flag!</p>
+charmap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}&#39;</span></code></pre></div>
+<p>Finally we have revealed what $a_{ij}$'s and $b_i$'s are. We can solve the linear system with Sagemath and it will return the corresponding vector $(x_1, ..., x_n)$ - and this is our flag!</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sol <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>solve_right(b)
 <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join([charmap[list_x<span style="color:#f92672">.</span>index(c)] <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> sol])
-<span style="color:#75715e"># PCTF{CTFs4R3Ju5TPuzZLeHUnTSWi7hM0reCoMPut3R5}</span>
-</code></pre></div><p>Well, that was it! I spent a good 7 hours on solving it and I had a lot of fun. We gained insights by patching the programing and visualizing stuffs. Thanks PPP for the game!</p>
+<span style="color:#75715e"># PCTF{CTFs4R3Ju5TPuzZLeHUnTSWi7hM0reCoMPut3R5}</span></code></pre></div>
+<p>Well, that was it! I spent a good 7 hours on solving it and I had a lot of fun. We gained insights by patching the programing and visualizing stuffs. Thanks PPP for the game!</p>
 
       </div></div>
 
@@ -540,7 +590,7 @@ charmap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;AB
     <div class="pagination__buttons">
         
         <span class="button previous">
-            <a href="https://mystiz.hk/posts/2020-05-05-de1ctf/">
+            <a href="/posts/2020-05-05-de1ctf/">
                 <span class="button__icon">←</span>
                 <span class="button__text">De1CTF 2020 Writeup</span>
             </a>
@@ -548,7 +598,7 @@ charmap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;AB
         
         
         <span class="button next">
-            <a href="https://mystiz.hk/posts/2019-10-02-pwnthybytes/">
+            <a href="/posts/2019-10-02-pwnthybytes/">
                 <span class="button__text">PwnThyBytes CTF 2019 Writeup</span>
                 <span class="button__icon">→</span>
             </a>
@@ -577,8 +627,43 @@ charmap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;AB
   </div>
 </footer>
 
-<script src="https://mystiz.hk/assets/main.js"></script>
-<script src="https://mystiz.hk/assets/prism.js"></script>
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/1.7.1/viz.js"> </script>
+<script type="text/javascript">
+  (function () {
+    const vizPrefix = "language-viz-";
+    Array.prototype.forEach.call(document.querySelectorAll("[class^=" + vizPrefix + "]"), function (x) {
+      let engine;
+      x.getAttribute("class").split(" ").forEach(function (cls) {
+        if (cls.startsWith(vizPrefix)) {
+          engine = cls.substr(vizPrefix.length);
+        }
+      });
+      const image = new DOMParser().parseFromString(Viz(x.innerText, { format: "svg", engine: engine }), "image/svg+xml");
+      x.parentNode.insertBefore(image.documentElement, x);
+      x.style.display = 'none'
+      x.parentNode.style.backgroundColor = "white"
+    });
+  })();
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
 
 
 

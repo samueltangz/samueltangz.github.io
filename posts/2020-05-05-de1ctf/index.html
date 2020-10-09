@@ -7,27 +7,27 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="I was teamed up with Shellphish this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with @DuSu and @fs0c.
-I said that I&amp;rsquo;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
+I said that I&#39;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
 Homomorphic Challenge Summary This is a cryptography challenge with 465 points." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="https://mystiz.hk/posts/2020-05-05-de1ctf/" />
+<link rel="canonical" href="/posts/2020-05-05-de1ctf/" />
 
 
 
 
-<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css">
 
-  <link rel="stylesheet" href="https://mystiz.hk/assets/green.css">
-
-
+  <link rel="stylesheet" href="/assets/green.css">
 
 
 
 
-<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
 
-  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/green.png">
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/green.png">
 
 
 
@@ -44,12 +44,12 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points."
 <meta property="og:type" content="article" />
 <meta property="og:title" content="De1CTF 2020 Writeup">
 <meta property="og:description" content="I was teamed up with Shellphish this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with @DuSu and @fs0c.
-I said that I&amp;rsquo;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
+I said that I&#39;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
 Homomorphic Challenge Summary This is a cryptography challenge with 465 points." />
-<meta property="og:url" content="https://mystiz.hk/posts/2020-05-05-de1ctf/" />
+<meta property="og:url" content="/posts/2020-05-05-de1ctf/" />
 <meta property="og:site_name" content="Mystify" />
 
-  <meta property="og:image" content="https://mystiz.hk">
+  <meta property="og:image" content="/">
 
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
@@ -72,7 +72,7 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points."
 <body class="green">
 
 
-<div class="container headings--one-size">
+<div class="container center headings--one-size">
 
   <header class="header">
   <div class="header__inner">
@@ -87,25 +87,6 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points."
     <div class="menu-trigger">menu</div>
   </div>
   
-  <script type="text/javascript">
-  MathJax = {
-    tex2jax: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']],
-      processEscapes: false
-    },
-    options: {
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-    }
-  };
-
-  window.addEventListener('load', (event) => {
-    document.querySelectorAll("mjx-container").forEach(function (x) {
-      x.parentElement.classList += 'has-jax'
-    })
-  });
-</script>
-<script type="text/javascript" id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.2/es5/tex-mml-chtml.js"></script>
 </header>
 
 
@@ -113,7 +94,7 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points."
     
 <div class="post">
   <h1 class="post-title">
-    <a href="https://mystiz.hk/posts/2020-05-05-de1ctf/">De1CTF 2020 Writeup</a></h1>
+    <a href="/posts/2020-05-05-de1ctf/">De1CTF 2020 Writeup</a></h1>
   <div class="post-meta">
     
       <span class="post-date">
@@ -128,7 +109,7 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points."
   
   <span class="post-tags">
     
-    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
     
   </span>
   
@@ -139,48 +120,80 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points."
 
   <div class="post-content"><div>
         <p>I was teamed up with <em>Shellphish</em> this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with @DuSu and @fs0c.</p>
-<p>I said that I&rsquo;ll commit the solution scripts to my Github after I have managed to prettify them. <em>It never happened.</em> I will not make the same promise again.</p>
+
+<p>I said that I'll commit the solution scripts to my Github after I have managed to prettify them. <em>It never happened.</em> I will not make the same promise again.</p>
+
 <h2 id="homomorphic">Homomorphic<a href="#homomorphic" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
 <p>This is a cryptography challenge with 465 points.</p>
+
 <p>The challenge implements an cryptosystem with <a href="https://en.wikipedia.org/wiki/Ring_learning_with_errors">ring-LWE</a>. At the beginning, we are given a public key and an encrypted flag sealed with the key. Moreover, it exposed us an oracle to encrypt and decrypt.</p>
+
 <h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<p>I&rsquo;ve spent 1.5 hours on this challenge.</p>
+
+<p>I've spent 1.5 hours on this challenge.</p>
+
 <h4 id="part-i-the-computation-behind">Part I: The computation behind<a href="#part-i-the-computation-behind" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
 <p>:::info
-This part briefly describes how a specific case of ring-LWE works. You actually <em>don&rsquo;t</em> need to know how this works to solve the challenge.
+This part briefly describes how a specific case of ring-LWE works. You actually <em>don't</em> need to know how this works to solve the challenge.
 :::</p>
+
 <p>The public key is a pair of polynomials $P_1(x), P_2(x)$ with $P_1(x) := -P_2(x)S(x) + \mathcal{E}_0(x)$. Hereby $S(x)$ is the private key that the coefficients can either be 0 or 1, and $\mathcal{E}_0(x)$ is an small error polynomial that is kept away from our reach.</p>
+
 <p>The ciphertext for an <em>integer</em> $0 \leq m \le 256$ is a pair of polynomial $C_1(x) := P_1(x)U(x) + \mathcal{E}_1(x) + 4m$ and $C_2(x) := P_2(x)U(x) + \mathcal{E}_2(x)$. $U(x)$ is a randomly generated polynomial with coefficients being 0 or 1, and $\mathcal{E}_1(x)$ and $\mathcal{E}_2(x)$ are small error polynomials.</p>
-<p>To decrypt&hellip; I&rsquo;ll cut the crap.</p>
+
+<p>To decrypt... I'll cut the crap.</p>
+
 <h4 id="part-ii-the-check">Part II: The check<a href="#part-ii-the-check" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
 <p>During code review, I was curious why it encrypts character by character. There must be some mishaps implementing in this way!</p>
-<p>But there is another thing that caught my attention&hellip;</p>
+
+<p>But there is another thing that caught my attention...</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check</span>(self,m):
   m0,m1 <span style="color:#f92672">=</span> [abs(j) <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> m[<span style="color:#ae81ff">0</span>]],[abs(j) <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> m[<span style="color:#ae81ff">1</span>]]
   <span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> FLAG:
     i0,i1 <span style="color:#f92672">=</span> [abs(j) <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> f[<span style="color:#ae81ff">0</span>]],[abs(j) <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> f[<span style="color:#ae81ff">1</span>]]
     <span style="color:#66d9ef">if</span> m0 <span style="color:#f92672">==</span> i0 <span style="color:#f92672">and</span> m1 <span style="color:#f92672">==</span> i1:
       <span style="color:#66d9ef">return</span> False
-  <span style="color:#66d9ef">return</span> True
-</code></pre></div><p>Simply put, you cannot send any of the polynomial pair $(C_1(x), C_2(x))$ that is given by them at the beginning. It bans a bunch of similar polynomials as well.</p>
-<p>Note that the cryptosystem runs under modulo $q = 2^{54}$. The value of $q$ doesn&rsquo;t actually matter, but the fact that it is operated under a modulus.</p>
+  <span style="color:#66d9ef">return</span> True</code></pre></div>
+<p>Simply put, you cannot send any of the polynomial pair $(C_1(x), C_2(x))$ that is given by them at the beginning. It bans a bunch of similar polynomials as well.</p>
+
+<p>Note that the cryptosystem runs under modulo $q = 2^{54}$. The value of $q$ doesn't actually matter, but the fact that it is operated under a modulus.</p>
+
 <h4 id="part-iii-the-bypass">Part III: The bypass<a href="#part-iii-the-bypass" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<p>A similar story is: You are given an oracle that decrypts messages encrypted with RSA. You can decrypt every single of them but not $c_0$. What can you do? &ndash; A level zero bypass is to send $c_0 + n$ and hope it worked.</p>
-<p>For this challenge, if we are given $C_1(x) = \sum u_ix^i$ and $C_2(x) = \sum v_ix^i$ that is the ciphertext of a character $m$, we can simply send $C&rsquo;_1(x) = \sum (u_i + q)x^i$ and $C&rsquo;_2(x) = \sum (v_i + q)x^i$ to the decryption oracle. It just worked.</p>
+
+<p>A similar story is: You are given an oracle that decrypts messages encrypted with RSA. You can decrypt every single of them but not $c_0$. What can you do? -- A level zero bypass is to send $c_0 + n$ and hope it worked.</p>
+
+<p>For this challenge, if we are given $C_1(x) = \sum u_ix^i$ and $C_2(x) = \sum v_ix^i$ that is the ciphertext of a character $m$, we can simply send $C'_1(x) = \sum (u_i + q)x^i$ and $C'_2(x) = \sum (v_i + q)x^i$ to the decryption oracle. It just worked.</p>
+
 <h2 id="ov">OV<a href="#ov" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
 <p>This is a cryptography challenge that worths 800 points.</p>
+
 <p>The challenge implements an oil and vinegar scheme. Under a given public key, an oracle that sign messages (except <code>iwanttoknowflag!</code>) and verify signatures is exposed to us. The objective is to forge the signature for <code>iwanttoknowflag!</code>.</p>
+
 <h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<p>I&rsquo;ve spent around 10 hours to solve it.</p>
+
+<p>I've spent around 10 hours to solve it.</p>
+
 <h4 id="part-i-paper-reading-session">Part I: Paper reading session<a href="#part-i-paper-reading-session" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<p>Kipnis and Shamir had an <a href="https://link.springer.com/content/pdf/10.1007%2FBFb0055733.pdf">research paper</a> attacking the oil and vinegar signature scheme. Kipnis has also written an <a href="http://www.goubin.fr/papers/OILLONG.PDF">extended version</a> that made the whole thing easier to understand. I&rsquo;ve refer to more research papers to implement an working attack&hellip; or did I?</p>
+
+<p>Kipnis and Shamir had an <a href="https://link.springer.com/content/pdf/10.1007%2FBFb0055733.pdf">research paper</a> attacking the oil and vinegar signature scheme. Kipnis has also written an <a href="http://www.goubin.fr/papers/OILLONG.PDF">extended version</a> that made the whole thing easier to understand. I've refer to more research papers to implement an working attack... or did I?</p>
+
 <p>For anyone who thinks this is a simple process, the above paragraph simply compresses a 8-hour work session.</p>
+
 <h4 id="paper-ii-shit-what-have-i-done">Paper II: Shit, what have I done?<a href="#paper-ii-shit-what-have-i-done" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<p>After I&rsquo;ve implemented a working attack for the scheme, tested with random key pairs, I just can&rsquo;t wait to deploy the attack to the oracle. I am getting &ldquo;wrong signature&rdquo;. Wait. Wrong signature? I have double checked (or triple, or quadruple, or even more) that my solution is correct.</p>
+
+<p>After I've implemented a working attack for the scheme, tested with random key pairs, I just can't wait to deploy the attack to the oracle. I am getting &quot;wrong signature&quot;. Wait. Wrong signature? I have double checked (or triple, or quadruple, or even more) that my solution is correct.</p>
+
 <p>During debugging, I tried to sign a random message with the <em>signing oracle</em> and send it to the <em>verification oracle</em>. <em>Correct</em>. However, when I pass the same message-signature pair to my own signature verifier, it is incorrect. Did I misunderstood how the signature scheme works?</p>
-<p>I&rsquo;ve read in more detail on how they verify signatures:</p>
+
+<p>I've read in more detail on how they verify signatures:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># sign is the signature, and H is the message</span>
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verity</span>(self,sign,H):
   sign <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>IntListDecoder(sign)
@@ -188,14 +201,19 @@ This part briefly describes how a specific case of ring-LWE works. You actually 
   images <span style="color:#f92672">=</span> [i <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> sign]
   phi <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>PR<span style="color:#f92672">.</span>hom(images,self<span style="color:#f92672">.</span>K)
   pk_sub <span style="color:#f92672">=</span> [phi(PK[i][<span style="color:#ae81ff">0</span>]) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>o)]
-  <span style="color:#66d9ef">return</span> pk_sub <span style="color:#f92672">==</span> H
-</code></pre></div><p>Doesn&rsquo;t it mean that if $P_1, P_2, &hellip;, P_{16}$ is the matrices representing the public key, the message $\vec{m} = (m_1, m_2, &hellip;, m_{16})$ and signature $\vec{s}$ would satisfy</p>
-<p>$$\vec{s}^T P_i \vec{s} = m_i\ \text{for all}\ i = 1, 2, &hellip;, 16?$$</p>
-<p>Everything looked normal for me&hellip; until I look on each variable independently. <strong>Especially $H$</strong>.</p>
+  <span style="color:#66d9ef">return</span> pk_sub <span style="color:#f92672">==</span> H</code></pre></div>
+<p>Doesn't it mean that if $P_1, P<em>2, ..., P</em>{16}$ is the matrices representing the public key, the message $\vec{m} = (m_1, m<em>2, ..., m</em>{16})$ and signature $\vec{s}$ would satisfy</p>
+
+<p><span  class="math">\[\vec{s}^T P_i \vec{s} = m_i\ \text{for all}\ i = 1, 2, ..., 16?\]</span></p>
+
+<p>Everything looked normal for me... until I look on each variable independently. <strong>Especially $H$</strong>.</p>
+
 <p>When trying to verify the message <code>testtesttesttest</code>, this is what I get:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">H <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>]
-</code></pre></div><p>What? Why? My brain was unable to function and it took me a long while to figure out what happened. &ndash; Looks like the oracle has signing (and verifying) one bit from each of the characters&hellip;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">H <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>]</code></pre></div>
+<p>What? Why? My brain was unable to function and it took me a long while to figure out what happened. -- Looks like the oracle has signing (and verifying) one bit from each of the characters...</p>
+
 <p>That said, signing <code>Iwanttoknowflag!</code> is equivalent to signing <code>[1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1]</code>. The signature obtained is actually a valid signature for <code>iwanttoknowflag!</code>, as it is simply <code>[1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1]</code> in disguise.</p>
+
 <h4 id="part-iii-where-did-it-went-wrong">Part III: Where did it went wrong?<a href="#part-iii-where-did-it-went-wrong" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hashFunction</span>(self,m):
   <span style="color:#66d9ef">assert</span>(len(m) <span style="color:#f92672">==</span> o)
@@ -204,8 +222,8 @@ This part briefly describes how a specific case of ring-LWE works. You actually 
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sign</span>(self,m):
   H <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>hashFunction(m)
-  <span style="color:#75715e"># more operation under GF(2^8)...</span>
-</code></pre></div><p>At this point, <code>H</code> is an integer within 0 and 255. When converted into $\text{GF}(2^8)$, it becomes 0 or 1. The <code>hashFunction</code> should be patched to avoid the trivial bypass.</p>
+  <span style="color:#75715e"># more operation under GF(2^8)...</span></code></pre></div>
+<p>At this point, <code>H</code> is an integer within 0 and 255. When converted into $\text{GF}(2^8)$, it becomes 0 or 1. The <code>hashFunction</code> should be patched to avoid the trivial bypass.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">def hashFunction(self,m):
 <span style="color:#f92672">-  H = [ord(i) for i in m]
 </span><span style="color:#f92672"></span><span style="color:#a6e22e">+  H = [K.fetch_int(ord(i)) for i in m]
@@ -222,7 +240,7 @@ This part briefly describes how a specific case of ring-LWE works. You actually 
     <div class="pagination__buttons">
         
         <span class="button previous">
-            <a href="https://mystiz.hk/posts/2020-08-25-gctf-oracle/">
+            <a href="/posts/2020-08-25-gctf-oracle/">
                 <span class="button__icon">←</span>
                 <span class="button__text">Google CTF 2020: Oracle</span>
             </a>
@@ -230,7 +248,7 @@ This part briefly describes how a specific case of ring-LWE works. You actually 
         
         
         <span class="button next">
-            <a href="https://mystiz.hk/posts/2020-04-21-plaidctf-puzzle/">
+            <a href="/posts/2020-04-21-plaidctf-puzzle/">
                 <span class="button__text">PlaidCTF 2020: A Plaid Puzzle</span>
                 <span class="button__icon">→</span>
             </a>
@@ -259,8 +277,43 @@ This part briefly describes how a specific case of ring-LWE works. You actually 
   </div>
 </footer>
 
-<script src="https://mystiz.hk/assets/main.js"></script>
-<script src="https://mystiz.hk/assets/prism.js"></script>
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/1.7.1/viz.js"> </script>
+<script type="text/javascript">
+  (function () {
+    const vizPrefix = "language-viz-";
+    Array.prototype.forEach.call(document.querySelectorAll("[class^=" + vizPrefix + "]"), function (x) {
+      let engine;
+      x.getAttribute("class").split(" ").forEach(function (cls) {
+        if (cls.startsWith(vizPrefix)) {
+          engine = cls.substr(vizPrefix.length);
+        }
+      });
+      const image = new DOMParser().parseFromString(Viz(x.innerText, { format: "svg", engine: engine }), "image/svg+xml");
+      x.parentNode.insertBefore(image.documentElement, x);
+      x.style.display = 'none'
+      x.parentNode.style.backgroundColor = "white"
+    });
+  })();
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
 
 
 
