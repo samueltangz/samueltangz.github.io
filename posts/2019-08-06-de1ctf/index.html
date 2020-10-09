@@ -208,7 +208,7 @@ Z_i & = & & & B_i & + & C_i & + & D_i & + & S_i
 \end{matrix}\end{cases} \dots\dots (2).
 \]</span></p>
 
-<p>Why is that? Combining with $(1)$, the iteration is much simpler:</p>
+<p>Why is that? Combining with (1), the iteration is much simpler:</p>
 
 <p><span  class="math">\[
 \begin{cases}\begin{aligned}
@@ -500,9 +500,11 @@ x_2 &= x_0 + (K_0 + x_1)^3 \\
 \   &= x_0 + K_0^3 + K_0^2 x_1 + K_0 x_1^2 + x_1^3 \\
 x_3 &= x_1 + (K_1 + x_2)^3 \\
 \   &= x_1 + (K_1 + x_0 + K_0^3 + K_0^2 x_1 + K_0 x_1^2 + x_1^3)^3 \\
-\   &= x_1^9 + x_1^8K_0 + x_1K_0^8 + K_0^9 + x_0x_1^6 + x_0x_1^4K_0^2 + x_0x_1^2K_0^4 + \dots (╯‵□′)╯︵┴─┴
+\   &= x_1^9 + x_1^8K_0 + x_1K_0^8 + K_0^9 + x_0x_1^6 + x_0x_1^4K_0^2 + x_0x_1^2K_0^4 + \dots
 \end{aligned}
 \]</span></p>
+
+<p>(╯‵□′)╯︵┴─┴</p>
 
 <div class="alert danger">
   <strong>Question:</strong> Wait, no! You are wrong! $(x + y)^3$ should be $x^3 + 3x^2y + 3xy^2 + 3y^3$!

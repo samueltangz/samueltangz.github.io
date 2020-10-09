@@ -325,18 +325,18 @@ The key and nonce is not provided though, so we have to somehow reverse the <cod
 
 <p><span  class="math">\[A_k(x) = \sum_{i=0}^{255} a_{ki} x^i, B_k(x) = \sum_{i=0}^{255} b_{ki} x^i, \varepsilon_k(x) = \sum_{i=0}^{255} e_{ki} x^i, S(x) = \sum_{i=0}^{255} s_i x^i.\]</span></p>
 
-<p>$a_{ki}, b_{ki}, s<em>i$ are all integers in the set $[0, 1486]$, while $e</em>{ki}$ are small real numbers.</p>
+<p>$a_{ki}, b_{ki}, s_i$ are all integers in the set $[0, 1486]$, while $e_{ki}$ are small real numbers.</p>
 
 <p>Then we have</p>
 
 <p><span  class="math">\[\begin{aligned}
-\sum_{i=0}^{255} b_{ki} x^i &\equiv \left(\sum_{i=0}^{255} a_{ki} x^i\right)\left(\sum_{i=0}^{255} s_i x^i\right) + \sum_{i=0}^{255} e_i x^i \\\\\\
-&\equiv \sum_{i=0}^{510}\left(\sum_{j=\text{max}(0,i-255)}^{\text{min}(255,i)} a_{kj}s_{i-j}\right)x^i + \sum_{i=0}^{255} e_i x^i \\\\\\
-&\equiv \sum_{i=0}^{255}\left(\sum_{j=\text{max}(0,i-255)}^{\text{min}(255,i)} a_{kj}s_{i-j}\right)x^i + \sum_{i=256}^{510}\left(\sum_{j=\text{max}(0,i-255)}^{\text{min}(255,i)} a_{kj}s_{i-j}\right)x^i + \sum_{i=0}^{255} e_i x^i \\\\\\
-&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j}\right)x^i + \sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^i + \sum_{i=0}^{255} e_i x^i \\\\\\
-&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j}\right)x^i - 1486\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^{i-256} + \sum_{i=0}^{255} e_i x^i \\\\\\
-&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j}\right)x^i - 1486\sum_{i=0}^{254}\left(\sum_{j=i+1}^{255} a_{kj}s_{i-j+256}\right)x^{i} + \sum_{i=0}^{255} e_i x^i \\\\\\
-&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j} - 1486 \sum_{j=i+1}^{255} a_{kj}s_{i-j+256} + e_i\right)x^i \\\\\\
+\sum_{i=0}^{255} b_{ki} x^i &\equiv \left(\sum_{i=0}^{255} a_{ki} x^i\right)\left(\sum_{i=0}^{255} s_i x^i\right) + \sum_{i=0}^{255} e_i x^i \\
+&\equiv \sum_{i=0}^{510}\left(\sum_{j=\text{max}(0,i-255)}^{\text{min}(255,i)} a_{kj}s_{i-j}\right)x^i + \sum_{i=0}^{255} e_i x^i \\
+&\equiv \sum_{i=0}^{255}\left(\sum_{j=\text{max}(0,i-255)}^{\text{min}(255,i)} a_{kj}s_{i-j}\right)x^i + \sum_{i=256}^{510}\left(\sum_{j=\text{max}(0,i-255)}^{\text{min}(255,i)} a_{kj}s_{i-j}\right)x^i + \sum_{i=0}^{255} e_i x^i \\
+&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j}\right)x^i + \sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^i + \sum_{i=0}^{255} e_i x^i \\
+&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j}\right)x^i - 1486\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^{i-256} + \sum_{i=0}^{255} e_i x^i \\
+&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j}\right)x^i - 1486\sum_{i=0}^{254}\left(\sum_{j=i+1}^{255} a_{kj}s_{i-j+256}\right)x^{i} + \sum_{i=0}^{255} e_i x^i \\
+&\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{kj}s_{i-j} - 1486 \sum_{j=i+1}^{255} a_{kj}s_{i-j+256} + e_i\right)x^i \\
 &\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_j + e_i\right)x^i
 \end{aligned}\]</span></p>
 
@@ -461,7 +461,7 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
   }
 </style>
 
-<p>My approach is to generate two ciphertexts, namely, $c_k$ and $c_k'$ for the $k$-th party. In this way, we have 243 ciphertext pairs. We are looking for $x_1, x<em>2, ..., x</em>{243}\in{0, 1}$ such that</p>
+<p>My approach is to generate two ciphertexts, namely, $c_k$ and $c_k'$ for the $k$-th party. In this way, we have 243 ciphertext pairs. We are looking for $x_1, x_2, ..., x_{243}\in{0, 1}$ such that</p>
 
 <p><span  class="math">\[\bigoplus_{k=1}^m [(1 - x_k) \text{RSAEncrypt}(c_k, n_k) + x_k \text{RSAEncrypt}(c_k', n_k)] \equiv \text{hash}\ (\text{mod}\ 2^{256}).\]</span></p>
 
