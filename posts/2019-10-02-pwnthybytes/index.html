@@ -133,7 +133,7 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
 
 <ol>
 <li>$L_0, R_0 = \text{password}\ |\ \text{salt}\ |\ \text{password}$ ($L_0, R_0$ separate the 64-byte block)</li>
-<li>$L_{i+1} = L_i \oplus h_R(R<em>i), R</em>{i+1} = R_i \oplus h_L(L_i)$, for $i = 0, 1, ..., 15$.</li>
+<li>$L_{i+1} = L_i \oplus h_R(R_i), R_{i+1} = R_i \oplus h_L(L_i)$, for $i = 0, 1, ..., 15$.</li>
 </ol>
 
 <p>Here $h_L$ and $h_R$ are the two hash algorithms that uses one of the commonly used hash algorithms based on the content. As this is a 32-byte block, if the hash algorithm itself does not consist 32 bytes, it would repeat itself until there are 32 bytes.</p>
@@ -142,13 +142,37 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
 
 <h4 id="part-i-repeat-repeat-repeat">Part I: Repeat, repeat, repeat<a href="#part-i-repeat-repeat-repeat" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>:::info
-One question that had brought up to my mind is: What if the $h_L$ and $h_R$ uses solely the 20-byte hash algorithms (i.e., all but sha256)?
-:::</p>
+<div class="alert info">
+  One question that had brought up to my mind is: What if the $h_L$ and $h_R$ uses solely the 20-byte hash algorithms (i.e., all but sha256)?
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <p>Assume that 20-byte hash algorithms are used. Let's see what will happen in a round.</p>
 
-<p>Define $s_0\ |\ s_1\ |\ ...\ |\ s_9 := L_i\ | \ R_i$ and $t_0\ |\ t_1\ |\ ...\ |\ t<em>9 := L</em>{i+1}\ | \ R_{i+1}$, where:</p>
+<p>Define $s_0\ |\ s_1\ |\ ...\ |\ s_9 := L_i\ | \ R_i$ and $t_0\ |\ t_1\ |\ ...\ |\ t_9 := L_{i+1}\ | \ R_{i+1}$, where:</p>
 
 <ul>
 <li>$s_0, s_2, s_3, s_6, s_7, s_9, t_0, t_2, t_3, t_6, t_7, t_9$ are 8 bytes long, and</li>
@@ -176,16 +200,39 @@ One question that had brought up to my mind is: What if the $h_L$ and $h_R$ uses
 <li>$s_6 \oplus t_6 = s_9 \oplus t_9$.</li>
 </ol>
 
-<p>:::info
-If we define $L_0, R_0$ by $a_0, a_1, ..., a<em>9$ and $L</em>{16}, R_{16}$ by $b_0, b_1, ..., b_9$ (their lengths are respectively equal to $s_0, s_1, ..., s_9$), we still have the below properties:</p>
-
+<div class="alert info">
+  If we define $L_0, R_0$ by $a_0, a_1, &hellip;, a_9$ and $L_{16}, R_{16}$ by $b_0, b_1, &hellip;, b_9$ (their lengths are respectively equal to $s_0, s_1, &hellip;, s_9$), we still have the below properties:</p>
 <ol>
 <li>$b_0 \oplus b_3 = a_0 \oplus a_3$,</li>
 <li>$b_1 \oplus b_4 = a_1 \oplus a_4$,</li>
 <li>$b_5 \oplus b_8 = a_5 \oplus a_8$, and</li>
-<li>$b_6 \oplus b_9 = a_6 \oplus a_9$.
-:::</li>
+<li>$b_6 \oplus b_9 = a_6 \oplus a_9$.</li>
 </ol>
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <h4 id="part-ii-what-does-it-mean">Part II: What does it mean?<a href="#part-ii-what-does-it-mean" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
@@ -240,7 +287,7 @@ The key and nonce is not provided though, so we have to somehow reverse the <cod
 
 <p>Because the cipher is under GCM and with a known AAD, given a key $k$ and a ciphertext $c$, we can compute $\text{GHASH}_{k,c}(\text{AAD})$.</p>
 
-<p>Consider the GCM mode with its tag generation. The tag generation is given by $\text{tag} = E<em>k(\text{nonce}) \oplus \text{GHASH}</em>{k,c}(\text{AAD})$. Therefore, with known key $k$, one can find out the key-correspondent nonce by $\text{nonce} = D<em>k(\text{tag} \oplus \text{GHASH}</em>{k,c}(\text{AAD}))$.</p>
+<p>Consider the GCM mode with its tag generation. The tag generation is given by $\text{tag} = E_k(\text{nonce}) \oplus \text{GHASH}_{k,c}(\text{AAD})$. Therefore, with known key $k$, one can find out the key-correspondent nonce by $\text{nonce} = D_k(\text{tag} \oplus \text{GHASH}_{k,c}(\text{AAD}))$.</p>
 
 <p>Therefore we can exhaust the key $k$ with $2^{32} + 1$ trials, for each key $k$ find its corresponding $nonce$ and see whether it is the correct one.</p>
 
@@ -248,7 +295,7 @@ The key and nonce is not provided though, so we have to somehow reverse the <cod
 
 <p>We initially use Sage to deal with the challenge, but it was way too slow (to generate the possible keys) and decided to use Python instead. But we don't want to use other language other than Sage to generate the keys...</p>
 
-<p>So what we have done is a simple multi-thread Sage key generator and a Python solver. And it was <em>wayyyyyyyyyyyy</em> too slow.... even with pypy.</p>
+<p>So what we have done is a simple multi-thread Sage key generator and a Python solver. And it was <em>wayyyyyyyyyyyy</em> too slow... even with pypy.</p>
 
 <script type="application/javascript" src="https://gist.github.com/harrier-lcc/8f62767497da379e127cd4ab017fd8fb.js"></script>
 
@@ -293,17 +340,65 @@ The key and nonce is not provided though, so we have to somehow reverse the <cod
 &\equiv \sum_{i=0}^{255}\left(\sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_j + e_i\right)x^i
 \end{aligned}\]</span></p>
 
-<p>:::info
-<strong>Explanations:</strong>
-Under modulo $p(x)$, $x^{256} = -1486$ - so we have <span  class="math">\(\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^i = - 1486\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^{i-256}.\)</span>
-:::</p>
+<div class="alert info">
+  <strong>Explanations:</strong>
+Under modulo $p(x)$, $x^{256} = -1486$ - so we have $$\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^i = - 1486\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^{i-256}.$$
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <p>Very complicated right? Yes... But we have a conclusion for this part:</p>
 
-<p>:::success
-For each $i = 0, 1, ..., 255$ and $k = 1, 2, ..., 8$, we have:
-<span  class="math">\(b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_j + e_i.\)</span>
-:::</p>
+<div class="alert success">
+  For each $i = 0, 1, &hellip;, 255$ and $k = 1, 2, &hellip;, 8$, we have:
+$$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_j + e_i.$$
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <h4 id="part-ii-an-insight">Part II: An insight<a href="#part-ii-an-insight" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
@@ -313,7 +408,7 @@ For each $i = 0, 1, ..., 255$ and $k = 1, 2, ..., 8$, we have:
 
 <p><span  class="math">\[\text{round}(b_{ki}) = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_j.\]</span></p>
 
-<p>Since there are 256 unknowns ($s_0, s<em>1, ..., s</em>{255}$) and 256 equations, we can hopefully solve the equation.</p>
+<p>Since there are 256 unknowns ($s_0, s_1, ..., s_{255}$) and 256 equations, we can hopefully solve the equation.</p>
 
 <script type="application/javascript" src="https://gist.github.com/samueltangz/81725254645642949ae42d139cdc74b9.js"></script>
 
@@ -338,9 +433,33 @@ For each $i = 0, 1, ..., 255$ and $k = 1, 2, ..., 8$, we have:
 
 <h4 id="part-ii-the-main-dish">Part II: The main dish<a href="#part-ii-the-main-dish" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>:::info
-<strong>Note:</strong> The $c_k$ and $c_k'$ defined below are multiples of $n_k$. This is what we had from the above part for the simplicity's sake.
-:::</p>
+<div class="alert info">
+  <strong>Note:</strong> The $c_k$ and $c_k'$ defined below are multiples of $n_k$. This is what we had from the above part for the simplicity&rsquo;s sake.
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <p>My approach is to generate two ciphertexts, namely, $c_k$ and $c_k'$ for the $k$-th party. In this way, we have 243 ciphertext pairs. We are looking for $x_1, x<em>2, ..., x</em>{243}\in{0, 1}$ such that</p>
 
@@ -350,9 +469,33 @@ For each $i = 0, 1, ..., 255$ and $k = 1, 2, ..., 8$, we have:
 
 <p><span  class="math">\[\bigoplus_{k=1}^m [x_k (c_k - c_k')] \equiv \text{hash} \oplus \bigoplus_{k=1}^m c_k\ (\text{mod}\ 2^{256}).\]</span></p>
 
-<p>:::info
-<strong>Idea:</strong> My approach is to check if one of the $2^{243}$ possible generated ciphertexts covers the target hash. If not, generate another set.
-:::</p>
+<div class="alert info">
+  <strong>Idea:</strong> My approach is to check if one of the $2^{243}$ possible generated ciphertexts covers the target hash. If not, generate another set.
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <p>The above equation is just an linear equation! Solving it we had the values of $x_k$'s. If $x_k = 0$ we pick $c_k$, and $c_k'$ otherwise. After all we have forged a signature.</p>
 

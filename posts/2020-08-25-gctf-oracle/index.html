@@ -131,7 +131,7 @@ In particular, Oracle is a crypto challenge with 13 solves. It has got me spendi
 
 <h3 id="part-i-a-brief-summary-for-the-state-in-aegis128l">Part I: A brief summary for the state in AEGIS-128L<a href="#part-i-a-brief-summary-for-the-state-in-aegis128l" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<p>AEGIS-128L has an internal state that is initially computed solely by the <em>key</em> and the <em>IV</em>. It is of 128 bytes, broken into eight 16-byte blocks. Let's $S<em>i$ is updated to $S</em>{i+1}$ given 32-byte payload $M$. Let's define $S<em>i = (s</em>{i, 0}, s_{i, 1}, ..., s_{i, 7})$ and $M = (m_0, m_1)$. We have:</p>
+<p>AEGIS-128L has an internal state that is initially computed solely by the <em>key</em> and the <em>IV</em>. It is of 128 bytes, broken into eight 16-byte blocks. Let's $S_i$ is updated to $S_{i+1}$ given 32-byte payload $M$. Let's define $S_i = (s_{i, 0}, s_{i, 1}, ..., s_{i, 7})$ and $M = (m_0, m_1)$. We have:</p>
 
 <ul>
 <li>$s_{i+1, 0} \leftarrow \text{AESEnc}(s_{i, 7}, s_{i, 0}) \oplus m_0$,</li>
@@ -151,7 +151,7 @@ In particular, Oracle is a crypto challenge with 13 solves. It has got me spendi
 <p>Well... we will go through this later. Let's introduce how keystreams are generated from the state. It is (relatively) simple. The keystream $(k_{i, 0}, k_{i, 1})$ for the $i$-th round is given by:</p>
 
 <p><span  class="math">\[
-k_{i, 0} = (s_{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 6}, \\\\\\
+k_{i, 0} = (s_{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 6}, \\
 k_{i, 1} = (s_{i, 6} \wedge s_{i, 7}) \oplus s_{i, 5} \oplus s_{i, 2}.
 \]</span></p>
 
@@ -217,15 +217,15 @@ k_{i, 1} = (s_{i, 6} \wedge s_{i, 7}) \oplus s_{i, 5} \oplus s_{i, 2}.
 </tbody>
 </table>
 
-<p>What does this imply? Knowing that $s^{(1)}<em>{2,j} = s^{(2)}</em>{2,j}$ for $j = 2, 3, 6, 7$. Let's look closely on the last 32 bytes of the keystream:</p>
+<p>What does this imply? Knowing that $s^{(1)}_{2,j} = s^{(2)}_{2,j}$ for $j = 2, 3, 6, 7$. Let's look closely on the last 32 bytes of the keystream:</p>
 
 <p><span  class="math">\[
-\begin{align}
-k^{(1)}\_{20} \oplus k^{(2)}\_{20}
-&= m^{(1)}\_{20} \oplus c^{(1)}\_{20} \oplus m^{(2)}\_{20} \oplus c^{(2)}\_{20} \\\\\\
-&= \left[ (s^{(1)}\_{22} \wedge s^{(1)}\_{23}) \oplus s^{(1)}\_{21} \oplus s^{(1)}\_{26} \right] \oplus \left[ (s^{(2)}\_{22} \wedge s^{(2)}\_{23}) \oplus s^{(2)}\_{21} \oplus s^{(2)}\_{26} \right] \\\\\\
-&= s^{(1)}\_{21} \oplus s^{(2)}\_{21}.
-\end{align}
+\begin{aligned}
+k^{(1)}_{20} \oplus k^{(2)}_{20}
+&= m^{(1)}_{20} \oplus c^{(1)}_{20} \oplus m^{(2)}_{20} \oplus c^{(2)}_{20} \\
+&= \left[ (s^{(1)}_{22} \wedge s^{(1)}_{23}) \oplus s^{(1)}_{21} \oplus s^{(1)}_{26} \right] \oplus \left[ (s^{(2)}_{22} \wedge s^{(2)}_{23}) \oplus s^{(2)}_{21} \oplus s^{(2)}_{26} \right] \\
+&= s^{(1)}_{21} \oplus s^{(2)}_{21}.
+\end{aligned}
 \]</span></p>
 
 <p>And similarly $k^{(1)}_{21} \oplus k^{(2)}_{21} = s^{(1)}_{25} \oplus s^{(2)}_{25}$.</p>
@@ -239,21 +239,21 @@ k^{(1)}\_{20} \oplus k^{(2)}\_{20}
   <span style="color:#66d9ef">return</span> _block_from_ints([t0, t1, t2, t3])</code></pre></div>
 <p>Déjà vu? It is more or less the same with <code>AESEnc</code>. We can state that <code>AESEnc(s, t) == p(s) ^ t</code> too. Looking even more closely, one could observe that the first four bytes from <code>p</code> solely depends on bytes 0, 5, 10 and 15 from <code>s</code>.</p>
 
-<p>Knowing this, we can further expand $k^{(1)}<em>{20} \oplus k^{(2)}</em>{20}$:</p>
+<p>Knowing this, we can further expand $k^{(1)}_{20} \oplus k^{(2)}_{20}$:</p>
 
-<p><span  class="math">\[\begin{align}
+<p><span  class="math">\[\begin{aligned}
 k^{(1)}_{20} \oplus k^{(2)}_{20}
-&= s^{(1)}_{21} \oplus s^{(2)}_{21} \\\\\\
-&= \text{AESEnc}(s^{(1)}_{10}, s^{(1)}_{11}) \oplus \text{AESEnc}(s^{(2)}_{10}, s^{(2)}_{11}) \\\\\\
-&= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\\\\\
-&= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\\\\\
-&= p\left(\text{AESEnc}(s^{(1)}_{07}, s^{(1)}_{00}) \oplus m^{(1)}_{00}\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{07}, s^{(2)}_{00}) \oplus m^{(2)}_{00}\right) \\\\\\
+&= s^{(1)}_{21} \oplus s^{(2)}_{21} \\
+&= \text{AESEnc}(s^{(1)}_{10}, s^{(1)}_{11}) \oplus \text{AESEnc}(s^{(2)}_{10}, s^{(2)}_{11}) \\
+&= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\
+&= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\
+&= p\left(\text{AESEnc}(s^{(1)}_{07}, s^{(1)}_{00}) \oplus m^{(1)}_{00}\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{07}, s^{(2)}_{00}) \oplus m^{(2)}_{00}\right) \\
 &= p(x \oplus m^{(1)}_{00}) \oplus p(x \oplus m^{(2)}_{00}).
-\end{align}\]</span></p>
+\end{aligned}\]</span></p>
 
 <p>(We define $x := \text{AESEnc}(s_{07}, s_{00}) = s_{10} \oplus m^{(1)}_{00}$ for ease of reading.)</p>
 
-<p>And now the <em>only</em> unknown is $x$. Can we solve it easily? Yes indeed: we can compute bytes 0, 5, 10, 15 of $x$ from the first four bytes of $k^{(1)}<em>{20} \oplus k^{(2)}</em>{20}$. Along with three more equalities from <code>p</code>, we are able to recover $x$ completely. I used an meet-in-the-middle approach to solve for $x$ in five seconds.</p>
+<p>And now the <em>only</em> unknown is $x$. Can we solve it easily? Yes indeed: we can compute bytes 0, 5, 10, 15 of $x$ from the first four bytes of $k^{(1)}_{20} \oplus k^{(2)}_{20}$. Along with three more equalities from <code>p</code>, we are able to recover $x$ completely. I used an meet-in-the-middle approach to solve for $x$ in five seconds.</p>
 
 <p><figure><img src="https://i.imgur.com/sdSHCtb.png" alt=""></figure></p>
 
@@ -330,7 +330,7 @@ k^{(1)}_{20} \oplus k^{(2)}_{20}
 <li>$s_{i+1, j} \leftarrow p(s_{i, j-1}) \oplus s_{i, j}$ for $1 \leq j \leq 4$.</li>
 </ul>
 
-<p>Moreover, the keystream $k_i$ for the $i$-th round is also altered: $k<em>i = (s</em>{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 4}$.</p>
+<p>Moreover, the keystream $k_i$ for the $i$-th round is also altered: $k_i = (s_{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 4}$.</p>
 
 <h3 id="part-v-exploring-the-challenge">Part V: Exploring the challenge<a href="#part-v-exploring-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -349,15 +349,15 @@ k^{(1)}_{20} \oplus k^{(2)}_{20}
 <p>With a plaintext recovered, it is time for us to try to recover the internal state. Can we devise a similar strategy that is similar to the first part of the challenge? Formally, what will happen if we have two 48-byte messages $M^{(1)} := (m^{(1)}_0, m^{(1)}_1, m^{(1)}_2)$ and $M^{(2)} := (m^{(2)}_0, m^{(2)}_1, m^{(2)}_2)$ with only the first block being different. Then the last 16 bytes in the keystream will be:</p>
 
 <p><span  class="math">\[
-\begin{align}
+\begin{aligned}
 k^{(1)}_2 \oplus k^{(2)}_2
-&= \left[ (s^{(1)}_{22} \wedge s^{(1)}_{23}) \oplus s^{(1)}_{21} \oplus s^{(1)}_{24} \right] \oplus \left[ (s^{(2)}_{22} \wedge s^{(2)}_{23}) \oplus s^{(2)}_{21} \oplus s^{(2)}_{24} \right] \\\\\\
-&= s^{(1)}_{21} \oplus s^{(2)}_{21} \\\\\\
-&= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\\\\\
-&= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\\\\\
-&= p\left(\text{AESEnc}(s^{(1)}_{04}, s^{(1)}_{00}) \oplus m^{(1)}_1\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{04}, s^{(2)}_{00}) \oplus m^{(2)}_1\right) \\\\\\
+&= \left[ (s^{(1)}_{22} \wedge s^{(1)}_{23}) \oplus s^{(1)}_{21} \oplus s^{(1)}_{24} \right] \oplus \left[ (s^{(2)}_{22} \wedge s^{(2)}_{23}) \oplus s^{(2)}_{21} \oplus s^{(2)}_{24} \right] \\
+&= s^{(1)}_{21} \oplus s^{(2)}_{21} \\
+&= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\
+&= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\
+&= p\left(\text{AESEnc}(s^{(1)}_{04}, s^{(1)}_{00}) \oplus m^{(1)}_1\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{04}, s^{(2)}_{00}) \oplus m^{(2)}_1\right) \\
 &= p(x \oplus m^{(1)}_0) \oplus p(x \oplus m^{(2)}_0).
-\end{align}
+\end{aligned}
 \]</span></p>
 
 <p>Hereby denote $x := \text{AESEnc}(s_{04}, s_{00}) = s_{10} \oplus m^{(1)}_0$. Simply put, if we have the ciphertexts for $M^{(1)}$ and $M^{(2)}$ (denote it as $C^{(k)} = (c^{(k)}_0, c^{(k)}_1, c^{(k)}_2)$), we are able to recover one-fifths of the state if this happens.</p>

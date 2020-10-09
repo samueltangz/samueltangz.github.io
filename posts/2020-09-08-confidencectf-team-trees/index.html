@@ -170,9 +170,9 @@ n = 4: Out of memory ;_;</code></pre>
 <p>We have spot out that the output shares the same prefix when $n=1$ and $n=2$. Maybe we shall see what is going on with <code>sub_400816</code> - it is simply generating numbers for a sequence, namely $s_n$, indefinitely:</p>
 
 <ul>
-<li>$s<em>0 = \text{82F96AC97429A68B}</em>{16}$,</li>
-<li>$s<em>1 = \text{32B9B6BCA55548ED}</em>{16}$, and</li>
-<li>$s<em>k = 3 s</em>{k-2} + 2 s_{k-1} + 4\mod2^{64}$ for $k \geq 2$.</li>
+<li>$s_0 = \text{82F96AC97429A68B}_{16}$,</li>
+<li>$s_1 = \text{32B9B6BCA55548ED}_{16}$, and</li>
+<li>$s_k = 3 s_{k-2} + 2 s_{k-1} + 4\mod2^{64}$ for $k \geq 2$.</li>
 </ul>
 
 <p>Let's generate a bunch of $a_k$'s to see if there is something interesting:</p>
@@ -219,9 +219,33 @@ jmp  short loc_40082F   /* rcx = 3*d0 + 2*c0 + 4, rdx = c0              */</code
    17 | c8b5922a9f156985 | 1ee81bca563d1439
    18 | c8b5922a9f156985 | b053401f9467e747
    19 | b053401f9467e747 | c8b5922a9f156985</code></pre>
-<p>:::info
-💡 <strong>Imagination:</strong> You have opened a process with <code>gdb</code> that has a breakpoint at the beginning of the function. You are given a set of something (<em>defined in <code>sub_40090D</code></em>) and checks if it has a given attribute (<em>defined in <code>sub_4009C4</code></em>). If so, you call <code>ni</code> to move to the next step. Finally, you print the registers, extract <code>edx</code> and <code>ecx</code>, and print them as the flag.
-:::</p>
+<div class="alert info">
+  💡 <strong>Imagination:</strong> You have opened a process with <code>gdb</code> that has a breakpoint at the beginning of the function. You are given a set of something (<em>defined in <code>sub_40090D</code></em>) and checks if it has a given attribute (<em>defined in <code>sub_4009C4</code></em>). If so, you call <code>ni</code> to move to the next step. Finally, you print the registers, extract <code>edx</code> and <code>ecx</code>, and print them as the flag.
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <p>So... what is the set of something? And what is the attribute it is checked against?</p>
 
@@ -743,31 +767,31 @@ jmp  short loc_40082F   /* rcx = 3*d0 + 2*c0 + 4, rdx = c0              */</code
 <p>Let's get back to the sequence $s_n$:</p>
 
 <ul>
-<li>$s<em>0 = \text{82F96AC97429A68B}</em>{16}$,</li>
-<li>$s<em>1 = \text{32B9B6BCA55548ED}</em>{16}$, and</li>
-<li>$s<em>k = 3 s</em>{k-2} + 2 s_{k-1} + 4\mod2^{64}$ for $k \geq 2$.</li>
+<li>$s_0 = \text{82F96AC97429A68B}_{16}$,</li>
+<li>$s_1 = \text{32B9B6BCA55548ED}_{16}$, and</li>
+<li>$s_k = 3 s_{k-2} + 2 s_{k-1} + 4\mod2^{64}$ for $k \geq 2$.</li>
 </ul>
 
 <p>To compute it efficiently, we can rewrite it as a matrix notation:</p>
 
 <p><span  class="math">\[
-\begin{bmatrix} s_{k+1} \\\\\\ s_k \\\\\\ 1 \end{bmatrix}
-= \begin{bmatrix} 2 & 3 & 4 \\\\\\\ 1 & 0 & 0 \\\\\\ 0 & 0 & 1\end{bmatrix}
-\begin{bmatrix} s_k \\\\\\ s_{k-1} \\\\\\ 1 \end{bmatrix} \mod 2^{64}.
+\begin{bmatrix} s_{k+1} \\ s_k \\ 1 \end{bmatrix}
+= \begin{bmatrix} 2 & 3 & 4 \\ 1 & 0 & 0 \\ 0 & 0 & 1\end{bmatrix}
+\begin{bmatrix} s_k \\ s_{k-1} \\ 1 \end{bmatrix} \mod 2^{64}.
 \]</span></p>
 
-<p>Why? Try the multiplication by yourselves! Anyway, then we are able to compute $s<em>m$ and $s</em>{m+1}$ efficiently, since</p>
+<p>Why? Try the multiplication by yourselves! Anyway, then we are able to compute $s_m$ and $s_{m+1}$ efficiently, since</p>
 
 <p><span  class="math">\[
-\begin{bmatrix} s_{m+1} \\\\\\ s_m \\\\\\ 1 \end{bmatrix}
-= \begin{bmatrix} 2 & 3 & 4 \\\\\\ 1 & 0 & 0 \\\\\\ 0 & 0 & 1\end{bmatrix}^m
-\begin{bmatrix} s_1 \\\\\\ s_0 \\\\\\ 1 \end{bmatrix} \mod 2^{64}.
+\begin{bmatrix} s_{m+1} \\ s_m \\ 1 \end{bmatrix}
+= \begin{bmatrix} 2 & 3 & 4 \\ 1 & 0 & 0 \\ 0 & 0 & 1\end{bmatrix}^m
+\begin{bmatrix} s_1 \\ s_0 \\ 1 \end{bmatrix} \mod 2^{64}.
 \]</span></p>
 
 <p>Moreover, since</p>
 
-<p><span  class="math">\[\begin{bmatrix} 2 & 3 & 4 \\\\\\ 1 & 0 & 0 \\\\\\ 0 & 0 & 1\end{bmatrix}^{2^{64}}
-= \begin{bmatrix} 1 & 0 & 0 \\\\\\ 0 & 1 & 0 \\\\\\ 0 & 0 & 1\end{bmatrix},
+<p><span  class="math">\[\begin{bmatrix} 2 & 3 & 4 \\ 1 & 0 & 0 \\ 0 & 0 & 1\end{bmatrix}^{2^{64}}
+= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{bmatrix},
 \]</span></p>
 
 <p>the square matrix has order $2^{64}$. That said, we don't need to find the exact value for $g(1337)$. Instead, we can compute $g(1337)\mod (2^{64}\times4)$. Hereby we need to multiple the number by four, since there are 4 instructions per loop).</p>

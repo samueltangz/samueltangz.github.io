@@ -170,8 +170,8 @@ right [ kwyemxqbttvwszqq | ikewikkccpumwsgm ] -&gt; [ hbufavpezfamcjlw | ] again
 <p>What is this gibberish thingy above? It looks obfuscated, and those weird symbols at the end of the script looks fishy.</p>
 
 <p>I was late to the party. I didn't try to understand the source code from the documentation, but instead messing around with the source code. There is the line that caught my attention:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ fljldviokmmfmqzd <span style="color:#f92672">|</span> iawjsmjfczakueqy ] <span style="color:#f92672">-&gt;</span> [ fljldviokmmfmqzd <span style="color:#f92672">|</span> ] message Good flag<span style="color:#f92672">!</span>
-[ ywmxqezdfjsufycd <span style="color:#f92672">|</span> iawjsmjfczakueqy ] <span style="color:#f92672">-&gt;</span> [ ywmxqezdfjsufycd <span style="color:#f92672">|</span> ] message Bad flag<span style="color:#f92672">!</span></code></pre></div>
+<pre><code>[ fljldviokmmfmqzd | iawjsmjfczakueqy ] -&gt; [ fljldviokmmfmqzd | ] message Good flag!
+[ ywmxqezdfjsufycd | iawjsmjfczakueqy ] -&gt; [ ywmxqezdfjsufycd | ] message Bad flag!</code></pre>
 <p>Luckily @R3x and @mahaloz had already done enough to simplify the script. They have come up with a summary that helped a lot:</p>
 <pre><code>each variable is a space
 
@@ -202,76 +202,73 @@ On a contrast, it would be bad if <code>ywmxqezdfjsufycd</code> is next to <code
 <p>In this stage, we have four main characters in this RPG game: <code>fljldviokmmfmqzd</code> (the <em>yes</em>), <code>ywmxqezdfjsufycd</code> (the <em>no</em>), <code>iawjsmjfczakueqy</code> (the <em>terminator</em>) and me. I searched for the occurrence of those characters. These are the points I summarize:</p>
 
 <ol>
-<li><p>We are able to find a bunch of lines in the below format.
-```r
-[ fljldviokmmfmqzd | tgykpmrvaltbuokz ] -&gt; [ ywmxqezdfjsufycd | ] again
- yes ************                           no *************</p>
+<li><p>We are able to find a bunch of lines in the below format.</p>
+<pre><code>[ fljldviokmmfmqzd | tgykpmrvaltbuokz ] -&gt; [ ywmxqezdfjsufycd | ] again
+  yes ************                           no *************
+# Found 63 times
+      
+[ ywmxqezdfjsufycd | kalmsmalpgkzhrpv ] -&gt; [ ywmxqezdfjsufycd | ] again
+  no *************                           no *************
+# Found 64 times
+    
+[ fljldviokmmfmqzd | kkavwvmbabfuqctz ] -&gt; [ fljldviokmmfmqzd | ] again
+  yes ************                           yes ************
+# Found 1 time</code></pre>
+<p>Interestingly, those are exactly the lines right above the lines giving the verdict.</p></li>
 
-<h1 id="found-63-times">Found 63 times<a href="#found-63-times" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1></li>
+<li><p>It seems that there is an area drawing the characters.</p>
+<pre><code>fljldviokmmfmqzd
+transparent
+    
+ywmxqezdfjsufycd
+transparent
+    
+iawjsmjfczakueqy
+transparent</code></pre>
+<p>I think it is inhumane to make our main characters transparent. Let's make them visible again!</p>
+<pre><code>fljldviokmmfmqzd
+green
+..0..
+.000.
+00000
+.000.
+..0..
+    
+ywmxqezdfjsufycd
+red
+..0..
+.000.
+00000
+.000.
+..0..
+    
+iawjsmjfczakueqy
+blue
+..0..
+.000.
+00000
+.000.
+..0..</code></pre></li>
 </ol>
 
-<p>[ ywmxqezdfjsufycd | kalmsmalpgkzhrpv ] -&gt; [ ywmxqezdfjsufycd | ] again</p>
-<pre><code> no *************                           no *************</code></pre>
-<h1 id="found-64-times">Found 64 times<a href="#found-64-times" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p><figure><img src="https://i.imgur.com/XUw9eh1.gif" alt=""></figure></p>
 
-<p>[ fljldviokmmfmqzd | kkavwvmbabfuqctz ] -&gt; [ fljldviokmmfmqzd | ] again</p>
-<pre><code> yes ************                           yes ************</code></pre>
-<h1 id="found-1-time">Found 1 time<a href="#found-1-time" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<pre><code>Interestingly, those are exactly the lines right above the lines giving the verdict.
-2. It seems that there is an area drawing the characters.</code></pre>
-<p>fljldviokmmfmqzd
-   transparent</p>
+<p>This is how it looks when I begin to check the flag. It was changed into red after a while - and we are told having the wrong input after a moment.</p>
 
-<p>ywmxqezdfjsufycd
-   transparent</p>
+<p>But there is one more thing: <code>kkavwvmbabfuqctz</code> is the only character that makes the green icon intact. We are labelling it as well!</p>
 
-<p>iawjsmjfczakueqy
-   transparent</p>
-<pre><code>I think it is inhumane to make our main characters transparent. Let&#39;s make them visible again!</code></pre>
-<p>fljldviokmmfmqzd
-   green
-   ..0..
-   .000.
-   00000
-   .000.
-   ..0..</p>
+<p><figure><img src="https://i.imgur.com/Bhz1AOG.gif" alt=""></figure></p>
 
-<p>ywmxqezdfjsufycd
-   red
-   ..0..
-   .000.
-   00000
-   .000.
-   ..0..</p>
+<p>We see that yellow stars are randomly blinking now.</p>
 
-<p>iawjsmjfczakueqy
-   blue
-   ..0..
-   .000.
-   00000
-   .000.
-   ..0..</p>
-<pre><code>![](https://i.imgur.com/XUw9eh1.gif)
+<p>At this moment, @R3x has made the source code more readable by replacing the character names into something less random (bye, <code>fljldviokmmfmqzd</code>!).</p>
 
-This is how it looks when I begin to check the flag. It was changed into red after a while - and we are told having the wrong input after a moment.
+<h3 id="part-ii-the-code-structure-for-real">Part II: The code structure, for real<a href="#part-ii-the-code-structure-for-real" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-But there is one more thing: `kkavwvmbabfuqctz` is the only character that makes the green icon intact. We are labelling it as well!
+<p>After having a basic insight on what we have right now, let's read the code line by line. Better not - there are around 10k lines to read and it doesn't sound fun at all! It is better for us to grasp the idea on what's going on.</p>
 
-![](https://i.imgur.com/Bhz1AOG.gif)
-
-We see that yellow stars are randomly blinking now.
-
-At this moment, @R3x has made the source code more readable by replacing the character names into something less random (bye, `fljldviokmmfmqzd`!).
-
-### Part II: The code structure, for real
-
-After having a basic insight on what we have right now, let&#39;s read the code line by line. Better not - there are around 10k lines to read and it doesn&#39;t sound fun at all! It is better for us to grasp the idea on what&#39;s going on.
-
-
-#### ~~The header~~ The prelude
-
-```r
-title A Plaid Puzzle
+<h4 id="the-prelude">The prelude<a href="#the-prelude" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<pre><code>title A Plaid Puzzle
 author PlaidCTF 2020
 homepage https://play.plaidctf.com
 zoomscreen 47x3
@@ -280,9 +277,9 @@ run_rules_on_level_start</code></pre>
 <p>This is just the header for the script - it contains a bunch of configuration and metadata that is rather self-explanatory.</p>
 
 <h4 id="the-objects">The objects<a href="#the-objects" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">========</span>
+<pre><code>========
 OBJECTS
-<span style="color:#f92672">========</span>
+========
 
 Background
 White
@@ -294,21 +291,21 @@ PlayerUp
 Blue
 .....
 ..0..
-<span style="color:#ae81ff">.0.0</span>.
+.0.0.
 0...0
 .....
 
-<span style="color:#66d9ef">...</span>
+...
 
 x_57
 Black
-<span style="color:#ae81ff">0000</span>.
+0000.
 0....
-<span style="color:#ae81ff">000</span>..
+000..
 ...0.
-<span style="color:#ae81ff">000</span>..
+000..
 
-<span style="color:#66d9ef">...</span>
+...
 
 var_91
 transparent
@@ -316,11 +313,11 @@ transparent
 var_24
 transparent
 
-<span style="color:#66d9ef">...</span></code></pre></div>
+...</code></pre>
 <p>This segment describes the characters - I am not sure if they support multiple colors, but at least you could do single-color pixel arts if you wish to. In short, there are in the below format:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">character
+<pre><code>character
 color
-<span style="color:#a6e22e">pixels </span>(optional)</code></pre></div>
+pixels (optional)</code></pre>
 <h4 id="the-legend">The legend<a href="#the-legend" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <p><figure><img src="https://i.imgur.com/4nN8OPy.png" alt=""></figure>
@@ -382,14 +379,14 @@ wall       wall       wall       ... wall</code></pre>
 <p>It was so satisfying that I have watched the animation for more than 10 times during the CTF.</p>
 
 <p>In the source code, there are three type of rules which seems important:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ val_135 <span style="color:#f92672">|</span> x_56 ] <span style="color:#f92672">-&gt;</span> [ val_50 <span style="color:#f92672">|</span> x_56 ] again
-<span style="color:#75715e"># 4096 instructions - &#34;conversion&#34;</span>
+<pre><code>[ val_135 | x_56 ] -&gt; [ val_50 | x_56 ] again
+# 4096 instructions - &#34;conversion&#34;
 
-right [ val_125 <span style="color:#f92672">|</span> val_70 ] <span style="color:#f92672">-&gt;</span> [ val_111 <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># 4096 instructions - &#34;elimination&#34;</span>
+right [ val_125 | val_70 ] -&gt; [ val_111 | ] again
+# 4096 instructions - &#34;elimination&#34;
 
-[ v_no <span style="color:#f92672">|</span> val_180 ] <span style="color:#f92672">-&gt;</span> [ v_no <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># 128 instructions - &#34;final&#34;</span></code></pre></div>
+[ v_no | val_180 ] -&gt; [ v_no | ] again
+# 128 instructions - &#34;final&#34;</code></pre>
 <p>There is a bunch of final instructions that converts <code>v_yes</code> (the green character a.k.a. <code>fljldviokmmfmqzd</code>) into <code>v_no</code>. Why don't we label them red, indicating that they are bad?</p>
 
 <p><figure><img src="https://i.imgur.com/GiGW0ew.gif" alt=""></figure></p>
@@ -399,14 +396,14 @@ right [ val_125 <span style="color:#f92672">|</span> val_70 ] <span style="color
 <p><figure><img src="https://i.imgur.com/avbDSfG.gif" alt=""></figure></p>
 
 <p>We have to explain how can we classify characters into groups. Recalled from two minutes ago that we have three types of rules:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ a_i <span style="color:#f92672">|</span> x_k ] <span style="color:#f92672">-&gt;</span> [ c_j <span style="color:#f92672">|</span> x_k ] again
-<span style="color:#75715e"># 4096 instructions - &#34;conversion&#34;</span>
+<pre><code>[ a_i | x_k ] -&gt; [ c_j | x_k ] again
+# 4096 instructions - &#34;conversion&#34;
 
-right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f92672">-&gt;</span> [ b_j <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># 4096 instructions - &#34;elimination&#34;</span>
+right [ c_k | b_i ] -&gt; [ b_j | ] again
+# 4096 instructions - &#34;elimination&#34;
 
-[ v_no <span style="color:#f92672">|</span> b_i ] <span style="color:#f92672">-&gt;</span> [ v_no <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># 128 instructions - &#34;final&#34;</span></code></pre></div>
+[ v_no | b_i ] -&gt; [ v_no | ] again
+# 128 instructions - &#34;final&#34;</code></pre>
 <p>Mathematically, we have $A$, $B$ and $C$ being three classes of characters. In particular, $b_0\in B$ is the only element that keeps <code>v_yes</code> intact.</p>
 
 <ol>
@@ -419,9 +416,33 @@ right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f9267
 
 <p>It looks like $b\in B$ would consume an entire row of $c$'s while it moves to the left. That makes me thinking: is it equivalent to a system of linear equations?</p>
 
-<p>:::warning
-<strong>Why?</strong> I don't know... I think there must be a relationship between $b$ and $c$. Otherwise, we will be unable to find an efficient algorithm to solve for the flag.
-:::</p>
+<div class="alert warning">
+  <strong>Why?</strong> I don&rsquo;t know&hellip; I think there must be a relationship between $b$ and $c$. Otherwise, we will be unable to find an efficient algorithm to solve for the flag.
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <h3 id="part-v-lets-get-mathy">Part V: Let's get mathy<a href="#part-v-lets-get-mathy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -429,9 +450,9 @@ right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f9267
 
 <p><span  class="math">\[
 \begin{cases}\begin{matrix}
-a_{11}x_1 &+& a_{12}x_2 &+& ... &+& a_{1n}x_n &=& b_1 \\\\\\
-a_{21}x_1 &+& a_{22}x_2 &+& ... &+& a_{2n}x_n &=& b_2 \\\\\\
-&&&& \vdots &&&& \\\\\\
+a_{11}x_1 &+& a_{12}x_2 &+& ... &+& a_{1n}x_n &=& b_1 \\
+a_{21}x_1 &+& a_{22}x_2 &+& ... &+& a_{2n}x_n &=& b_2 \\
+&&&& \vdots &&&& \\
 a_{n1}x_1 &+& a_{n2}x_2 &+& ... &+& a_{nn}x_n &=& b_n
 \end{matrix}\end{cases}
 \]</span></p>
@@ -446,7 +467,7 @@ a_{n1}x_1 &+& a_{n2}x_2 &+& ... &+& a_{nn}x_n &=& b_n
 
 <p><em>This is the first frame when the game starts verifying my flag. Again the cursor is mine.</em></p>
 
-<p>The brown runes are $a_{ij}$'s, the red (or green) ones are $b<em>i$'s in the linear system. The blue runes are evident now: they represents $a</em>{ij}x_j$'s. Therefore,</p>
+<p>The brown runes are $a_{ij}$'s, the red (or green) ones are $b_i$'s in the linear system. The blue runes are evident now: they represents $a_{ij}x_j$'s. Therefore,</p>
 
 <ol>
 <li>the <em>conversion</em> property (that changes brown runes into blue when it meets a character) is a <strong>multiplication</strong>,</li>
@@ -455,38 +476,38 @@ a_{n1}x_1 &+& a_{n2}x_2 &+& ... &+& a_{nn}x_n &=& b_n
 </ol>
 
 <p>We can now convert those instructions into math:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ a_i <span style="color:#f92672">|</span> x_k ] <span style="color:#f92672">-&gt;</span> [ c_j <span style="color:#f92672">|</span> x_k ] again
-<span style="color:#75715e"># a_i * x_k = c_j</span>
+<pre><code>[ a_i | x_k ] -&gt; [ c_j | x_k ] again
+# a_i * x_k = c_j
 
-right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f92672">-&gt;</span> [ b_j <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># b_i + c_k = b_j</span>
+right [ c_k | b_i ] -&gt; [ b_j | ] again
+# b_i + c_k = b_j
 
-[ v_yes <span style="color:#f92672">|</span> b_0 ] <span style="color:#f92672">-&gt;</span> [ v_yes <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e"># assume that the summation equals 0</span></code></pre></div>
+[ v_yes | b_0 ] -&gt; [ v_yes | ] again
+# assume that the summation equals 0</code></pre>
 <hr>
 
 <p>How do I know if my guess is correct?</p>
 
 <p>I was first looking for the <em>elimination</em> (or <em>summation</em>) instruction. To be exact, I want to find invariants:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">right [ c_k <span style="color:#f92672">|</span> b_i ] <span style="color:#f92672">-&gt;</span> [ b_i <span style="color:#f92672">|</span> ] again
-<span style="color:#75715e">#             ***        *** those are equal              </span></code></pre></div>
-<p>It is made possible by the regex <code>right \[ c\d+ \| b(\d+) \] -&gt; \[ b\1 \| \] again</code>.</p>
+<pre><code>right [ c_k | b_i ] -&gt; [ b_i | ] again
+#             ***        *** those are equal              </code></pre>
+<p>It is made possible by the regex <code>right \[ c\d+ \| b(\d+) \] -&gt; \[ b\1 \| \]</code> again.</p>
 
 <p>There are 64 matches. Here are some of the results:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">right [ c44 <span style="color:#f92672">|</span> b7  ] <span style="color:#f92672">-&gt;</span> [ b7  <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b7  = b7</span>
-right [ c44 <span style="color:#f92672">|</span> b21 ] <span style="color:#f92672">-&gt;</span> [ b21 <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b21 = b21</span>
-right [ c44 <span style="color:#f92672">|</span> b8  ] <span style="color:#f92672">-&gt;</span> [ b8  <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b8  = b8</span>
-right [ c44 <span style="color:#f92672">|</span> b31 ] <span style="color:#f92672">-&gt;</span> [ b31 <span style="color:#f92672">|</span> ] again <span style="color:#75715e"># c44 + b31 = b31</span>
-<span style="color:#66d9ef">...</span></code></pre></div>
-<p><code>c44</code> appears in all of the matches! If $c_{44} + b_i = b<em>i$ for all $i$, we can imply that $c</em>{44} = 0$.</p>
+<pre><code>right [ c44 | b7  ] -&gt; [ b7  | ] again # c44 + b7  = b7
+right [ c44 | b21 ] -&gt; [ b21 | ] again # c44 + b21 = b21
+right [ c44 | b8  ] -&gt; [ b8  | ] again # c44 + b8  = b8
+right [ c44 | b31 ] -&gt; [ b31 | ] again # c44 + b31 = b31
+...</code></pre>
+<p><code>c44</code> appears in all of the matches! If $c_{44} + b_i = b_i$ for all $i$, we can imply that $c_{44} = 0$.</p>
 
 <p>With this piece of fact, we can find the <code>i</code>'s and <code>j</code>'s with <code>a_i * x_j = c_44 = 0</code>. There are 127 matches, including:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">[ a46 <span style="color:#f92672">|</span> x23 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x23 ] again <span style="color:#75715e"># a46 * x23 = c44</span>
-[ a46 <span style="color:#f92672">|</span> x63 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x63 ] again <span style="color:#75715e"># a46 * x63 = c44</span>
-[ a46 <span style="color:#f92672">|</span> x48 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x48 ] again <span style="color:#75715e"># a46 * x48 = c44</span>
-[ a40 <span style="color:#f92672">|</span> x36 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x36 ] again <span style="color:#75715e"># a40 * x36 = c44</span>
-[ a4  <span style="color:#f92672">|</span> x36 ] <span style="color:#f92672">-&gt;</span> [ c44 <span style="color:#f92672">|</span> x36 ] again <span style="color:#75715e"># x4  * x36 = c44</span>
-<span style="color:#66d9ef">...</span></code></pre></div>
+<pre><code>[ a46 | x23 ] -&gt; [ c44 | x23 ] again # a46 * x23 = c44
+[ a46 | x63 ] -&gt; [ c44 | x63 ] again # a46 * x63 = c44
+[ a46 | x48 ] -&gt; [ c44 | x48 ] again # a46 * x48 = c44
+[ a40 | x36 ] -&gt; [ c44 | x36 ] again # a40 * x36 = c44
+[ a4  | x36 ] -&gt; [ c44 | x36 ] again # x4  * x36 = c44
+...</code></pre>
 <p>From the matches, I can see that <code>a_i * x_j = c_44 = 0</code> if and only if <code>i = 46</code> or <code>j = 36</code>.</p>
 
 <p>As there are 64 distinct elements, I could think of two possibilities: Either it is taken under modulo 64, or it is operated under $\text{GF}(2^6)$ (the finite field of 64 elements).</p>
@@ -496,17 +517,65 @@ This is not the case for operations under modulo 64. There are non-trivial solut
 
 <p>Eliminating the possibility being modulo 64 operated, we are assuming that the linear system is taken under $\text{GF}(2^6)$.</p>
 
-<p>:::warning
-<strong>What if $\text{GF}(2^6)$ doesn't check out as well?</strong> Well... that means my instinct is incorrect. This whole part is then redundant and meaningless.
-:::</p>
+<div class="alert warning">
+  <strong>What if $\text{GF}(2^6)$ doesn&rsquo;t check out as well?</strong> Well&hellip; that means my instinct is incorrect. This whole part is then redundant and meaningless.
+</div>
 
-<p>We can safely assume that $b<em>0 = 0$. We have already deduced that $a</em>{46} = x_{36} = c_{44} = 0$ as well. Knowing all the pairs of $(i, j, k)$ with $a_ix_j = c_k$ and $b_i + c_k = b_j$, we can find a mapping between $A, B, C, X$ and $\text{GF}(2^6)$.</p>
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
+
+<p>We can safely assume that $b_0 = 0$. We have already deduced that $a_{46} = x_{36} = c_{44} = 0$ as well. Knowing all the pairs of $(i, j, k)$ with $a_ix_j = c_k$ and $b_i + c_k = b_j$, we can find a mapping between $A, B, C, X$ and $\text{GF}(2^6)$.</p>
 
 <p>Note that $g$ is a generator element for $\text{GF}(2^6)\setminus{0}$ and can be any element from the set. We can write $\text{GF}(2^6) = {0, 1, g, g^2, ..., g^{62}}$.</p>
 
-<p>:::warning
-<strong>How?</strong> We can assume that $a_p = 1$, $a_q = g$ and $x_r = 1$. This would allow us to find every single element of $A, B, C$ and $X$. We can find a correct solution by brute-forcing $p, q, r$ (there are less than $2^{18}$ combinations), and more importantly, there are multiple (a lot of) correct answers.
-:::</p>
+<div class="alert warning">
+  <strong>How?</strong> We can assume that $a_p = 1$, $a_q = g$ and $x_r = 1$. This would allow us to find every single element of $A, B, C$ and $X$. We can find a correct solution by brute-forcing $p, q, r$ (there are less than $2^{18}$ combinations), and more importantly, there are multiple (a lot of) correct answers.
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <p>For example, this is one of the possible solutions:</p>
 <pre><code>    ┌ g^48 g^16 ... g^28 ┐      ┌ g^56 ┐

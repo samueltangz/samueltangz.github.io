@@ -137,9 +137,33 @@ Homomorphic Challenge Summary This is a cryptography challenge with 465 points."
 
 <h4 id="part-i-the-computation-behind">Part I: The computation behind<a href="#part-i-the-computation-behind" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>:::info
-This part briefly describes how a specific case of ring-LWE works. You actually <em>don't</em> need to know how this works to solve the challenge.
-:::</p>
+<div class="alert info">
+  This part briefly describes how a specific case of ring-LWE works. You actually <em>don&rsquo;t</em> need to know how this works to solve the challenge.
+</div>
+
+<style>
+  .alert {
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+  }
+
+  .alert.success {
+    background-color: #22bb43;
+  }
+
+  .alert.info {
+    background-color: #5bc0de;
+  }
+
+  .alert.warning {
+    background-color: #f0ad4e;
+  }
+
+  .alert.danger {
+    background-color: #bb2124;
+  }
+</style>
 
 <p>The public key is a pair of polynomials $P_1(x), P_2(x)$ with $P_1(x) := -P_2(x)S(x) + \mathcal{E}_0(x)$. Hereby $S(x)$ is the private key that the coefficients can either be 0 or 1, and $\mathcal{E}_0(x)$ is an small error polynomial that is kept away from our reach.</p>
 
@@ -202,7 +226,7 @@ This part briefly describes how a specific case of ring-LWE works. You actually 
   phi <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>PR<span style="color:#f92672">.</span>hom(images,self<span style="color:#f92672">.</span>K)
   pk_sub <span style="color:#f92672">=</span> [phi(PK[i][<span style="color:#ae81ff">0</span>]) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(self<span style="color:#f92672">.</span>o)]
   <span style="color:#66d9ef">return</span> pk_sub <span style="color:#f92672">==</span> H</code></pre></div>
-<p>Doesn't it mean that if $P_1, P<em>2, ..., P</em>{16}$ is the matrices representing the public key, the message $\vec{m} = (m_1, m<em>2, ..., m</em>{16})$ and signature $\vec{s}$ would satisfy</p>
+<p>Doesn't it mean that if $P_1, P_2, ..., P_{16}$ is the matrices representing the public key, the message $\vec{m} = (m_1, m_2, ..., m_{16})$ and signature $\vec{s}$ would satisfy</p>
 
 <p><span  class="math">\[\vec{s}^T P_i \vec{s} = m_i\ \text{for all}\ i = 1, 2, ..., 16?\]</span></p>
 

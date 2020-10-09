@@ -6,20 +6,10 @@
     <description>Recent content in Posts on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Oct 2020 16:01:13 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 09 Oct 2020 00:53:29 +0800</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Experiment</title>
-      <link>/posts/experiment/</link>
-      <pubDate>Fri, 09 Oct 2020 16:01:13 +0800</pubDate>
-      
-      <guid>/posts/experiment/</guid>
-      <description>H1 H2 H3  LaTeX Support Inline The Pythagoreas theorem is given by $a^2 + b^2 = c^2$, where $a, b$ are the lengths of the catheti and $c$ is the length of the hypotenuse.
-Full-size \[ \begin{cases}\begin{matrix} A_{i+1} &amp; = &amp; A_i &amp; + &amp; B_i &amp; &amp; &amp; &amp; &amp; + &amp; S_i \\ B_{i+1} &amp; = &amp; A_i &amp; + &amp; B_i &amp; &amp; &amp; + &amp; D_i &amp; + &amp; S_i \\ C_{i+1} &amp; = &amp; A_i &amp; &amp; &amp; + &amp; C_i &amp; + &amp; D_i &amp; &amp; \\ D_{i+1} &amp; = &amp; &amp; &amp; &amp; &amp; C_i &amp; + &amp; D_i &amp; + &amp; S_i \end{matrix}\end{cases}\dots\dots(1), \]</description>
-    </item>
     
     <item>
       <title>TokyoWesterns CTF 6th 2020 Writeup</title>
