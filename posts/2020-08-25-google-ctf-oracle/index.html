@@ -120,7 +120,7 @@ In particular, Oracle is a crypto challenge with 13 solves. It has got me spendi
 
   
 
-  <div class="post-content"><div>
+  <div class="post-content js-toc-content"><div>
         <p>I was teamed-up with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.</p>
 
 <p>In particular, <em>Oracle</em> is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be <em>very</em> computation intensive, just because I would like to make everything clear.</p>
@@ -503,6 +503,75 @@ m0 <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><spa
   
 
 </div>
+<aside class="toc-container">
+  <strong>
+    Google CTF 2020: Oracle
+  </strong>
+  <div class="js-toc"></div>
+</aside>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 3
+  });
+</script>
+<style>
+   
+  @media screen and (max-width: 1364px) {
+    .toc-container {
+      display: none !important;
+    }
+  }
+
+  .toc-container {
+    position: fixed;
+    top: 120px;
+    left: calc((100% - 864px) / 2 - 250px);
+    width: 250px;
+    height: 100%;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+     
+  }
+
+  .toc-list {
+    padding: 0px;
+  }
+
+  .toc-link {
+    text-decoration: none;
+  }
+  .toc-link::before {
+    background-color: transparent;
+  }
+
+   
+  .toc-list-item {
+    padding-left: 10px;
+    list-style-type: none;
+    color: #ccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+   
+  .toc-list-item:hover {
+    color: #fff;
+  }
+
+   
+  .is-active-link::before {
+    background-color: var(--accent);
+  }
+</style>
 
   </div>
 

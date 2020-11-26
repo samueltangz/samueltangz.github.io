@@ -120,7 +120,7 @@ Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the patt
 
   
 
-  <div class="post-content"><div>
+  <div class="post-content js-toc-content"><div>
         <p>This writeup is compiled by <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a>: <em>cire meat pop</em> (<a href="https://twitter.com/Khlung1" target="_blank" rel="nofollow">@Khlung1</a>), <em>harrier</em> (<a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a>), <em>Ozetta</em> (<a href="https://twitter.com/02E774" target="_blank" rel="nofollow">@02E774</a>) and <em>Mystiz</em> (<a href="https://twitter.com/mystiz613" target="_blank" rel="nofollow">@mystiz613</a>).</p>
 
 <h2 id="urlcheck-v1-web-98-points">urlcheck v1 (Web, 98 points)<a href="#urlcheck-v1-web-98-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
@@ -662,6 +662,75 @@ TO</code></pre>
   
 
 </div>
+<aside class="toc-container">
+  <strong>
+    TokyoWesterns CTF 6th 2020 Writeup
+  </strong>
+  <div class="js-toc"></div>
+</aside>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 3
+  });
+</script>
+<style>
+   
+  @media screen and (max-width: 1364px) {
+    .toc-container {
+      display: none !important;
+    }
+  }
+
+  .toc-container {
+    position: fixed;
+    top: 120px;
+    left: calc((100% - 864px) / 2 - 250px);
+    width: 250px;
+    height: 100%;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+     
+  }
+
+  .toc-list {
+    padding: 0px;
+  }
+
+  .toc-link {
+    text-decoration: none;
+  }
+  .toc-link::before {
+    background-color: transparent;
+  }
+
+   
+  .toc-list-item {
+    padding-left: 10px;
+    list-style-type: none;
+    color: #ccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+   
+  .toc-list-item:hover {
+    color: #fff;
+  }
+
+   
+  .is-active-link::before {
+    background-color: var(--accent);
+  }
+</style>
 
   </div>
 
