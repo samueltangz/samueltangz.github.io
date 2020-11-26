@@ -200,7 +200,7 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 
 <ul>
 <li>Parts 2 and 3 are <em>not</em> returning Bob's public key, and</li>
-<li>Part 3 uses the prime $p$ to check if $q := 2p+1$ is a prime. The prime $q$ (instead of $p$) is used for DH.</li>
+<li>Part 3 uses the prime $p$ and check if $q := 2p+1$ is a prime. The prime $q$ (instead of $p$) is used for DH.</li>
 </ul>
 
 <h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -240,7 +240,7 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 
 <h4 id="part-ii-a-nightmare-on-longtobytes">Part II: A nightmare on <code>long_to_bytes</code><a href="#part-ii-a-nightmare-on-longtobytes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p><em>Bit Flip 3</em> was solved in 1 hour - and we are the first to solve. But wait, why isn't part II on <em>Bit Flip 2</em>? The reason is simply because just I cannot solve it (yet).</p>
+<p><em>Bit Flip 3</em> was solved in 1 hour - and we were the first to solve. But wait, why isn't part II on <em>Bit Flip 2</em>? The reason is simply because just I cannot solve it (yet).</p>
 
 
   <figure class="left" >
@@ -252,7 +252,7 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 
 
 
-<p>The prime used for Diffie-Hellman can be 513-bit long. This makes the AES derivation interesting - as <code>long_to_bytes(x, 16)</code> actually prepend null bytes until the output size is a multiple of 16. For example:</p>
+<p>The prime used for Diffie-Hellman can be 513-bit long. This makes the AES key derivation interesting - as <code>long_to_bytes(x, 16)</code> actually prepend null bytes until the output size is a multiple of 16. For example:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> long_to_bytes(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">127</span>, <span style="color:#ae81ff">16</span>)<span style="color:#f92672">.</span>hex()
 <span style="color:#e6db74">&#39;80000000000000000000000000000000&#39;</span>
 <span style="color:#f92672">&gt;&gt;&gt;</span> long_to_bytes(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">128</span>, <span style="color:#ae81ff">16</span>)<span style="color:#f92672">.</span>hex()
@@ -347,7 +347,7 @@ h <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</spa
 <li>The player is expected to find <code>fry_buf</code>.</li>
 </ul>
 
-<p>More importantly, the challenge server has a timeout of 20 seconds. Hence, you have to complete everything in 20 seconds.</p>
+<p>More importantly, the challenge server has a timeout of 20 seconds. Hence, you have to compute from the <code>strfry</code>-ed response in 15 seconds.</p>
 
 <h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -359,7 +359,7 @@ h <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</spa
 
 <p>This is the first comment I made to the challenge. It is actually much interesting than I thought and I have spent a good 5 hours for the challenge.</p>
 
-<p>The previous CTFs (for example, challenge from <a href="https://ctftime.org/task/10764">ångstromCTF 2020</a> and <a href="https://ctftime.org/task/11259">DawgCTF 2020</a>) exploits the small seed space that can be exhausted. In the previous versions of libc, the seeds for <code>strfry</code> is given by <code>time(NULL) ^ getpid()</code>. I was trying to print <code>time(NULL)</code> and <code>getpid()</code> alongside with the  <code>strfry</code> result, but the seed does not check out. What? Maybe the world is not peaceful anymore in <em>libc 2.31-0ubuntu9</em>. Let's download the source code and have a read.</p>
+<p>The previous CTFs (for example, challenge from <a href="https://ctftime.org/task/10764">ångstromCTF 2020</a> and <a href="https://ctftime.org/task/11259">DawgCTF 2020</a>) exploited on the small seed space that can be exhausted. In the previous versions of libc, the seeds for <code>strfry</code> is given by <code>time(NULL) ^ getpid()</code>. I was trying to print <code>time(NULL)</code> and <code>getpid()</code> alongside with the  <code>strfry</code> result, but the seed does not check out. What? Maybe the world is not peaceful anymore in <em>libc 2.31-0ubuntu9</em>. Let's download the source code and have a read.</p>
 
 <h4 id="part-ii-codereading-game">Part II. Code-reading game<a href="#part-ii-codereading-game" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
@@ -461,7 +461,7 @@ h <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</spa
         <span style="color:#66d9ef">return</span> v</code></pre></div>
 <h4 id="part-iii-fastforwarding-the-states">Part III. Fast-forwarding the states<a href="#part-iii-fastforwarding-the-states" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>Fast-forwarding the PRNG is easy. My writeup on the <a href="http://localhost:1313/posts/2020-09-08-confidencectf-team-trees/#42-fast-sequence-generation">Team Trees</a> in CONFidence CTF this year. We can skip states with the matrix implementation (and I am able to skip the details for this part, too). After all, 5M seeds can be checked per second. Since we have only 15 seconds to recover the seed, we are unable to find the entire search space (only 1.75% of the seed space is checked). In average, we can recover the seed from the <code>strfry</code> output in 15 seconds once every 60 times. Finally, if we are able to recover the seed, we can  freely to fry and unfry strings.</p>
+<p>Fast-forwarding the PRNG is easy. This is similar on the <a href="http://localhost:1313/posts/2020-09-08-confidencectf-team-trees/#42-fast-sequence-generation">Team Trees</a> challenge in CONFidence CTF this year. We can skip states with the matrix implementation (and I am able to skip the details for this part, too). After all, 5M seeds can be checked per second. Since we have only 15 seconds to recover the seed, we are unable to find the entire search space (only 1.75% of the seed space is checked). In average, we can recover the seed from the <code>strfry</code> output in 15 seconds once every 60 times. Finally, if we are able to recover the seed, we can  freely to fry and unfry strings.</p>
 
 <p>After two hours, we have the flag: <code>DrgnS{Fr13d_57r1Ng5_4r3_tH3_Be5t_s7r1NgS!}</code>.</p>
 
