@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>firebird-training on Mystify</title>
+    <link>/tags/firebird-training/</link>
+    <description>Recent content in firebird-training on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 21 Sep 2020 16:15:00 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/firebird-training/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Firebird Intro CTF: Rotten Secured Algorithm</title>
+      <link>/posts/2020-09-21-firebird-intro-ctf-rsa/</link>
+      <pubDate>Mon, 21 Sep 2020 16:15:00 +0800</pubDate>
+      
+      <guid>/posts/2020-09-21-firebird-intro-ctf-rsa/</guid>
+      <description>Rotten Secured Algorithm is the only challenge that I have written for Firebird Intro CTF. Two people (out of 166) ended up solving the challenge.
+There is a Python script attached in the challenge, as well as the output file. Let&#39;s see what&#39;s going on in the Python:
+# Challenge written on Aug 26, 2020 by Mystiz. from Crypto.PublicKey import RSA import random import time from datetime import datetime from secret import flag t = int(time.</description>
+    </item>
+    
+  </channel>
+</rss>

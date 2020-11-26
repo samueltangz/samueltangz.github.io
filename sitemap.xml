@@ -3,12 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/tags/crypto/</loc>
+    <lastmod>2020-11-23T04:33:50+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/ctf/</loc>
     <lastmod>2020-11-23T04:33:50+08:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/2020-11-23-dragonctf/</loc>
+    <lastmod>2020-11-23T04:33:50+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/dragonctf/</loc>
     <lastmod>2020-11-23T04:33:50+08:00</lastmod>
   </url>
   
@@ -33,7 +43,17 @@
   </url>
   
   <url>
+    <loc>/tags/tokyowesterns-ctf/</loc>
+    <lastmod>2020-10-09T00:53:29+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/posts/2020-09-21-firebird-intro-ctf-rsa/</loc>
+    <lastmod>2020-09-21T16:15:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/firebird-training/</loc>
     <lastmod>2020-09-21T16:15:00+08:00</lastmod>
   </url>
   
@@ -43,18 +63,28 @@
   </url>
   
   <url>
-    <loc>/tags/reverse-engineering/</loc>
+    <loc>/tags/confidence-ctf/</loc>
     <lastmod>2020-09-08T18:30:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/crypto/</loc>
+    <loc>/tags/reverse/</loc>
+    <lastmod>2020-09-08T18:30:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2020-08-25-google-ctf-oracle/</loc>
     <lastmod>2020-08-25T16:15:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/2020-08-25-gctf-oracle/</loc>
+    <loc>/tags/google-ctf/</loc>
     <lastmod>2020-08-25T16:15:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/uiuctf/</loc>
+    <lastmod>2020-07-22T18:55:00+08:00</lastmod>
   </url>
   
   <url>
@@ -63,8 +93,18 @@
   </url>
   
   <url>
+    <loc>/tags/de1ctf/</loc>
+    <lastmod>2020-05-05T20:36:00+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/posts/2020-05-05-de1ctf/</loc>
     <lastmod>2020-05-05T20:36:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/plaidctf/</loc>
+    <lastmod>2020-04-21T20:25:00+08:00</lastmod>
   </url>
   
   <url>
@@ -79,6 +119,11 @@
   
   <url>
     <loc>/posts/2019-10-02-pwnthybytes/</loc>
+    <lastmod>2019-10-02T23:20:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/pwnthybytes-ctf/</loc>
     <lastmod>2019-10-02T23:20:00+08:00</lastmod>
   </url>
   

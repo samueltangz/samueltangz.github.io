@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dragonctf on Mystify</title>
+    <link>/tags/dragonctf/</link>
+    <description>Recent content in dragonctf on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 23 Nov 2020 04:33:50 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/dragonctf/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Dragon CTF 2020 Writeup</title>
+      <link>/posts/2020-11-23-dragonctf/</link>
+      <pubDate>Mon, 23 Nov 2020 04:33:50 +0800</pubDate>
+      
+      <guid>/posts/2020-11-23-dragonctf/</guid>
+      <description>Written from the perspective of Mystiz. babykok writeup by GeoffreyY.   .alert { padding: 20px; color: white; margin-bottom: 15px; } .alert.success { background-color: #28a745; } .alert.info { background-color: #17a2b8; } .alert.warning { background-color: #ffc107; color: #212529; } .alert.danger { background-color: #dc3545; }  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a.</description>
+    </item>
+    
+  </channel>
+</rss>

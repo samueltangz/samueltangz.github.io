@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tokyowesterns-ctf on Mystify</title>
+    <link>/tags/tokyowesterns-ctf/</link>
+    <description>Recent content in tokyowesterns-ctf on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 09 Oct 2020 00:53:29 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/tokyowesterns-ctf/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TokyoWesterns CTF 6th 2020 Writeup</title>
+      <link>/posts/2020-09-23-twctf/</link>
+      <pubDate>Fri, 09 Oct 2020 00:53:29 +0800</pubDate>
+      
+      <guid>/posts/2020-09-23-twctf/</guid>
+      <description>This writeup is compiled by @blackb6a: cire meat pop (@Khlung1), harrier (@harrier_lcc), Ozetta (@02E774) and Mystiz (@mystiz613).
+urlcheck v1 (Web, 98 points) Solved by Ozetta.
+Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the pattern &#39;\A(\d+)\.(\d+)\.(\d+)\.(\d+)\Z&#39; and the first octet cannot be 0 or 127, and some other patterns for internal IP addresses. For some reason, int(&amp;quot;0177&amp;quot;) is still 177 instead of 127 in Python, so we can use http://0177.0.0.1/admin-status</description>
+    </item>
+    
+  </channel>
+</rss>

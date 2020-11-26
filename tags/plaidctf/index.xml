@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>plaidctf on Mystify</title>
+    <link>/tags/plaidctf/</link>
+    <description>Recent content in plaidctf on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 21 Apr 2020 20:25:00 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/plaidctf/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PlaidCTF 2020: A Plaid Puzzle</title>
+      <link>/posts/2020-04-21-plaidctf-puzzle/</link>
+      <pubDate>Tue, 21 Apr 2020 20:25:00 +0800</pubDate>
+      
+      <guid>/posts/2020-04-21-plaidctf-puzzle/</guid>
+      <description>This challenge is solved with R3x and @mahal0z as a part of @shellphish. Thanks @piazzt and @perribus for reviewing and giving me suggestions on this write-up.
+Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the game, you are able to control as the player and you could move around and mess with a string. The game is available online on PuzzleScript.net. Below is a screenshot of the game:</description>
+    </item>
+    
+  </channel>
+</rss>
