@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 23 Nov 2020 04:33:50 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 Dec 2020 23:53:00 +0800</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>crypto</title>
       <link>/tags/crypto/</link>
-      <pubDate>Mon, 23 Nov 2020 04:33:50 +0800</pubDate>
+      <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
       
       <guid>/tags/crypto/</guid>
       <description></description>
@@ -23,9 +23,27 @@
     <item>
       <title>ctf</title>
       <link>/tags/ctf/</link>
-      <pubDate>Mon, 23 Nov 2020 04:33:50 +0800</pubDate>
+      <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
       
       <guid>/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hxpctf</title>
+      <link>/tags/hxpctf/</link>
+      <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
+      
+      <guid>/tags/hxpctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hyperelliptic-curves</title>
+      <link>/tags/hyperelliptic-curves/</link>
+      <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
+      
+      <guid>/tags/hyperelliptic-curves/</guid>
       <description></description>
     </item>
     
