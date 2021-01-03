@@ -225,31 +225,6 @@ jmp  short loc_40082F   /* rcx = 3*d0 + 2*c0 + 4, rdx = c0              */</code
   💡 <strong>Imagination:</strong> You have opened a process with <code>gdb</code> that has a breakpoint at the beginning of the function. You are given a set of something (<em>defined in <code>sub_40090D</code></em>) and checks if it has a given attribute (<em>defined in <code>sub_4009C4</code></em>). If so, you call <code>ni</code> to move to the next step. Finally, you print the registers, extract <code>edx</code> and <code>ecx</code>, and print them as the flag.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p>So... what is the set of something? And what is the attribute it is checked against?</p>
 
 <h3 id="part-ii-collecting-the-pieces-for-the-puzzle">Part II: Collecting the pieces for the puzzle<a href="#part-ii-collecting-the-pieces-for-the-puzzle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -869,57 +844,6 @@ jmp  short loc_40082F   /* rcx = 3*d0 + 2*c0 + 4, rdx = c0              */</code
       collapseDepth: 3
   });
 </script>
-<style>
-   
-  @media screen and (max-width: 1364px) {
-    .toc-container {
-      display: none !important;
-    }
-  }
-
-  .toc-container {
-    position: fixed;
-    top: 120px;
-    left: calc((100% - 864px) / 2 - 250px);
-    width: 250px;
-    height: 100%;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-     
-  }
-
-  .toc-list {
-    padding: 0px;
-  }
-
-  .toc-link {
-    text-decoration: none;
-  }
-  .toc-link::before {
-    background-color: transparent;
-  }
-
-   
-  .toc-list-item {
-    padding-left: 10px;
-    list-style-type: none;
-    color: #ccc;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-   
-  .toc-list-item:hover {
-    color: #fff;
-  }
-
-   
-  .is-active-link::before {
-    background-color: var(--accent);
-  }
-</style>
 
   </div>
 
@@ -928,7 +852,7 @@ jmp  short loc_40082F   /* rcx = 3*d0 + 2*c0 + 4, rdx = c0              */</code
   <div class="footer__inner">
     
       <div class="copyright">
-        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
     
         <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
       </div>

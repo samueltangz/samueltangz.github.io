@@ -115,6 +115,10 @@ Babylfsr (Crypto, 338 points) This is an easy challenge." />
     
     #<a href="/tags/crypto/">crypto</a>&nbsp;
     
+    #<a href="/tags/lfsr/">lfsr</a>&nbsp;
+    
+    #<a href="/tags/interpolation-attack/">interpolation-attack</a>&nbsp;
+    
   </span>
   
 
@@ -151,31 +155,6 @@ Babylfsr (Crypto, 338 points) This is an easy challenge." />
 <div class="alert info">
   <strong>Note:</strong> In this challenge, $+$ means $\oplus$, the exclusive OR operator.
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -234,31 +213,6 @@ Z_{i+1} &= W_i + \text{S}(Z_i)
 
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p>Define a transformation function $\mathcal{F}: \mathbb{Z}_{2^{32}}^4\rightarrow\mathbb{Z}_{2^{32}}^4$ by:</p>
 
 <p><span  class="math">\[
@@ -287,31 +241,6 @@ We call $(W_{-1}, X_{-1}, Y_{-1}, Z_{-1})$ the <em>transformed plaintext</em> an
   <strong>Meaning.</strong> If we are given the ciphertext $\overline{A_6}, \overline{B_6}, \overline{C_6}, \overline{D_6}$, we could obtain $\overline{W_5}, \overline{X_5}, \overline{Y_5}, \overline{Z_5}$. The goal is to compute $\overline{W_{-1}}, \overline{X_{-1}}, \overline{Y_{-1}}, \overline{Z_{-1}}$, that could be transformed inversely to the plaintext.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <h4 id="part-ii-inverse-iterating-the-ciphertext--substitution-for-the-win">Part II: Inverse iterating the ciphertext - Substitution for the win<a href="#part-ii-inverse-iterating-the-ciphertext--substitution-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <p>During the game, I was thinking if it is possible for us to obtain $t_i$ from $t_{i+1}, t_{i+2}, t_{i+3}, t_{i+4}$ -- which means that we could &quot;decrypt&quot; the message by one round (out of six). Turns out it is a solid <strong>yes</strong>!</p>
@@ -322,31 +251,6 @@ We call $(W_{-1}, X_{-1}, Y_{-1}, Z_{-1})$ the <em>transformed plaintext</em> an
   Recall on how $t_i$ is defined&hellip; and that the plaintext $(t_0, t_1, t_2, t_3)$ would be encrypted into the ciphertext $(t_6, t_7, t_8, t_9)$.
 In this section, we assume that we are <strong>in control of the plaintext</strong> and <strong>have knowledge on the ciphertext</strong>.
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <p><strong>First substitution.</strong> Let $u_0 = u_1 = u_2 = u_3 = 0$ and $u_{i+4} = u_i + \text{S}(u_{i+3})$. We have the equations below:</p>
 
@@ -362,31 +266,6 @@ In this section, we assume that we are <strong>in control of the plaintext</stro
 
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p><strong>Second substitution.</strong> Let $v_0 = u_6 + u_7, v_1 = u_7 + x, v_2 = 0, v_3 = u_6$ and $v_{i+4} = v_i + \text{S}(v_{i+3})$. Here $x$ is an arbitrary element, and we have $\text{S}(x) = v_6$. We could compute $\text{S}(x)$ for given arbitrary $x$ now!</p>
 
 <p>Therefore, in such a way, we could decrypt the ciphertext with 7 oracle calls, one for knowing a pair of $\text{S}(x)=y$ and six for inverse iterating.</p>
@@ -397,59 +276,9 @@ In this section, we assume that we are <strong>in control of the plaintext</stro
   <strong>Why?</strong> I bet you are searching for solutions for <em>Mini Purε Plus</em> in De1CTF 2020. Me too.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <div class="alert info">
   <strong>Note:</strong> $+$ is once again the exclusive OR operator as we are discussing under $\text{GF}(2^{24})$.
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <p>First of all, I could not believe that I can be one of the four teams solving the challenge.</p>
 
@@ -473,31 +302,6 @@ R_{i+1} &= L_i + (K_i + R_i)^3.
   I guess it will be too cumbersome to explain it in a 6-round setting, so let me explain my solution in a 3-round setting instead.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p>First define $x_0 = L_0, x_1 = R_0$ and $x_{i+2} = x_i + (K_i + x_{i+1})^3$. This implies that $(x_0, x_1)$ is encrypting into $(x_3, x_4)$ (<em>Remember that we are in a 3-round game</em>).</p>
 
 <p>Let's write the transition explicitly:</p>
@@ -520,31 +324,6 @@ x_3 &= x_1 + (K_1 + x_2)^3 \\
   <strong>Question:</strong> Wait, no! You are wrong! $(x + y)^3$ should be $x^3 + 3x^2y + 3xy^2 + 3y^3$!
 You are correct&hellip; but we are talking on $\text{GF}(2^{24})$, where $3 = 1+1+1 = 1$.
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <p>It would be very painful to express $x_4$ in terms of $x_0$ and $x_1$. But as we know $x_3$ and $x_4$, can we find $K_0, K_1, K_2$ via a meet-in-the-middle approach?</p>
 
@@ -664,57 +443,6 @@ x_{9,0} & 1 & x_{9,1} & x_{9,1}^2 & x_{9,1}^3 & x_{9,4} & 1 & x_{9,3} & x_{9,3}^
       collapseDepth: 3
   });
 </script>
-<style>
-   
-  @media screen and (max-width: 1364px) {
-    .toc-container {
-      display: none !important;
-    }
-  }
-
-  .toc-container {
-    position: fixed;
-    top: 120px;
-    left: calc((100% - 864px) / 2 - 250px);
-    width: 250px;
-    height: 100%;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-     
-  }
-
-  .toc-list {
-    padding: 0px;
-  }
-
-  .toc-link {
-    text-decoration: none;
-  }
-  .toc-link::before {
-    background-color: transparent;
-  }
-
-   
-  .toc-list-item {
-    padding-left: 10px;
-    list-style-type: none;
-    color: #ccc;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-   
-  .toc-list-item:hover {
-    color: #fff;
-  }
-
-   
-  .is-active-link::before {
-    background-color: var(--accent);
-  }
-</style>
 
   </div>
 
@@ -723,7 +451,7 @@ x_{9,0} & 1 & x_{9,1} & x_{9,1}^2 & x_{9,1}^3 & x_{9,4} & 1 & x_{9,3} & x_{9,3}^
   <div class="footer__inner">
     
       <div class="copyright">
-        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
     
         <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
       </div>

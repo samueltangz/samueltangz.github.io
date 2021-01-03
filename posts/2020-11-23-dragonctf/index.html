@@ -6,7 +6,9 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Written from the perspective of Mystiz. babykok writeup by GeoffreyY.   .alert { padding: 20px; color: white; margin-bottom: 15px; } .alert.success { background-color: #28a745; } .alert.info { background-color: #17a2b8; } .alert.warning { background-color: #ffc107; color: #212529; } .alert.danger { background-color: #dc3545; }  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a." />
+<meta name="description" content="Written from the perspective of Mystiz. babykok writeup by GeoffreyY.  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
+There are three challenges writeup in this post:
+ Bit Flip (parts 2 and 3) Frying in motion babykok   Bit Flip (Crypto, 155&#43;324&#43;343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/posts/2020-11-23-dragonctf/" />
@@ -41,7 +43,7 @@
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Dragon CTF 2020 Writeup">
-<meta property="og:description" content="Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with blackb6a. I have solved all the crypto challenges and two challenges with my teammates." />
+<meta property="og:description" content="Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates." />
 <meta property="og:url" content="/posts/2020-11-23-dragonctf/" />
 <meta property="og:site_name" content="Mystify" />
 
@@ -123,31 +125,6 @@
   Written from the perspective of <em>Mystiz</em>. <em>babykok</em> writeup by <em>GeoffreyY</em>.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p><em>Dragon CTF 2020</em> is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a>. I have solved all the crypto challenges and two challenges with my teammates.</p>
 
 <p>There are three challenges writeup in this post:</p>
@@ -217,30 +194,6 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
   I am just going to admit that I am lazy.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <h4 id="part-ii-a-nightmare-on-longtobytes">Part II: A nightmare on <code>long_to_bytes</code><a href="#part-ii-a-nightmare-on-longtobytes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
@@ -272,31 +225,6 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 <div class="alert warning">
   <strong>Wait.</strong> This made me <em>very</em> puzzled: How do we find the shared key (or $g^{ab}\ (\text{mod}\ p)$) if Bob is not telling us anything?
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <p>Basically we have three options:</p>
 
@@ -484,30 +412,6 @@ h <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</spa
 His coq is very very nah that&rsquo;s it I&rsquo;m done with the jokes.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-coq" data-lang="coq"><span style="color:#f92672">Theorem</span> problem0<span style="color:#f92672">:</span> <span style="color:#66d9ef">forall</span> A B <span style="color:#f92672">:</span> <span style="color:#66d9ef">Prop</span><span style="color:#f92672">,</span> A <span style="color:#f92672">\/</span> B <span style="color:#f92672">-&gt;</span> B <span style="color:#f92672">\/</span> A<span style="color:#f92672">.</span>
 <span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">intuition</span><span style="color:#f92672">.</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-coq" data-lang="coq"><span style="color:#f92672">Theorem</span> problem1<span style="color:#f92672">:</span> <span style="color:#66d9ef">forall</span> A B C D <span style="color:#f92672">:</span> <span style="color:#66d9ef">Prop</span><span style="color:#f92672">,</span> <span style="color:#f92672">(</span>A <span style="color:#f92672">-&gt;</span> B<span style="color:#f92672">)</span> <span style="color:#f92672">/\</span> <span style="color:#f92672">(</span>C <span style="color:#f92672">-&gt;</span> D<span style="color:#f92672">)</span> <span style="color:#f92672">/\</span> A <span style="color:#f92672">/\</span> C <span style="color:#f92672">-&gt;</span> B <span style="color:#f92672">/\</span> D<span style="color:#f92672">.</span>
 <span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">intuition</span><span style="color:#f92672">.</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-coq" data-lang="coq"><span style="color:#f92672">Theorem</span> problem2<span style="color:#f92672">:</span> <span style="color:#66d9ef">forall</span> A B <span style="color:#f92672">:</span> <span style="color:#66d9ef">Type</span><span style="color:#f92672">,</span> <span style="color:#f92672">((((</span>A <span style="color:#f92672">-&gt;</span> B<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> A<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> A<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> B<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> B<span style="color:#f92672">.</span>
@@ -850,57 +754,6 @@ subgoal 2 <span style="color:#f92672">(</span>ID 53<span style="color:#f92672">)
       collapseDepth: 3
   });
 </script>
-<style>
-   
-  @media screen and (max-width: 1364px) {
-    .toc-container {
-      display: none !important;
-    }
-  }
-
-  .toc-container {
-    position: fixed;
-    top: 120px;
-    left: calc((100% - 864px) / 2 - 250px);
-    width: 250px;
-    height: 100%;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-     
-  }
-
-  .toc-list {
-    padding: 0px;
-  }
-
-  .toc-link {
-    text-decoration: none;
-  }
-  .toc-link::before {
-    background-color: transparent;
-  }
-
-   
-  .toc-list-item {
-    padding-left: 10px;
-    list-style-type: none;
-    color: #ccc;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-   
-  .toc-list-item:hover {
-    color: #fff;
-  }
-
-   
-  .is-active-link::before {
-    background-color: var(--accent);
-  }
-</style>
 
   </div>
 
@@ -909,7 +762,7 @@ subgoal 2 <span style="color:#f92672">(</span>ID 53<span style="color:#f92672">)
   <div class="footer__inner">
     
       <div class="copyright">
-        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
     
         <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
       </div>

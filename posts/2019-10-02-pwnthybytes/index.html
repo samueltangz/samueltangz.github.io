@@ -148,31 +148,6 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
   One question that had brought up to my mind is: What if the $h_L$ and $h_R$ uses solely the 20-byte hash algorithms (i.e., all but sha256)?
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p>Assume that 20-byte hash algorithms are used. Let's see what will happen in a round.</p>
 
 <p>Define $s_0\ |\ s_1\ |\ ...\ |\ s_9 := L_i\ | \ R_i$ and $t_0\ |\ t_1\ |\ ...\ |\ t_9 := L_{i+1}\ | \ R_{i+1}$, where:</p>
@@ -212,31 +187,6 @@ Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a pecu
 <li>$b_6 \oplus b_9 = a_6 \oplus a_9$.</li>
 </ol>
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <h4 id="part-ii-what-does-it-mean">Part II: What does it mean?<a href="#part-ii-what-does-it-mean" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
@@ -342,62 +292,12 @@ The key and nonce is not provided though, so we have to somehow reverse the <cod
 Under modulo $p(x)$, $x^{256} = -1486$ - so we have $$\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^i = - 1486\sum_{i=256}^{510}\left(\sum_{j=i-255}^{255} a_{kj}s_{i-j}\right)x^{i-256}.$$
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p>Very complicated right? Yes... But we have a conclusion for this part:</p>
 
 <div class="alert success">
   For each $i = 0, 1, &hellip;, 255$ and $k = 1, 2, &hellip;, 8$, we have:
 $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_j + e_i.$$
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <h4 id="part-ii-an-insight">Part II: An insight<a href="#part-ii-an-insight" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
@@ -433,31 +333,6 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
   <strong>Note:</strong> The $c_k$ and $c_k'$ defined below are multiples of $n_k$. This is what we had from the above part for the simplicity&rsquo;s sake.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <p>My approach is to generate two ciphertexts, namely, $c_k$ and $c_k'$ for the $k$-th party. In this way, we have 243 ciphertext pairs. We are looking for $x_1, x_2, ..., x_{243}\in{0, 1}$ such that</p>
 
 <p><span  class="math">\[\bigoplus_{k=1}^m [(1 - x_k) \text{RSAEncrypt}(c_k, n_k) + x_k \text{RSAEncrypt}(c_k', n_k)] \equiv \text{hash}\ (\text{mod}\ 2^{256}).\]</span></p>
@@ -469,31 +344,6 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
 <div class="alert info">
   <strong>Idea:</strong> My approach is to check if one of the $2^{243}$ possible generated ciphertexts covers the target hash. If not, generate another set.
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <p>The above equation is just an linear equation! Solving it we had the values of $x_k$'s. If $x_k = 0$ we pick $c_k$, and $c_k'$ otherwise. After all we have forged a signature.</p>
 
@@ -563,57 +413,6 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
       collapseDepth: 3
   });
 </script>
-<style>
-   
-  @media screen and (max-width: 1364px) {
-    .toc-container {
-      display: none !important;
-    }
-  }
-
-  .toc-container {
-    position: fixed;
-    top: 120px;
-    left: calc((100% - 864px) / 2 - 250px);
-    width: 250px;
-    height: 100%;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-     
-  }
-
-  .toc-list {
-    padding: 0px;
-  }
-
-  .toc-link {
-    text-decoration: none;
-  }
-  .toc-link::before {
-    background-color: transparent;
-  }
-
-   
-  .toc-list-item {
-    padding-left: 10px;
-    list-style-type: none;
-    color: #ccc;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-   
-  .toc-list-item:hover {
-    color: #fff;
-  }
-
-   
-  .is-active-link::before {
-    background-color: var(--accent);
-  }
-</style>
 
   </div>
 
@@ -622,7 +421,7 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
   <div class="footer__inner">
     
       <div class="copyright">
-        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
     
         <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
       </div>

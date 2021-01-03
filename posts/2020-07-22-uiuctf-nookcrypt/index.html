@@ -183,61 +183,11 @@ enc(0x64) = (0x985dbb38a65f4e69bfc602d7e114cad9, 0xcad1cb62a3d30b05093575f3a22f7
   <strong>Question.</strong> What if it is not defined on a prime field? Well&hellip; I didn&rsquo;t think of that. But who cares? I could probably observe this if my approach doesn&rsquo;t work out.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <h3 id="part-ii-a-reflection-on-the-aftermath">Part II: A reflection on the &quot;after-math&quot;<a href="#part-ii-a-reflection-on-the-aftermath" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
 <div class="alert warning">
   <strong>Note.</strong> I did not think of this during the game. Stupid me.
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <p>Knowing that the ciphertext $C$ is a multiple of the message $m$, i.e., $C = mG$, we can simply encrypt $m = 1$:</p>
 <pre><code>[+] Opening connection to chal.uiuc.tf on port 2006: Done
@@ -308,31 +258,6 @@ err</code></pre>
   <strong>Did you really get it instantly when the hint is announced?</strong> No.
 </div>
 
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
-
 <h3 id="part-iv-somebody-made-a-breakthrough">Part IV: Somebody made a breakthrough<a href="#part-iv-somebody-made-a-breakthrough" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
 <p>Ten hours later, <em>somebody</em> from Discord claimed that he has a strange observation:</p>
@@ -342,31 +267,6 @@ err</code></pre>
 <div class="alert info">
   <strong>Who was the somebody?</strong> Me.
 </div>
-
-<style>
-  .alert {
-    padding: 20px;
-    color: white;
-    margin-bottom: 15px;
-  }
-
-  .alert.success {
-    background-color: #28a745;
-  }
-
-  .alert.info {
-    background-color: #17a2b8;
-  }
-
-  .alert.warning {
-    background-color: #ffc107;
-    color: #212529;
-  }
-
-  .alert.danger {
-    background-color: #dc3545;
-  }
-</style>
 
 <p>We made a bunch of assumptions. Cutting the crap, we assumed that the same generator $G = (x_G, y_G)$ is being multipled in a same way, except that the curve is operated on new modulo $p'$. This matches the author's statement regarding on the prime being corrupted.</p>
 
@@ -436,57 +336,6 @@ p' = \text{gcd}( &(y_F^2 - x_F^3 - ax_F - b') - (y_G^2 - x_G^3 - ax_G - b'), \\
       collapseDepth: 3
   });
 </script>
-<style>
-   
-  @media screen and (max-width: 1364px) {
-    .toc-container {
-      display: none !important;
-    }
-  }
-
-  .toc-container {
-    position: fixed;
-    top: 120px;
-    left: calc((100% - 864px) / 2 - 250px);
-    width: 250px;
-    height: 100%;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-     
-  }
-
-  .toc-list {
-    padding: 0px;
-  }
-
-  .toc-link {
-    text-decoration: none;
-  }
-  .toc-link::before {
-    background-color: transparent;
-  }
-
-   
-  .toc-list-item {
-    padding-left: 10px;
-    list-style-type: none;
-    color: #ccc;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-   
-  .toc-list-item:hover {
-    color: #fff;
-  }
-
-   
-  .is-active-link::before {
-    background-color: var(--accent);
-  }
-</style>
 
   </div>
 
@@ -495,7 +344,7 @@ p' = \text{gcd}( &(y_F^2 - x_F^3 - ax_F - b') - (y_G^2 - x_G^3 - ax_G - b'), \\
   <div class="footer__inner">
     
       <div class="copyright">
-        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
     
         <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
       </div>
