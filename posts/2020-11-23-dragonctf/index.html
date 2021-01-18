@@ -393,7 +393,7 @@ h <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</spa
         <span style="color:#66d9ef">return</span> v</code></pre></div>
 <h4 id="part-iii-fastforwarding-the-states">Part III: Fast-forwarding the states<a href="#part-iii-fastforwarding-the-states" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>Fast-forwarding the PRNG is easy. This is similar on the <a href="http://localhost:1313/posts/2020-09-08-confidencectf-team-trees/#42-fast-sequence-generation">Team Trees</a> challenge in CONFidence CTF this year. We can skip states with the matrix implementation (and I am able to skip the details for this part, too). After all, 5M seeds can be checked per second. Since we have only 15 seconds to recover the seed, we are unable to find the entire search space (only 1.75% of the seed space is checked). In average, we can recover the seed from the <code>strfry</code> output in 15 seconds once every 60 times. Finally, if we are able to recover the seed, we can freely fry and unfry strings.</p>
+<p>Fast-forwarding the PRNG is easy. This is similar on the <a href="/posts/2020-09-08-confidencectf-team-trees/#42-fast-sequence-generation">Team Trees</a> challenge in CONFidence CTF this year. We can skip states with the matrix implementation (and I am able to skip the details for this part, too). After all, 5M seeds can be checked per second. Since we have only 15 seconds to recover the seed, we are unable to find the entire search space (only 1.75% of the seed space is checked). In average, we can recover the seed from the <code>strfry</code> output in 15 seconds once every 60 times. Finally, if we are able to recover the seed, we can freely fry and unfry strings.</p>
 
 <p>After two hours, we have the flag: <code>DrgnS{Fr13d_57r1Ng5_4r3_tH3_Be5t_s7r1NgS!}</code>.</p>
 
@@ -797,6 +797,7 @@ subgoal 2 <span style="color:#f92672">(</span>ID 53<span style="color:#f92672">)
   })();
 </script>
 
+  
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -805,6 +806,7 @@ subgoal 2 <span style="color:#f92672">(</span>ID 53<span style="color:#f92672">)
 
   gtag('config', 'UA-180181192-1');
 </script>
+
 
 
 

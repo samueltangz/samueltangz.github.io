@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Firebird Internal CTF Writeup :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post.
+Oofbleck (Crypto) Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8... What about OFB?" />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-01-18-firebird-internal-ctf/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/green.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/green.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Firebird Internal CTF Writeup">
+<meta property="og:description" content="I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post." />
+<meta property="og:url" content="/posts/2021-01-18-firebird-internal-ctf/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-01-18 22:00:00 &#43;0800 HKT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="green">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-01-18-firebird-internal-ctf/">Firebird Internal CTF Writeup</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-01-18 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/firebird-training/">firebird-training</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>I have written four question for Firebird Internal CTF - <em>Oofbleck</em> (Crypto), <em>Obvious Transfer</em> (Crypto), <em>RC4</em> (Misc) and <em>Prooof-ooof-Wooork</em> (Reverse, Misc). I will be including all of them in this blog post.</p>
+
+<h2 id="oofbleck-crypto">Oofbleck (Crypto)<a href="#oofbleck-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and <em>Zerologon</em> in CFB8... What about OFB?</p>
+</blockquote>
+
+<p>In this challenge, we are given a ciphertext encrypted with OFB, and the respective encryption script. The following is the core part of the program.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt</span>(message, key):
+    iv <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">16</span>)
+    cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(iv, AES<span style="color:#f92672">.</span>MODE_OFB, key)
+    message <span style="color:#f92672">=</span> pad(message, <span style="color:#ae81ff">16</span>)
+    ciphertext <span style="color:#f92672">=</span> iv <span style="color:#f92672">+</span> cipher<span style="color:#f92672">.</span>encrypt(message)
+    <span style="color:#66d9ef">return</span> ciphertext
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">16</span>)
+    <span style="color:#66d9ef">assert</span> re<span style="color:#f92672">.</span>match(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;^firebird\{\w{58}\}$&#39;</span>, flag)
+
+    ciphertext <span style="color:#f92672">=</span> encrypt(flag<span style="color:#f92672">.</span>encode(), key)
+    <span style="color:#66d9ef">print</span>(base64<span style="color:#f92672">.</span>b64encode(ciphertext)<span style="color:#f92672">.</span>decode())</code></pre></div>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="the-output-feedback-mode-of-operation">The output feedback mode of operation<a href="#the-output-feedback-mode-of-operation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Since this is a challenge regarding to the output feedback (OFB) mode, let's see how is it done.</p>
+
+
+  <figure class="left" >
+    <img src="/images/2021-01-17-firebird/ofb-wiki.png"   />
+    
+      <figcaption class="right" >OFB mode of operation from Wikipedia.</figcaption>
+    
+  </figure>
+
+
+
+<p>Furthermore, the message is 68 bytes long (<code>firebird{[...58 characters...]}</code>). Since the block size of AES is 16 bytes, it is composed of 5 blocks after padding. Define $(m_1, m_2, m_3, m_4, m_5)$ and $(x_0, c_1, c_2, c_3, c_4, c_5)$ as the padded plaintext and its ciphertext (where $x_0$ is the IV). Then for $i \in {1, 2, 3, 4, 5}$, we have</p>
+
+<p><span  class="math">\[
+\begin{cases}\begin{aligned}
+x_i &= \text{Enc}_k(x_{i-1})\\
+c_i &= m_i \oplus x_i
+\end{aligned}\end{cases}
+\]</span></p>
+
+<p>It seems that we have $(x_0, c_1, c_2, c_3, c_4, c_5)$, which does not allow us to recover any of the $m_i$'s... or is it?</p>
+
+<h4 id="misusing-the-package-methods">Misusing the package methods<a href="#misusing-the-package-methods" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Anyone who is familiar with <em>pycrypto</em> (or <em>pycryptodome</em>) may immediately spot the problem - the order of the parameters are messed up. From the documentation<sup class="footnote-ref" id="fnref:pycrypto-aes"><a class="footnote" href="#fn:pycrypto-aes">1</a></sup>, the first and the third arguments should be respectively the key and the IV. Unfortunately, they are swapped in this challenge.</p>
+
+<p>Hence, we are actually given $(k, c_1, c_2, c_3, c_4, c_5)$ instead of $(x_0, c_1, c_2, c_3, c_4, c_5)$. Knowing the key, we can recover all of the $x_i$'s given any of them (by either encrypting or decrypting). To retrieve one of the $x_i$'s, let's first look at how the padded plaintext is structured. A 68-byte plaintext will be padded with 12 copies of <code>\x0c</code> under PKCS7 padding. If we let <code>X</code> to be <code>\x0c</code>, the padded message would be:</p>
+<pre><code>m1______________ m2______________ m3______________ m4______________ m5______________
+firebird{??????? ???????????????? ???????????????? ???????????????? ???}XXXXXXXXXXXX</code></pre>
+<p>Since there are only three unknown characters in $m_5$, we can exhaust them to recover $x_5$. Then we can decrypt for $x_4, ..., x_1$ and hence recover $m_4, ..., m_1$. If $m_1$ starts with <code>firebird{</code>, then the flag can be obtained via concatenating the message blocks.</p>
+
+<h2 id="obvious-transfer-crypto">Obvious Transfer (Crypto)<a href="#obvious-transfer-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>Can you distinguish ciphertext from RSA with random?</p>
+
+<p><code>nc HOST PORT</code></p>
+</blockquote>
+
+<p>We will be given 100 challenges and will win the flag if all of they are all passed. This is how a challenge performed:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">c0 <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">1</span>)
+
+<span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#39;🤯 {i}&#39;</span>)
+
+<span style="color:#66d9ef">while</span> True:
+    params <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#39;🤖 &#39;</span>)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39; &#39;</span>)
+    action <span style="color:#f92672">=</span> params<span style="color:#f92672">.</span>pop(<span style="color:#ae81ff">0</span>)
+
+    <span style="color:#66d9ef">if</span> action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;📦&#39;</span>:
+        <span style="color:#66d9ef">if</span> c0 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+            ciphertext <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, k<span style="color:#f92672">.</span>n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">else</span>:
+            ciphertext <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(oaep_k<span style="color:#f92672">.</span>encrypt(flag), <span style="color:#e6db74">&#39;big&#39;</span>)
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;🤫&#39;</span>, long_to_b64(ciphertext))
+    <span style="color:#66d9ef">elif</span> action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;🔓&#39;</span>:
+        c1 <span style="color:#f92672">=</span> int(params[<span style="color:#ae81ff">0</span>])
+        <span style="color:#66d9ef">if</span> c0 <span style="color:#f92672">!=</span> c1:
+            failed <span style="color:#f92672">=</span> True
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;👌&#39;</span>)
+        <span style="color:#66d9ef">break</span>
+    <span style="color:#66d9ef">elif</span> action <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;🏃&#39;</span>:
+        exited <span style="color:#f92672">=</span> True
+        <span style="color:#66d9ef">break</span>
+<span style="color:#66d9ef">if</span> failed <span style="color:#f92672">or</span> exited: <span style="color:#66d9ef">break</span></code></pre></div>
+<p>In short, at the beginning of the round, a number $c_0$ is selected. We can request output via 📦 - which outputs a random number if $c_0 = 0$ and a ciphertext from RSA if $c_0 = 1$. Finally we can send our guess $c_1$ via 🔓 - the program terminates if $c_0 \neq c_1$.</p>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="some-trivial-variants">Some trivial variants<a href="#some-trivial-variants" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>There are two variants that make the challenge trivial.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Variant 1</span>
+<span style="color:#66d9ef">if</span> c0 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+    ciphertext <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, k<span style="color:#f92672">.</span>n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+<span style="color:#66d9ef">else</span>:
+    <span style="color:#75715e"># use textbook RSA instead</span>
+    ciphertext <span style="color:#f92672">=</span> pow(int<span style="color:#f92672">.</span>from_bytes(flag, <span style="color:#e6db74">&#39;big&#39;</span>), k<span style="color:#f92672">.</span>e, k<span style="color:#f92672">.</span>n)</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Variant 2</span>
+<span style="color:#66d9ef">if</span> c0 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+    ciphertext <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">2048</span>)
+<span style="color:#66d9ef">else</span>:
+    ciphertext <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(oaep_k<span style="color:#f92672">.</span>encrypt(flag), <span style="color:#e6db74">&#39;big&#39;</span>)</code></pre></div>
+<p>In the first variant, we can use 📦 twice to obtain two <em>ciphertexts</em>, namely $x_1$ and $x_2$. Since there is no randomness involved in encrypting with textbook RSA, $x_1 = x_2$. Of course, it is also possible that $x_1 = x_2$ when $c_0 = 0$. But it is very unlikely and it is neglected.</p>
+
+<p>In the second variant, if $c_0 = 1$, it is always true that $x &lt; n$. On the other hand, if $c_0 = 0$, it is possible that the output to be greater (or equal to) $n$. Thus the probability for $x \geq n$ is</p>
+
+<p><span  class="math">\[p_1 := 1 - \frac{n}{2^{2048}}.\]</span></p>
+
+<div class="alert warning">
+  🔬 <strong>Experiment.</strong> I have generated 100 RSA keys and $n \approx 0.721144\times 2^{2048}$.
+</div>
+
+
+<p>Hence, if we call 📦 $k$ times, then the probability for $\text{max}(x_1, x_2, ..., x_k) \geq n$ is</p>
+
+<p><span  class="math">\[p_k := 1 - \left(1 - \frac{n}{2^{2048}}\right)^k.\]</span></p>
+
+<p>With the results from the experiment, $p_{100} \approx 1.000000$. That said, it is almost certain that there is an $x_i \geq n$ in 100 trials if $c_0 = 0$.</p>
+
+<h4 id="distinguishing-something-from-random">Distinguishing something from random<a href="#distinguishing-something-from-random" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert danger">
+  As you may suspect, we cannot distinguish ciphertext encrypted with RSA-OAEP from random. This question is actually <em>not</em> solvable - that&rsquo;s all.
+</div>
+
+
+<p>...of course not! If we cannot distinguish it from random, how about distinguishing <em>random</em> from random? Note that if $c_0 = 0$, the random generated is <em>not</em> cryptographyic secure. They are generated with MT19937 and we can recover its internal state<sup class="footnote-ref" id="fnref:mt19937-attack"><a class="footnote" href="#fn:mt19937-attack">2</a></sup> if we have $624 \times 32$ bits extracted. With that, we can further predict the $c_0$s in the subsequent challenges.</p>
+
+<p>Well... You can take a look at it. I am happy if someone solves the challenge with such an approach, but this is not the intended attack though.</p>
+
+<h4 id="the-intended-solution">The intended solution<a href="#the-intended-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Now suppose that I knew nothing about MT19937 and assumed that the random comes from a CSPRNG. Then the <code>ciphertext</code> for both $c_0 = 0$ and $c_0 = 1$ do not reveal anything useful. Luckily, there is a critical factor - <em>time</em>. It is significantly slower to compute <code>ciphertext</code> when $c_0 = 1$ compared to the case when $c_0 = 0$.</p>
+
+<p>In average, it takes 660µs and 50µs when $c_0 = 0$ and $c_0 = 1$, respectively. We can call 📦 1000 times to overcome network latency and it will be significantly slower if $c_0 = 0$. This way we do not need to crack and recover the states from MT19937.</p>
+
+<h2 id="prooofooofwooork-reverse-misc">Prooof-ooof-Wooork (Reverse, Misc)<a href="#prooofooofwooork-reverse-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>Download the binary, <code>nc HOST PORT</code>, execute the binary, win the flag. That is it. Easy? Easy!</p>
+</blockquote>
+
+<p>When connected to the service, we are given 100 commands to be executed. If we can reply all of the output for the commands in 180 seconds, then the service will grant us the flag. <del>If it is more well-planned, I can simply bribe someone with flags to mine bitcoins.</del></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT
+<span style="color:#75715e"># This challenge is easy. Just execute the binary to complete the proof-of-work!</span>
+<span style="color:#75715e"># Of course, it will be getting harder and harder...</span>
+<span style="color:#75715e"># ./gen LGb6W/RZCz9KKw== 2223635746 1</span>
+<span style="color:#75715e"># &gt; DfwI12HrGw</span>
+<span style="color:#75715e"># ./gen BlviwtbVRlHfHA== 819508855 4</span>
+<span style="color:#75715e"># &gt; ...</span></code></pre></div>
+<p>This is an example for running the binary:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./gen LGb6W/RZCz9KKw<span style="color:#f92672">==</span> <span style="color:#ae81ff">2223635746</span> <span style="color:#ae81ff">1</span>
+<span style="color:#75715e"># DfwI12HrGw</span></code></pre></div>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="reversing-not-for-me">Reversing? Not for me<a href="#reversing-not-for-me" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Since I am the challenge author, I will simply skip the reversing part and paste the source code here. You are the ones who don't have the source code, so good luck to you!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getrand</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>state) {
+    <span style="color:#f92672">*</span>state <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1337</span> <span style="color:#f92672">*</span> <span style="color:#f92672">*</span>state <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x5</span>;
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span>state;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> (<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv) {
+    init();
+    
+    <span style="color:#66d9ef">if</span> (argc <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">4</span>) {
+        printf(<span style="color:#e6db74">&#34;Usage: %s &lt;ciphertext&gt; &lt;seed&gt; &lt;rounds&gt;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, argv[<span style="color:#ae81ff">0</span>]);
+        exit(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+    }
+
+    <span style="color:#66d9ef">char</span> state[N]; <span style="color:#75715e">// N = 100000
+</span><span style="color:#75715e"></span>    memset(state, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span> state);
+
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>ciphertext <span style="color:#f92672">=</span> argv[<span style="color:#ae81ff">1</span>];
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> seed <span style="color:#f92672">=</span> atoi(argv[<span style="color:#ae81ff">2</span>]);
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> rounds <span style="color:#f92672">=</span> atoi(argv[<span style="color:#ae81ff">3</span>]);
+    
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>raw_ciphertext; <span style="color:#66d9ef">int</span> outlen;
+    raw_ciphertext <span style="color:#f92672">=</span> base64_decode(ciphertext, strlen(ciphertext), <span style="color:#f92672">&amp;</span>outlen);
+
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; raw_ciphertext[i]; i<span style="color:#f92672">++</span>) {
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> rounds; j<span style="color:#f92672">++</span>) {
+            <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+            <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> y <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+            <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> z <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed);
+            <span style="color:#66d9ef">if</span> (x <span style="color:#f92672">&gt;</span> y) x <span style="color:#f92672">^=</span> y <span style="color:#f92672">^=</span> x <span style="color:#f92672">^=</span> y;
+            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> x; k <span style="color:#f92672">&lt;</span> y; k<span style="color:#f92672">++</span>) state[k] <span style="color:#f92672">+=</span> z;
+        }
+
+        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> y <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+        <span style="color:#66d9ef">if</span> (x <span style="color:#f92672">&gt;</span> y) x <span style="color:#f92672">^=</span> y <span style="color:#f92672">^=</span> x <span style="color:#f92672">^=</span> y;
+        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> q <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> x; k <span style="color:#f92672">&lt;</span> y; k<span style="color:#f92672">++</span>) q <span style="color:#f92672">+=</span> state[k];
+        printf(<span style="color:#e6db74">&#34;%c&#34;</span>, raw_ciphertext[i] <span style="color:#f92672">^</span> q);
+        fflush(stdout);
+    }
+    printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div>
+<h4 id="understanding-the-code">Understanding the code<a href="#understanding-the-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Suppose that we have a state $S = (s_0, s_1, ..., s_{m-1})$. Define two operations $\text{Update}(l, r, x)$ and $\text{Query}(l, r)$.</p>
+
+<ul>
+<li>$\text{Update}(l, r, x)$ updates $s_k \leftarrow (s_k + x)\ \text{mod}\ 256$ every $l \leq k &lt; r$.</li>
+<li>$\text{Query}(l, r)$ returns $\left(\sum_{k = l}^{r-1} s_k\right) \text{mod}\ 256$.</li>
+</ul>
+
+<p>With the operations defined, let me update the <code>main</code> function to elaborate.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> (<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv) {
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; raw_ciphertext[i]; i<span style="color:#f92672">++</span>) {
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> rounds; j<span style="color:#f92672">++</span>) {
+            <span style="color:#75715e">/*
+</span><span style="color:#75715e">             * Update(l, r, x)
+</span><span style="color:#75715e">             */</span>
+            <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> l <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+            <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> r <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+            <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed);
+            <span style="color:#75715e">// swap l and r if l &gt; r
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> (l <span style="color:#f92672">&gt;</span> r) l <span style="color:#f92672">^=</span> r <span style="color:#f92672">^=</span> l <span style="color:#f92672">^=</span> r;
+            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> x; k <span style="color:#f92672">&lt;</span> y; k<span style="color:#f92672">++</span>) state[k] <span style="color:#f92672">+=</span> z;
+        }
+
+        <span style="color:#75715e">/*
+</span><span style="color:#75715e">         * q := Query(l, r)
+</span><span style="color:#75715e">         */</span>
+        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> l <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> r <span style="color:#f92672">=</span> getrand(<span style="color:#f92672">&amp;</span>seed) <span style="color:#f92672">%</span> N;
+        <span style="color:#66d9ef">if</span> (l <span style="color:#f92672">&gt;</span> r) l <span style="color:#f92672">^=</span> r <span style="color:#f92672">^=</span> l <span style="color:#f92672">^=</span> r;
+        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> q <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> x; k <span style="color:#f92672">&lt;</span> y; k<span style="color:#f92672">++</span>) q <span style="color:#f92672">+=</span> state[k];
+
+        printf(<span style="color:#e6db74">&#34;%c&#34;</span>, raw_ciphertext[i] <span style="color:#f92672">^</span> q);
+        fflush(stdout);
+    }
+    printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div>
+<p>To print one character, $n$ range updates and one range query are performed. The time complexities for $\text{Update}(l, r, x)$ and $\text{Query}(l, r)$ in the binary are both $\mathcal{O}(m)$, which makes the overall complexity to print <em>one</em> character being $\mathcal{O}(km)$. Since $k = 10^4$ in the 100th command, the binary isn't optimized for the challenge.</p>
+
+<h4 id="data-structures-can-help">Data structures can help<a href="#data-structures-can-help" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>I will be skipping the details since this kind of problem is rather common in competitive programming. It is called <em>range sum query</em> (RSQ) and there are multiple data structures those efficiently perform $\text{Update}(l, r, x)$, and optionally $\text{Query}(l, r)$.</p>
+
+<p>For example, segment tree<sup class="footnote-ref" id="fnref:segment-tree"><a class="footnote" href="#fn:segment-tree">3</a></sup> can do both in $\mathcal{O}(\log n)$. I would prefer Fenwick tree<sup class="footnote-ref" id="fnref:fenwick-tree"><a class="footnote" href="#fn:fenwick-tree">4</a></sup> (as known as binary indexed tree) because it is the easiest to implement, while maintaining the time complexities for both operations to be $\mathcal{O}(\log n)$. Implementing a Fenwick tree isn't difficult - try it if you didn't!</p>
+
+<h2 id="rc4-misc">RC4 (Misc)<a href="#rc4-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>The Firebird admins do not want too much crypto challenges, so I am going to label this as a misc challenge. But no worries, you can get part of the flag if you achieve something.</p>
+
+<p><code>nc HOST PORT</code></p>
+</blockquote>
+
+<p>Basically we have an netcat service that sends us a 16-byte key $k_1$. The objective is to send another key $k_2$ such that $\text{RC4}_{k_1}(\text{flag}) = \text{RC4}_{k_2}(\text{flag})$. Also, $k_1$ should <em>not</em> be a substring of $k_2$.</p>
+
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="is-it-really-a-miscategorized">Is it really a <em>misc</em>-ategorized?<a href="#is-it-really-a-miscategorized" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>To begin, let's read <code>chall.py</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> sys
+<span style="color:#f92672">import</span> string
+<span style="color:#f92672">import</span> random
+
+<span style="color:#f92672">from</span> rc4 <span style="color:#f92672">import</span> RC4
+<span style="color:#f92672">from</span> secret <span style="color:#f92672">import</span> flag
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">prefix_length</span>(u, v):
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(u)):
+        <span style="color:#66d9ef">if</span> u[i] <span style="color:#f92672">==</span> v[i]: <span style="color:#66d9ef">continue</span>
+        <span style="color:#66d9ef">return</span> i
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> len(u)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert_key</span>(s):
+    <span style="color:#66d9ef">return</span> [ord(c) <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> s]
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt</span>(cipher, message):
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join([chr(ord(message[i]) <span style="color:#f92672">^</span> next(cipher)) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(message))])
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    charset <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>ascii_letters <span style="color:#f92672">+</span> string<span style="color:#f92672">.</span>digits
+    key1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(random<span style="color:#f92672">.</span>choices(charset, k<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>))    
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;🔑&#39;</span>, key1)
+
+    key2 <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#39;🔑 &#39;</span>)
+
+    <span style="color:#66d9ef">if</span> key1 <span style="color:#f92672">in</span> key2:
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;🤨&#39;</span>)
+        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>)
+
+    key1 <span style="color:#f92672">=</span> convert_key(key1)
+    key2 <span style="color:#f92672">=</span> convert_key(key2)
+
+    cipher1 <span style="color:#f92672">=</span> RC4(key1)
+    cipher2 <span style="color:#f92672">=</span> RC4(key2)
+
+    ciphertext1 <span style="color:#f92672">=</span> encrypt(cipher1, flag)
+    ciphertext2 <span style="color:#f92672">=</span> encrypt(cipher2, flag)
+    l <span style="color:#f92672">=</span> prefix_length(ciphertext1, ciphertext2)
+
+    <span style="color:#66d9ef">if</span> l <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;🤨&#39;</span>)
+        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>)
+    <span style="color:#66d9ef">elif</span> l <span style="color:#f92672">!=</span> len(flag):
+        <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#39;🏁 {flag[:l]}...&#39;</span>)
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#39;🏁 {flag[:l]}&#39;</span>)
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    main()</code></pre></div>
+<p>Also, the imported RC4 is copied from the repository <a href="https://github.com/bozhu/RC4-Python/blob/aac30b8eb19a157ae35566b80639039bbac9bd13/rc4.py">bozhu/RC4-Python</a> and slightly updated to make it compatible for Python 3.</p>
+
+<p>This looks evident to find a pair of keys such that the prefixes of the keystream would be identical. There are research<sup class="footnote-ref" id="fnref:rc4-collision-1"><a class="footnote" href="#fn:rc4-collision-1">5</a></sup><sup class="footnote-ref" id="fnref:rc4-collision-2"><a class="footnote" href="#fn:rc4-collision-2">6</a></sup> those tried to find pairs of RC4 keys such that the initial states would be the same. In this way, the resulting ciphertext would be identical. This might be an approach, but this would imply that this should <em>not</em> be a misc challenge. Is this my intention? If this is <em>really</em> a crypto challenge, those Firebird guys would hate me for even longer.</p>
+
+<h4 id="the-pytfall--python-2-vs-python-3">The pytfall - Python 2 vs Python 3<a href="#the-pytfall--python-2-vs-python-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Let's cut the crap. Look at how the initial state is generated.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Lines 16-17, chall.py</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert_key</span>(s):
+    <span style="color:#66d9ef">return</span> [ord(c) <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> s]
+
+<span style="color:#75715e"># Lines 23-34, rc4.py</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">KSA</span>(key):
+    keylength <span style="color:#f92672">=</span> len(key)
+
+    <span style="color:#75715e"># In Python 3, `range` returns an iterator instead of a list...</span>
+    S <span style="color:#f92672">=</span> list(range(<span style="color:#ae81ff">256</span>))
+
+    j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+        j <span style="color:#f92672">=</span> (j <span style="color:#f92672">+</span> S[i] <span style="color:#f92672">+</span> key[i <span style="color:#f92672">%</span> keylength]) <span style="color:#f92672">%</span> <span style="color:#ae81ff">256</span>
+        S[i], S[j] <span style="color:#f92672">=</span> S[j], S[i]  <span style="color:#75715e"># swap</span>
+
+    <span style="color:#66d9ef">return</span> S</code></pre></div>
+<p>Pretty standard. There are implementations online in Python which use a string as the key and perform key-scheduling. For example, <a href="https://github.com/manojpandey/rc4/blob/7490e1d31bfe075e7a17f4a1aa7d0924b92ee549/rc4-3.py#L14">manojpandey/rc4</a>, gist from <a href="https://gist.github.com/cdleary/188393#file-rc4-py-L17">cdleary</a>.</p>
+
+
+  <figure class="left" >
+    <img src="/images/2021-01-17-firebird/rc4-ksa-wiki.png"   />
+    
+      <figcaption class="right" >Pseudocode from Wikipedia.</figcaption>
+    
+  </figure>
+
+
+
+<p>The pseudocode from Wikipedia has showed that the KSA itself is fine. However, since I am writing in Python 3, I should be using <code>bytes</code> instead of <code>str</code>. This is not only a matter of the coding style, but the pitfall, too! Of course, we would not be able to run the above script in Python 2, since <code>f-string</code> is supported since Python 3.6. And even if it is possible, we can simply exploit the program with <code>input</code>. But if we have patched <code>input</code> to <code>raw_input</code> and fixed the compatibility issues, it is likely to be unexploitable. So what's the deal with this? Look at this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Python 2</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> s <span style="color:#f92672">=</span> raw_input()
+<span style="color:#960050;background-color:#1e0010">🤷</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> list(map(ord, s))
+[<span style="color:#ae81ff">240</span>, <span style="color:#ae81ff">159</span>, <span style="color:#ae81ff">164</span>, <span style="color:#ae81ff">183</span>]
+
+<span style="color:#75715e"># Python 3</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> s <span style="color:#f92672">=</span> input()
+<span style="color:#960050;background-color:#1e0010">🤷</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> list(map(ord, s))
+[<span style="color:#ae81ff">129335</span>]</code></pre></div>
+<p>This is the documentation for <code>ord</code> in Python 2.7.18<sup class="footnote-ref" id="fnref:py2-ord-doc"><a class="footnote" href="#fn:py2-ord-doc">7</a></sup>:</p>
+
+<blockquote>
+<p>Given a string of length one, return an integer representing the Unicode code point of the character when the argument is a unicode object, or the value of the byte when the argument is an 8-bit string. For example, <code>ord('a')</code> returns the integer <code>97</code>, <code>ord(u'\u2020')</code> returns <code>8224</code>. This is the inverse of chr() for 8-bit strings and of unichr() for unicode objects. If a unicode argument is given and Python was built with UCS2 Unicode, then the character’s code point must be in the range [0..65535] inclusive; otherwise the string length is two, and a <code>TypeError</code> will be raised.</p>
+</blockquote>
+
+<p>and for Python 3.9<sup class="footnote-ref" id="fnref:py3-ord-doc"><a class="footnote" href="#fn:py3-ord-doc">8</a></sup>:</p>
+
+<blockquote>
+<p>Given a string representing one Unicode character, return an integer representing the Unicode code point of that character. For example, <code>ord('a')</code> returns the integer <code>97</code> and <code>ord('€')</code> (Euro sign) returns <code>8364</code>. This is the inverse of <code>chr()</code>.</p>
+</blockquote>
+
+<p>That said, the <code>ord</code> function supports unicode characters as default in Python 3. Owing to this, the entries <code>key</code> is not confined in 0 and 255. Hence, knowing this, we can easily win the flag.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ nc HOST PORT
+<span style="color:#75715e"># 🔑 sRlXr6fBOMPwxlUC</span>
+<span style="color:#75715e"># 🔑 sRlXr6fBOMPwxlUŃ</span>
+<span style="color:#75715e"># 🏁 firebird{n0w_rc4_i5_t0t4lly_4_r3d_h3rr1n9}</span></code></pre></div>
+<p>Now are you convinced that this is actually a <em>misc</em> challenge? Say yes.</p>
+
+<h4 id="a-story-behind">A story behind<a href="#a-story-behind" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert warning">
+  This part is totally meaningless if you want to learn something.
+</div>
+
+
+<p>This challenge was actually inspired by the <em>unintended</em> solution for <a href="/posts/2020-05-05-de1ctf/#part-iii-where-did-it-went-wrong">OV from De1CTF2020</a>. One day I was messing around with something else and found that <code>chr</code> actually supports a larger set of values (from $[0, 255]$ Python 2 to $[0, 1114111]$ in Python 3). Originally, the challenge would be an exact copy <em>OV</em> and make it work for Sage 9 over Python 3. Unfortunately <code>fetch_int</code> checks the range of the input and someone may smell that easily if I am wiring something else.</p>
+
+<p>Thanks Vergissmeinnichtz for enlightening me for this challenge. You all know who to hate now.</p>
+<div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:pycrypto-aes">pycrypto.org (2012) &quot;Crypto.Cipher.AES&quot;<br><a href="https://www.dlitz.net/software/pycrypto/api/current/Crypto.Cipher.AES-module.html">https://www.dlitz.net/software/pycrypto/api/current/Crypto.Cipher.AES-module.html</a>
+ <a class="footnote-return" href="#fnref:pycrypto-aes">↩</a></li>
+<li id="fn:mt19937-attack">Thomas Ptacek, Sean Devlin, Alex Balducci (2013) &quot;Challenge 23, Set 3 - The Cryptopals Crypto Challenges&quot;<br><a href="https://cryptopals.com/sets/3/challenges/23">https://cryptopals.com/sets/3/challenges/23</a>
+ <a class="footnote-return" href="#fnref:mt19937-attack">↩</a></li>
+<li id="fn:segment-tree">cp-algorithms.com (2020) &quot;Segment Tree - Competitive Programming Algorithms&quot;<br><a href="https://cp-algorithms.com/data_structures/segment_tree.html">https://cp-algorithms.com/data_structures/segment_tree.html</a>
+ <a class="footnote-return" href="#fnref:segment-tree">↩</a></li>
+<li id="fn:fenwick-tree">cp-algorithms.com (2020) &quot;Fenwick Tree - Competitive Programming Algorithms&quot;<br><a href="https://cp-algorithms.com/data_structures/fenwick.html">https://cp-algorithms.com/data_structures/fenwick.html</a>
+ <a class="footnote-return" href="#fnref:fenwick-tree">↩</a></li>
+<li id="fn:rc4-collision-1">Mitsuru Matsui (2009). &quot;Key Collisions of the RC4 Stream Cipher&quot;<br><a href="https://link.springer.com/chapter/10.1007/978-3-642-03317-9_3">https://link.springer.com/chapter/10.1007/978-3-642-03317-9_3</a>
+ <a class="footnote-return" href="#fnref:rc4-collision-1">↩</a></li>
+<li id="fn:rc4-collision-2">Amit Jana, Goutam Paul (2016). &quot;Revisiting RC4 Key Collision: Faster Search Algorithm and New 22-byte Colliding Key Pairs&quot;<br><a href="https://eprint.iacr.org/2016/1001.pdf">https://eprint.iacr.org/2016/1001.pdf</a>
+ <a class="footnote-return" href="#fnref:rc4-collision-2">↩</a></li>
+<li id="fn:py2-ord-doc">Python Software Foundation (2020). &quot;2. Built-in Functions - Python 2.7.18 documentation&quot;<br><a href="https://docs.python.org/2.7/library/functions.html#ord">https://docs.python.org/2.7/library/functions.html#ord</a>
+ <a class="footnote-return" href="#fnref:py2-ord-doc">↩</a></li>
+<li id="fn:py3-ord-doc">Python Software Foundation (2020). &quot;Built-in Functions - Python 3.9.1 documentation&quot;<br><a href="https://docs.python.org/3.9/library/functions.html#ord">https://docs.python.org/3.9/library/functions.html#ord</a>
+ <a class="footnote-return" href="#fnref:py3-ord-doc">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-01-03-tetctf-unevaluated/">
+                <span class="button__text">TetCTF 2021: unevaluated</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Firebird Internal CTF Writeup
+  </a>
+  <div class="js-toc"></div>
+</aside>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 3
+  });
+</script>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/1.7.1/viz.js"> </script>
+<script type="text/javascript">
+  (function () {
+    const vizPrefix = "language-viz-";
+    Array.prototype.forEach.call(document.querySelectorAll("[class^=" + vizPrefix + "]"), function (x) {
+      let engine;
+      x.getAttribute("class").split(" ").forEach(function (cls) {
+        if (cls.startsWith(vizPrefix)) {
+          engine = cls.substr(vizPrefix.length);
+        }
+      });
+      const image = new DOMParser().parseFromString(Viz(x.innerText, { format: "svg", engine: engine }), "image/svg+xml");
+      x.parentNode.insertBefore(image.documentElement, x);
+      x.style.display = 'none'
+      x.parentNode.style.backgroundColor = "white"
+    });
+  })();
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Jan 2021 13:39:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 18 Jan 2021 22:00:00 +0800</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Firebird Internal CTF Writeup</title>
+      <link>/posts/2021-01-18-firebird-internal-ctf/</link>
+      <pubDate>Mon, 18 Jan 2021 22:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-01-18-firebird-internal-ctf/</guid>
+      <description>I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post.
+Oofbleck (Crypto) Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8... What about OFB?</description>
+    </item>
     
     <item>
       <title>TetCTF 2021: unevaluated</title>
