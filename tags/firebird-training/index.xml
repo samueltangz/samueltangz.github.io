@@ -18,7 +18,8 @@
       
       <guid>/posts/2021-01-18-firebird-internal-ctf/</guid>
       <description>I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post.
-Oofbleck (Crypto) Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8... What about OFB?</description>
+Oofbleck (Crypto) One (out of six) team have solved this during the CTF period.
+Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8.</description>
     </item>
     
     <item>

@@ -7,7 +7,8 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post.
-Oofbleck (Crypto) Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8... What about OFB?" />
+Oofbleck (Crypto) One (out of six) team have solved this during the CTF period.
+Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/posts/2021-01-18-firebird-internal-ctf/" />
@@ -124,6 +125,8 @@ Oofbleck (Crypto) Challenge Summary  Some of the block cipher modes of operation
 
 <h2 id="oofbleck-crypto">Oofbleck (Crypto)<a href="#oofbleck-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
+<p>One (out of six) team have solved this during the CTF period.</p>
+
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
 <blockquote>
@@ -181,6 +184,8 @@ firebird{??????? ???????????????? ???????????????? ???????????????? ???}XXXXXXXX
 <p>Since there are only three unknown characters in $m_5$, we can exhaust them to recover $x_5$. Then we can decrypt for $x_4, ..., x_1$ and hence recover $m_4, ..., m_1$. If $m_1$ starts with <code>firebird{</code>, then the flag can be obtained via concatenating the message blocks.</p>
 
 <h2 id="obvious-transfer-crypto">Obvious Transfer (Crypto)<a href="#obvious-transfer-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>Zero (out of six) teams have solved this during the CTF period.</p>
 
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -267,7 +272,14 @@ firebird{??????? ???????????????? ???????????????? ???????????????? ???}XXXXXXXX
 
 <p>In average, it takes 660µs and 50µs when $c_0 = 0$ and $c_0 = 1$, respectively. We can call 📦 1000 times to overcome network latency and it will be significantly slower if $c_0 = 0$. This way we do not need to crack and recover the states from MT19937.</p>
 
+<div class="alert info">
+  After the CTF, I have a short chat with <em>ciphr</em> on Discord. Turns out the network latency is more fluctuated than expected owing to geographical location. Luckily I am hosting a challenge for a local university, which expects there is someone in the team who live close to the server. This may not be the case in global CTFs and I should be awared of this.
+</div>
+
+
 <h2 id="prooofooofwooork-reverse-misc">Prooof-ooof-Wooork (Reverse, Misc)<a href="#prooofooofwooork-reverse-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>Four (out of six) teams have solved this during the CTF period.</p>
 
 <h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -389,7 +401,14 @@ firebird{??????? ???????????????? ???????????????? ???????????????? ???}XXXXXXXX
 
 <p>For example, segment tree<sup class="footnote-ref" id="fnref:segment-tree"><a class="footnote" href="#fn:segment-tree">3</a></sup> can do both in $\mathcal{O}(\log n)$. I would prefer Fenwick tree<sup class="footnote-ref" id="fnref:fenwick-tree"><a class="footnote" href="#fn:fenwick-tree">4</a></sup> (as known as binary indexed tree) because it is the easiest to implement, while maintaining the time complexities for both operations to be $\mathcal{O}(\log n)$. Implementing a Fenwick tree isn't difficult - try it if you didn't!</p>
 
+<div class="alert info">
+  Turns out most teams are storing the deltas and computing the partial sum on demand. It takes $\mathcal{O}(1)$ to perform $\text{Update}(l, r, x)$ and $\mathcal{O}(n)$ for $\text{Query}(l, r)$ - which is decent in our case.
+</div>
+
+
 <h2 id="rc4-misc">RC4 (Misc)<a href="#rc4-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>Three (out of six) teams have solved this during the CTF period.</p>
 
 <h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
