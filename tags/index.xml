@@ -6,10 +6,28 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Jan 2021 22:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 29 Jan 2021 21:05:00 +0800</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>challenge-writing</title>
+      <link>/tags/challenge-writing/</link>
+      <pubDate>Fri, 29 Jan 2021 21:05:00 +0800</pubDate>
+      
+      <guid>/tags/challenge-writing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ctf</title>
+      <link>/tags/ctf/</link>
+      <pubDate>Fri, 29 Jan 2021 21:05:00 +0800</pubDate>
+      
+      <guid>/tags/ctf/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>crypto</title>
@@ -17,15 +35,6 @@
       <pubDate>Mon, 18 Jan 2021 22:00:00 +0800</pubDate>
       
       <guid>/tags/crypto/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ctf</title>
-      <link>/tags/ctf/</link>
-      <pubDate>Mon, 18 Jan 2021 22:00:00 +0800</pubDate>
-      
-      <guid>/tags/ctf/</guid>
       <description></description>
     </item>
     

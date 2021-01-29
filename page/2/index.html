@@ -105,6 +105,49 @@
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="/posts/2020-09-23-twctf/">TokyoWesterns CTF 6th 2020 Writeup</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2020-10-09
+          </span>
+          
+            <span class="post-author">:: Mystiz</span>
+          
+        </div>
+
+        
+          <span class="post-tags">
+            
+            #<a href="/tags/ctf/">ctf</a>&nbsp;
+            
+            #<a href="/tags/tokyowesterns-ctf/">tokyowesterns-ctf</a>&nbsp;
+            
+          </span>
+        
+
+        
+
+        <div class="post-content">
+          
+          
+          This writeup is compiled by @blackb6a: cire meat pop (@Khlung1), harrier (@harrier_lcc), Ozetta (@02E774) and Mystiz (@mystiz613).
+urlcheck v1 (Web, 98 points) Solved by Ozetta.
+Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the pattern &lsquo;\A(\d+).(\d+).(\d+).(\d+)\Z&rsquo; and the first octet cannot be 0 or 127, and some other patterns for internal IP addresses. For some reason, int(&quot;0177&quot;) is still 177 instead of 127 in Python, so we can use http://0177.0.0.1/admin-status
+          
+          
+        </div>
+
+        
+        <div>
+          <a class="read-more button"
+            href="/posts/2020-09-23-twctf/">Read more →</a>
+        </div>
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="/posts/2020-09-21-firebird-intro-ctf-rsa/">Firebird Intro CTF: Rotten Secured Algorithm</a>
         </h1>
         <div class="post-meta">
@@ -270,49 +313,6 @@ Gets an encrypted copy of the flag (and the message hello world). Encrypts an ar
         <div>
           <a class="read-more button"
             href="/posts/2020-07-22-uiuctf-nookcrypt/">Read more →</a>
-        </div>
-        
-      </div>
-    
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="/posts/2020-05-05-de1ctf/">De1CTF 2020 Writeup</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2020-05-05
-          </span>
-          
-            <span class="post-author">:: Mystiz</span>
-          
-        </div>
-
-        
-          <span class="post-tags">
-            
-            #<a href="/tags/ctf/">ctf</a>&nbsp;
-            
-            #<a href="/tags/de1ctf/">de1ctf</a>&nbsp;
-            
-          </span>
-        
-
-        
-
-        <div class="post-content">
-          
-          
-          I was teamed up with @shellphish this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with DuSu and fs0c.
-I said that I&rsquo;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
-Homomorphic Challenge Summary This is a cryptography challenge with 465 points.
-          
-          
-        </div>
-
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2020-05-05-de1ctf/">Read more →</a>
         </div>
         
       </div>

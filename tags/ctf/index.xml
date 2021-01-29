@@ -6,10 +6,19 @@
     <description>Recent content in ctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Jan 2021 22:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 29 Jan 2021 21:05:00 +0800</lastBuildDate>
     
 	<atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>hoifanrd&#39;s osu! Challenge</title>
+      <link>/posts/2021-01-29-hoifanrds-osu-challenge/</link>
+      <pubDate>Fri, 29 Jan 2021 21:05:00 +0800</pubDate>
+      
+      <guid>/posts/2021-01-29-hoifanrds-osu-challenge/</guid>
+      <description>There are a lot of moments which I telepathed and synced with the challenge author. If it doesn&amp;rsquo;t make sense to you, just bear with it.  This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge.</description>
+    </item>
     
     <item>
       <title>Firebird Internal CTF Writeup</title>
