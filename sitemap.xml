@@ -3,38 +3,58 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/tags/challenge-writing/</loc>
-    <lastmod>2021-01-29T21:05:00+08:00</lastmod>
+    <loc>/tags/crypto/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/ctf/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/justctf/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2021-02-01-justctf-oracles/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/rsa/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/timing-attack/</loc>
+    <lastmod>2021-02-01T03:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/challenge-writing/</loc>
     <lastmod>2021-01-29T21:05:00+08:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/2021-01-29-hoifanrds-osu-challenge/</loc>
     <lastmod>2021-01-29T21:05:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2021-01-29T21:05:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/posts/</loc>
-    <lastmod>2021-01-29T21:05:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2021-01-29T21:05:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/crypto/</loc>
-    <lastmod>2021-01-18T22:00:00+08:00</lastmod>
   </url>
   
   <url>
