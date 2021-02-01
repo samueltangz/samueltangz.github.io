@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="I was playing justCTF 2020 with the new CTFers in Yakitori (Firebird). Oracles is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up.
 Challenge Summary  We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
- Is Goldbach&#39;s conjecture true? What is the answer to everything?  On top of them, the challenge author tried to tell the agency the flag." />
+ Is Goldbach&#39;s conjecture true? What is the answer to everything?   On top of them, the challenge author tried to tell the agency the flag." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/posts/2021-02-01-justctf-oracles/" />
@@ -142,11 +142,10 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 <ul>
 <li>Is Goldbach's conjecture true?</li>
 <li>What is the answer to everything?</li>
+<li></li>
 </ul>
 
-<p>On top of them, the challenge author tried to tell the agency the flag. However, the agencies are so indifferent and they will not be responding regardless of what you say.</p>
-
-<p>By the way, the questions (or the flag) are encrypted with RSA-OAEP. It is not possible to read the flag solely from the ciphertext.</p>
+<p>On top of them, the challenge author tried to tell the agency the flag. Well, the agencies are so indifferent and they will not be responding anyway. By the way, the questions (or the flag) are encrypted with RSA-OAEP. It is not possible to read the flag solely from the ciphertext.</p>
 
 <h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
@@ -162,7 +161,7 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 </div>
 
 
-<p>Although the agencies seemed indifferent to our questions, they are curious and actually decrypt your questions.</p>
+<p>Although the agencies seemed indifferent to our questions, they are curious and actually would decrypt the questions.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">oracle</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">asmCrypto</span>.<span style="color:#a6e22e">RSA_OAEP</span>(
     <span style="color:#a6e22e">privkey</span>,
     <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">asmCrypto</span>.<span style="color:#a6e22e">Sha256</span>(),
@@ -177,9 +176,11 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 
 <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">render</span>(<span style="color:#e6db74">&#39;index&#39;</span>, {<span style="color:#a6e22e">response</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">response</span>});
 </code></pre></div>
-<p>Would it be possible that the functions inside the <code>try</code> block could overwrite the <code>response</code>? In this case, it will actually return something else apart from <code>I won't answer</code>? Well, <code>response</code> isn't even used as a variable in the <a href="https://github.com/asmcrypto/asmcrypto.js/">asmCrypto.js</a>, not to mention if it is being misused. This is not the way.</p>
+<p>We can easily identify the LFI vulnerability as we are the ones who can manipulate <code>oracleName</code>, and it isn't being checked. However it does not seem useful since the hash of the content is computed and being used. Having this, we are not able to recover the content even we are able to obtain its hash.</p>
 
-<p>Honestly, this part did not struggle me a lot. I linked this challenge with <a href="http://localhost:1313/posts/2021-01-18-firebird-internal-ctf/#obvious-transfer-crypto">Obvious Transfer</a> (a challenge that I made) at an early time because there are some common factors. When I look at the source code for asmCrypto.js, I am able to found the place that I could recover $n$. Let's read the code together!</p>
+<p>However, would it be possible that the functions inside the <code>try</code> block to overwrite the <code>response</code>? In this case, it will actually return something other than <code>I won't answer</code>? Well, <code>response</code> isn't even used as a variable in the <a href="https://github.com/asmcrypto/asmcrypto.js/">asmCrypto.js</a>, not to mention if it is being misused. This is not the way.</p>
+
+<p>This part did not struggle me a lot. I linked this challenge with <a href="http://localhost:1313/posts/2021-01-18-firebird-internal-ctf/#obvious-transfer-crypto">Obvious Transfer</a> (a challenge that I made) at an early time because there are some common factors. When I look at the source code for asmCrypto.js, I am able to found the place that I could recover $n$. Let's read the code together!</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Excerpted from https://github.com/asmcrypto/asmcrypto.js/blob/v2.3.2/src/rsa/pkcs1.ts
 </span><span style="color:#75715e"></span>
 <span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RSA_OAEP</span> {
@@ -298,7 +299,7 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
     <span style="color:#75715e">// omitted
 </span><span style="color:#75715e"></span>}
 </code></pre></div>
-<p>In particular, the operations do not seemed expensive between two security errors. The server takes a similar amount of time for both valid and invalid OAEP-padded messages. The majority of time is used to compute $m = c^d\ \text{mod}\ n$... Or is it? We can see that <code>hash(label)</code> is computed after $m$ is computed. We are able to use other <em>labels</em>... can we find a label that is slow enough for us to detect whether $m &lt; 2^{2016}$? Yes - We can use a long file and it will be more expensive to compute its hash. One file I found inside the container is <code>/usr/lib/x86_64-linux-gnu/libicui18n.a</code>, which is around 35MB.</p>
+<p>In particular, the operations do not seemed expensive between two security errors. The server takes a similar amount of time for both valid and invalid OAEP-padded messages. The majority of time is used to compute $m = c^d\ \text{mod}\ n$... Or is it? We can see that <code>hash(label)</code> is computed after $m$ is computed. We are able to use other <em>labels</em>... can we find a label that is slow enough for us to detect whether $m &lt; 2^{2016}$? Yes - From the source code, apart from the three agencies, we can make use with the LFI vulnerability to include any of the files inside the container. We can use a long file and it will be more expensive to compute its hash. One file I found inside the container is <code>/usr/lib/x86_64-linux-gnu/libicui18n.a</code>, which is around 35MB.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ls -al /usr/lib/x86_64-linux-gnu/libicui18n.a
 <span style="color:#75715e"># -rw-r--r-- 1 root root 34867974 Mar 14  2020 /usr/lib/x86_64-linux-gnu/libicui18n.a</span></code></pre></div>
 <p>We can set the oracle name to be <code>../../../../usr/lib/x86_64-linux-gnu/libicui18n.a</code>. Given a ciphertext $c$, it takes around 300ms to respond if $m &lt; 2^{1016}$, while it takes only 30ms otherwise. This is pretty reliable! After all, we can use this to check if a given message falls in $m &lt; 2^{1016}$. By implementing the Manger's attack, I am able to recover the OAEP-padded $m$. Eventually, the flag pops out after 100 minutes with around 20K calls - <code>justCTF{60c173b4c6554af11e43a8c95190dcde749443}</code>. First blood! 🎉</p>
@@ -311,7 +312,7 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 
 
 
-<p><em>Addendum.</em> I am notified from <a href="https://twitter.com/josep68_" target="_blank" rel="nofollow">@josep68_</a>'s <a href="https://www.josephsurin.me/posts/2021-01-31-justctf-2020-crypto-writeups">writeup</a> that 1.1K oracle calls should be sufficient to recover the padded message. It <em>is</em> my implementation to Manger's attack that made it super inefficient...</p>
+<p><em>Addendum.</em> I am awared from <a href="https://twitter.com/josep68_" target="_blank" rel="nofollow">@josep68_</a>'s <a href="https://www.josephsurin.me/posts/2021-01-31-justctf-2020-crypto-writeups">writeup</a> that 1.1K oracle calls should be sufficient to recover the padded message. It <em>is</em> my implementation to Manger's attack that made it super inefficient...</p>
 
       </div></div>
 
