@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Feb 2021 03:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Feb 2021 01:30:00 +0800</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>crypto</title>
       <link>/tags/crypto/</link>
-      <pubDate>Mon, 01 Feb 2021 03:00:00 +0800</pubDate>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
       
       <guid>/tags/crypto/</guid>
       <description></description>
@@ -23,9 +23,36 @@
     <item>
       <title>ctf</title>
       <link>/tags/ctf/</link>
-      <pubDate>Mon, 01 Feb 2021 03:00:00 +0800</pubDate>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
       
       <guid>/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dicectf</title>
+      <link>/tags/dicectf/</link>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
+      
+      <guid>/tags/dicectf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>grobner-basis</title>
+      <link>/tags/grobner-basis/</link>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
+      
+      <guid>/tags/grobner-basis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>half-gcd</title>
+      <link>/tags/half-gcd/</link>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
+      
+      <guid>/tags/half-gcd/</guid>
       <description></description>
     </item>
     
