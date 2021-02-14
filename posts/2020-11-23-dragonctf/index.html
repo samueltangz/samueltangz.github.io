@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Written from the perspective of Mystiz. babykok writeup by GeoffreyY.  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
 There are three challenges writeup in this post:
- Bit Flip (parts 2 and 3) Frying in motion babykok   Bit Flip (Crypto, 155&#43;324&#43;343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated." />
+ Bit Flip (parts 2 and 3) Frying in motion babykok  Bit Flip (Crypto, 155&#43;324&#43;343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/posts/2020-11-23-dragonctf/" />
@@ -47,7 +47,7 @@ There are three challenges writeup in this post:
 <meta property="og:url" content="/posts/2020-11-23-dragonctf/" />
 <meta property="og:site_name" content="Mystify" />
 
-  <meta property="og:image" content="/">
+  <meta property="og:image" content="/images/2020-11-23-dragonctf/map.png">
 
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
@@ -117,6 +117,8 @@ There are three challenges writeup in this post:
   
 
   
+    <img src="/images/2020-11-23-dragonctf/map.png" class="post-cover center" alt="Dragon CTF 2020 Writeup" />
+  
 
   
 
@@ -134,14 +136,6 @@ There are three challenges writeup in this post:
 <li>Frying in motion</li>
 <li>babykok</li>
 </ul>
-
-
-  <figure class="left" >
-    <img src="/images/2020-11-23-dragonctf/map.png"   />
-    
-  </figure>
-
-
 
 <h2 id="bit-flip-crypto-155324343-points">Bit Flip (Crypto, 155+324+343 points)<a href="#bit-flip-crypto-155324343-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
@@ -200,7 +194,7 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 <p><em>Bit Flip 3</em> was solved in 1 hour - and we were the first to solve. But wait, why isn't part II on <em>Bit Flip 2</em>? The reason is simply because just I cannot solve it (yet).</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2020-11-23-dragonctf/bit-flip-01.png"   />
     
       <figcaption class="right" >defund had the same question, too.</figcaption>
@@ -239,7 +233,7 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 <p>During the research, I was wondering if there is a proof-of-work database that has a list of payloads with many trailing zeros as its hash. I was even wondering if there is someone ever able to solve a 64-bit proof-of-work (particularly on SHA256). Turns out I am too naive - <em>some</em> are able to solve a 76-bit proof-of-work in around 10 minutes. Who? The bitcoin network.</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2020-11-23-dragonctf/bit-flip-02.png"   />
     
       <figcaption class="right" >Let's appreciate the number of zeros...</figcaption>

@@ -357,7 +357,13 @@ $$b_{ki} = \sum_{j=0}^i a_{k,{i-j}}s_j - 1486 \sum_{j=i+1}^{255} a_{k,i-j+256}s_
 
 <p>My first thought is to use Angr! Unfortunately I am not a good Angr user - so it took me a long while to give up. I have finally adopted an <em>ultra-naive</em> approach...</p>
 
-<p><figure><img src="https://i.imgur.com/AHVRp7G.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2019-10-02-pwnthybytes/ida.png"   />
+    
+  </figure>
+
+
 
 <p>That is, I have extracted the expressions one by one <em>manually</em> and pass them to z3. After all, I admit my stupidity - it took me <em>six</em> hours to solve it...</p>
 

@@ -227,7 +227,13 @@ enc(0x64) = (0x985dbb38a65f4e69bfc602d7e114cad9, 0xcad1cb62a3d30b05093575f3a22f7
     b&#39;Option: &#39;</code></pre>
 <p>What can we do? Since this is $G$, we can simply search this on Google:</p>
 
-<p><figure><img src="https://i.imgur.com/ORfhqk4.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-07-22-uiuctf/secp128r2.png"   />
+    
+  </figure>
+
+
 
 <p>Ta-da 🎉 - it is the generator for curve <em>secp128r2</em>. You would think this is a ta-da moment, I would say that this is a facepalm moment. I could spent much less time on recovering the parameters in such a way.</p>
 
@@ -237,7 +243,13 @@ enc(0x64) = (0x985dbb38a65f4e69bfc602d7e114cad9, 0xcad1cb62a3d30b05093575f3a22f7
 
 <p>Fours hours later the organizers released a hint in the Discord server:</p>
 
-<p><figure><img src="https://i.imgur.com/iLrD1Es.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-07-22-uiuctf/announcement.png"   />
+    
+  </figure>
+
+
 
 <p>When I was <del>being played</del> writing an interactor with the service, I observed that there was a strange behaviour regarding to the flag encryption method:</p>
 <pre><code>========================================
@@ -262,7 +274,13 @@ err</code></pre>
 
 <p>Ten hours later, <em>somebody</em> from Discord claimed that he has a strange observation:</p>
 
-<p><figure><img src="https://i.imgur.com/c4QxADO.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-07-22-uiuctf/breakthrough.png"   />
+    
+  </figure>
+
+
 
 <div class="alert info">
   <strong>Who was the somebody?</strong> Me.

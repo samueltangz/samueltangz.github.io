@@ -45,7 +45,7 @@
 <meta property="og:url" content="/posts/2021-01-29-hoifanrds-osu-challenge/" />
 <meta property="og:site_name" content="Mystify" />
 
-  <meta property="og:image" content="/">
+  <meta property="og:image" content="/images/2021-01-29-hoifanrd/step-1.png">
 
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
@@ -113,6 +113,8 @@
   
 
   
+    <img src="/images/2021-01-29-hoifanrd/step-1.png" class="post-cover center" alt="hoifanrd&#39;s osu! Challenge" />
+  
 
   
 
@@ -136,7 +138,7 @@
 <p>At around 11pm of January 25, I received a direct message from <em>hoifanrd</em> that he is going to make a guessy challenge. I replied &quot;make it&quot; in few minutes. On the next morning, I saw a challenge came alive in the Discord server of the Firebird CTF team.</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/background.png"   />
     
       <figcaption class="right" >Did you see a pandora's box?</figcaption>
@@ -151,7 +153,7 @@
 
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/tuning.jpeg"   />
     
       <figcaption class="right" >Shamelessly stolen from the <a href='https://www.facebook.com/UCCU.Hacker/photos/1775516999254715'>Facebook page of UCCU hacker</a>.</figcaption>
@@ -189,7 +191,7 @@
 <p>The first thing I think is <em>Caesar cipher</em>. I bet it wouldn't be <em>Vigenere cipher</em> owing to its short message, and I would definitely question the author's knowledge on computer science if it is Vigenere cipher. I threw the ciphertext to cryptii.com and eventually found <code>?v=sua3r9Fwqk0</code>...</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/step-1.png"   />
     
       <figcaption class="right" >Oh wow. So it is actually an video on YouTube.</figcaption>
@@ -217,7 +219,7 @@
 <p>Knowing that being a stego challenge, it must be the second beatmap that the secret is hidden. At first, I wanted to see if something inside the video. I was soon stopped by <em>hoifanrd</em> and pointed that I am not on the right track. Well, since we can download the beatmap from osu.ppy.sh, let's download the beatmap and analyse. It is an <code>.osz</code> file that can be opened like zip file.</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/osz-file.png"   />
     
   </figure>
@@ -272,7 +274,7 @@
 <p>However there is no significant time difference between a dash and a dot. What can we do to distinguish dashes from dots? Well, if you met <em>some</em> conditions, then the replay will be recorded and uploaded to osu.ppy.sh (as an <code>.osr</code> file). The first gameplay satisfies such conditions and is available online. There are multiple approaches to read an <code>.osr</code> file, since I am lazy to install <em>osu!</em> for that, I found a Python package on Github called <a href="https://github.com/kszlim/osu-replay-parser">osrparse</a>. Doing some math, I identified the time interval of the heartbeat and extracted the key pressed during the interval.</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/step-3.png"   />
     
   </figure>
@@ -295,7 +297,7 @@
 
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/we-love-sam.png"   />
     
   </figure>
@@ -314,8 +316,8 @@
 
 
   <div class="collapsable-code">
-    <input id="614587293" type="checkbox" checked />
-    <label for="614587293">
+    <input id="958437162" type="checkbox" checked />
+    <label for="958437162">
       <span class="collapsable-code__language">text</span>
       
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -404,8 +406,8 @@ I like playing puzzle...
 
 
   <div class="collapsable-code">
-    <input id="531826497" type="checkbox" checked />
-    <label for="531826497">
+    <input id="234596781" type="checkbox" checked />
+    <label for="234596781">
       <span class="collapsable-code__language">text</span>
       
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -480,7 +482,7 @@ I like playing puzzle...
 <p>I have imported the nonogram to <a href="http://a.teall.info/nonogram/">an online nonogram solver</a>. The solver occasionally stop working owing to unknown reasons (maybe the solution is not unique), so I decided to guess the shaded bits. Luckily I am streaming this, so that the ones who are watching can also deal with it while I am stuck.</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/qrcode.png"   />
     
       <figcaption class="right" >Crowd-sourcing nonogram. Credit to TWY.</figcaption>
@@ -492,7 +494,7 @@ I like playing puzzle...
 <p>Shortly after, we have enough information for the QR code to be scanned correctly: <code>flag{W3_l0v3_S4m_4nd_p1z_dun_1ov3_m3}</code>. Sam is blushed.</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-01-29-hoifanrd/sam-final.png"   />
     
   </figure>

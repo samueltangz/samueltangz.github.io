@@ -323,7 +323,13 @@ Translating via google: <code>I'm pu → I love you</code>. WTF?</p>
 
 <p>What's $n$? It is the output of <code>Check.Func3()</code> and it actually is a random number... Is it even solvable?</p>
 
-<p><figure><img src="https://i.imgur.com/Hu89cfs.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-09-23-twctf/pepe-sweat.png"   />
+    
+  </figure>
+
+
 
 <p>Turns out it is. We notice that $a_{ij}$ is an even number for $i=1, 2, ..., 22$ and $j=1, 2, ..., 31$. With a bit of deduction (<em>a bit means few sheets of paper and a lot of time</em>), we are able to derive a function $g_i$ such that $f_i^{(10000)}(n) = g_i(m_i)$ for all $n$, i.e., this would be a constant.</p>
 
@@ -415,9 +421,21 @@ e_1 d &\equiv 1\ \left(\text{mod}\ \phi(n)\right)
 
 <p>Without any clues, we were messing around. Eventually we tried to factorize $p-1$.</p>
 
-<p><figure><img src="https://i.imgur.com/d5J7gsd.png" alt=""></figure></p>
 
-<p><figure><img src="https://i.imgur.com/96Sae4y.png" alt=""></figure></p>
+  <figure class="center" >
+    <img src="/images/2020-09-23-twctf/factordb.png"   />
+    
+  </figure>
+
+
+
+
+  <figure class="center" >
+    <img src="/images/2020-09-23-twctf/jackie-chan-what.png"   />
+    
+  </figure>
+
+
 
 <p><em>Wait what?</em> Isn't $p$ a strong prime? Why are there so many factors? Turns out we have messed up the definition of strong prime. A strong prime $p$ is basically a prime with $p-1$ having a large prime factor. The desired $p$ they want should be <em>safe</em> but not <em>strong</em>.</p>
 

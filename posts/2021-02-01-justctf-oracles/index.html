@@ -7,8 +7,8 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="I was playing justCTF 2020 with the new CTFers in Yakitori (Firebird). Oracles is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up.
-Challenge Summary  We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
- Is Goldbach&#39;s conjecture true? What is the answer to everything?   On top of them, the challenge author tried to tell the agency the flag." />
+Challenge Summary We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
+ Is Goldbach&#39;s conjecture true? What is the answer to everything?  On top of them, the challenge author tried to tell the agency the flag." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/posts/2021-02-01-justctf-oracles/" />
@@ -47,7 +47,7 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 <meta property="og:url" content="/posts/2021-02-01-justctf-oracles/" />
 <meta property="og:site_name" content="Mystify" />
 
-  <meta property="og:image" content="/">
+  <meta property="og:image" content="/images/2021-02-01-justctf/oracles-1.png">
 
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
@@ -121,6 +121,8 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
   
 
   
+    <img src="/images/2021-02-01-justctf/oracles-1.png" class="post-cover center" alt="justCTF 2020: Oracles" />
+  
 
   
 
@@ -129,20 +131,11 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 
 <h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-
-  <figure class="left" >
-    <img src="/images/2021-02-01-justctf/oracles-1.png"   />
-    
-  </figure>
-
-
-
 <p>We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:</p>
 
 <ul>
 <li>Is Goldbach's conjecture true?</li>
 <li>What is the answer to everything?</li>
-<li></li>
 </ul>
 
 <p>On top of them, the challenge author tried to tell the agency the flag. Well, the agencies are so indifferent and they will not be responding anyway. By the way, the questions (or the flag) are encrypted with RSA-OAEP. It is not possible to read the flag solely from the ciphertext.</p>
@@ -223,8 +216,8 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 </code></pre></div>
 <p>The <code>decrypt</code> method in the <code>RSA</code> class checks whether $m &lt; n$! If $m \geq n$, an error is thrown and the remaining operations are not performed. It is obvious that they should be responding faster... But how can we detect it?</p>
 
-<p>
-  <figure class="left" >
+
+  <figure class="center" >
     <img src="/images/2021-02-01-justctf/times-m-le-n.png"   />
     
       <figcaption class="right" >The response times when $m < n$.</figcaption>
@@ -233,21 +226,22 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 
 
 
-  <figure class="left" >
+
+  <figure class="center" >
     <img src="/images/2021-02-01-justctf/times-m-geq-n.png"   />
     
       <figcaption class="right" >The response times when $m \geq n$.</figcaption>
     
   </figure>
 
-</p>
+
 
 <p>It seems that the latency has highly fluctuated, which makes the results unreliable. Luckily the <code>response-time</code> package is used, adding a <code>X-Response-Time</code> header to the responses showing the time the server has processed the request. When $m &lt; n$, it is around 10 - 15ms. Otherwise it can be done within 5ms. Knowing this, we can recover $n$ with binary search! For $e$, I suppose that would be 65537 as always...</p>
 
 <h3 id="part-ii-back-to-square-one">Part II: Back to square one<a href="#part-ii-back-to-square-one" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-02-01-justctf/announcement.png"   />
     
       <figcaption class="right" >Uh oh. Our progress is ruined.</figcaption>
@@ -305,7 +299,7 @@ Challenge Summary  We are given a chance to ask the agencies for oracles. The ch
 <p>We can set the oracle name to be <code>../../../../usr/lib/x86_64-linux-gnu/libicui18n.a</code>. Given a ciphertext $c$, it takes around 300ms to respond if $m &lt; 2^{1016}$, while it takes only 30ms otherwise. This is pretty reliable! After all, we can use this to check if a given message falls in $m &lt; 2^{1016}$. By implementing the Manger's attack, I am able to recover the OAEP-padded $m$. Eventually, the flag pops out after 100 minutes with around 20K calls - <code>justCTF{60c173b4c6554af11e43a8c95190dcde749443}</code>. First blood! 🎉</p>
 
 
-  <figure class="left" >
+  <figure class="center" >
     <img src="/images/2021-02-01-justctf/oracles-solved.png"   />
     
   </figure>

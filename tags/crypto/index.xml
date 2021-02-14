@@ -27,8 +27,8 @@
       
       <guid>/posts/2021-02-01-justctf-oracles/</guid>
       <description>I was playing justCTF 2020 with the new CTFers in Yakitori (Firebird). Oracles is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up.
-Challenge Summary  We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
- Is Goldbach&#39;s conjecture true? What is the answer to everything?   On top of them, the challenge author tried to tell the agency the flag.</description>
+Challenge Summary We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
+ Is Goldbach&#39;s conjecture true? What is the answer to everything?  On top of them, the challenge author tried to tell the agency the flag.</description>
     </item>
     
     <item>
@@ -72,7 +72,7 @@ Seriously. I knew nothing on hyperelliptic curves prior to the CTF.</description
       <guid>/posts/2020-11-23-dragonctf/</guid>
       <description>Written from the perspective of Mystiz. babykok writeup by GeoffreyY.  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
 There are three challenges writeup in this post:
- Bit Flip (parts 2 and 3) Frying in motion babykok   Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>
+ Bit Flip (parts 2 and 3) Frying in motion babykok  Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>
     </item>
     
     <item>

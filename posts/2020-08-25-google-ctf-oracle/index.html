@@ -257,7 +257,13 @@ k^{(1)}_{20} \oplus k^{(2)}_{20}
 
 <p>And now the <em>only</em> unknown is $x$. Can we solve it easily? Yes indeed: we can compute bytes 0, 5, 10, 15 of $x$ from the first four bytes of $k^{(1)}_{20} \oplus k^{(2)}_{20}$. Along with three more equalities from <code>p</code>, we are able to recover $x$ completely. I used an meet-in-the-middle approach to solve for $x$ in five seconds.</p>
 
-<p><figure><img src="https://i.imgur.com/sdSHCtb.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-08-25-googlectf/hm.png"   />
+    
+  </figure>
+
+
 
 <p>But wait. There is a problem: I am able to find 65536 candidates (or even more) instead of 1, but I am <em>unable</em> to eliminate the rest. The possible number of states will be growing exponentally! What can I do? The solution is actually simple: Just send $M^{(3)}$ and compute another solution set of $x$. After all, it is very likely that $x$ is the only element in the intersection of the two sets. With $x$, we are able to compute $s_{10}$ (respectively $s_{14}$).</p>
 

@@ -135,7 +135,13 @@ Challenge Summary  We wanted to plant a lot of trees, but it&#39;s going kinda s
 
 <p>We are given a binary that executes a slow algorithm that takes up a lot of memory. The objective is to wait the program until it is done - the flag would be shown as the output.</p>
 
-<p><figure><img src="https://i.imgur.com/Ln4u1PD.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-09-08-confidencectf/i-can-explain.png"   />
+    
+  </figure>
+
+
 
 <p><strong>Never.</strong> Our PCs don't even have enough memory to play with that. Even so, we gotta wait forever for the flag. Our objective is to optimize and rewrite the algorithm used. By optimize we mean reduce <em>both</em> the time and space complexities.</p>
 
@@ -190,7 +196,13 @@ n = 2: p4{s_2 982d2435efffdac7}
 n = 3: p4{s_5 s_4}</code></pre>
 <p>The output when $n = 3$ is actually composed by two elements in the sequence. It makes us think: is it the case that <code>88ec...</code> (also <code>32b9...</code> and <code>982d...</code>) is an <em>intermediate state</em>? To verify our thoughts, we are going to dig deeper into the assembly operations.</p>
 
-<p><figure><img src="https://i.imgur.com/z6YWn0P.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-09-08-confidencectf/ida-400816.png"   />
+    
+  </figure>
+
+
 
 <p>There are <em>four</em> operations. Here are the values of <code>v0</code> and <code>v1</code> (as defined in <code>sub_400816</code>) after each of the steps.</p>
 <pre><code class="language-assembly" data-lang="assembly">                        /* rcx = c0,              rdx = d0              */
@@ -419,7 +431,13 @@ jmp  short loc_40082F   /* rcx = 3*d0 + 2*c0 + 4, rdx = c0              */</code
 }</code></pre></div>
 <p>harrier has implemented a <em>good</em> tree checker <del>(himself)</del> in Discord for me to test with:</p>
 
-<p><figure><img src="https://i.imgur.com/5zcRY8L.png" alt=""></figure></p>
+
+  <figure class="center" >
+    <img src="/images/2020-09-08-confidencectf/harrier-checker.png"   />
+    
+  </figure>
+
+
 
 <p>After all, a tree is said to be <em>good</em> if both of the condition are satisfied:</p>
 
