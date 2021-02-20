@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>kurenaif 1K Subscriptions Challenges :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="On 13 February, 2021, kurenaif (@fwarashi) has released five challenges celebrating the 1000-subscription in the YouTube channel1. Being locked at home in Lunar New Year, I have nothing else to do. Therefore I decided to attempt those challenges, which is available on GitHub.
+Note. The writeup is actually compiled on the same day. It is published on 21 Feburary to not spoil the challenges.  p_p_rsa Challenge Summary In the challenge, we are given a RSA public key and an ciphertext $c$ (of message $m$)." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-02-21-kurenaif-challenges/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/green.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/green.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="kurenaif 1K Subscriptions Challenges">
+<meta property="og:description" content="On 13 February, 2021, kurenaif has released five challenges celebrating the 1000-subscription in the YouTube channel. Being locked at home in Lunar New Year, I have nothing else to do. Therefore I decided to attempt those challenges, which is available on GitHub." />
+<meta property="og:url" content="/posts/2021-02-21-kurenaif-challenges/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-02-21-kurenaif/beginning.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-02-20 23:00:00 &#43;0800 HKT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="green">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-02-21-kurenaif-challenges/">kurenaif 1K Subscriptions Challenges</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-02-20 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/kurenaif/">kurenaif</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-02-21-kurenaif/beginning.png" class="post-cover center" alt="kurenaif 1K Subscriptions Challenges" />
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>On 13 February, 2021, <em>kurenaif</em> (<a href="https://twitter.com/fwarashi" target="_blank" rel="nofollow">@fwarashi</a>) has released five challenges celebrating the 1000-subscription in the YouTube channel<sup class="footnote-ref" id="fnref:kurenaif-youtube"><a class="footnote" href="#fn:kurenaif-youtube">1</a></sup>. Being locked at home in Lunar New Year, I have nothing else to do. Therefore I decided to attempt those challenges, which is available on <a href="https://github.com/kurenaif/kurenaif_valentine_problems">GitHub</a>.</p>
+
+<div class="alert info">
+  <strong>Note.</strong> The writeup is actually compiled on the same day. It is published on 21 Feburary to not spoil the challenges.
+</div>
+
+
+<h2 id="pprsa">p_p_rsa<a href="#pprsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>In the challenge, we are given a RSA public key and an ciphertext $c$ (of message $m$). However, there is a twist that $n = p^2$. The objective is to recover $m$.</p>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Since $n = p^2$, it is very simple to factorize $n$ by taking its square root. Also, $\varphi(n) = p(p-1)$. With this, we can compute $d$ and thus the message $m$: <code>kurenaifCTF{phi_is_not_p-1_p-1}</code>.</p>
+
+<p><a href="https://gist.github.com/samueltangz/90c25bcf60e6c023c34b817b84d61cad">My Gist</a></p>
+
+<h2 id="redundantrsa">redundant_rsa<a href="#redundantrsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>In this challenge, we are given $n$, $c_3 := m^3\ (\text{mod}\ n)$ and $c_{65537} := m^{65537}\ (\text{mod}\ n)$. The objective is to recover $m$.</p>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>This is a simplified version of <em>common modulus attack</em> of RSA. In particular, since $21846 \times 3 - 65537 = 1$, we have</p>
+
+<p><span  class="math">\[m \equiv m^{21846 \times 3 - 65537} \equiv (m^3)^{21846}\cdot m^{-65537} \equiv {c_3}^{21846}\cdot {c_{65537}}^{-1}\ (\text{mod}\ n).\]</span></p>
+
+<p>With above, we are able to recover the flag: <code>kurenaifCTF{you_4re_redundant_master}</code>.</p>
+
+<p><a href="https://gist.github.com/samueltangz/5c5446c6d544e4d8cecd417001451600">My Gist</a></p>
+
+<h2 id="thebigfive">the_big_five<a href="#thebigfive" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>In this challenge, we are given five consecutive values, i.e., $x_0, x_1, ..., x_4$ generated from the LCG. The objective is to predict the sixth, $x_5$.</p>
+
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Let's recall how the numbers from LCG are generated. If we have three constants $a, b, m$, then</p>
+
+<p><span  class="math">\[x_{i+1} \equiv ax_i + b\ (\text{mod}\ m).\]</span></p>
+
+<p>In particular, $m$ is a prime. To recover $x_5$, my approach is to recover $m, a, b$ in order.</p>
+
+<h4 id="part-i-recovering-m">Part I: Recovering $m$<a href="#part-i-recovering-m" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>To recover $m$, we try to eliminate $a$ and $b$ using the known variables.</p>
+
+<p><span  class="math">\[
+\begin{cases}\begin{aligned}
+x_2 - x_1 &\equiv a(x_1 - x_0) \\
+x_3 - x_2 &\equiv a(x_2 - x_1) \\
+x_4 - x_3 &\equiv a(x_3 - x_2)
+\end{aligned}\end{cases}\ (\text{mod}\ m).
+\]</span></p>
+
+<p>Since $x_1 - x_0, x_2 - x_1, x_3 - x_2$ and $x_4 - x_3$ form a geometric sequence, we have</p>
+
+<p><span  class="math">\[
+\begin{cases}\begin{aligned}
+(x_2 - x_1)^2 &\equiv (x_1 - x_0)(x_3 - x_2) \\
+(x_3 - x_2)^2 &\equiv (x_2 - x_1)(x_4 - x_3)
+\end{aligned}\end{cases}\ (\text{mod}\ m).
+\]</span></p>
+
+<p>In this way, $(x_2 - x_1)^2 - (x_1 - x_0)(x_3 - x_2)$ and $(x_3 - x_2)^2 - (x_2 - x_1)(x_4 - x_3)$ are both multiples of $m$. Taking their GCD, we might have a small multiple of $m$. In this challenge, the GCD is already equal to $m = 176112297761995517109581492781981180247$.</p>
+
+<h4 id="part-ii-recovering-a-and-b">Part II: Recovering $a$ and $b$<a href="#part-ii-recovering-a-and-b" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>It is evident to recover $a$ and $b$. To recover them, we can simply compute</p>
+
+<p><span  class="math">\[
+\begin{aligned}
+a &= (x_2 - x_1)\cdot(x_1 - x_0)^{-1}\ (\text{mod}\ m), \\
+b &= x_1 - ax_0\ (\text{mod}\ m).
+\end{aligned}
+\]</span></p>
+
+<p>In this way,</p>
+
+<p><span  class="math">\[
+\begin{cases}\begin{aligned}
+a &= 113087371900439262017597367409533441772 \\
+b &= 157951423074341581392962154768234193107
+\end{aligned}\end{cases}.
+\]</span></p>
+
+<p>As we have $m, a$ and $b$, we can recover $x_5 = 74994485449019875805749743810715945771$. Using it as the key and decrypting, we have <code>kurenaifCTF{Less_numbers_are_better}</code>.</p>
+
+<p><a href="https://gist.github.com/samueltangz/2b961660fb1d3b60e013f40ba1ef5000">My Gist</a></p>
+
+<h2 id="theonetimepad">the_onetime_pad<a href="#theonetimepad" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>In this challenge, we are given a 361-bit ciphertext (the bits are given by $c_0, c_1, ..., c_{360}$) that is xorred with keystream generated from a LCG, i.e.,</p>
+
+<p><span  class="math">\[c_i = m_i \oplus k_i\ \forall i = 0, 1, ..., 360.\]</span></p>
+
+<p>This time the modulus $m$ and the multiplier $a = 2$ of the LCG are given. However, only the lowest bit is returned each time. Mathematically,</p>
+
+<p><span  class="math">\[
+\begin{cases}\begin{aligned}
+x_i &= 2x_{i-1}\ \text{mod}\ m \\
+k_i &= x_i\ \text{mod}\ 2
+\end{aligned}\end{cases}.
+\]</span></p>
+
+<p>It is also notable that the $m_{311} = m_{312} = ... = m_{360} = 0$.</p>
+
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>In short, this is <em>LSB oracle</em> in disguise. Since $m_{311} = m_{312} = ... = m_{360} = 0$, we have $k_{311} = c_{311}, k_{312} = c_{312}, ..., k_{360} = c_{360}$. Maybe we can try to recover $x_{310}$?</p>
+
+<p>Let's consider these two cases.</p>
+
+<p><strong>Case 1.</strong> Suppose that we have $0 \leq x_{310} &lt; n/2$. Then $x_{311} = 2x_{310}$ and $k_{311} = 0$.<br>
+<strong>Case 2.</strong> Suppose that we have $n/2 \leq x_{310} &lt; n$. Then $x_{311} = 2x_{310} - m$ and $k_{311} = 1$.</p>
+<pre><code class="language-viz-dot" data-lang="viz-dot">digraph {
+  r_00[label=&#34;[0, n)&#34;]
+  r_10[label=&#34;[0, n/2)&#34;]
+  r_11[label=&#34;[n/2, n)&#34;]
+  r_20[label=&#34;[0, n/4)&#34;]
+  r_21[label=&#34;[n/4, n/2)&#34;]
+  r_22[label=&#34;[n/2, 3n/4)&#34;]
+  r_23[label=&#34;[3n/4, n)&#34;]
+  r_30[label=&#34;[0, n/8)&#34;]
+  r_31[label=&#34;[n/8, n/4)&#34;]
+  r_32[label=&#34;[n/4, 3n/8)&#34;]
+  r_33[label=&#34;[3n/8, n/2)&#34;]
+  r_34[label=&#34;[n/2, 5n/8)&#34;]
+  r_35[label=&#34;[5n/8, 3n/4)&#34;]
+  r_36[label=&#34;[3n/4, 7n/8)&#34;]
+  r_37[label=&#34;[7n/8, n)&#34;]
+
+  r_00-&gt;r_10[label=0]
+  r_00-&gt;r_11[label=1]
+  r_10-&gt;r_20[label=0]
+  r_10-&gt;r_21[label=1]
+  r_11-&gt;r_22[label=0]
+  r_11-&gt;r_23[label=1]
+  r_20-&gt;r_30[label=0]
+  r_20-&gt;r_31[label=1]
+  r_21-&gt;r_32[label=0]
+  r_21-&gt;r_33[label=1]
+  r_22-&gt;r_34[label=0]
+  r_22-&gt;r_35[label=1]
+  r_23-&gt;r_36[label=0]
+  r_23-&gt;r_37[label=1]
+}</code></pre>
+<p>Since we are given 50 bits, we are able to a possible range of $x_{310}$ (there are around 2<sup>14</sup> possibilities). From $x_{310}$, it is easy to recover $x_{-1}$ (the initial state) and generate the corresponding keystreams. We can exhaust all of them, and found that $x_{310} = 1251194628942649321$ is the correct state: <code>kurenaifCTF{lowest_bit_oracle_is_funny}</code>.</p>
+
+<p><a href="https://gist.github.com/samueltangz/84af56469f6c174a017f9c4da0ee12f7">My Gist</a></p>
+
+<h2 id="threevaluestwister">three_values_twister<a href="#threevaluestwister" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-4">Challenge Summary<a href="#challenge-summary-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>In this challenge, we are given 624th, 851th and 1078th number generated from <code>mt_rand()</code> via PHP 7.4.3. The objective is to find the 2048th number generated.</p>
+
+<h3 id="solution-4">Solution<a href="#solution-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Well, the maximum possible value of <code>mt_rand()</code> is $2^{31}-1 = 2147483647$ and it is platform-independent<sup class="footnote-ref" id="fnref:mt-max"><a class="footnote" href="#fn:mt-max">2</a></sup>. We can simply exhaust the key space and try to decrypt the message. The key space can be exhausted in around 2.5 hours (my script iterates through 0 up to 2<sup>32</sup>, which is too much), and luckily the key can be recovered in around 22 minutes with pypy3. <code>kurenaifCTF{twice_reloaded_mersenne_twister}</code>.</p>
+
+<p><a href="https://gist.github.com/samueltangz/da5b0ade1c1daddc7205a175456ff925">My Gist</a></p>
+<div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:kurenaif-youtube"><a href="https://www.youtube.com/c/kurenaif">kurenaif's YouTube channel</a>
+ <a class="footnote-return" href="#fnref:kurenaif-youtube">↩</a></li>
+<li id="fn:mt-max"><a href="https://www.php.net/manual/en/function.mt-getrandmax.php#117620">bishop's comment from &quot;PHP: mt_getrandmax&quot;</a>
+ <a class="footnote-return" href="#fnref:mt-max">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-02-15-dicectf-1/">
+                <span class="button__text">DiceCTF 2021 Writeup (I)</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    kurenaif 1K Subscriptions Challenges
+  </a>
+  <div class="js-toc"></div>
+</aside>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 3
+  });
+</script>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/1.7.1/viz.js"> </script>
+<script type="text/javascript">
+  (function () {
+    const vizPrefix = "language-viz-";
+    Array.prototype.forEach.call(document.querySelectorAll("[class^=" + vizPrefix + "]"), function (x) {
+      let engine;
+      x.getAttribute("class").split(" ").forEach(function (cls) {
+        if (cls.startsWith(vizPrefix)) {
+          engine = cls.substr(vizPrefix.length);
+        }
+      });
+      const image = new DOMParser().parseFromString(Viz(x.innerText, { format: "svg", engine: engine }), "image/svg+xml");
+      x.parentNode.insertBefore(image.documentElement, x);
+      x.style.display = 'none'
+      x.parentNode.style.backgroundColor = "white"
+    });
+  })();
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

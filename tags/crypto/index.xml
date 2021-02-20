@@ -6,10 +6,20 @@
     <description>Recent content in crypto on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Feb 2021 01:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 20 Feb 2021 23:00:00 +0800</lastBuildDate>
     
 	<atom:link href="/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>kurenaif 1K Subscriptions Challenges</title>
+      <link>/posts/2021-02-21-kurenaif-challenges/</link>
+      <pubDate>Sat, 20 Feb 2021 23:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-02-21-kurenaif-challenges/</guid>
+      <description>On 13 February, 2021, kurenaif (@fwarashi) has released five challenges celebrating the 1000-subscription in the YouTube channel1. Being locked at home in Lunar New Year, I have nothing else to do. Therefore I decided to attempt those challenges, which is available on GitHub.
+Note. The writeup is actually compiled on the same day. It is published on 21 Feburary to not spoil the challenges.  p_p_rsa Challenge Summary In the challenge, we are given a RSA public key and an ciphertext $c$ (of message $m$).</description>
+    </item>
     
     <item>
       <title>DiceCTF 2021 Writeup (I)</title>
