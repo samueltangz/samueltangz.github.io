@@ -8,6 +8,16 @@
   </url>
   
   <url>
+    <loc>/tags/hash-tables/</loc>
+    <lastmod>2021-02-23T00:45:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/haxe/</loc>
+    <lastmod>2021-02-23T00:45:00+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/</loc>
     <lastmod>2021-02-23T00:45:00+08:00</lastmod>
   </url>
@@ -18,12 +28,22 @@
   </url>
   
   <url>
+    <loc>/tags/reverse/</loc>
+    <lastmod>2021-02-23T00:45:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/reverse-engineering/</loc>
+    <lastmod>2021-02-23T00:45:00+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/</loc>
     <lastmod>2021-02-23T00:45:00+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/2021-02-22-union-ctf-exah/</loc>
+    <loc>/posts/2021-02-23-union-ctf-exah/</loc>
     <lastmod>2021-02-23T00:45:00+08:00</lastmod>
   </url>
   
@@ -169,11 +189,6 @@
   
   <url>
     <loc>/tags/confidence-ctf/</loc>
-    <lastmod>2020-09-08T18:30:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/reverse/</loc>
     <lastmod>2020-09-08T18:30:00+08:00</lastmod>
   </url>
   
