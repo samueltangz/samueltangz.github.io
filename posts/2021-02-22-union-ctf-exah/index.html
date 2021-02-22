@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Union CTF 2021 (I): exah :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I was playing Union CTF with @blackb6a last week. Since this CTF is prepared by cr0wn where Jack and hyperreality were in (they made CryptoHack), I am convinced that the CTF will be fun. I wasn&#39;t disappointed at all. I am planning to write three or four posts on the challenges, and the first of the series covers on exah, the reversing challenge I spent most of my time. Although I was not able to solve it during the game, I think it is still worthwhile to note it down." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-02-22-union-ctf-exah/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/pink.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/pink.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Union CTF 2021 (I): exah">
+<meta property="og:description" content="I was playing Union CTF with @blackb6a last week. Since this CTF is prepared by cr0wn where Jack and hyperreality were in (they made CryptoHack), I am convinced that the CTF will be fun. I wasn&#39;t disappointed at all. I am planning to write three or four posts on the challenges, and the first of the series covers on exah, the reversing challenge I spent most of my time. Although I was not able to solve it during the game, I think it is still worthwhile to note it down." />
+<meta property="og:url" content="/posts/2021-02-22-union-ctf-exah/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-02-23 00:45:00 &#43;0800 HKT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="pink">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-02-22-union-ctf-exah/">Union CTF 2021 (I): exah</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-02-23 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/union-ctf/">union-ctf</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>I was playing <em>Union CTF</em> with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> last week. Since this CTF is prepared by <em>cr0wn</em> where <em>Jack</em> and <em>hyperreality</em> were in (they made <a href="cryptohack.org">CryptoHack</a>), I am convinced that the CTF will be fun. I wasn't disappointed at all. I am planning to write three or four posts on the challenges, and the first of the series covers on <em>exah</em>, the reversing challenge I spent most of my time. Although I was not able to solve it during the game, I think it is still worthwhile to note it down.</p>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<blockquote>
+<p>Have you tried reversing Haxe macros?</p>
+
+<p>Note: file fixed, please redownload if you are using Haxe &lt;4.2.0</p>
+
+<p>Author: Aurel300</p>
+</blockquote>
+
+<p>We are given <code>Flag.hx</code> which is written in <em>Haxe</em>. The code is small enough and I'll simply include it here.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#75715e">/**union{paste the flag here}*/</span>
+<span style="color:#75715e">#if macro</span> <span style="color:#f92672">import</span> haxe.macro.Context as C; <span style="color:#75715e">/***********/</span> <span style="color:#f92672">import</span> haxe.Int64 as B;
+<span style="color:#f92672">import</span> haxe.macro.Expr; <span style="color:#f92672">using</span> StringTools; <span style="color:#75715e">#else</span> <span style="color:#a6e22e">@:build(</span>Flag.a(<span style="color:#e6db74">&#34;CrimsonCarp&#34;</span>)<span style="color:#a6e22e">)</span>
+<span style="color:#75715e">#end</span> <span style="color:#66d9ef">class</span> Flag { <span style="color:#75715e">#if macro</span> <span style="color:#66d9ef">static</span> <span style="color:#960050;background-color:#1e0010">final</span> <span style="color:#960050;background-color:#1e0010">A</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">&#34;abcdefghijklmnopqrstuvwxyzABCDEF&#34;</span>
+<span style="color:#960050;background-color:#1e0010">+</span> <span style="color:#960050;background-color:#1e0010">&#34;GHIJKLMNOPQRSTUVWXYZ0123456789_-&#34;;</span> <span style="color:#960050;background-color:#1e0010">static</span> <span style="color:#960050;background-color:#1e0010">final</span> <span style="color:#960050;background-color:#1e0010">K</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">[</span> <span style="color:#960050;background-color:#1e0010">&#34;0000000008258240093&#34;,</span>
+<span style="color:#75715e">/** this is not actually a CTF challenge, this is an ****/</span> <span style="color:#960050;background-color:#1e0010">&#34;00000032059146620&#34;,</span>
+<span style="color:#75715e">/*** ad for the programming language Haxe. ***************/</span> <span style="color:#960050;background-color:#1e0010">&#34;0000059424680571&#34;,</span>
+<span style="color:#75715e">/**** (all opinions our own) ****************************/</span> <span style="color:#960050;background-color:#1e0010">&#34;00000016501626909&#34;,</span>
+<span style="color:#75715e">/*******************************************************/</span> <span style="color:#960050;background-color:#1e0010">&#34;000000010391056299&#34;,</span>
+<span style="color:#75715e">/** Haxe: ********************************************/</span> <span style="color:#960050;background-color:#1e0010">&#34;00000000039819521706&#34;,</span>
+<span style="color:#75715e">/*** * powerful macro engine! * compiles to many targets! */</span> <span style="color:#960050;background-color:#1e0010">&#34;000063129310438&#34;,</span>
+<span style="color:#75715e">/*** * GADTs! * null safety! * fast compile times! * cross-platform stdlib! **/</span>
+<span style="color:#75715e">/*** * interpreter mode! */</span> <span style="color:#960050;background-color:#1e0010">];</span> <span style="color:#960050;background-color:#1e0010">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">a</span>(F) { <span style="color:#75715e">/* * pattern matching! */</span>
+<span style="color:#66d9ef">var</span> d <span style="color:#f92672">=</span> C.getLocalClass().get().doc; <span style="color:#e6db74">~/^union\{([a-zA-Z0-9_-]{28})\}$/</span>.match(d)
+<span style="color:#f92672">||</span> <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;invalid flag&#34;</span>; <span style="color:#75715e">/*** * arrow functions! */</span> <span style="color:#66d9ef">var</span> L:B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00000</span>; <span style="color:#66d9ef">function</span>
+<span style="color:#a6e22e">F</span>(i):String { <span style="color:#66d9ef">var</span> u:B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#75715e">/*** * game engines! */</span> <span style="color:#66d9ef">var</span> e <span style="color:#f92672">=</span> [A.indexOf][<span style="color:#ae81ff">313337</span> <span style="color:#f92672">-</span>
+<span style="color:#ae81ff">0x4C7F9</span>]; <span style="color:#75715e">/*** * cool ASCII logo! ********* v[lv)r^^.              .^^rj&gt;4TA */</span>
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span>)); u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>; <span style="color:#75715e">/* \77777[lv)\          ~j&gt;4TCggggm */</span>
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span>)); u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>; <span style="color:#75715e">/* &#34;777777777j[l&#39;    &#34;4TCgSgggggggN */</span>
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>)); u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>; <span style="color:#75715e">/* :[7777777777777{5gggggggggggggPD */</span>
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">9</span>)); u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>; <span style="color:#75715e">/* ,^77777777777{4TkpggggggggggggZD */</span>
+u <span style="color:#f92672">+=</span> e(d.charAt(i)); u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>; u <span style="color:#f92672">^=</span> B <span style="color:#75715e">/***** ,&#34;7777777777&gt;2TTkkwAggggggggggND */</span>
+.parseString(K[i]) <span style="color:#f92672">^</span> C.getPosInfos((<span style="color:#66d9ef">macro</span> aa <span style="color:#f92672">/</span>v77777777yTTTTTkkkCggggggggPD4 <span style="color:#960050;background-color:#1e0010">!</span>)
+.pos).min; u <span style="color:#f92672">&gt;=</span> L <span style="color:#f92672">||</span> <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;bad flag&#34;</span>; <span style="color:#75715e">/***  `^777777{uTTTTTTTTTkhgSggggSZO  */</span>
+L <span style="color:#f92672">=</span> u; <span style="color:#66d9ef">var</span> R <span style="color:#f92672">=</span> [ <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">...</span><span style="color:#ae81ff">7</span>) { <span style="color:#66d9ef">var</span> <span style="color:#75715e">/**   &#34;77777{5TTTTTTTTTTTkpgSgggS%.  */</span>
+A <span style="color:#f92672">=</span> A.charAt((u <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>).low); u <span style="color:#f92672">/=</span> <span style="color:#ae81ff">26</span>; A; <span style="color:#75715e">/**    [777&gt;2TTTTTTTTTTTTTkwASggPk   */</span>
+} ]; R.reverse(); <span style="color:#66d9ef">return</span> R.join(<span style="color:#e6db74">&#34;&#34;</span>); } <span style="color:#75715e">/***    \773TTTTTTTTTTTTTTTTTkhgSZ    */</span>
+<span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">macro</span> <span style="color:#66d9ef">class</span> { <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#75715e">/****     {4TTTTTTTTTTTTTTTTTTkkpg     */</span>
+<span style="color:#a6e22e">main</span>() { <span style="color:#66d9ef">var</span> w:Array&lt;haxe.DynamicAccess&lt; <span style="color:#75715e">/*     3TTTTTTTTTTTTTTTTTTTTkkp     */</span>
+Dynamic&gt;&gt; <span style="color:#f92672">=</span> ([ {<span style="color:#e6db74">&#34;cdjholca&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;s&#34;</span>}, <span style="color:#75715e">/***     42kkTTTTTTTTTTTTTTTTkkCm     */</span>
+{<span style="color:#e6db74">&#34;rarfzray&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>}, <span style="color:#75715e">/******************    r335TkTTTTTTTTTTTTTTkkgmmm    */</span>
+{<span style="color:#e6db74">&#34;0atpgyte&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;w&#34;</span>}, <span style="color:#75715e">/**              **    ouu35TTTTTTTTTTTTTTkpZmmmmw   */</span>
+{<span style="color:#e6db74">&#34;0gzqjili&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;r&#34;</span>}, <span style="color:#75715e">/**              **   ~3uuu342TkTTTTTTTTTkCZmmmmmX.  */</span>
+{<span style="color:#e6db74">&#34;0tpeqmwy&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>}, <span style="color:#75715e">/**              **  &#39;v3uuuu335TkTTTTTTTTAmmmmmmmNO  */</span>
+{<span style="color:#e6db74">&#34;wledebwo&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;n&#34;</span>}, <span style="color:#75715e">/**              **  :&gt;3uuuuuu35TTTTTTkkPmmmmmmmm%D4 */</span>
+{<span style="color:#e6db74">&#34;nijgbmst&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;g&#34;</span>}, <span style="color:#75715e">/**              ** :~3uuuuuuuu35TTTTkpZmmmmmmmmmmXD */</span>
+]:Array&lt;Dynamic&gt;); <span style="color:#75715e">/*********************** ,v3uuuuuuuuuu42TkAmmmmmmmmmmmmND */</span>
+$b{[ <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">...</span><span style="color:#ae81ff">0x7</span>) <span style="color:#66d9ef">macro</span> w[$v{i}] <span style="color:#75715e">/*** :o3uuuuuuuuu333upmmmmmmmmmmmmm%D */</span>
+.set($v{F(i)}, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> $v{<span style="color:#e6db74">&#34;CORRECT&#34;</span> <span style="color:#75715e">/********* ~3uuuuu3334Tp)    lSZZmmmmmmmmmX */</span>
+.charAt(i)})]}; Sys.println(<span style="color:#e6db74">&#39;flag is &#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e">/* )uu334TpgZP.         yhASZZmmmmO */</span>
+w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span style="color:#75715e">#end</span> } <span style="color:#75715e">/******* oTpgZmmm&gt;              \kkkpASZm */</span></code></pre></div>
+<h2 id="thoughts">Thoughts<a href="#thoughts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="part-i-jumping-into-the-rabbit-hole">Part I: Jumping into the rabbit hole<a href="#part-i-jumping-into-the-rabbit-hole" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert danger">
+  🧠 <strong>I seriously underestimated the challenge.</strong> I have suffered enough from <em>mrii</em> and decided to look into another one. This challenge looked pretty simple when I first look at it. Well, both challenges are written by <em>Aurel300</em> and I should have awared of this.
+</div>
+
+
+<p>I am still in trauma from <em>mrii</em> that the expected behaviour may not be reproducible when the code is changed (in particular, when they are prettified or annotated). However, making the code readable is <em>always</em> the first priority. The correctness is not important during static analysis. So let's format it!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#75715e">/**union{paste the flag here}*/</span>
+
+<span style="color:#75715e">#if macro</span>
+<span style="color:#f92672">import</span> haxe.macro.Context as C;
+<span style="color:#f92672">import</span> haxe.Int64 as B;
+<span style="color:#f92672">import</span> haxe.macro.Expr;
+
+<span style="color:#f92672">using</span> StringTools;
+<span style="color:#75715e">#else</span>
+<span style="color:#a6e22e">@:build(</span>Flag.a(<span style="color:#e6db74">&#34;CrimsonCarp&#34;</span>)<span style="color:#a6e22e">)</span>
+<span style="color:#75715e">#end</span>
+<span style="color:#66d9ef">class</span> Flag {
+  <span style="color:#75715e">#if macro</span>
+  <span style="color:#66d9ef">static</span> <span style="color:#960050;background-color:#1e0010">final</span> <span style="color:#960050;background-color:#1e0010">A</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">&#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-&#34;;</span>
+  <span style="color:#960050;background-color:#1e0010">static</span> <span style="color:#960050;background-color:#1e0010">final</span> <span style="color:#960050;background-color:#1e0010">K</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">[</span>
+    <span style="color:#960050;background-color:#1e0010">&#34;0000000008258240093&#34;,</span>
+    <span style="color:#960050;background-color:#1e0010">&#34;00000032059146620&#34;,</span>
+    <span style="color:#960050;background-color:#1e0010">&#34;0000059424680571&#34;,</span>
+    <span style="color:#960050;background-color:#1e0010">&#34;00000016501626909&#34;,</span>
+    <span style="color:#960050;background-color:#1e0010">&#34;000000010391056299&#34;,</span>
+    <span style="color:#960050;background-color:#1e0010">&#34;00000000039819521706&#34;,</span>
+    <span style="color:#960050;background-color:#1e0010">&#34;000063129310438&#34;,</span>
+  <span style="color:#960050;background-color:#1e0010">];</span>
+
+  <span style="color:#960050;background-color:#1e0010">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">a</span>(F) {
+    <span style="color:#66d9ef">var</span> d <span style="color:#f92672">=</span> C.getLocalClass().get().doc;
+    <span style="color:#e6db74">~/^union\{([a-zA-Z0-9_-]{28})\}$/</span>.match(d) <span style="color:#f92672">||</span> <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;invalid flag&#34;</span>;
+    <span style="color:#66d9ef">var</span> L: B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00000</span>;
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">F</span>(i): String {
+      <span style="color:#66d9ef">var</span> u: B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+      <span style="color:#66d9ef">var</span> e <span style="color:#f92672">=</span> [A.indexOf][<span style="color:#ae81ff">313337</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x4C7F9</span>];
+
+      u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span>));
+
+      u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+      u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span>));
+      u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+      u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>));
+      u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+      u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">9</span>));
+      u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+      u <span style="color:#f92672">+=</span> e(d.charAt(i));
+      u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+      u <span style="color:#f92672">^=</span> B.parseString(K[i]) <span style="color:#f92672">^</span> C.getPosInfos((<span style="color:#66d9ef">macro</span> aa <span style="color:#f92672">/</span> v77777777yTTTTTkkkCggggggggPD4<span style="color:#960050;background-color:#1e0010">!</span>).pos).min;
+      u <span style="color:#f92672">&gt;=</span> L <span style="color:#f92672">||</span> <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;bad flag&#34;</span>;
+
+      L <span style="color:#f92672">=</span> u;
+
+      <span style="color:#66d9ef">var</span> R <span style="color:#f92672">=</span> [
+        <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">...</span><span style="color:#ae81ff">7</span>) {
+          <span style="color:#66d9ef">var</span> A <span style="color:#f92672">=</span> A.charAt((u <span style="color:#f92672">%</span> <span style="color:#ae81ff">26</span>).low);
+          u <span style="color:#f92672">/=</span> <span style="color:#ae81ff">26</span>;
+          A;
+        }
+      ];
+      R.reverse();
+      <span style="color:#66d9ef">return</span> R.join(<span style="color:#e6db74">&#34;&#34;</span>);
+    }
+    <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">macro</span> <span style="color:#66d9ef">class</span> {
+      <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+        <span style="color:#66d9ef">var</span> w: Array&lt;haxe.DynamicAccess&lt;Dynamic&gt;&gt; <span style="color:#f92672">=</span> ([
+          {<span style="color:#e6db74">&#34;cdjholca&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;s&#34;</span>},
+          {<span style="color:#e6db74">&#34;rarfzray&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>},
+          {<span style="color:#e6db74">&#34;0atpgyte&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;w&#34;</span>},
+          {<span style="color:#e6db74">&#34;0gzqjili&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;r&#34;</span>},
+          {<span style="color:#e6db74">&#34;0tpeqmwy&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>},
+          {<span style="color:#e6db74">&#34;wledebwo&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;n&#34;</span>},
+          {<span style="color:#e6db74">&#34;nijgbmst&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;g&#34;</span>},
+        ] : Array&lt;Dynamic&gt;);
+        $b{
+          [
+            <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">...</span><span style="color:#ae81ff">0x7</span>)
+              <span style="color:#66d9ef">macro</span> w[$v{i}].set($v{F(i)}, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> $v{
+                <span style="color:#e6db74">&#34;CORRECT&#34;</span>.charAt(i)
+              })
+          ]
+        };
+        Sys.println(<span style="color:#e6db74">&#39;flag is &#39;</span> <span style="color:#f92672">+</span> w.join(<span style="color:#e6db74">&#34;&#34;</span>));
+      }
+    }).fields;
+  }
+  <span style="color:#75715e">#end</span>
+}</code></pre></div>
+<p>The entire logic looked simple to someone who doesn't know Haxe at all. For example, the flag has the format <code>/^union\{[a-zA-Z0-9_-]{28}\}$/</code>. Also, the function <code>F(i)</code> is being called for seven times, i.e., <code>F(0)</code>, <code>F(1)</code>, ..., <code>F(6)</code> and seven numbers $u_0, u_1, ..., u_6$ are derived from the flag. In particular, the following line has hinted that $u_0 \leq u_1 \leq ... \leq u_6$.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe">u <span style="color:#f92672">&gt;=</span> L <span style="color:#f92672">||</span> <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;bad flag&#34;</span>;</code></pre></div>
+<p>Each of the $u_i$'s will then be used to compute a 7-character string as the function result. What's that for? Let's skip it for now.</p>
+
+<h3 id="part-ii-weird-stuffs-are-happening">Part II: Weird stuffs are happening...<a href="#part-ii-weird-stuffs-are-happening" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>When I understand the code more, I found that there is something weird. Let's look at the following Haxe snippet.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> w: Array&lt;haxe.DynamicAccess&lt;Dynamic&gt;&gt; <span style="color:#f92672">=</span> ([
+      {<span style="color:#e6db74">&#34;cdjholca&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;s&#34;</span>},
+      {<span style="color:#e6db74">&#34;rarfzray&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>},
+      {<span style="color:#e6db74">&#34;0atpgyte&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;w&#34;</span>},
+      {<span style="color:#e6db74">&#34;0gzqjili&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;r&#34;</span>},
+      {<span style="color:#e6db74">&#34;0tpeqmwy&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>},
+      {<span style="color:#e6db74">&#34;wledebwo&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;n&#34;</span>},
+      {<span style="color:#e6db74">&#34;nijgbmst&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;g&#34;</span>},
+    ] : Array&lt;Dynamic&gt;);
+    
+    Sys.println(<span style="color:#e6db74">&#39;flag is &#39;</span> <span style="color:#f92672">+</span> w.join(<span style="color:#e6db74">&#34;&#34;</span>));
+    <span style="color:#75715e">// Prints &#34;flag is sowrong&#34;</span>
+  }
+}</code></pre></div>
+<p>From what I understand, the type <code>Array&lt;haxe.DynamicAccess&lt;Dynamic&gt;&gt;</code> is equivalent to an array of maps. This is a Python-equivalent of the above snippet:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">w <span style="color:#f92672">=</span> [
+  {<span style="color:#e6db74">&#34;cdjholca&#34;</span>: <span style="color:#66d9ef">lambda</span> _: <span style="color:#e6db74">&#34;s&#34;</span>},
+  {<span style="color:#e6db74">&#34;rarfzray&#34;</span>: <span style="color:#66d9ef">lambda</span> _: <span style="color:#e6db74">&#34;o&#34;</span>},
+  {<span style="color:#e6db74">&#34;0atpgyte&#34;</span>: <span style="color:#66d9ef">lambda</span> _: <span style="color:#e6db74">&#34;w&#34;</span>},
+  {<span style="color:#e6db74">&#34;0gzqjili&#34;</span>: <span style="color:#66d9ef">lambda</span> _: <span style="color:#e6db74">&#34;r&#34;</span>},
+  {<span style="color:#e6db74">&#34;0tpeqmwy&#34;</span>: <span style="color:#66d9ef">lambda</span> _: <span style="color:#e6db74">&#34;o&#34;</span>},
+  {<span style="color:#e6db74">&#34;wledebwo&#34;</span>: <span style="color:#66d9ef">lambda</span> _: <span style="color:#e6db74">&#34;n&#34;</span>},
+  {<span style="color:#e6db74">&#34;nijgbmst&#34;</span>: <span style="color:#66d9ef">lambda</span> _: <span style="color:#e6db74">&#34;g&#34;</span>}
+]
+<span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#39;flag is {w}&#39;</span>)
+<span style="color:#75715e"># Prints &#34;flag is [{&#39;cdjholca&#39;: &lt;function &lt;lambda&gt; at 0x7fe0b5cb4af0&gt;}, ...]&#34;</span></code></pre></div>
+<p>Why are <code>w[i]</code>'s one-character long in their representations? I wrote some snippets to test with the behaviour. I was expecting when there are multiple entries inside <code>DynamicAccess</code>, then the character representing the entry will the output of the lexicographically smallest key.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> w: Array&lt;haxe.DynamicAccess&lt;Dynamic&gt;&gt; <span style="color:#f92672">=</span> ([
+      {<span style="color:#e6db74">&#34;cdjholca&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;s&#34;</span>},
+      {<span style="color:#e6db74">&#34;rarfzray&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>},
+      {<span style="color:#e6db74">&#34;0atpgyte&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;w&#34;</span>},
+      {<span style="color:#e6db74">&#34;0gzqjili&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;r&#34;</span>},
+      {<span style="color:#e6db74">&#34;0tpeqmwy&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;o&#34;</span>},
+      {<span style="color:#e6db74">&#34;wledebwo&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;n&#34;</span>},
+      {<span style="color:#e6db74">&#34;nijgbmst&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;g&#34;</span>},
+    ] : Array&lt;Dynamic&gt;);
+    
+    w[<span style="color:#ae81ff">0</span>].set(<span style="color:#e6db74">&#34;cdjholca&#34;</span>, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;S&#34;</span>);
+    w[<span style="color:#ae81ff">1</span>].set(<span style="color:#e6db74">&#34;rarfzrax&#34;</span>, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;O&#34;</span>);
+    w[<span style="color:#ae81ff">2</span>].set(<span style="color:#e6db74">&#34;0atpgytf&#34;</span>, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;W&#34;</span>);
+    w[<span style="color:#ae81ff">3</span>].set(<span style="color:#e6db74">&#34;0tpeqmwy&#34;</span>, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;R&#34;</span>);
+    w[<span style="color:#ae81ff">4</span>].set(<span style="color:#e6db74">&#34;0gzqjili&#34;</span>, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;O&#34;</span>);
+    w[<span style="color:#ae81ff">5</span>].set(<span style="color:#e6db74">&#34;0gzqjili&#34;</span>, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;N&#34;</span>);
+
+    Sys.println(<span style="color:#e6db74">&#39;flag is &#39;</span> <span style="color:#f92672">+</span> w.join(<span style="color:#e6db74">&#34;&#34;</span>));
+    <span style="color:#75715e">// Prints &#34;flag is SowRONg&#34;</span>
+  }
+}</code></pre></div>
+<p>From what I guess, the snippet should be printing <code>flag is SOwrONg</code>... My guess is <em>sOwRoNg</em>. It now seemed to me that the representation will be replaced only if the new key is one of the strings: <code>cdjholca</code>, <code>rarfzray</code>, ... and <code>nijgbmst</code>. They are the initial keys defined in each of the <code>w[i]</code>'s. The following snippets demystifies a bit while bringing another puzzle to me. Let's guess what will the below snippet prints:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> w: Array&lt;haxe.DynamicAccess&lt;Dynamic&gt;&gt; <span style="color:#f92672">=</span> ([
+      {<span style="color:#e6db74">&#34;cdjholcb&#34;</span>: _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;s&#34;</span>},
+      {}
+    ] : Array&lt;Dynamic&gt;);
+    
+    w[<span style="color:#ae81ff">1</span>].set(<span style="color:#e6db74">&#34;rarfzray&#34;</span>, _ <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;O&#34;</span>);
+
+    Sys.println(<span style="color:#e6db74">&#39;flag is &#39;</span> <span style="color:#f92672">+</span> w.join(<span style="color:#e6db74">&#34;&#34;</span>));
+  }
+}</code></pre></div>
+<p>Well, I bet you cannot predict the results. It is <code>flag is {cdjholcb: #fun}O</code>... Why? What I knew is the function got executed when the key matches one of the <code>cdjholca</code> and etc. Otherwise, it matches my expectation on how <code>haxe.DynamicAccess&lt;Dynamic&gt;</code> should be represented. In our case, printing <code>w[0]</code> alone is <code>{cdjholcb: #fun}</code>. So there are two questions left:</p>
+
+<ol>
+<li>Why are the functions got executed when the key is <code>cdjholca</code>?</li>
+<li>Are there any other keys like <code>cdjholca</code> that will have the functions executed?</li>
+</ol>
+
+<h3 id="part-iii-why-is-it-got-executed">Part III: Why is it got executed?<a href="#part-iii-why-is-it-got-executed" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>I have further simplified the code. Let's have a look on the below snippet:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> jsonData <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;{&#34;foo&#34;:&#34;bar&#34;, &#34;0gzqjili&#34;: &#34;444&#34;}&#39;</span>;
+    <span style="color:#66d9ef">var</span> json: haxe.DynamicAccess&lt;String&gt; <span style="color:#f92672">=</span> haxe.Json.parse(jsonData);
+    trace(json);
+  }
+}
+<span style="color:#75715e">// Uncaught exception Cannot call 444</span>
+<span style="color:#75715e">// Test.hx:5: characters 5-10 : Called from here</span></code></pre></div>
+<p>To understand why is the function got executed, we may need to look at how strings are printed. These are some code snippets those I found during the process.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#75715e">// https://github.com/HaxeFoundation/haxe/blob/4.2.0/std/Sys.hx#L39</span>
+	<span style="color:#75715e">/**
+</span><span style="color:#75715e">		Prints any value to the standard output, followed by a newline.
+</span><span style="color:#75715e">		On Windows, this function outputs a CRLF newline.
+</span><span style="color:#75715e">		LF newlines are printed on all other platforms.
+</span><span style="color:#75715e">	**/</span>
+	<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">println</span>(v:Dynamic):Void;</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#75715e">// https://github.com/HaxeFoundation/haxe/blob/4.2.0/std/php/_std/Sys.hx#L32</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">print</span>(v:Dynamic):Void {
+		Global.echo(Std.string(v));
+	}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#75715e">// https://github.com/HaxeFoundation/haxe/blob/4.2.0/std/Std.hx#L86</span>
+	<span style="color:#75715e">/**
+</span><span style="color:#75715e">		Converts any value to a String.
+</span><span style="color:#75715e">		If `s` is of `String`, `Int`, `Float` or `Bool`, its value is returned.
+</span><span style="color:#75715e">		If `s` is an instance of a class and that class or one of its parent classes has
+</span><span style="color:#75715e">		a `toString` method, that method is called. If no such method is present, the result
+</span><span style="color:#75715e">		is unspecified.
+</span><span style="color:#75715e">		If `s` is an enum constructor without argument, the constructor&#39;s name is returned. If
+</span><span style="color:#75715e">		arguments exists, the constructor&#39;s name followed by the String representations of
+</span><span style="color:#75715e">		the arguments is returned.
+</span><span style="color:#75715e">		If `s` is a structure, the field names along with their values are returned. The field order
+</span><span style="color:#75715e">		and the operator separating field names and values are unspecified.
+</span><span style="color:#75715e">		If s is null, &#34;null&#34; is returned.
+</span><span style="color:#75715e">	**/</span>
+	<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">string</span>(s:Dynamic):String;</code></pre></div>
+<p>From above, we can see that <code>Sys.println</code> calls <code>Std.string</code> (at least it happens for PHP, Lua and some other languages). Also, <code>Std.string(s)</code> calls <code>s.toString()</code> if it is defined.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> foo: haxe.DynamicAccess&lt;Dynamic&gt; <span style="color:#f92672">=</span> {};
+    foo.set(<span style="color:#e6db74">&#34;test&#34;</span>, (<span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;test&#34;</span>)<span style="color:#960050;background-color:#1e0010">;</span>
+    <span style="color:#960050;background-color:#1e0010">Sys.println(foo</span>); <span style="color:#75715e">// {test: #fun}    </span>
+    Sys.println(Std.string(foo).length); <span style="color:#75715e">// 12</span>
+    
+    <span style="color:#66d9ef">var</span> foo: haxe.DynamicAccess&lt;Dynamic&gt; <span style="color:#f92672">=</span> {};
+    foo.set(<span style="color:#e6db74">&#34;cdjholca&#34;</span>, (<span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#f92672">-</span><span style="color:#960050;background-color:#1e0010">&gt;</span> <span style="color:#e6db74">&#34;cdjholca&#34;</span>)<span style="color:#960050;background-color:#1e0010">;</span>
+    <span style="color:#960050;background-color:#1e0010">Sys.println(foo</span>); <span style="color:#75715e">// cdjholca</span>
+    Sys.println(Std.string(foo).length); <span style="color:#75715e">// 8</span>
+  }
+}</code></pre></div>
+<p>From checking the length of its string representation, we can say that <code>Std.string</code> has already triggered <code>() -&gt; &quot;cdjholca&quot;</code>. Looking further, I found the method that serializes objects - <code>haxe.Serializer.run</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> foo: Dynamic <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;test&#34;</span>: <span style="color:#e6db74">&#34;foo&#34;</span>};
+    Sys.println(haxe.Serializer.run(foo));
+    <span style="color:#75715e">// oy4:testy3:foog</span>
+        
+    <span style="color:#66d9ef">var</span> foo: Dynamic <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;cdjholca&#34;</span>: <span style="color:#e6db74">&#34;cdjholca&#34;</span>};
+    Sys.println(haxe.Serializer.run(foo));
+    <span style="color:#75715e">// oy8:toStringy8:cdjholcag</span>
+  }
+}</code></pre></div>
+<p>It makes sense when serializing <code>{&quot;test&quot;: &quot;foo&quot;}</code>. It can be broken into few parts:</p>
+<pre><code> o       y       4       :          test  y       3       :          foo   g
+[object][string][length][separator][data][string][length][separator][data][suffix]
+        [key                            ][value                          ]</code></pre>
+<p>Why is <code>cdjholca</code> changed to <code>toString</code>? I don't know, but this explains why the <code>w[i]</code>'s are not printing its entire map but a value from the function call. In short, the method <code>toString</code> in the <code>Dynamic</code> is overwritten. When <code>Sys.println</code> is called, the replaced <code>toString</code> is called, returning the new value. Anyway, this is the deadend I reached during the CTF...</p>
+
+<h3 id="part-iv-jumping-into-another-rabbit-hole">Part IV: Jumping into another rabbit hole<a href="#part-iv-jumping-into-another-rabbit-hole" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>After the CTF ends, there is a discussion in the Discord server and this is what the challenge author said:</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-02-23-union-ctf/haxe-final-clue.png"   />
+    
+  </figure>
+
+
+
+<p>Uh oh. I have actually read one of the files during the CTF and though it wasn't relevant. Since <code>haxe --run</code> is running on an interpreter called <em>Eval</em>, we may need to read how are strings printed. While interpreting with Eval, objects in Haxe are implemented with <code>HashTbl</code> in OCaml.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ocaml" data-lang="ocaml"><span style="color:#75715e">(* https://github.com/HaxeFoundation/haxe/blob/4.2.0/src/macro/eval/evalPrinting.ml#L52 *)</span>
+  <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">rec</span> s_object depth o <span style="color:#f92672">=</span>
+    <span style="color:#66d9ef">let</span> fields <span style="color:#f92672">=</span> object_fields o <span style="color:#66d9ef">in</span>
+    <span style="color:#66d9ef">let</span> buf <span style="color:#f92672">=</span> Buffer.create 0 <span style="color:#66d9ef">in</span>
+    Buffer.add_string buf <span style="color:#e6db74">&#34;{&#34;</span><span style="color:#f92672">;</span>
+    List.iteri <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> i <span style="color:#f92672">(</span>k<span style="color:#f92672">,</span>v<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span>
+      <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&gt;</span> 0 <span style="color:#66d9ef">then</span> Buffer.add_string buf <span style="color:#e6db74">&#34;, &#34;</span><span style="color:#f92672">;</span>
+      Buffer.add_string buf <span style="color:#f92672">(</span>rev_hash k<span style="color:#f92672">);</span>
+      Buffer.add_string buf <span style="color:#e6db74">&#34;: &#34;</span><span style="color:#f92672">;</span>
+      Buffer.add_string buf <span style="color:#f92672">(</span>s_value depth v<span style="color:#f92672">).</span>sstring<span style="color:#f92672">;</span>
+    <span style="color:#f92672">)</span> fields<span style="color:#f92672">;</span>
+    Buffer.add_string buf <span style="color:#e6db74">&#34;}&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">let</span> s <span style="color:#f92672">=</span> Buffer.contents buf <span style="color:#66d9ef">in</span>
+    create_with_length s <span style="color:#f92672">(</span><span style="color:#66d9ef">try</span> UTF8.length s <span style="color:#66d9ef">with</span> <span style="color:#f92672">_</span> <span style="color:#f92672">-&gt;</span> String.length s<span style="color:#f92672">)</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ocaml" data-lang="ocaml"><span style="color:#75715e">(* https://github.com/HaxeFoundation/haxe/blob/4.2.0/src/macro/eval/evalPrinting.ml#L105 *)</span>
+  <span style="color:#f92672">and</span> s_value depth v <span style="color:#f92672">=</span>
+    <span style="color:#66d9ef">let</span> call_to_string () <span style="color:#f92672">=</span>
+      <span style="color:#66d9ef">let</span> vf <span style="color:#f92672">=</span> field_raise v EvalHash.key_toString <span style="color:#66d9ef">in</span>
+      s_value <span style="color:#f92672">(</span>depth <span style="color:#f92672">+</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>call_value_on v vf []<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">in</span>
+    <span style="color:#66d9ef">if</span> depth <span style="color:#f92672">&gt;</span> 5 <span style="color:#66d9ef">then</span> rstop
+    <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">match</span> v <span style="color:#66d9ef">with</span>
+    <span style="color:#f92672">|</span> <span style="color:#a6e22e">VNull</span> <span style="color:#f92672">-&gt;</span> rnull</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ocaml" data-lang="ocaml"><span style="color:#75715e">(* https://github.com/HaxeFoundation/haxe/blob/development/src/macro/eval/evalHash.ml *)</span>
+  <span style="color:#66d9ef">let</span> reverse_map <span style="color:#f92672">=</span> Hashtbl.create 0
+
+  <span style="color:#66d9ef">let</span> rev_hash i <span style="color:#f92672">=</span> Hashtbl.find reverse_map i
+
+  <span style="color:#66d9ef">let</span> hash f <span style="color:#f92672">=</span>
+    <span style="color:#66d9ef">let</span> i <span style="color:#f92672">=</span> Hashtbl.hash f <span style="color:#66d9ef">in</span>
+    Hashtbl.replace reverse_map i f<span style="color:#f92672">;</span>
+    i
+
+  <span style="color:#66d9ef">let</span> path_hash path <span style="color:#f92672">=</span> hash <span style="color:#f92672">(</span>Globals.s_type_path path<span style="color:#f92672">)</span>
+
+  <span style="color:#66d9ef">let</span> key_length <span style="color:#f92672">=</span> hash <span style="color:#e6db74">&#34;length&#34;</span>
+  <span style="color:#66d9ef">let</span> key_toString <span style="color:#f92672">=</span> hash <span style="color:#e6db74">&#34;toString&#34;</span>
+  <span style="color:#66d9ef">let</span> key_OutsideBounds <span style="color:#f92672">=</span> hash <span style="color:#e6db74">&#34;OutsideBounds&#34;</span>
+  <span style="color:#66d9ef">let</span> key_low <span style="color:#f92672">=</span> hash <span style="color:#e6db74">&#34;low&#34;</span>
+    <span style="color:#75715e">(* omitted *)</span></code></pre></div>
+
+  <figure class="center" >
+    <img src="/images/2021-02-23-union-ctf/hash.png"   />
+    
+      <figcaption class="right" >Hash tables. Copied from Wikipedia.</figcaption>
+    
+  </figure>
+
+
+
+<p>OCaml <code>HashTbl</code> is implementing the hash table and they are keyed by 32-bit integers. This is definitely vulnerable to preimage attacks owing to the small keyspace. In particular, when Haxe is printing a string, <code>call_to_string</code> is called.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ocaml" data-lang="ocaml"><span style="color:#75715e">(* https://github.com/lucasaiu/ocaml/blob/4.00/stdlib/hashtbl.mli#L303 *)</span>
+  <span style="color:#66d9ef">val</span> hash <span style="color:#f92672">:</span> <span style="color:#66d9ef">&#39;</span>a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span>
+  <span style="color:#75715e">(** [Hashtbl.hash x] associates a nonnegative integer to any value of
+</span><span style="color:#75715e">    any type. It is guaranteed that
+</span><span style="color:#75715e">    if [x = y] or [Pervasives.compare x y = 0], then [hash x = hash y].
+</span><span style="color:#75715e">    Moreover, [hash] always terminates, even on cyclic structures. *)</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ocaml" data-lang="ocaml"><span style="color:#75715e">(* https://github.com/lucasaiu/ocaml/blob/4.00/stdlib/hashtbl.ml#L18 *)</span>
+<span style="color:#66d9ef">external</span> seeded_hash_param <span style="color:#f92672">:</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">&#39;</span>a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;caml_hash&#34;</span> <span style="color:#e6db74">&#34;noalloc&#34;</span>
+<span style="color:#66d9ef">external</span> old_hash_param <span style="color:#f92672">:</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">&#39;</span>a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;caml_hash_univ_param&#34;</span> <span style="color:#e6db74">&#34;noalloc&#34;</span>
+
+<span style="color:#66d9ef">let</span> hash x <span style="color:#f92672">=</span> seeded_hash_param 10 100 0 x
+<span style="color:#66d9ef">let</span> hash_param n1 n2 x <span style="color:#f92672">=</span> seeded_hash_param n1 n2 0 x
+<span style="color:#66d9ef">let</span> seeded_hash seed x <span style="color:#f92672">=</span> seeded_hash_param 10 100 seed x</code></pre></div>
+<p>Finally, a reference implementation of <code>seeded_hash_param</code> can be referred <a href="https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L188">here</a>. Anyway, since we are hashing strings, what we actually care is the following code snippets:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">// https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L151
+</span><span style="color:#75715e"></span>  CAMLexport uint32 <span style="color:#a6e22e">caml_hash_mix_string</span>(uint32 h, value s)
+  {
+    mlsize_t len <span style="color:#f92672">=</span> caml_string_length(s);
+    mlsize_t i;
+    uint32 w;
+
+    <span style="color:#75715e">/* Mix by 32-bit blocks (little-endian) */</span>
+    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">&lt;=</span> len; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">4</span>) {
+  <span style="color:#75715e">#ifdef ARCH_BIG_ENDIAN
+</span><span style="color:#75715e"></span>      w <span style="color:#f92672">=</span> Byte_u(s, i)
+          <span style="color:#f92672">|</span> (Byte_u(s, i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span>)
+          <span style="color:#f92672">|</span> (Byte_u(s, i<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">16</span>)
+          <span style="color:#f92672">|</span> (Byte_u(s, i<span style="color:#f92672">+</span><span style="color:#ae81ff">3</span>) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">24</span>);
+  <span style="color:#75715e">#else
+</span><span style="color:#75715e"></span>      w <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>((uint32 <span style="color:#f92672">*</span>) <span style="color:#f92672">&amp;</span>Byte_u(s, i));
+  <span style="color:#75715e">#endif
+</span><span style="color:#75715e"></span>      MIX(h, w);
+    }
+    <span style="color:#75715e">/* Finish with up to 3 bytes */</span>
+    w <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">switch</span> (len <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">3</span>) {
+    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span> w  <span style="color:#f92672">=</span> Byte_u(s, i<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">16</span>;   <span style="color:#75715e">/* fallthrough */</span>
+    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span> w <span style="color:#f92672">|=</span> Byte_u(s, i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span>;    <span style="color:#75715e">/* fallthrough */</span>
+    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span> w <span style="color:#f92672">|=</span> Byte_u(s, i);
+            MIX(h, w);
+    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> <span style="color:#75715e">/*skip*/</span>;     <span style="color:#75715e">/* len &amp; 3 == 0, no extra bytes, do nothing */</span>
+    }
+    <span style="color:#75715e">/* Finally, mix in the length.  Ignore the upper 32 bits, generally 0. */</span>
+    h <span style="color:#f92672">^=</span> (uint32) len;
+    <span style="color:#66d9ef">return</span> h;
+  }
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">// https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L188
+</span><span style="color:#75715e"></span>  CAMLprim value <span style="color:#a6e22e">caml_hash</span>(value count, value limit, value seed, value obj)
+  {
+    <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>    h <span style="color:#f92672">=</span> Int_val(seed);
+      <span style="color:#66d9ef">switch</span> (Tag_val(v)) {
+      <span style="color:#66d9ef">case</span> String_tag:
+        h <span style="color:#f92672">=</span> caml_hash_mix_string(h, v);
+        num<span style="color:#f92672">--</span>;
+        <span style="color:#66d9ef">break</span>;
+      <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>      }
+    FINAL_MIX(h);
+    <span style="color:#75715e">/* Fold result to the range [0, 2^30-1] so that it is a nonnegative
+</span><span style="color:#75715e">      OCaml integer both on 32 and 64-bit platforms. */</span>
+    <span style="color:#66d9ef">return</span> Val_int(h <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x3FFFFFFFU</span>);
+  }
+</code></pre></div>
+<p>When we are hashing strings with <code>caml_hash</code>, the arguments <code>count</code> and <code>limit</code> aren't used. In this implementation, <code>toString</code>, <code>cdjholca</code>, <code>rarfzray</code>, ... all hashes into 781809894. I have implemented a Python-equivalent and a complete search on <code>^[a-z]{7}$</code> took me around 45 minutes with <em>pypy3</em>. I think the list of preimages can be retrieved via a meet-in-the-middle approach and can be solved immediately, but I am not time-constrainted after the game. These are the candidates those have the same digest with <code>hash &quot;toString&quot;</code>:</p>
+<pre><code>bcwtdes dqoagnv hqxmvkq jfntbvq nanqyku pqeytpx pruxdbh sipootq</code></pre>
+<h3 id="part-v-the-final-touches">Part V: The final touches<a href="#part-v-the-final-touches" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Now we are finally back to the haxe script! There are ... possible $0 \leq u &lt; 2^{36}$ for <code>F(i)</code> to return one of the above 7-byte strings. Let's recall how <code>u</code> is derived inside <code>F(i)</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">var</span> u:B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<span style="color:#66d9ef">var</span> e <span style="color:#f92672">=</span> [A.indexOf][<span style="color:#ae81ff">313337</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x4C7F9</span>];
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span>));
+
+u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span>));
+u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>));
+u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+u <span style="color:#f92672">+=</span> e(d.charAt((i <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">9</span>));
+u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+u <span style="color:#f92672">+=</span> e(d.charAt(i));
+u <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">6</span>;
+u <span style="color:#f92672">^=</span> B.parseString(K[i]) <span style="color:#f92672">^</span> C.getPosInfos((<span style="color:#66d9ef">macro</span> aa <span style="color:#f92672">/</span> v77777777yTTTTTkkkCggggggggPD4<span style="color:#960050;background-color:#1e0010">!</span>).pos).min;</code></pre></div>
+<p>Hereby <code>d</code> is the flag, <code>K</code> is a given array of constants. Also, <code>e(d.charAt(j))</code> is a simple mapping from the $j$-th character of the flag. The one that remained mystery is <code>C.getPostInfos((macro aa / v77...!).pos).min</code>. Luckily, it is not hard know what the corresponding value is. I can simply print and found that it equals 1639. Well, remember the trauma I had? I tried messing around with the code and found the value changes when the code is updated...</p>
+
+<p>Well, let's cut the crap. The correct value would be 1763, and it is equal to the number of characters before the macro. Now everything is clear. We are going to find $u_0, u_1, ..., u_6$ those are increasing. I have written a <a href="https://gist.github.com/samueltangz/285d3e32a9e7cc86c23ef39a8c4e3ff1">solve script</a> that recovers the flag: <code>union{h4shC0ll1zion_m4ke5_HAXE_sad}</code>. Flag is <em>CORRECT</em>! 🎉</p>
+
+<div class="alert danger">
+  <strong>Warning.</strong> The solve script is highly unannotated and very likely unreadable.
+</div>
+
+
+<p>So that's it! I know it must be tough going through the entire blog post. Thanks for bearing with me and hope you enjoyed it.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-02-21-kurenaif-challenges/">
+                <span class="button__text">kurenaif 1K Subscriptions Challenges</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Union CTF 2021 (I): exah
+  </a>
+  <div class="js-toc"></div>
+</aside>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 3
+  });
+</script>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/1.7.1/viz.js"> </script>
+<script type="text/javascript">
+  (function () {
+    const vizPrefix = "language-viz-";
+    Array.prototype.forEach.call(document.querySelectorAll("[class^=" + vizPrefix + "]"), function (x) {
+      let engine;
+      x.getAttribute("class").split(" ").forEach(function (cls) {
+        if (cls.startsWith(vizPrefix)) {
+          engine = cls.substr(vizPrefix.length);
+        }
+      });
+      const image = new DOMParser().parseFromString(Viz(x.innerText, { format: "svg", engine: engine }), "image/svg+xml");
+      x.parentNode.insertBefore(image.documentElement, x);
+      x.style.display = 'none'
+      x.parentNode.style.backgroundColor = "white"
+    });
+  })();
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
