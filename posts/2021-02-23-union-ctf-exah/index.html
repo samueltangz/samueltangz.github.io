@@ -182,11 +182,11 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
 <h3 id="part-i-jumping-into-the-rabbit-hole">Part I: Jumping into the rabbit hole<a href="#part-i-jumping-into-the-rabbit-hole" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
 <div class="alert danger">
-  🧠 <strong>I seriously underestimated the challenge.</strong> I have suffered enough from <em>mrii</em> and decided to look into another one. This challenge looked pretty simple when I first look at it. Well, both challenges are written by <em>Aurel300</em> and I should have awared of this.
+  🧠 <strong>I seriously underestimated the challenge.</strong> I have suffered enough from <em>mrii</em> and decided to look into another one. This challenge looked pretty simple when I first look at it. Well, both challenges are written by <em>Aurel300</em> and I should have aware of this.
 </div>
 
 
-<p>I am still in trauma from <em>mrii</em> that the expected behaviour may not be reproducible when the code is changed (in particular, when they are prettified or annotated). However, making the code readable is <em>always</em> the first priority. The correctness is not important during static analysis. So let's format it!</p>
+<p>I am still in trauma from <em>mrii</em> that the expected behaviour may not be reproducible when the code is changed (in particular, when they are prettified or annotated). However, making the code readable is <em>always</em> the priority. The correctness is not important during static analysis. So let's format it!</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#75715e">/**union{paste the flag here}*/</span>
 
 <span style="color:#75715e">#if macro</span>
@@ -275,7 +275,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe">u <span style="color:#f92672">&gt;=</span> L <span style="color:#f92672">||</span> <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;bad flag&#34;</span>;</code></pre></div>
 <p>Each of the $u_i$'s will then be used to compute a 7-character string as the function result. What's that for? Let's skip it for now.</p>
 
-<h3 id="part-ii-weird-stuffs-are-happening">Part II: Weird stuffs are happening...<a href="#part-ii-weird-stuffs-are-happening" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="part-ii-weird-stuff-are-happening">Part II: Weird stuff are happening...<a href="#part-ii-weird-stuff-are-happening" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
 <p>When I understand the code more, I found that there is something weird. Let's look at the following Haxe snippet.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
@@ -330,7 +330,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
     <span style="color:#75715e">// Prints &#34;flag is SowRONg&#34;</span>
   }
 }</code></pre></div>
-<p>From what I guess, the snippet should be printing <code>flag is SOwrONg</code>... My guess is <em>sOwRoNg</em>. It now seemed to me that the representation will be replaced only if the new key is one of the strings: <code>cdjholca</code>, <code>rarfzray</code>, ... and <code>nijgbmst</code>. They are the initial keys defined in each of the <code>w[i]</code>'s. The following snippets demystifies a bit while bringing another puzzle to me. Let's guess what will the below snippet prints:</p>
+<p>From what I guess, the snippet should be printing <code>flag is SOwrONg</code>... My guess is <em>sOwRoNg</em>. It now seemed to me that the representation will be replaced only if the new key is one of the strings: <code>cdjholca</code>, <code>rarfzray</code>, ... and <code>nijgbmst</code>. They are the initial keys defined in each of the <code>w[i]</code>'s. The following snippets demystify a bit while bringing another puzzle to me. Let's guess what will the below snippet prints:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#66d9ef">class</span> Test {
   <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
     <span style="color:#66d9ef">var</span> w: Array&lt;haxe.DynamicAccess&lt;Dynamic&gt;&gt; <span style="color:#f92672">=</span> ([
@@ -343,7 +343,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
     Sys.println(<span style="color:#e6db74">&#39;flag is &#39;</span> <span style="color:#f92672">+</span> w.join(<span style="color:#e6db74">&#34;&#34;</span>));
   }
 }</code></pre></div>
-<p>Well, I bet you cannot predict the results. It is <code>flag is {cdjholcb: #fun}O</code>... Why? What I knew is the function got executed when the key matches one of the <code>cdjholca</code> and etc. Otherwise, it matches my expectation on how <code>haxe.DynamicAccess&lt;Dynamic&gt;</code> should be represented. In our case, printing <code>w[0]</code> alone is <code>{cdjholcb: #fun}</code>. So there are two questions left:</p>
+<p>Well, I bet you cannot predict the results. It is <code>flag is {cdjholcb: #fun}O</code>... Why? What I knew is the function got executed when the key matches one of the <code>cdjholca</code>, etc. Otherwise, it matches my expectation of how <code>haxe.DynamicAccess&lt;Dynamic&gt;</code> should be represented. In our case, printing <code>w[0]</code> alone is <code>{cdjholcb: #fun}</code>. So there are two questions left:</p>
 
 <ol>
 <li>Why are the functions got executed when the key is <code>cdjholca</code>?</li>
@@ -362,7 +362,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
 }
 <span style="color:#75715e">// Uncaught exception Cannot call 444</span>
 <span style="color:#75715e">// Test.hx:5: characters 5-10 : Called from here</span></code></pre></div>
-<p>To understand why is the function got executed, we may need to look at how strings are printed. These are some code snippets those I found during the process.</p>
+<p>To understand why is the function got executed, we may need to look at how strings are printed. These are some code snippets I found during the process.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haxe" data-lang="haxe"><span style="color:#75715e">// https://github.com/HaxeFoundation/haxe/blob/4.2.0/std/Sys.hx#L39</span>
 	<span style="color:#75715e">/**
 </span><span style="color:#75715e">		Prints any value to the standard output, followed by a newline.
@@ -413,11 +413,11 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
     <span style="color:#75715e">// oy8:toStringy8:cdjholcag</span>
   }
 }</code></pre></div>
-<p>It makes sense when serializing <code>{&quot;test&quot;: &quot;foo&quot;}</code>. It can be broken into few parts:</p>
+<p>It makes sense when serializing <code>{&quot;test&quot;: &quot;foo&quot;}</code>. It can be broken into a few parts:</p>
 <pre><code> o       y       4       :          test  y       3       :          foo   g
 [object][string][length][separator][data][string][length][separator][data][suffix]
         [key                            ][value                          ]</code></pre>
-<p>Why is <code>cdjholca</code> changed to <code>toString</code>? I don't know, but this explains why the <code>w[i]</code>'s are not printing its entire map but a value from the function call. In short, the method <code>toString</code> in the <code>Dynamic</code> is overwritten. When <code>Sys.println</code> is called, the replaced <code>toString</code> is called, returning the new value. Anyway, this is the deadend I reached during the CTF...</p>
+<p>Why is <code>cdjholca</code> changed to <code>toString</code>? I don't know, but this explains why the <code>w[i]</code>'s are not printing its entire map but a value from the function call. In short, the method <code>toString</code> in the <code>Dynamic</code> is overwritten. When <code>Sys.println</code> is called, the replaced <code>toString</code> is called, returning the new value. Anyway, this is the dead end I reached during the CTF...</p>
 
 <h3 id="part-iv-jumping-into-another-rabbit-hole">Part IV: Jumping into another rabbit hole<a href="#part-iv-jumping-into-another-rabbit-hole" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -480,7 +480,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
 
 
 
-<p>OCaml <code>HashTbl</code> is implementing the hash table and they are keyed by 32-bit integers. This is definitely vulnerable to preimage attacks owing to the small keyspace. In particular, when Haxe is printing a string, <code>call_to_string</code> is called.</p>
+<p>OCaml <code>HashTbl</code> is implementing the hash table and they are keyed by 32-bit integers. This is vulnerable to preimage attacks owing to the small keyspace. In particular, when Haxe is printing a string, <code>call_to_string</code> is called.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ocaml" data-lang="ocaml"><span style="color:#75715e">(* https://github.com/lucasaiu/ocaml/blob/4.00/stdlib/hashtbl.mli#L303 *)</span>
   <span style="color:#66d9ef">val</span> hash <span style="color:#f92672">:</span> <span style="color:#66d9ef">&#39;</span>a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span>
   <span style="color:#75715e">(** [Hashtbl.hash x] associates a nonnegative integer to any value of
@@ -493,7 +493,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
 <span style="color:#66d9ef">let</span> hash x <span style="color:#f92672">=</span> seeded_hash_param 10 100 0 x
 <span style="color:#66d9ef">let</span> hash_param n1 n2 x <span style="color:#f92672">=</span> seeded_hash_param n1 n2 0 x
 <span style="color:#66d9ef">let</span> seeded_hash seed x <span style="color:#f92672">=</span> seeded_hash_param 10 100 seed x</code></pre></div>
-<p>Finally, a reference implementation of <code>seeded_hash_param</code> can be referred <a href="https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L188">here</a>. Anyway, since we are hashing strings, what we actually care is the following code snippets:</p>
+<p>Finally, a implementation of <code>seeded_hash_param</code> can be referred <a href="https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L188">here</a>. Anyway, since we are hashing strings, what we actually care is the following code snippets:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">// https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L151
 </span><span style="color:#75715e"></span>  CAMLexport uint32 <span style="color:#a6e22e">caml_hash_mix_string</span>(uint32 h, value s)
   {
@@ -544,7 +544,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
     <span style="color:#66d9ef">return</span> Val_int(h <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x3FFFFFFFU</span>);
   }
 </code></pre></div>
-<p>When we are hashing strings with <code>caml_hash</code>, the arguments <code>count</code> and <code>limit</code> aren't used. In this implementation, <code>toString</code>, <code>cdjholca</code>, <code>rarfzray</code>, ... all hashes into 781809894. I have implemented a Python-equivalent and a complete search on <code>^[a-z]{7}$</code> took me around 45 minutes with <em>pypy3</em>. I think the list of preimages can be retrieved via a meet-in-the-middle approach and can be solved immediately, but I am not time-constrainted after the game. These are the candidates those have the same digest with <code>hash &quot;toString&quot;</code>:</p>
+<p>When we are hashing strings with <code>caml_hash</code>, the arguments <code>count</code> and <code>limit</code> aren't used. In this implementation, <code>toString</code>, <code>cdjholca</code>, <code>rarfzray</code>, ... all hashes into <code>781809894</code>. I have implemented a Python-equivalent script and a complete search on <code>^[a-z]{7}$</code> took me around 45 minutes with <em>pypy3</em>. I think the list of preimages can be retrieved via a meet-in-the-middle approach and can be solved immediately, but I am not time-constrained after the game. These are the candidates who have the same digest with <code>hash &quot;toString&quot;</code>:</p>
 <pre><code>bcwtdes dqoagnv hqxmvkq jfntbvq nanqyku pqeytpx pruxdbh sipootq</code></pre>
 <h3 id="part-v-the-final-touches">Part V: The final touches<a href="#part-v-the-final-touches" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
