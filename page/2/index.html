@@ -275,11 +275,11 @@
     
       <div class="post on-list">
         <h1 class="post-title">
-          <a href="/posts/2020-09-23-twctf/">TokyoWesterns CTF 6th 2020 Writeup</a>
+          <a href="/posts/2020-09-21-firebird-intro-ctf-rsa/">Firebird Intro CTF: Rotten Secured Algorithm</a>
         </h1>
         <div class="post-meta">
           <span class="post-date">
-            2020-10-09
+            2020-09-21
           </span>
           
             <span class="post-author">:: Mystiz</span>
@@ -291,7 +291,7 @@
             
             #<a href="/tags/ctf/">ctf</a>&nbsp;
             
-            #<a href="/tags/tokyowesterns-ctf/">tokyowesterns-ctf</a>&nbsp;
+            #<a href="/tags/firebird-training/">firebird-training</a>&nbsp;
             
           </span>
         
@@ -300,18 +300,14 @@
 
         <div class="post-content">
           
-          
-          This writeup is compiled by @blackb6a: cire meat pop (@Khlung1), harrier (@harrier_lcc), Ozetta (@02E774) and Mystiz (@mystiz613).
-urlcheck v1 (Web, 98 points) Solved by Ozetta.
-Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the pattern &lsquo;\A(\d+).(\d+).(\d+).(\d+)\Z&rsquo; and the first octet cannot be 0 or 127, and some other patterns for internal IP addresses. For some reason, int(&quot;0177&quot;) is still 177 instead of 127 in Python, so we can use http://0177.0.0.1/admin-status
-          
+          Rotten Secured Algorithm is the only challenge that I have written for Firebird Intro CTF. Two people (out of 166) ended up solving the challenge. There is a Python script attached in the challenge, as well as the output file. Let&rsquo;s see what&rsquo;s going on in the Python&hellip;
           
         </div>
 
         
         <div>
           <a class="read-more button"
-            href="/posts/2020-09-23-twctf/">Read more →</a>
+            href="/posts/2020-09-21-firebird-intro-ctf-rsa/">Read more →</a>
         </div>
         
       </div>

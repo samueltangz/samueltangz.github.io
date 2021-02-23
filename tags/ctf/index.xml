@@ -104,17 +104,6 @@ There are three challenges writeup in this post:
     </item>
     
     <item>
-      <title>TokyoWesterns CTF 6th 2020 Writeup</title>
-      <link>/posts/2020-09-23-twctf/</link>
-      <pubDate>Fri, 09 Oct 2020 00:53:29 +0800</pubDate>
-      
-      <guid>/posts/2020-09-23-twctf/</guid>
-      <description>This writeup is compiled by @blackb6a: cire meat pop (@Khlung1), harrier (@harrier_lcc), Ozetta (@02E774) and Mystiz (@mystiz613).
-urlcheck v1 (Web, 98 points) Solved by Ozetta.
-Objective: SSRF http://127.0.0.1/admin-status The input needs to fulfil the pattern &#39;\A(\d+)\.(\d+)\.(\d+)\.(\d+)\Z&#39; and the first octet cannot be 0 or 127, and some other patterns for internal IP addresses. For some reason, int(&amp;quot;0177&amp;quot;) is still 177 instead of 127 in Python, so we can use http://0177.0.0.1/admin-status</description>
-    </item>
-    
-    <item>
       <title>Firebird Intro CTF: Rotten Secured Algorithm</title>
       <link>/posts/2020-09-21-firebird-intro-ctf-rsa/</link>
       <pubDate>Mon, 21 Sep 2020 16:15:00 +0800</pubDate>
