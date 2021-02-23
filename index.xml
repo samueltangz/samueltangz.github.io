@@ -168,16 +168,6 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
     </item>
     
     <item>
-      <title>PwnThyBytes CTF 2019 Writeup</title>
-      <link>/posts/2019-10-02-pwnthybytes/</link>
-      <pubDate>Wed, 02 Oct 2019 23:20:00 +0800</pubDate>
-      
-      <guid>/posts/2019-10-02-pwnthybytes/</guid>
-      <description>This writeup is compiled on behalf as @blackb6a. In particular the writeup for &amp;quot;Avec?&amp;quot; is written by @harrier_lcc.
-Pass the Hash (Warmup/Learning; 50 points) Challenge Summary We are given a peculiar hash algorithm that generates 64-byte long hashes, which wraps of sha0, sha1, sha256 and ripemd160. The hash takes two arguments, salt (20 bytes) and password (22 bytes). We are allowed to control the salt, whilst the goal is to find the password within 1024 queries.</description>
-    </item>
-    
-    <item>
       <title>De1CTF 2019 Writeup</title>
       <link>/posts/2019-08-06-de1ctf/</link>
       <pubDate>Thu, 06 Aug 2009 10:20:00 +0800</pubDate>
