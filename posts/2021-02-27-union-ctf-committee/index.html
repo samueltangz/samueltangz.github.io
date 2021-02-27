@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Union CTF 2021 (II): committee :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Challenge Summary  A committee was formed last year to decide the highly-sensitive contents of the flag for this challenge. Our informant managed to leak some data, but he was arrested within weeks of the committee&#39;s operation. All we have are the logs of the committee&#39;s meetings.
+Note: file fixed, please redownload
+Author: Aurel300
+ We are given log.txt that contains the full commit history of the flag-containing repository.
+... commit dca4ca5150b82e541e2f5c42d00493ba8d4aa84a Author: Christopher L." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-02-27-union-ctf-committee/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/pink.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/pink.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Union CTF 2021 (II): committee">
+<meta property="og:description" content="We are given log.txt that contains the full commit history of the flag-containing repository. We are also given the content of the only file, namely flag.txt, for the first three commits. Also, three characters are filled in each subsequent commit. The objective is to recover the flag." />
+<meta property="og:url" content="/posts/2021-02-27-union-ctf-committee/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-02-27 17:00:00 &#43;0800 HKT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="pink">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-02-27-union-ctf-committee/">Union CTF 2021 (II): committee</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-02-27 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/union-ctf/">union-ctf</a>&nbsp;
+    
+    #<a href="/tags/git/">git</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<blockquote>
+<p>A committee was formed last year to decide the highly-sensitive contents of the flag for this challenge. Our informant managed to leak some data, but he was arrested within weeks of the committee's operation. All we have are the logs of the committee's meetings.</p>
+
+<p>Note: file fixed, please redownload</p>
+
+<p>Author: Aurel300</p>
+</blockquote>
+
+<p>We are given <code>log.txt</code> that contains the full commit history of the flag-containing repository.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
+
+commit dca4ca5150b82e541e2f5c42d00493ba8d4aa84a
+Author: Christopher L. Hatch &lt;crisscross.the.hatch@legal.committee&gt;
+Date:   Mon Mar 23 12:30:00 2020 +0000
+
+    Proceedings of the flag-deciding committee: 8, 31, 36
+
+commit c3e6c8ea777d50595a8b288cbbbd7a675c43b5df
+Author: Pamela W. Mathews &lt;pammy.emm@legal.committee&gt;
+Date:   Fri Mar 13 12:30:00 2020 +0000
+
+    Proceedings of the flag-deciding committee: 18
+
+commit 08e1f0dd3b9d710b1eea81f6b8f76c455f634e87
+Author: Robert J. Lawful &lt;boblaw@legal.committee&gt;
+Date:   Wed Mar 4 12:00:00 2020 +0000
+
+    Initial formation of the flag-deciding committee.</code></pre></div>
+<p>We are also given the content of the only file, namely <code>flag.txt</code>, for the first three commits (<code>08e1f0d</code>, <code>c3e6c8e</code> and <code>dca4ca5</code>). They are respectively:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">union{**********************************************}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">union{*****************_****************************}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">union{*******3*********_************r****d**********}</code></pre></div>
+<p>Also, three characters are filled in each subsequent commit. The objective is to recover the flag.</p>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>There<sup class="footnote-ref" id="fnref:hash-reference-gist"><a class="footnote" href="#fn:hash-reference-gist">1</a></sup><sup class="footnote-ref" id="fnref:git-objects"><a class="footnote" href="#fn:git-objects">2</a></sup><sup class="footnote-ref" id="fnref:git-references"><a class="footnote" href="#fn:git-references">3</a></sup> are useful pointers those available online, and it greatly helped me when I was working on the challenge.</p>
+
+<div class="alert info">
+  📖 <strong>Why documenting something that already exists?</strong> It is very exciting to learn how it works. Coincidentally I am working on node trees at work. Since I have never look at how node trees for <em>git</em> works, this is the perfect chance.
+</div>
+
+
+<p>Moreover, I'll be working on examples instead of laying out the structure again. The objective of this blog post is to compute the <em>hashes</em> for the first three commits correctly. Without loss of generality, the remaining commits work in the same way.</p>
+
+<h3 id="part-i-computing-the-tree-hash">Part I: Computing the tree hash<a href="#part-i-computing-the-tree-hash" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>To begin, let's look at an example which is irrelevant to the challenge. Each <em>tree</em> (folder) node is shown in green, while each <em>blob</em> (file) node is shown in yellow.</p>
+<pre><code class="language-viz-dot" data-lang="viz-dot">digraph {
+  rankdir=BT
+
+  &#34;/-1&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 1&lt;BR /&gt;Hash 5b7539b&lt;/font&gt;&gt;]
+  &#34;/README.md-1&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;README.md&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 1&lt;BR /&gt;Hash 95d09f2&lt;/font&gt;&gt;]
+
+  &#34;/README.md-1&#34;-&gt;&#34;/-1&#34;[style=dashed]
+
+
+  &#34;/-2&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 2&lt;BR /&gt;Hash 794567b&lt;/font&gt;&gt;]
+  &#34;/README.md-2&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;README.md&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 2&lt;BR /&gt;Hash bc7774a&lt;/font&gt;&gt;]
+
+  &#34;/README.md-2&#34;-&gt;&#34;/-2&#34;[style=dashed]
+
+
+  &#34;/-3&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 3&lt;BR /&gt;Hash 0347b68&lt;/font&gt;&gt;]
+  &#34;/src-3&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;src&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 3&lt;BR /&gt;Hash bf27a6d&lt;/font&gt;&gt;]
+  &#34;/src/index.py-3&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;index.py&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 3&lt;BR /&gt;Hash 5d3086d&lt;/font&gt;&gt;]
+
+  &#34;/README.md-2&#34;-&gt;&#34;/-3&#34;[style=dashed]
+  &#34;/src-3&#34;-&gt;&#34;/-3&#34;[style=dashed]
+  &#34;/src/index.py-3&#34;-&gt;&#34;/src-3&#34;[style=dashed]
+
+
+  &#34;/-4&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 4&lt;BR /&gt;Hash b14d3a6&lt;/font&gt;&gt;]
+  &#34;/src-4&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;src&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 4&lt;BR /&gt;Hash f152f55&lt;/font&gt;&gt;]
+  &#34;/src/README.md-4&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;README.md&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 4&lt;BR /&gt;Hash cd12bea&lt;/font&gt;&gt;]
+
+  &#34;/README.md-2&#34;-&gt;&#34;/-4&#34;
+  &#34;/src-4&#34;-&gt;&#34;/-4&#34;
+  &#34;/src/README.md-4&#34;-&gt;&#34;/src-4&#34;
+  &#34;/src/index.py-3&#34;-&gt;&#34;/src-4&#34;
+
+  { rank = same; &#34;/-1&#34;; &#34;/-2&#34;; &#34;/-3&#34;; &#34;/-4&#34;; }
+
+  &#34;/-1&#34;-&gt;&#34;/-2&#34;[color=&#34;#00000000&#34;]
+  &#34;/-2&#34;-&gt;&#34;/-3&#34;[color=&#34;#00000000&#34;]
+  &#34;/-3&#34;-&gt;&#34;/-4&#34;[color=&#34;#00000000&#34;]
+}</code></pre>
+<p>There are four commits from the above example. In the latest version, there are three files, namely, <code>/README.md</code>, <code>/src/README.md</code> and <code>/src/index.py</code>. Also, there are two folders: <code>/</code> and <code>/src</code>. Let's first look at how the hashes for file nodes are computed. Suppose that <code>/README.md</code> is an one-liner saying <code>hello world!</code>. Then the file hash starts with <code>bc7774a</code> - this is the SHA-1 digest of the file content, prefixed with <code>blob [LENGTH]\x00</code>. Let's look at the following code snippet on how a file hash is computed:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">file_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;blob 12</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">hello world!&#39;</span>)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># bc7774a7b18deb1d7bd0212d34246a9b1260ae17</span></code></pre></div>
+<p>That is everything for computing file hashes. Before we are computing tree hashes, let's assume that the file hashes for <code>/src/index.py</code> and <code>/src/README.md</code> are:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">/src/index.py  5d3086defce3c9327c894ed8c005e15d7f75c906
+/src/README.md cd12bea6b052e9b4c1efd973ae4708b57f0e1c36</code></pre></div>
+<p>For <em>git</em>, the hash of a tree depends on its child nodes. Let's adopt a bottom-up approach to compute the hash of the root node (i.e., the entire tree). In this way, we will first retrieve the hash of <code>/src</code>, then the hash for <code>/</code>.</p>
+
+<p>To compute tree hashes, we will be first sorting the child nodes in lexicographic order. We will be adding a six-digit number indicating the mode<sup class="footnote-ref" id="fnref:six-bytes-mode"><a class="footnote" href="#fn:six-bytes-mode">4</a></sup> of the nodes. The first three digits are usually <code>100</code> or <code>040</code>, which represent a regular file and a directory respectively. The next three digits would indicate the Unix permissions. For example, what we need to compute the hash for <code>/src</code> are:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">100644 README.md cd12bea6b052e9b4c1efd973ae4708b57f0e1c36
+100644 index.py  5d3086defce3c9327c894ed8c005e15d7f75c906</code></pre></div>
+<p>Referencing from various sources online<sup class="footnote-ref" id="fnref:git-tree-hash"><a class="footnote" href="#fn:git-tree-hash">5</a></sup>, I have come up with the code snippet to compute tree hash for <code>/src</code> (and <code>/</code>).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Tree hash for /src</span>
+content  <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;100644 README.md</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;cd12bea6b052e9b4c1efd973ae4708b57f0e1c36&#39;</span>)
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;100644 index.py</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;5d3086defce3c9327c894ed8c005e15d7f75c906&#39;</span>)
+
+content  <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;tree {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+tree_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># f152f55e77dd7eea0ea1fca25a59b9b2793ef2c2</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Tree hash for /</span>
+content  <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;100644 README.md</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;bc7774a7b18deb1d7bd0212d34246a9b1260ae17&#39;</span>)
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;40000 src</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;f152f55e77dd7eea0ea1fca25a59b9b2793ef2c2&#39;</span>)
+
+content  <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;tree {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+tree_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># b14d3a6e7ec4a95ba6f9bdc01af86dd85ab537eb</span></code></pre></div>
+<p>It is possible to verify via <code>git cat-file</code> whether the hash is correct. It would print its preimage if the hash checks out. After all, the tree hash for version four would be <code>b14d3a6e7ec4a95ba6f9bdc01af86dd85ab537eb</code>, which is defined by the tree hash of the root directory.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git cat-file tree b14d3a6e7ec4a95ba6f9bdc01af86dd85ab537eb | hd</code></pre></div>
+<p>Back to the challenge. Since it is the only file in the repository, it is straight forward to compute the tree hash if we know its content. These are the node trees in the first versions and how the hashes are computed.</p>
+<pre><code class="language-viz-dot" data-lang="viz-dot">digraph {
+  rankdir=BT
+
+  &#34;root-1&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 1&lt;BR /&gt;Hash 661c9eb&lt;/font&gt;&gt;]
+  &#34;root-2&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 2&lt;BR /&gt;Hash 754603f&lt;/font&gt;&gt;]
+  &#34;root-3&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 3&lt;BR /&gt;Hash efc6902&lt;/font&gt;&gt;]
+  &#34;flag-1&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;flag.txt&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 1&lt;BR /&gt;Hash 3f51471&lt;/font&gt;&gt;]
+  &#34;flag-2&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;flag.txt&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 2&lt;BR /&gt;Hash f0a9b30&lt;/font&gt;&gt;]
+  &#34;flag-3&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#ffff8080&#34;,label=&lt;flag.txt&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 3&lt;BR /&gt;Hash b3f1331&lt;/font&gt;&gt;]
+
+  &#34;flag-1&#34;-&gt;&#34;root-1&#34;[style=dashed]
+  &#34;flag-2&#34;-&gt;&#34;root-2&#34;[style=dashed]
+  &#34;flag-3&#34;-&gt;&#34;root-3&#34;
+}</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Version 1</span>
+
+<span style="color:#75715e"># blob hash for &#34;/flag.txt&#34;</span>
+content <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;union{**********************************************}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;blob {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+file_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># 3f51471860e4e0364a2e7a79c4bc14267add8d39</span>
+
+<span style="color:#75715e"># tree hash for &#34;/&#34;</span>
+content <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;100644 flag.txt</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> bytes<span style="color:#f92672">.</span>fromhex(file_hash)
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;tree {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+tree_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># 661c9ebfb47590de9c094b3c56f7700050731b36</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Version 2</span>
+
+<span style="color:#75715e"># blob hash for &#34;/flag.txt&#34;</span>
+content <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;union{*****************_****************************}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;blob {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+file_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># f0a9b306519600289bb5d7ed5984babae61cf3b8</span>
+
+<span style="color:#75715e"># tree hash for &#34;/&#34;</span>
+content <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;100644 flag.txt</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> bytes<span style="color:#f92672">.</span>fromhex(file_hash)
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;tree {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+tree_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># 754603fb1051aecc022315196611374f65791906</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Version 3</span>
+
+<span style="color:#75715e"># blob hash for &#34;/flag.txt&#34;</span>
+content <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;union{*******3*********_************r****d**********}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;blob {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+file_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># b3f1331849f82c64f3d164d65891ab44e3662858</span>
+
+<span style="color:#75715e"># tree hash for &#34;/&#34;</span>
+content <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;100644 flag.txt</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">+</span> bytes<span style="color:#f92672">.</span>fromhex(file_hash)
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;tree {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+tree_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># efc6902a4e82e09282b6a3b71b61bf8cccfe6689</span></code></pre></div>
+<h3 id="part-ii-finding-the-commit-hash">Part II: Finding the commit hash<a href="#part-ii-finding-the-commit-hash" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>The commit hashes are relatively easier to compute. Although the commits generally form a tree, the commits in the challenge form a chain. This is because there are no merge commits within, where there would be multiple parents for a commit.</p>
+<pre><code class="language-viz-dot" data-lang="viz-dot">digraph {
+  rankdir=BT
+
+  &#34;commit-1&#34;[style=&#34;dashed,filled&#34;, fillcolor=&#34;#8080ff80&#34;, label=&lt;Version 1&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Hash 08e1f0d&lt;/font&gt;&gt;]
+  &#34;commit-2&#34;[style=&#34;dashed,filled&#34;, fillcolor=&#34;#8080ff80&#34;, label=&lt;Version 2&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Hash c3e6c8e&lt;/font&gt;&gt;]
+  &#34;commit-3&#34;[style=&#34;filled&#34;, fillcolor=&#34;#8080ff80&#34;, label=&lt;Version 3&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Hash dca4ca5&lt;/font&gt;&gt;]
+
+  &#34;root-1&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 1&lt;BR /&gt;Hash 661c9eb&lt;/font&gt;&gt;]
+  &#34;root-2&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 2&lt;BR /&gt;Hash 754603f&lt;/font&gt;&gt;]
+  &#34;root-3&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#80ff8080&#34;, label=&lt;root&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 3&lt;BR /&gt;Hash efc6902&lt;/font&gt;&gt;]
+  &#34;flag-1&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;flag.txt&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 1&lt;BR /&gt;Hash 3f51471&lt;/font&gt;&gt;]
+  &#34;flag-2&#34;[shape=box, style=&#34;dashed,filled&#34;, fillcolor=&#34;#ffff8080&#34;, label=&lt;flag.txt&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 2&lt;BR /&gt;Hash f0a9b30&lt;/font&gt;&gt;]
+  &#34;flag-3&#34;[shape=box, style=&#34;filled&#34;, fillcolor=&#34;#ffff8080&#34;,label=&lt;flag.txt&lt;BR /&gt;&lt;font point-size=&#34;10&#34;&gt;Version 3&lt;BR /&gt;Hash b3f1331&lt;/font&gt;&gt;]
+
+  &#34;flag-1&#34;-&gt;&#34;root-1&#34;[style=dashed]
+  &#34;flag-2&#34;-&gt;&#34;root-2&#34;[style=dashed]
+  &#34;flag-3&#34;-&gt;&#34;root-3&#34;
+
+  { rank = same; &#34;commit-1&#34;; &#34;commit-2&#34;; &#34;commit-3&#34;; }
+  &#34;commit-1&#34;-&gt;&#34;commit-2&#34;
+  &#34;commit-2&#34;-&gt;&#34;commit-3&#34;
+
+  &#34;root-1&#34;-&gt;&#34;commit-1&#34;
+  &#34;root-2&#34;-&gt;&#34;commit-2&#34;
+  &#34;root-3&#34;-&gt;&#34;commit-3&#34;
+}</code></pre>
+<p>There are five fields to be filled to compute the <em>commit hash</em>: <em>tree hash</em>, <em>parent hashes</em> (if exists), <em>author</em>, <em>committer</em> and the <em>commit message</em>. With further ado, let's see how the commit hashes are calculated.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Version 1</span>
+
+content  <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;tree 661c9ebfb47590de9c094b3c56f7700050731b36</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;author Robert J. Lawful &lt;boblaw@legal.committee&gt; 1583323200 +0000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;committer Flag-deciding Committee &lt;committee@legal.committee&gt; 1583323200 +0000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Initial formation of the flag-deciding committee.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#75715e"># The commit message</span>
+
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;commit {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+commit_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># 08e1f0dd3b9d710b1eea81f6b8f76c455f634e87</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Version 2</span>
+
+content  <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;tree 754603fb1051aecc022315196611374f65791906</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;parent 08e1f0dd3b9d710b1eea81f6b8f76c455f634e87</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;author Pamela W. Mathews &lt;pammy.emm@legal.committee&gt; 1584102600 +0000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;committer Flag-deciding Committee &lt;committee@legal.committee&gt; 1584102600 +0000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Proceedings of the flag-deciding committee: 18</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#75715e"># The commit message</span>
+
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;commit {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+commit_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># c3e6c8ea777d50595a8b288cbbbd7a675c43b5df</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Version 3</span>
+
+content  <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;tree efc6902a4e82e09282b6a3b71b61bf8cccfe6689</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;parent c3e6c8ea777d50595a8b288cbbbd7a675c43b5df</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;author Christopher L. Hatch &lt;crisscross.the.hatch@legal.committee&gt; 1584966600 +0000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;committer Flag-deciding Committee &lt;committee@legal.committee&gt; 1584966600 +0000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
+content <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Proceedings of the flag-deciding committee: 8, 31, 36</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#75715e"># The commit message</span>
+
+content <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;commit {len(content)}</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> content
+commit_hash <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(content)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># dca4ca5150b82e541e2f5c42d00493ba8d4aa84a</span></code></pre></div>
+<h3 id="part-iii-back-to-the-challenge">Part III: Back to the challenge<a href="#part-iii-back-to-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>From the piece above, it is pretty evident to solve the challenge. What we need to do is to guess the committed bytes (the indices are given in the commit message). We are able to compute the commit hash and check if it is correct. This is my final <a href="https://gist.github.com/samueltangz/b99777ae8e1aeada9d72096175e0dd07">solve script</a>. Running the program for a minute or so, we have the flag 🎉!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">union{c0mm1tt33_d3c1deD_bu7_SHA_d3t3rm1n3d_6a7c2619a}</code></pre></div><div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:hash-reference-gist"><a href="https://gist.github.com/masak/2415865">How is git commit sha1 formed</a>
+ <a class="footnote-return" href="#fnref:hash-reference-gist">↩</a></li>
+<li id="fn:git-objects"><a href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects">Git - Git Objects</a>
+ <a class="footnote-return" href="#fnref:git-objects">↩</a></li>
+<li id="fn:git-references"><a href="https://git-scm.com/book/en/v2/Git-Internals-Git-References">Git - Git References</a>
+ <a class="footnote-return" href="#fnref:git-references">↩</a></li>
+<li id="fn:six-bytes-mode"><a href="https://unix.stackexchange.com/questions/450480/file-permission-with-six-bytes-in-git-what-does-it-mean">File permission with six bytes in git. What does it mean?</a>
+ <a class="footnote-return" href="#fnref:six-bytes-mode">↩</a></li>
+<li id="fn:git-tree-hash"><a href="https://stackoverflow.com/questions/54052838/how-can-i-calculate-git-tree-hash">How can I calculate git tree hash?</a>
+ <a class="footnote-return" href="#fnref:git-tree-hash">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-02-23-union-ctf-exah/">
+                <span class="button__text">Union CTF 2021 (I): exah</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Union CTF 2021 (II): committee
+  </a>
+  <div class="js-toc"></div>
+</aside>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 3
+  });
+</script>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/1.7.1/viz.js"> </script>
+<script type="text/javascript">
+  (function () {
+    const vizPrefix = "language-viz-";
+    Array.prototype.forEach.call(document.querySelectorAll("[class^=" + vizPrefix + "]"), function (x) {
+      let engine;
+      x.getAttribute("class").split(" ").forEach(function (cls) {
+        if (cls.startsWith(vizPrefix)) {
+          engine = cls.substr(vizPrefix.length);
+        }
+      });
+      const image = new DOMParser().parseFromString(Viz(x.innerText, { format: "svg", engine: engine }), "image/svg+xml");
+      x.parentNode.insertBefore(image.documentElement, x);
+      x.style.display = 'none'
+      x.parentNode.style.backgroundColor = "white"
+    });
+  })();
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
