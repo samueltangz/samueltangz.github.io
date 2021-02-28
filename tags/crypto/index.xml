@@ -96,6 +96,17 @@ There are three challenges writeup in this post:
     </item>
     
     <item>
+      <title>Firebird Intro CTF: Rotten Secured Algorithm</title>
+      <link>/posts/2020-09-21-firebird-intro-ctf-rsa/</link>
+      <pubDate>Mon, 21 Sep 2020 16:15:00 +0800</pubDate>
+      
+      <guid>/posts/2020-09-21-firebird-intro-ctf-rsa/</guid>
+      <description>Rotten Secured Algorithm is the only challenge that I have written for Firebird Intro CTF. Two people (out of 166) ended up solving the challenge.
+There is a Python script attached in the challenge, as well as the output file. Let&#39;s see what&#39;s going on in the Python:
+# Challenge written on Aug 26, 2020 by Mystiz. from Crypto.PublicKey import RSA import random import time from datetime import datetime from secret import flag t = int(time.</description>
+    </item>
+    
+    <item>
       <title>Google CTF 2020: Oracle</title>
       <link>/posts/2020-08-25-google-ctf-oracle/</link>
       <pubDate>Tue, 25 Aug 2020 16:15:00 +0800</pubDate>
@@ -103,6 +114,28 @@ There are three challenges writeup in this post:
       <guid>/posts/2020-08-25-google-ctf-oracle/</guid>
       <description>I was teamed-up with @blackb6a on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.
 In particular, Oracle is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be very computation intensive, just because I would like to make everything clear.</description>
+    </item>
+    
+    <item>
+      <title>UIUCTF 2020: nookcrypt</title>
+      <link>/posts/2020-07-22-uiuctf-nookcrypt/</link>
+      <pubDate>Wed, 22 Jul 2020 18:55:00 +0800</pubDate>
+      
+      <guid>/posts/2020-07-22-uiuctf-nookcrypt/</guid>
+      <description>Challenge Summary  Tom Nook is testing a new encryption scheme for nookphones, but it seems to be a bit faulty... can you break it?
+ nookcrypt is a netcat service that have no source code released. There are two functions exposed:
+ Gets an encrypted copy of the flag (and the message hello world). Encrypts an arbitrary message.  For example, this is what I had when trying out the options:</description>
+    </item>
+    
+    <item>
+      <title>De1CTF 2020 Writeup</title>
+      <link>/posts/2020-05-05-de1ctf/</link>
+      <pubDate>Tue, 05 May 2020 20:36:00 +0800</pubDate>
+      
+      <guid>/posts/2020-05-05-de1ctf/</guid>
+      <description>I was teamed up with @shellphish this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with DuSu and fs0c.
+I said that I&#39;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
+Homomorphic Challenge Summary This is a cryptography challenge with 465 points.</description>
     </item>
     
     <item>

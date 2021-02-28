@@ -268,6 +268,15 @@ B <span style="color:#f92672">=</span> B <span style="color:#f92672">/</span> T
 
 <p>and thus have the key to decrypt the flag:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Aero{&#34;Voldemort,&#34; said Riddle softly, &#34;is my past, present, and future, Harry Potter....&#34;}</code></pre></div>
+<h3 id="addendum">Addendum<a href="#addendum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>keltecc (the challenge author) and <a href="https://twitter.com/hellman1908" target="_blank" rel="nofollow">@hellman1908</a> had a similar approach as above. Meanwhile they need not to expand the polynomial by themselves.</p>
+
+<ul>
+<li><em>keltecc</em> wrote a function to handles the monomials. <a href="https://github.com/AeroCTF/aero-ctf-2021/blob/main/ideas/crypto/horcrux/solver.sage#L122">Link here</a>.</li>
+<li><em>hellman</em> used resultants to deal with it. From his write-up, the size of unknown is 1408 bits. Since I have not group the terms, the unknown size is larger (1536 bits). <a href="https://nbviewer.jupyter.org/gist/hellman/a8c9a09b1ce6959226f9d75cf94b805f">Link here</a>.</li>
+</ul>
+
 <h2 id="phoenix">phoenix<a href="#phoenix" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
