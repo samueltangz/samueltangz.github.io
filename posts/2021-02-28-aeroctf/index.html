@@ -64,8 +64,6 @@ Additionally, phoenix had seven solves and while horcrux and boggart had two." /
 
 
 
-<script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
 
 </head>
 <body class="pink">
@@ -195,8 +193,8 @@ Additionally, phoenix had seven solves and while horcrux and boggart had two." /
 <p>I have to stress again that my approach is pretty tedious. What I did is to expand everything. The <em>unknowns</em> are marked in yellow. Also, the overbraces and the underbraces are their entropies.</p>
 
 <p><span  class="math">\[\begin{aligned}
-& [(y_G^2 - {\tilde{y}_P}^2 - x_G^3 + {\tilde{x}_P}^3) - \overbrace{2{\tilde{y}_P}\htmlStyle{color: yellow;}{e_2}}^{\text{32b}} + \overbrace{\htmlStyle{color: yellow;}{e_2}^2}^{\text{64b}} + \overbrace{3{\tilde{x}_P}^2\htmlStyle{color: yellow;}{e_1}}^{\text{32b}} + \overbrace{3{\tilde{x}_P}\htmlStyle{color: yellow;}{e_1}^2}^{\text{64b}} - \overbrace{\htmlStyle{color: yellow;}{e_1}^3}^{\text{96b}}][(x_G - \tilde{x}_Q) - \overbrace{\htmlStyle{color: yellow;}{e_3}}^{\text{32b}}] \\
-& = [(y_G^2 - {\tilde{y}_Q}^2 - x_G^3 + {\tilde{x}_Q}^3) - \underbrace{2{\tilde{y}_Q}\htmlStyle{color: yellow;}{e_4}}_{\text{32b}} + \underbrace{\htmlStyle{color: yellow;}{e_4}^2}_{\text{64b}} + \underbrace{3{\tilde{x}_Q}^2\htmlStyle{color: yellow;}{e_3}}_{\text{32b}} + \underbrace{3{\tilde{x}_Q}\htmlStyle{color: yellow;}{e_3}^2}_{\text{64b}} - \underbrace{\htmlStyle{color: yellow;}{e_3}^3}_{\text{96b}}][(x_G - \tilde{x}_P) - \underbrace{\htmlStyle{color: yellow;}{e_1}}_{\text{32b}}].
+& [(y_G^2 - {\tilde{y}_P}^2 - x_G^3 + {\tilde{x}_P}^3) - \overbrace{2{\tilde{y}_P}\htmlStyle{color: yellow;}{e_2}}^{\text{32b}} - \overbrace{\htmlStyle{color: yellow;}{e_2}^2}^{\text{64b}} + \overbrace{3{\tilde{x}_P}^2\htmlStyle{color: yellow;}{e_1}}^{\text{32b}} + \overbrace{3{\tilde{x}_P}\htmlStyle{color: yellow;}{e_1}^2}^{\text{64b}} + \overbrace{\htmlStyle{color: yellow;}{e_1}^3}^{\text{96b}}][(x_G - \tilde{x}_Q) - \overbrace{\htmlStyle{color: yellow;}{e_3}}^{\text{32b}}] \\
+& = [(y_G^2 - {\tilde{y}_Q}^2 - x_G^3 + {\tilde{x}_Q}^3) - \underbrace{2{\tilde{y}_Q}\htmlStyle{color: yellow;}{e_4}}_{\text{32b}} - \underbrace{\htmlStyle{color: yellow;}{e_4}^2}_{\text{64b}} + \underbrace{3{\tilde{x}_Q}^2\htmlStyle{color: yellow;}{e_3}}_{\text{32b}} + \underbrace{3{\tilde{x}_Q}\htmlStyle{color: yellow;}{e_3}^2}_{\text{64b}} + \underbrace{\htmlStyle{color: yellow;}{e_3}^3}_{\text{96b}}][(x_G - \tilde{x}_P) - \underbrace{\htmlStyle{color: yellow;}{e_1}}_{\text{32b}}].
 \end{aligned}\]</span></p>
 
 <p>Well, I am not done. Please bear with me. There are 12 terms on the both sides if they are expanded while grouped by $e_i$'s. The number of bits of entropy on one side is $(0 + 32 + 64 + 32 + 64 + 96) + (32 + 64 + 96 + 64 + 96 + 128) = 768$. Since the total entropy is $768 \times 2 = 1536 &lt; 3000$ bits, we can recover the whole thing with LLL.</p>
@@ -262,7 +260,7 @@ B <span style="color:#f92672">=</span> B <span style="color:#f92672">/</span> T
     <span style="color:#66d9ef">print</span>()</code></pre></div>
 <p>However, I have the parity messed up. Trying $(e_1, e_2, e_3, e_4)$, $(e_1, e_2, e_3, -e_4)$, ... and compute for the respective $a$ and $b$, we have a correct value for $e_i$'s:</p>
 
-<p><span  class="math">\[(e_1, e_2, e_3, e_4) = (1155305281, 62177711, -1076744709, -30259545).\]</span></p>
+<p><span  class="math">\[(e_1, e_2, e_3, e_4) = (1155305281, -62177711, 1076744709, -30259545).\]</span></p>
 
 <p>After all, we can derive $\varepsilon_i$'s</p>
 
@@ -279,6 +277,65 @@ B <span style="color:#f92672">=</span> B <span style="color:#f92672">/</span> T
 <li><em>hellman</em> used resultants to deal with it. From his write-up, the size of unknown is 1408 bits. Since I have not group the terms, the unknown size is larger (1536 bits). <a href="https://nbviewer.jupyter.org/gist/hellman/a8c9a09b1ce6959226f9d75cf94b805f">Link here</a>.</li>
 </ul>
 
+<p>Thanks to <em>vishiswoz</em> who pointed out that the mistakes that I made when defining the <em>multipliers</em>. Since the amount of unknown bits are small (1536 bits) relatively to the size of the known bits (3000 bits), they did not affect the results. This is the patched lattice (with parity fixed, too):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">multiplier  <span style="color:#f92672">=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">128</span>]
+multiplier <span style="color:#f92672">+=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">128</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">96</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">96</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">32</span>]
+multiplier <span style="color:#f92672">+=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">96</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">0</span>]
+multiplier <span style="color:#f92672">+=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">128</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">96</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">96</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">32</span>]
+multiplier <span style="color:#f92672">+=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">96</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">0</span>]
+
+T <span style="color:#f92672">=</span> diagonal_matrix(multiplier)
+A <span style="color:#f92672">=</span> Matrix(<span style="color:#ae81ff">25</span>)
+
+A[ <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> ((Gy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> aPy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">-</span> (Gx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">-</span> aPx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span>)) <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aQx)
+A[ <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>((Gy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> aPy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">-</span> (Gx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">-</span> aPx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span>))
+A[ <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> aPy <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aQx)
+A[ <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> aPy
+A[ <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>(Gx <span style="color:#f92672">-</span> aQx)
+A[ <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+A[ <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aPx<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aQx)
+A[ <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aPx<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>
+A[ <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aPx <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aQx)
+A[ <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aPx
+A[<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> (Gx <span style="color:#f92672">-</span> aQx)
+A[<span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+
+A[<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>((Gy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> aQy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">-</span> (Gx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">-</span> aQx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span>)) <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aPx)
+A[<span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> ((Gy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> aQy<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>) <span style="color:#f92672">-</span> (Gx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">-</span> aQx<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span>))
+A[<span style="color:#ae81ff">14</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> aQy <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aPx)
+A[<span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> aQy
+A[<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> (Gx <span style="color:#f92672">-</span> aPx)
+A[<span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+A[<span style="color:#ae81ff">18</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aQx<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aPx)
+A[<span style="color:#ae81ff">19</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aQx<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span>
+A[<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aQx <span style="color:#f92672">*</span> (Gx <span style="color:#f92672">-</span> aPx)
+A[<span style="color:#ae81ff">21</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> aQx
+A[<span style="color:#ae81ff">22</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>(Gx <span style="color:#f92672">-</span> aPx)
+A[<span style="color:#ae81ff">23</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">24</span>):
+    A[i, i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+A[<span style="color:#ae81ff">24</span>, <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> p
+A <span style="color:#f92672">=</span> A <span style="color:#f92672">*</span> T
+B <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>LLL()
+B <span style="color:#f92672">=</span> B <span style="color:#f92672">/</span> T
+
+<span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> B:
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>: row <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>row
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">continue</span>
+    
+    dPx <span style="color:#f92672">=</span> row[<span style="color:#ae81ff">14</span>] <span style="color:#75715e"># e1</span>
+    dPy <span style="color:#f92672">=</span> row[<span style="color:#ae81ff">3</span>]  <span style="color:#75715e"># e2</span>
+    dQx <span style="color:#f92672">=</span> row[<span style="color:#ae81ff">2</span>]  <span style="color:#75715e"># e3</span>
+    dQy <span style="color:#f92672">=</span> row[<span style="color:#ae81ff">15</span>] <span style="color:#75715e"># e4</span>
+
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;dP =&#39;</span>, (dPx, dPy))
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;dQ =&#39;</span>, (dQx, dQy))
+    <span style="color:#75715e"># dP = (1155305281, -62177711)</span>
+    <span style="color:#75715e"># dQ = (1076744709, -30259545)</span>
+    <span style="color:#66d9ef">print</span>()</code></pre></div>
 <h2 id="phoenix">phoenix<a href="#phoenix" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -552,6 +609,12 @@ q = 6173614681677589793159076464182384333359578951775387735487730852029780858970
 
 <script src="/assets/main.js"></script>
 <script src="/assets/prism.js"></script>
+
+
+
+
+
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
   integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
@@ -587,12 +650,6 @@ q = 6173614681677589793159076464182384333359578951775387735487730852029780858970
 
   gtag('config', 'UA-180181192-1');
 </script>
-
-
-
-
-
-
 
 
 
