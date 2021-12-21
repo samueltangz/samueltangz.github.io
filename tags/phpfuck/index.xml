@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>phpfuck on Mystify</title>
+    <link>/tags/phpfuck/</link>
+    <description>Recent content in phpfuck on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Aug 2021 23:59:59 +0800</lastBuildDate><atom:link href="/tags/phpfuck/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UIUCTF 2021: phpfuck</title>
+      <link>/posts/2021-08-10-uiuctf-phpfuck/</link>
+      <pubDate>Tue, 10 Aug 2021 23:59:59 +0800</pubDate>
+      
+      <guid>/posts/2021-08-10-uiuctf-phpfuck/</guid>
+      <description>Credit. I stole the banner image from the background image of UIUCTF. I like the picture and their unique themes for these two CTFs&amp;hellip;  This is another time @blackb6a unites and plays UIUCTF together. It was my fourth time playing UIUCTF, and I still found the challenges fun. Although the crypto challenges are relatively easy, I had a lot of fun solving phpfuck with @02E774.
+Challenge Summary // Flag is inside .</description>
+    </item>
+    
+  </channel>
+</rss>

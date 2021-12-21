@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>defcon on Mystify</title>
+    <link>/tags/defcon/</link>
+    <description>Recent content in defcon on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 06 May 2021 00:15:00 +0800</lastBuildDate><atom:link href="/tags/defcon/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DEF CON CTF Quals 2021: Day 2</title>
+      <link>/posts/2021-05-06-defcon-quals-2/</link>
+      <pubDate>Thu, 06 May 2021 00:15:00 +0800</pubDate>
+      
+      <guid>/posts/2021-05-06-defcon-quals-2/</guid>
+      <description>This is the summary for me on the second day I played DEF CON CTF. The commentary for day 1 is available here. In this blog post, only the solutions for qoo-or-ooo, back-to-qoo and pooow-buddy are written. Since there are a lot of new stuff, I may not be able to explain them well. Please bear with me...
+Challenge: qoo-or-ooo &amp;amp; back-to-qoo  qoo-or-ooo (58 solves, 120 points)
+This is another QOO&#39;s challenge.</description>
+    </item>
+    
+    <item>
+      <title>DEF CON CTF Quals 2021: Day 1</title>
+      <link>/posts/2021-05-04-defcon-quals-1/</link>
+      <pubDate>Tue, 04 May 2021 01:13:00 +0800</pubDate>
+      
+      <guid>/posts/2021-05-04-defcon-quals-1/</guid>
+      <description>I played DEF CON CTF Quals once again with @Shellphish and we ended up at the 10th place. This blog post describes what actually was going on from my side. If you are looking for an informative blog post, this is not a good-read for you. There would be a little useful information, since I am just hanging around most of the time. I will even shamelessly copy some memes online to make the blog post looked rich in content.</description>
+    </item>
+    
+  </channel>
+</rss>

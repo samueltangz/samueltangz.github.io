@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Dragon CTF 2021: CRC Recursive Challenge (Warmup) :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="@blackb6a played Dragon CTF 2021 last weekend and I spent most of the time solving the CRC duo. They are very fun but unfortunately that we were close enough while unable to get the second flag.
+Warmup edition only. If you are interested to learn the harder edition that involves a 128-bit CRC, you may want to look at hellman&amp;rsquo;s writeup. I would only cover a solution of the easier edition with some unsuccessful attempts of the harder one." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-11-29-dragonctf-crc/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Dragon CTF 2021: CRC Recursive Challenge (Warmup)">
+<meta property="og:description" content="@blackb6a played Dragon CTF 2021 last weekend and I spent most of the time solving the CRC duo. They are very fun but unfortunately that we were close enough while unable to get the second flag." />
+<meta property="og:url" content="/posts/2021-11-29-dragonctf-crc/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-11-29-dragonctf/map.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-11-29 23:30:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-11-29-dragonctf-crc/">Dragon CTF 2021: CRC Recursive Challenge (Warmup)</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-11-29 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/dragonctf/">dragonctf</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/crc/">crc</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-11-29-dragonctf/map.png" class="post-cover center" alt="Dragon CTF 2021: CRC Recursive Challenge (Warmup)" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p><a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> played Dragon CTF 2021 last weekend and I spent most of the time solving the CRC duo. They are very fun but unfortunately that we were close enough while unable to get the second flag.</p>
+
+<div class="alert warning">
+  <strong>Warmup edition only.</strong> If you are interested to learn the harder edition that involves a 128-bit CRC, you may want to look at <a href="https://affine.group/writeup/2021-11-DragonCTF-CRC-recursive-hard">hellman&rsquo;s writeup</a>. I would only cover a solution of the easier edition with some unsuccessful attempts of the harder one.
+</div>
+
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>The objective is to find a message which correctly depicts its CRC-64 digest.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">crc64</span>(buf, crc<span style="color:#f92672">=</span><span style="color:#ae81ff">0xffffffffffffffff</span>):
+    <span style="color:#66d9ef">for</span> val <span style="color:#f92672">in</span> buf:
+        crc <span style="color:#f92672">^=</span> val <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">56</span>
+        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+            crc <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#66d9ef">if</span> crc <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">64</span>:
+                crc <span style="color:#f92672">^=</span> <span style="color:#ae81ff">0x1ad93d23594c935a9</span>
+    <span style="color:#66d9ef">return</span> crc
+
+inp <span style="color:#f92672">=</span> input()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>encode()
+crc <span style="color:#f92672">=</span> crc64(inp)
+<span style="color:#66d9ef">if</span> inp <span style="color:#f92672">==</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;My crc64 is 0x</span><span style="color:#e6db74">{</span>crc<span style="color:#e6db74">:</span><span style="color:#e6db74">016x</span><span style="color:#e6db74">}</span><span style="color:#e6db74">! Cool, isn</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">t it?&#39;</span><span style="color:#f92672">.</span>encode():
+    <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;flag.txt&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        print(f<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip())
+<span style="color:#66d9ef">else</span>:
+    print(<span style="color:#e6db74">&#39;Nope!&#39;</span>)</code></pre></div>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>The crypto challenges in Dragon CTF are often easy to understand but turns out hard to solve. The <a href="/posts/2020-11-23-dragonctf/#bit-flip-crypto-155324343-points">Bit Flip trio</a> last year is one of them. During the contest, we thought that we could easily write an algorithm solving the harder problem. Turns out we did not solve the harder challenge in time.</p>
+
+<h3 id="part-i-pay-to-win-with-an-mathcalo2n2-algorithm">Part I: Pay to win with an $\mathcal{O}(2^{n/2})$ algorithm<a href="#part-i-pay-to-win-with-an-mathcalo2n2-algorithm" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>To start with, I will include the affine property of CRC. That is the most important property that I used to attack the challenge.</p>
+
+<div class="alert success">
+  <p><strong>CRC&rsquo;s affine property.</strong> For any messages $m_1, m_2, m_3$,</p>
+<p>$$\text{CRC}(m_1 \oplus m_2 \oplus m_3) = \text{CRC}(m_1) \oplus \text{CRC}(m_2) \oplus \text{CRC}(m_3).$$</p>
+
+</div>
+
+
+<p>Let's define some bytestrings in Python and rewrite the objective mathematically. Note that we will use <code>_</code> to represent a null byte simply because it looks better.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Note: This is not the final value</span>
+ks <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>)]
+
+
+m0         <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;My crc64 is 0x________________! Cool, isn&#39;t it?&#34;</span>
+
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________0_________________&#34;</span>
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________1_________________&#34;</span>
+<span style="color:#75715e"># ...</span>
+dm[ <span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">15</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________f_________________&#34;</span>
+dm[ <span style="color:#ae81ff">1</span>][ <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;____________________________0__________________&#34;</span>
+<span style="color:#75715e"># ...</span>
+dm[ <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">15</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;____________________________f__________________&#34;</span>
+<span style="color:#75715e"># ...</span>
+dm[<span style="color:#ae81ff">15</span>][ <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;______________0________________________________&#34;</span>
+<span style="color:#75715e"># ...</span>
+dm[<span style="color:#ae81ff">15</span>][<span style="color:#ae81ff">15</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;______________f________________________________&#34;</span></code></pre></div>
+<p>Let $m_0$ be <code>m0</code>, $k_i$ be <code>ks[i]</code>, $\Delta m_{i, j}$ be <code>dm[i][j]</code>. Our goal is to find $k_i$'s with</p>
+
+<p><span  class="math">\[\text{CRC}(m_0 \oplus \Delta m_{0, k_0} \oplus \Delta m_{1, k_1} \oplus ... \oplus \Delta m_{15, k_{15}}) = k_0 \oplus 16 k_1 \oplus ... \oplus 16^{15} k_{15}.\]</span></p>
+
+<p>With the affine property, we can show that</p>
+
+<p><span  class="math">\[\begin{aligned}
+& k_0 \oplus 16 k_1 \oplus ... \oplus 16^{15} k_{15} \\
+& \qquad = \text{CRC}(m_0 \oplus \Delta m_{0, k_0} \oplus \Delta m_{1, k_1} \oplus ... \oplus \Delta m_{15, k_{15}}) \\
+& \qquad = \text{CRC}(m_0) \oplus \text{CRC}(\Delta m_{0, k_0}) \oplus \text{CRC}(\Delta m_{1, k_1}) \oplus ... \oplus \text{CRC}(\Delta m_{15, k_{15}})
+\end{aligned}\]</span></p>
+
+<p>We can rearrange the terms on the both sides to see my intention:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& \text{CRC}(m_0) \oplus \left(k_0 \oplus \text{CRC}(\Delta m_{0, k_0})\right) \oplus ... \oplus \left(16^7 k_7 \oplus \text{CRC}(\Delta m_{7, k_7})\right) \\
+& \qquad = \left(16^8 k_8 \oplus \text{CRC}(\Delta m_{8, k_8})\right) \oplus ... \oplus \left(16^{15} k_{15} \oplus \text{CRC}(\Delta m_{15, k_{15}})\right)
+\end{aligned}\]</span></p>
+
+<p>In that way, $k_0, ..., k_7$ are on the left hand side and the rest are on the right. We can perform meet-in-the-middle attack. In that way we need to precompute and store every output from the left, hence maintaining $16^{8}$ entries. After precomputing, we perform $16^{8}$ queries to check if an entry from the right has its corresponding entries from the left... Well, we need around 256GB of memory to store the results in a map. Is this even feasible? Anyway, if we do not have too much memory, we can sacrifice time for space:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& \text{CRC}(m_0) \oplus \left(k_0 \oplus \text{CRC}(\Delta m_{0, k_0})\right) \oplus ... \oplus \left(16^4 k_4 \oplus \text{CRC}(\Delta m_{4, k_4})\right) \\
+& \qquad = \left(16^5 k_5 \oplus \text{CRC}(\Delta m_{5, k_5})\right) \oplus ... \oplus \left(16^{15} k_{15} \oplus \text{CRC}(\Delta m_{15, k_{15}})\right).
+\end{aligned}\]</span></p>
+
+<p>We only have to precompute and store $16^5$ entries. It is now a matter of time as we need $16^{11}$ queries. Let's use $u + v$ to represent the setting that precomputes and stores the entries using $k_1, k_2, ..., k_u$ and generates queries with the remaining $v$ variables. The two settings we mentioned are $8 + 8$ and $5 + 11$.</p>
+
+<p>I estimated that $u + v$ requires $16^{u-6}$ GB of memory and takes $3 \cdot (16^{u-8} + 16^{v-8})$ hours to finish. The following table summarizes the memory and time:</p>
+
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Estimated Memory</th>
+<th>Estimated Time</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>$5 + 11$</td>
+<td>64MB</td>
+<td>1 year</td>
+</tr>
+
+<tr>
+<td>$6 + 10$</td>
+<td>1GB</td>
+<td>1 month</td>
+</tr>
+
+<tr>
+<td>$7 + 9$</td>
+<td>16GB</td>
+<td>2 days</td>
+</tr>
+
+<tr>
+<td>$8 + 8$</td>
+<td>256GB</td>
+<td>6 hours</td>
+</tr>
+
+<tr>
+<td>$9 + 7$</td>
+<td>4TB</td>
+<td>2 days</td>
+</tr>
+
+<tr>
+<td>$10 + 6$</td>
+<td>64TB</td>
+<td>1 month</td>
+</tr>
+
+<tr>
+<td>$11 + 5$</td>
+<td><em>too much</em></td>
+<td>1 year</td>
+</tr>
+</tbody>
+</table>
+
+<p>My laptop can share 1GB memory but I don't have a month running the program for the flag. It seemed impossible, right? <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> has the best laptop among us and can deploy $7 + 9$ on his laptop - but it still require two days to complete. Here comes the two things we learned:</p>
+
+<h4 id="one-can-use-multiple-threads-to-speed-up">One can use multiple threads to speed up<a href="#one-can-use-multiple-threads-to-speed-up" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>To speed up the whole process, we used multithreading during the lookup phase. If we have $t$ threads, then the expected running time is $3 \cdot (16^{u-8} + 16^{v-8}/t)$ hours. Running a $7 + 9$ with 16 threads would take around 3 hours. Regrettably it is not a good idea to freeze <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a>'s laptop for a couple hours.</p>
+
+<div class="alert warning">
+  <strong>Why not multithreading for precompute as well?</strong> Map insert is not <em>thread-safe</em> and some entries may not be successfully inserted to the map.
+</div>
+
+
+<h4 id="one-can-do-many-things-with-money">One can do many things with money<a href="#one-can-do-many-things-with-money" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Eventually, we spun up a 48-core machine (<code>r6g.12xlarge</code>) on Amazon EC2. We streamed the process on our Discord server <em>at 6AM</em> and everyone is watching.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-11-29-dragonctf/so-much-cores.png"   />
+    
+      <figcaption class="right" >Burn money burn. Screenshot taken by @grhkm2023.</figcaption>
+    
+  </figure>
+
+
+
+<p>It took around 30 minutes for the program to print a candidate <code>0x7a8abd9a85eed3b9</code>. After ten hours we finally get ourselves warmed up, yay! The <a href="#the-meetinthemiddle-approach">solve script</a> is at the end of the post.</p>
+
+
+
+
+<div class="code-toolbar">
+<pre class='language-bash command-line' data-output='2-3' data-user='mystiz' data-host='foci'>
+<code class="language-bash">nc crc.hackable.software 1337
+My crc64 is 0x7a8abd9a85eed3b9! Cool, isn&#39;t it?
+DrgnS{0x5d9f900f6564617b}</code>
+</pre>
+</div>
+
+
+  <figure class="center" >
+    <img src="/images/2021-11-29-dragonctf/achievement.png"   />
+    
+  </figure>
+
+
+
+<h3 id="part-ii-when-in-doubt-use-lll-and-led-to-more-doubts">Part II: When in doubt use LLL (and led to more doubts)<a href="#part-ii-when-in-doubt-use-lll-and-led-to-more-doubts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert warning">
+  <strong>Ideas only.</strong> We will be discussing unsuccessful attempts to tickle the harder challenge from this part onwards.
+</div>
+
+
+<p>With a similar idea adopted in <a href="/posts/2021-11-18-hkcert-ctf-2/#solving-linear-equations"><em>Tenet: The Plagarism</em></a> in HKCERT CTF 2021, I converted the 16 unknowns $k_0, k_1, ..., k_{15} \in \mathbb{Z}_{16}$ to 256 unknowns $x_{0,0}, x_{0,1}, ..., x_{0,15}, x_{1,0}, ..., x_{15,15} \in \{0, 1\}$. We can see that the below equation</p>
+
+<p><span  class="math">\[k_0 \oplus 16 k_1 \oplus ... \oplus 16^{15} k_{15} = \text{CRC}(m_0) \oplus \text{CRC}(\Delta m_{0, k_0}) \oplus \text{CRC}(\Delta m_{1, k_1}) \oplus ... \oplus \text{CRC}(\Delta m_{15, k_{15}})\]</span></p>
+
+<p>is equivalent to the below equation when $x_{i, j} = 1$ if $k_i = j$ ($x_{i, j} = 0$ otherwise):</p>
+
+<p><span  class="math">\[\bigoplus_{i=0}^{15} \bigoplus_{j=0}^{15}\ 16^i j \cdot x_{i,j} = \text{CRC}(m_0) \oplus \bigoplus_{i=0}^{15} \bigoplus_{j=0}^{15}\ x_{i,j} \text{CRC}(\Delta m_{i,j})\]</span></p>
+
+<p>Rearranging the terms:</p>
+
+<p><span  class="math">\[\bigoplus_{i=0}^{15} \bigoplus_{j=0}^{15}\ \left(16^i j \oplus \text{CRC}(\Delta m_{i,j})\right) \cdot x_{i,j} = \text{CRC}(m_0)\]</span></p>
+
+<p>We now have 64 linear equations under $\mathbb{Z}_2$ when looking at the equation bit-by-bit. Since the system is largely underdetermined, it is not feasible to solve the linear system. We tried LLL instead. Define the $257 \times 64$ matrix $B$ (zero-indexed):</p>
+
+<p><span  class="math">\[B_{p, q} = \begin{cases}
+q^\text{th}\ \text{bit of}\ \left(16^i j \oplus \text{CRC}(\Delta m_{i,j})\right) & \text{for}\ p = 16i + j\ \text{and}\ 0 \leq i, j < 16 \\
+q^\text{th}\ \text{bit of}\ \text{CRC}(m_0) & \text{for}\ p = 256
+\end{cases}.\]</span></p>
+
+<p>We further define the matrix $A$ which we will use for LLL:</p>
+
+<p><span  class="math">\[A = \left[\begin{matrix}
+I_{257} & B \\
+O & 2 \cdot I_{64}
+\end{matrix}\right].\]</span></p>
+
+<p>It is evident that $(x_{0,0}, x_{0,1}, ..., x_{15,15}, 1, 0, ..., 0)$ is spanned by the lattice. Sadly, the vector did not appear. Since we did not have high expectations on this approach, we did not investigate this any further.</p>
+
+<h3 id="part-iii-an-approach-with-time-complexity-mathcalo2n4">Part III: An approach with time complexity $\mathcal{O}(2^{n/4})$<a href="#part-iii-an-approach-with-time-complexity-mathcalo2n4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert success">
+  <strong>TL;DR.</strong> We will discuss a solution that works on a modest computer&hellip; Only for the CRC64 challenge though.
+</div>
+
+
+<p>The largest hurdle of this challenge is the non-affinity between ASCII characters and numbers. Although there are chances that the XOR value matches, such as:</p>
+
+<p><code>b&quot;1337&quot; xor b&quot;2345&quot; xor b&quot;2021&quot; == b&quot;1053&quot;</code> and <code>0x1337 ^ 0x2345 ^ 0x2021 == 0x1053</code>.</p>
+
+<p>There are counter examples like:</p>
+
+<p><code>b&quot;9123&quot; xor b&quot;1204&quot; xor b&quot;3054&quot; == b&quot;;373&quot;</code> and <code>0x9123 ^ 0x1204 ^ 0x3054 == 0xb373</code>.</p>
+
+<p>To handle this, we are going to redefine almost everything in the first path. Let's forget them and look (<code>_</code> still represents the null byte, however):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Note: This is not the final value</span>
+ks <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>)]
+
+
+m0         <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;My crc64 is 0x                ! Cool, isn&#39;t it?&#34;</span>
+
+<span style="color:#75715e"># 1, 2, 4, 8, G and @ respectively represent</span>
+<span style="color:#75715e">#     b&#39;\x01&#39;, b&#39;\x02&#39;, b&#39;\x04&#39;, b&#39;\x08&#39;, b&#39;\x10&#39; and b&#39;\x40&#39;.</span>
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________1_________________&#34;</span>
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________2_________________&#34;</span>
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________4_________________&#34;</span>
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________8_________________&#34;</span>
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________G_________________&#34;</span>
+dm[ <span style="color:#ae81ff">0</span>][ <span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;_____________________________@_________________&#34;</span>
+dm[ <span style="color:#ae81ff">1</span>][ <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;____________________________1__________________&#34;</span>
+<span style="color:#75715e"># ...</span>
+dm[<span style="color:#ae81ff">15</span>][ <span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;______________@________________________________&#34;</span></code></pre></div>
+<p>We are going to introduce 160 unknowns: $x_{ip}, y_{iq} \in \{0, 1\}$ for $0 \leq i \lt 16$, $0 \leq p \leq 5$ and $0 \leq q \leq 3$. We have the first equation (the right hand side is shown in its binary representation):</p>
+
+<p><span  class="math">\[\begin{aligned}
+& \text{CRC}(m_0 \oplus x_{0,0} \Delta m_{0,0} \oplus x_{0,1} \Delta m_{0,1} \oplus ... \oplus x_{15,5} \Delta m_{15,5}) \\
+& \qquad = \overline{y_{15,3}y_{15,2}y_{15,1}y_{15,0}y_{14,4}...y_{0,1}y_{0,0}} \qquad\qquad\qquad\qquad[\dagger]
+\end{aligned}\]</span></p>
+
+<p>An intuitive meaning for $x_{ip}$ and $y_{iq}$ are respectly the bits of the ASCII value and the bits of the number itself. Two questions, however:</p>
+
+<ol>
+<li>Why we are skipping the fifth bit and the seventh bit when defining $\Delta m_{i, j}$?</li>
+<li>Why did we change $m_0$ from <code>0x________________</code> to <code>0x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>?</li>
+</ol>
+
+<p>We are using the set <code>0123456789abcdef</code> to represent the hexadecimal characters. The following table shows their ASCII values in binary and we can see that bits 5 and 7 are respectively always 1 and 0. That said, we can put bit 5, <code>\x20</code>, into $m_0$ and drop those bits from unknown.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">       | Digits     Letters
+       | 0123456789 abcdef
+-------+-------------------
+ Bit 0 | 0101010101 101010
+ Bit 1 | 0011001100 011001
+ Bit 2 | 0000111100 000111
+ Bit 3 | 0000000011 000000
+ Bit 4 | 1111111111 000000
+ Bit 5 | 1111111111 111111  👈 All of the entries are 1
+ Bit 6 | 0000000000 111111
+ Bit 7 | 0000000000 000000  👈 All of the entries are 0</code></pre></div>
+<p>Anyway, we can recover 64 equations in $\mathbb{Z}_2$ if we consider $[\dagger]$ bit-by-bit. Since there are 160 unknowns, there are still 96 free variables (possibly $2^{96}$ solutions). How to eliminate them? Let's take a look at the $\spadesuit$-th character and relate $x_{\spadesuit p}$'s and $y_{\spadesuit q}$'s. There are two cases:</p>
+
+<ul>
+<li><p>If the $\spadesuit$-th hex character is a digit...</p>
+
+<ul>
+<li>$x_{\spadesuit 0} \oplus y_{\spadesuit 0} = 0$</li>
+<li>$x_{\spadesuit 1} \oplus y_{\spadesuit 1} = 0$</li>
+<li>$x_{\spadesuit 2} \oplus y_{\spadesuit 2} = 0$</li>
+<li>$x_{\spadesuit 3} \oplus y_{\spadesuit 3} = 0$</li>
+<li>$x_{\spadesuit 4} = 1$</li>
+<li>$x_{\spadesuit 5} = 0$ (note that this represents the <strong>6-th</strong> bit)</li>
+</ul></li>
+
+<li><p>If the $\spadesuit$-th hex character is a letter...</p>
+
+<ul>
+<li>$x_{\spadesuit 0} \oplus y_{\spadesuit 0} = 1$</li>
+<li>$x_{\spadesuit 1} \oplus y_{\spadesuit 0} \oplus y_{\spadesuit 1} = 1$</li>
+<li>$x_{\spadesuit 3} = 0$</li>
+<li>$x_{\spadesuit 4} = 0$</li>
+<li>$x_{\spadesuit 5} = 1$</li>
+<li>$y_{\spadesuit 3} = 1$</li>
+</ul></li>
+</ul>
+
+<p>From above, we can obtain 6 equations if we know whether a hex character is a digit or a letter. After all, assuming that we know if each of the hex characters are a digit or a letter, we have 160 equations and 160 unknowns. Therefore we are able to determine $x_{ip}$'s and $y_{iq}$'s by solving a linear system.</p>
+
+<p>We don't know if the characters are digits or letters. We can simply guess them - there are 16 hex characters and we can exhaust all of the $2^{16}$ cases. I have written the <a href="#the-solvingthelinearsystem-approach">solve script</a> in Sagemath. It takes only 6 minutes to solve the easier version.</p>
+
+<p>Now we have devised a nice algorithm that takes only $2^{32}$ Gaussian elimination for the harder part. Maybe we can try running that?</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-11-29-dragonctf/too-long-didnt-run.png"   />
+    
+      <figcaption class="right" >We can win the flag in Jul 2023! 🐢</figcaption>
+    
+  </figure>
+
+
+
+<div class="alert info">
+  <strong>Just optimize it.</strong> After the contest, we learned that the author&rsquo;s solution is to solve $2^{32}$ linear systems (with optimized C++ implementation and smaller matrices though). So I am not that far from the flag&hellip;
+</div>
+
+
+<h2 id="solve-script">Solve script<a href="#solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="the-meetinthemiddle-approach">The meet-in-the-middle approach<a href="#the-meetinthemiddle-approach" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdio&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstring&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;map&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#define ull unsigned long long
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+ull <span style="color:#a6e22e">crc64</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, size_t size) {
+    ull res <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> size; i<span style="color:#f92672">++</span>) {
+        res <span style="color:#f92672">^=</span> (ull) buf[i] <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">56</span>;
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; j<span style="color:#f92672">++</span>) {
+            <span style="color:#66d9ef">if</span> (res <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x8000000000000000</span>) {
+                res <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">1</span>;
+                res <span style="color:#f92672">^=</span> <span style="color:#ae81ff">0xad93d23594c935a9LL</span>;
+            } <span style="color:#66d9ef">else</span> {
+                res <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">1</span>;
+            }
+        }
+    }
+    <span style="color:#66d9ef">return</span> res;
+}
+
+
+ull h0;
+ull progress <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+ull res[<span style="color:#ae81ff">16</span>][<span style="color:#ae81ff">16</span>];
+map<span style="color:#f92672">&lt;</span>ull, ull<span style="color:#f92672">&gt;</span> lhs;
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fill_lhs</span>(<span style="color:#66d9ef">int</span> i, ull state, ull r) {
+    <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> <span style="color:#ae81ff">7</span>) {
+        <span style="color:#75715e">// progress
+</span><span style="color:#75715e"></span>        progress <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>;
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>(progress <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xfffff</span>)) printf(<span style="color:#e6db74">&#34;[ ] Filling left hand side... %07llx</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, progress);
+
+        lhs[state] <span style="color:#f92672">=</span> r;
+        <span style="color:#66d9ef">return</span>;
+    }
+
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">16</span>; j<span style="color:#f92672">++</span>) {
+        fill_lhs(i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, state <span style="color:#f92672">^</span> res[i][j], <span style="color:#ae81ff">16</span><span style="color:#f92672">*</span>r<span style="color:#f92672">+</span>j);
+    }
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">exhaust_rhs</span>(<span style="color:#66d9ef">int</span> i, ull state, ull r) {
+    <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> <span style="color:#ae81ff">9</span>) {
+        <span style="color:#66d9ef">if</span> (lhs.find(state) <span style="color:#f92672">!=</span> lhs.end()) {
+            ull l <span style="color:#f92672">=</span> lhs.find(state)<span style="color:#f92672">-&gt;</span>second;
+            printf(<span style="color:#e6db74">&#34;[!] Found! %016llx %016llx</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, l, r);
+        }
+        <span style="color:#66d9ef">return</span>;
+    }
+
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">16</span>; j<span style="color:#f92672">++</span>) {
+        exhaust_rhs(i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, state <span style="color:#f92672">^</span> res[i<span style="color:#f92672">+</span><span style="color:#ae81ff">7</span>][j], <span style="color:#ae81ff">16</span><span style="color:#f92672">*</span>r<span style="color:#f92672">+</span>j);
+    }
+    <span style="color:#66d9ef">return</span>;
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">rhs_entry</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg) {
+    ull <span style="color:#f92672">*</span>id <span style="color:#f92672">=</span> (ull <span style="color:#f92672">*</span>) arg;
+    exhaust_rhs(<span style="color:#ae81ff">2</span>, res[<span style="color:#ae81ff">7</span>][<span style="color:#f92672">*</span>id <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>] <span style="color:#f92672">^</span> res[<span style="color:#ae81ff">8</span>][<span style="color:#f92672">*</span>id <span style="color:#f92672">%</span> <span style="color:#ae81ff">16</span>], <span style="color:#f92672">*</span>id);
+    <span style="color:#66d9ef">return</span> NULL;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> () {
+    pthread_t threads[<span style="color:#ae81ff">256</span>];
+    ull args[<span style="color:#ae81ff">256</span>];
+    <span style="color:#66d9ef">for</span> (ull i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">256</span>; i<span style="color:#f92672">++</span>) args[i] <span style="color:#f92672">=</span> i;
+
+    setvbuf(stdout, NULL, _IONBF, <span style="color:#ae81ff">0</span>);
+    
+    <span style="color:#66d9ef">char</span> u[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;My crc64 is 0x0000000000000000! Cool, isn&#39;t it?&#34;</span>;
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">16</span>; i<span style="color:#f92672">++</span>) u[i<span style="color:#f92672">+</span><span style="color:#ae81ff">14</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    
+    h0 <span style="color:#f92672">=</span> crc64(u, <span style="color:#ae81ff">47</span>);
+
+    memset(res, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span> res);
+
+    <span style="color:#66d9ef">char</span> hexchars[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0123456789abcdef&#34;</span>;
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">16</span>; i<span style="color:#f92672">++</span>) {
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">16</span>; j<span style="color:#f92672">++</span>) {
+            memset(u, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">47</span>);
+            u[<span style="color:#ae81ff">14</span><span style="color:#f92672">+</span>i] <span style="color:#f92672">=</span> hexchars[j];
+            res[i][j] <span style="color:#f92672">=</span> crc64(u, <span style="color:#ae81ff">47</span>) <span style="color:#f92672">^</span> ((ull) j <span style="color:#f92672">&lt;&lt;</span> (<span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> (<span style="color:#ae81ff">15</span><span style="color:#f92672">-</span>i)));
+        }
+    }
+
+    printf(<span style="color:#e6db74">&#34;[*] Precomputing...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    fill_lhs(<span style="color:#ae81ff">0</span>, h0, <span style="color:#ae81ff">0</span>);
+
+    printf(<span style="color:#e6db74">&#34;[*] Looking up...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">256</span>; i<span style="color:#f92672">++</span>) pthread_create(<span style="color:#f92672">&amp;</span>threads[i], NULL, rhs_entry, <span style="color:#f92672">&amp;</span>args[i]);
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">256</span>; i<span style="color:#f92672">++</span>) pthread_join(threads[i], NULL);
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}</code></pre></div>
+<h3 id="the-solvingthelinearsystem-approach">The solving-the-linear-system approach<a href="#the-solvingthelinearsystem-approach" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> itertools
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> tqdm
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_crc64</span>(buf, crc<span style="color:#f92672">=</span><span style="color:#ae81ff">0xffffffffffffffff</span>):
+    <span style="color:#66d9ef">for</span> val <span style="color:#f92672">in</span> buf:
+        crc <span style="color:#f92672">^^=</span> val <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">56</span>
+        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+            crc <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#66d9ef">if</span> crc <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">64</span>:
+                crc <span style="color:#f92672">^^=</span> <span style="color:#ae81ff">0x1ad93d23594c935a9</span>
+    <span style="color:#66d9ef">return</span> crc
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_crc128</span>(buf, crc<span style="color:#f92672">=</span><span style="color:#ae81ff">0xffffffffffffffffffffffffffffffff</span>):
+    <span style="color:#66d9ef">for</span> val <span style="color:#f92672">in</span> buf:
+        crc <span style="color:#f92672">^^=</span> val <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">120</span>
+        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+            crc <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#66d9ef">if</span> crc <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">128</span>:
+                crc <span style="color:#f92672">^^=</span> <span style="color:#ae81ff">0x14caa61b0d7fe5fa54189d46709eaba2d</span>
+    <span style="color:#66d9ef">return</span> crc
+
+<span style="color:#75715e"># SOLUTION</span>
+
+n <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span> <span style="color:#75715e"># Change this to 128 for the harder version.</span>
+
+m_prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;My crc</span><span style="color:#e6db74">{</span>n<span style="color:#e6db74">}</span><span style="color:#e6db74"> is 0x&#39;</span><span style="color:#f92672">.</span>encode()
+m_suffix <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;! Cool, isn</span><span style="color:#ae81ff">\&#39;</span><span style="color:#e6db74">t it?&#39;</span>
+m_hidden <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">*</span> int(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span>)
+
+crc <span style="color:#f92672">=</span> {<span style="color:#ae81ff">64</span>: _crc64, <span style="color:#ae81ff">128</span>: _crc128}[n]
+
+h0 <span style="color:#f92672">=</span> crc(m_prefix <span style="color:#f92672">+</span> m_hidden <span style="color:#f92672">+</span> m_suffix)
+h1 <span style="color:#f92672">=</span> crc(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">*</span> len(m_prefix <span style="color:#f92672">+</span> m_hidden <span style="color:#f92672">+</span> m_suffix)) <span style="color:#75715e"># A parity for affinity</span>
+
+dms, dhs <span style="color:#f92672">=</span> [], []
+<span style="color:#75715e"># Consider each hex char each</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>):
+    <span style="color:#75715e"># Bits 0 and 2 are skipped because they are always 0 and 1, respectively.</span>
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">6</span>]:
+        block <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> bytes([<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span>j]) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>i)
+        dm <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>len(m_prefix) <span style="color:#f92672">+</span> block <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>len(m_suffix)
+        dh <span style="color:#f92672">=</span> crc(dm)
+        
+        dms<span style="color:#f92672">.</span>append(dm)
+        dhs<span style="color:#f92672">.</span>append(dh)
+
+A <span style="color:#f92672">=</span> Matrix(GF(<span style="color:#ae81ff">2</span>), int(<span style="color:#ae81ff">5</span><span style="color:#f92672">*</span>n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>), int(<span style="color:#ae81ff">5</span><span style="color:#f92672">*</span>n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>))
+b <span style="color:#f92672">=</span> vector(GF(<span style="color:#ae81ff">2</span>), int(<span style="color:#ae81ff">5</span><span style="color:#f92672">*</span>n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>))
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+    A[i, i]       <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">3</span><span style="color:#f92672">*</span>n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>):
+        A[i, j<span style="color:#f92672">+</span>n] <span style="color:#f92672">=</span> dhs[j]<span style="color:#f92672">&gt;&gt;</span>i
+    A[i, <span style="color:#ae81ff">5</span><span style="color:#f92672">*</span>n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>]  <span style="color:#f92672">=</span> h1<span style="color:#f92672">&gt;&gt;</span>i
+    b[i]          <span style="color:#f92672">=</span> h0<span style="color:#f92672">&gt;&gt;</span>i
+
+<span style="color:#75715e"># Add more known equations</span>
+m <span style="color:#f92672">=</span> n
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span>):
+    <span style="color:#75715e"># x4 + x5 = 1</span>
+    A[m, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    A[m, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    b[m]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+    m <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span>):
+    <span style="color:#75715e"># x0 + x4 + y0 = 1</span>
+    A[m, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    A[m, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    A[m, <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>]     <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    b[m]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+    m <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+
+<span style="color:#66d9ef">if</span> <span style="color:#66d9ef">True</span>:
+    <span style="color:#75715e"># Parity for CRC</span>
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>):
+        A[m, n <span style="color:#f92672">+</span> j] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    A[m, <span style="color:#ae81ff">5</span><span style="color:#f92672">*</span>n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>]    <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+    b[m]            <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+
+    m <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+
+m0 <span style="color:#f92672">=</span> m
+
+<span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> tqdm(itertools<span style="color:#f92672">.</span>product([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], repeat<span style="color:#f92672">=</span>int(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span>)), total<span style="color:#f92672">=</span>int(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>int(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span>))):
+    m <span style="color:#f92672">=</span> m0
+    
+    A[m:m<span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>, :] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span>):    
+        <span style="color:#66d9ef">if</span> t[i] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+            <span style="color:#75715e"># x1 + y1 = 0</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>,     <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+            <span style="color:#75715e"># x2 + y2 = 0</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>,     <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+            <span style="color:#75715e"># x3 + y3 = 0</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>,     <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+            <span style="color:#75715e"># x4 = 1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#75715e"># x1 + y0 + y1 = 1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>,     <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>,     <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">0</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#75715e"># y3 = 1</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>,     <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#75715e"># x3 = 0</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+            <span style="color:#75715e"># x4 = 0</span>
+            A[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>, n <span style="color:#f92672">+</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            b[m <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>]              <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        
+        m <span style="color:#f92672">+=</span> <span style="color:#ae81ff">4</span>
+    
+    <span style="color:#66d9ef">try</span>:
+        x0 <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>solve_right(b)
+    <span style="color:#66d9ef">except</span>:
+        <span style="color:#66d9ef">continue</span>
+
+    <span style="color:#66d9ef">for</span> dx <span style="color:#f92672">in</span> A<span style="color:#f92672">.</span>right_kernel():
+        x <span style="color:#f92672">=</span> x0 <span style="color:#f92672">+</span> dx
+        res <span style="color:#f92672">=</span> sum([int(b)<span style="color:#f92672">&lt;&lt;</span>i <span style="color:#66d9ef">for</span> i, b <span style="color:#f92672">in</span> enumerate(x[:n])])
+        _m <span style="color:#f92672">=</span> m_prefix <span style="color:#f92672">+</span> format(res, <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;0</span><span style="color:#e6db74">{</span>n<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span><span style="color:#e6db74">}</span><span style="color:#e6db74">x&#39;</span>)<span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> m_suffix
+        _h <span style="color:#f92672">=</span> crc(_m)
+        
+        <span style="color:#66d9ef">if</span> _h <span style="color:#f92672">==</span> res:
+            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Found - </span><span style="color:#e6db74">{</span>_m<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)</code></pre></div>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-11-27-balsn-dlog/">
+                <span class="button__text">Balsn CTF 2021: dlog</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Dragon CTF 2021: CRC Recursive Challenge (Warmup)
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

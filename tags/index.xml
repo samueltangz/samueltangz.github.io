@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Mystify</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Nov 2021 23:30:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>crc</title>
+      <link>/tags/crc/</link>
+      <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
+      
+      <guid>/tags/crc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>crypto</title>
+      <link>/tags/crypto/</link>
+      <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
+      
+      <guid>/tags/crypto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ctf</title>
+      <link>/tags/ctf/</link>
+      <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
+      
+      <guid>/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dragonctf</title>
+      <link>/tags/dragonctf/</link>
+      <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
+      
+      <guid>/tags/dragonctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>balsn-ctf</title>
+      <link>/tags/balsn-ctf/</link>
+      <pubDate>Sat, 27 Nov 2021 15:55:00 +0800</pubDate>
+      
+      <guid>/tags/balsn-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>statistics</title>
+      <link>/tags/statistics/</link>
+      <pubDate>Sat, 27 Nov 2021 15:55:00 +0800</pubDate>
+      
+      <guid>/tags/statistics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>timing-attack</title>
+      <link>/tags/timing-attack/</link>
+      <pubDate>Sat, 27 Nov 2021 15:55:00 +0800</pubDate>
+      
+      <guid>/tags/timing-attack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>algorithms</title>
+      <link>/tags/algorithms/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      
+      <guid>/tags/algorithms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>challenge-writing</title>
+      <link>/tags/challenge-writing/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      
+      <guid>/tags/challenge-writing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hkcert-ctf</title>
+      <link>/tags/hkcert-ctf/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      
+      <guid>/tags/hkcert-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pwn</title>
+      <link>/tags/pwn/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      
+      <guid>/tags/pwn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>web</title>
+      <link>/tags/web/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      
+      <guid>/tags/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reverse</title>
+      <link>/tags/reverse/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:02 +0800</pubDate>
+      
+      <guid>/tags/reverse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bsides-ahmedabad</title>
+      <link>/tags/bsides-ahmedabad/</link>
+      <pubDate>Sun, 07 Nov 2021 11:02:00 +0800</pubDate>
+      
+      <guid>/tags/bsides-ahmedabad/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asis-ctf</title>
+      <link>/tags/asis-ctf/</link>
+      <pubDate>Mon, 25 Oct 2021 23:35:00 +0800</pubDate>
+      
+      <guid>/tags/asis-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>factor</title>
+      <link>/tags/factor/</link>
+      <pubDate>Mon, 25 Oct 2021 23:35:00 +0800</pubDate>
+      
+      <guid>/tags/factor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>boneh-durfee</title>
+      <link>/tags/boneh-durfee/</link>
+      <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
+      
+      <guid>/tags/boneh-durfee/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lll</title>
+      <link>/tags/lll/</link>
+      <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
+      
+      <guid>/tags/lll/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pbctf</title>
+      <link>/tags/pbctf/</link>
+      <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
+      
+      <guid>/tags/pbctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>phpfuck</title>
+      <link>/tags/phpfuck/</link>
+      <pubDate>Tue, 10 Aug 2021 23:59:59 +0800</pubDate>
+      
+      <guid>/tags/phpfuck/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>uiuctf</title>
+      <link>/tags/uiuctf/</link>
+      <pubDate>Tue, 10 Aug 2021 23:59:59 +0800</pubDate>
+      
+      <guid>/tags/uiuctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>google-ctf</title>
+      <link>/tags/google-ctf/</link>
+      <pubDate>Sat, 24 Jul 2021 14:42:00 +0800</pubDate>
+      
+      <guid>/tags/google-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>leetcode</title>
+      <link>/tags/leetcode/</link>
+      <pubDate>Sat, 19 Jun 2021 12:50:00 +0800</pubDate>
+      
+      <guid>/tags/leetcode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>defcon</title>
+      <link>/tags/defcon/</link>
+      <pubDate>Thu, 06 May 2021 00:15:00 +0800</pubDate>
+      
+      <guid>/tags/defcon/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>plaidctf</title>
+      <link>/tags/plaidctf/</link>
+      <pubDate>Mon, 19 Apr 2021 12:07:00 +0800</pubDate>
+      
+      <guid>/tags/plaidctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aes</title>
+      <link>/tags/aes/</link>
+      <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
+      
+      <guid>/tags/aes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>angstromctf</title>
+      <link>/tags/angstromctf/</link>
+      <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
+      
+      <guid>/tags/angstromctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>binary-exploitation</title>
+      <link>/tags/binary-exploitation/</link>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0800</pubDate>
+      
+      <guid>/tags/binary-exploitation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aero-ctf</title>
+      <link>/tags/aero-ctf/</link>
+      <pubDate>Sun, 28 Feb 2021 19:35:00 +0800</pubDate>
+      
+      <guid>/tags/aero-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>/tags/git/</link>
+      <pubDate>Sat, 27 Feb 2021 17:00:00 +0800</pubDate>
+      
+      <guid>/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>union-ctf</title>
+      <link>/tags/union-ctf/</link>
+      <pubDate>Sat, 27 Feb 2021 17:00:00 +0800</pubDate>
+      
+      <guid>/tags/union-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hash-tables</title>
+      <link>/tags/hash-tables/</link>
+      <pubDate>Tue, 23 Feb 2021 00:45:00 +0800</pubDate>
+      
+      <guid>/tags/hash-tables/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>haxe</title>
+      <link>/tags/haxe/</link>
+      <pubDate>Tue, 23 Feb 2021 00:45:00 +0800</pubDate>
+      
+      <guid>/tags/haxe/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reverse-engineering</title>
+      <link>/tags/reverse-engineering/</link>
+      <pubDate>Tue, 23 Feb 2021 00:45:00 +0800</pubDate>
+      
+      <guid>/tags/reverse-engineering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kurenaif</title>
+      <link>/tags/kurenaif/</link>
+      <pubDate>Sat, 20 Feb 2021 23:00:00 +0800</pubDate>
+      
+      <guid>/tags/kurenaif/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dicectf</title>
+      <link>/tags/dicectf/</link>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
+      
+      <guid>/tags/dicectf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>grobner-basis</title>
+      <link>/tags/grobner-basis/</link>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
+      
+      <guid>/tags/grobner-basis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>half-gcd</title>
+      <link>/tags/half-gcd/</link>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
+      
+      <guid>/tags/half-gcd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>justctf</title>
+      <link>/tags/justctf/</link>
+      <pubDate>Mon, 01 Feb 2021 03:00:00 +0800</pubDate>
+      
+      <guid>/tags/justctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rsa</title>
+      <link>/tags/rsa/</link>
+      <pubDate>Mon, 01 Feb 2021 03:00:00 +0800</pubDate>
+      
+      <guid>/tags/rsa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>firebird-training</title>
+      <link>/tags/firebird-training/</link>
+      <pubDate>Mon, 18 Jan 2021 22:00:00 +0800</pubDate>
+      
+      <guid>/tags/firebird-training/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>discrete-logarithm</title>
+      <link>/tags/discrete-logarithm/</link>
+      <pubDate>Sun, 03 Jan 2021 13:39:00 +0800</pubDate>
+      
+      <guid>/tags/discrete-logarithm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tetctf</title>
+      <link>/tags/tetctf/</link>
+      <pubDate>Sun, 03 Jan 2021 13:39:00 +0800</pubDate>
+      
+      <guid>/tags/tetctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hxpctf</title>
+      <link>/tags/hxpctf/</link>
+      <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
+      
+      <guid>/tags/hxpctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hyperelliptic-curves</title>
+      <link>/tags/hyperelliptic-curves/</link>
+      <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
+      
+      <guid>/tags/hyperelliptic-curves/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>confidence-ctf</title>
+      <link>/tags/confidence-ctf/</link>
+      <pubDate>Tue, 08 Sep 2020 18:30:00 +0800</pubDate>
+      
+      <guid>/tags/confidence-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>elliptic-curve</title>
+      <link>/tags/elliptic-curve/</link>
+      <pubDate>Wed, 22 Jul 2020 18:55:00 +0800</pubDate>
+      
+      <guid>/tags/elliptic-curve/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>parameter-recovery</title>
+      <link>/tags/parameter-recovery/</link>
+      <pubDate>Wed, 22 Jul 2020 18:55:00 +0800</pubDate>
+      
+      <guid>/tags/parameter-recovery/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>de1ctf</title>
+      <link>/tags/de1ctf/</link>
+      <pubDate>Tue, 05 May 2020 20:36:00 +0800</pubDate>
+      
+      <guid>/tags/de1ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>puzzlescript</title>
+      <link>/tags/puzzlescript/</link>
+      <pubDate>Tue, 21 Apr 2020 20:25:00 +0800</pubDate>
+      
+      <guid>/tags/puzzlescript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>interpolation-attack</title>
+      <link>/tags/interpolation-attack/</link>
+      <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
+      
+      <guid>/tags/interpolation-attack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lfsr</title>
+      <link>/tags/lfsr/</link>
+      <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
+      
+      <guid>/tags/lfsr/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

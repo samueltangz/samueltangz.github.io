@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ctf on Mystify</title>
+    <link>/tags/ctf/</link>
+    <description>Recent content in ctf on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Nov 2021 23:30:00 +0800</lastBuildDate><atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dragon CTF 2021: CRC Recursive Challenge (Warmup)</title>
+      <link>/posts/2021-11-29-dragonctf-crc/</link>
+      <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
+      
+      <guid>/posts/2021-11-29-dragonctf-crc/</guid>
+      <description>@blackb6a played Dragon CTF 2021 last weekend and I spent most of the time solving the CRC duo. They are very fun but unfortunately that we were close enough while unable to get the second flag.
+Warmup edition only. If you are interested to learn the harder edition that involves a 128-bit CRC, you may want to look at hellman&amp;rsquo;s writeup. I would only cover a solution of the easier edition with some unsuccessful attempts of the harder one.</description>
+    </item>
+    
+    <item>
+      <title>Balsn CTF 2021: dlog</title>
+      <link>/posts/2021-11-27-balsn-dlog/</link>
+      <pubDate>Sat, 27 Nov 2021 15:55:00 +0800</pubDate>
+      
+      <guid>/posts/2021-11-27-balsn-dlog/</guid>
+      <description>@blackb6a played Balsn CTF 2021 last weekend. There are three crypto challenges, and they are all pretty hard. In this blog post we will cover the dlog challenge, which is a timing attack on the CPython&#39;s pow method. @grhkm2023 and I spent a lot of time working on this challenge. Although we did not solve it, we actually learned a lot from the challenge and lost a pile of hair (maybe it is just me).</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</title>
+      <link>/posts/2021-11-18-hkcert-ctf-4/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      
+      <guid>/posts/2021-11-18-hkcert-ctf-4/</guid>
+      <description>We will cover the remaining challenges I wrote in this part: Flag Checker™, The Wilderness and Potion of Ciphermath.
+幫緊你！幫緊你！ / Flag Checker™ (Pwn) Challenge Summary  幫緊你 幫緊你
+當無力 堅持集氣幫你
+等風向轉天氣
+請相信你不死
+組隊會撐得起
+You will be Ok
+You will be Ok
+We are here to help validating your flag! Come use our Flag Checker™!
+nc HOST PORT When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2021 Postmortem (III): The Reverse Challenges</title>
+      <link>/posts/2021-11-18-hkcert-ctf-3/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:02 +0800</pubDate>
+      
+      <guid>/posts/2021-11-18-hkcert-ctf-3/</guid>
+      <description>As the third part of the series, three reversing challenges will be included: The Hardest Path, A Junior Mathematician and Let&#39;s Chill.
+最難行的路 / The Hardest Path (Reverse) Challenge Summary  寧願不揀最易的路 行極還未到
+寧願你最後未傾慕 但信念安好
+在意的 不再是 愛的煩惱
+是哪樣做人 更清高
+餘生那段旅途
+與哪類人共舞
+When you think reverse engineering is hard, try working on reverse engineering challenges those need your algorithmic thinking skills!
+nc HOST PORT We are given two Python files excerpted below:</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges</title>
+      <link>/posts/2021-11-18-hkcert-ctf-2/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:01 +0800</pubDate>
+      
+      <guid>/posts/2021-11-18-hkcert-ctf-2/</guid>
+      <description>In this part, three harder crypto challenges will be covered: Tenet: The Plagarism, Sratslla SEA and Sign in Please, Again.
+FreeRider / Tenet: The Plagarism (Crypto) Challenge Summary  平日我又講 對住你講
+email要check deadline要追
+前日我提咗 你嗰part嘅功課
+點解變咗我最立糯
+The deadline for writing challenges is coming!
+Mystiz, who claimed himself not well-known reusing challenges, decided to free-ride and plagarize challenges from HKCERT CTF 2020. Maybe you can reuse the solve script last year for the flag.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</title>
+      <link>/posts/2021-11-18-hkcert-ctf-1/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:00 +0800</pubDate>
+      
+      <guid>/posts/2021-11-18-hkcert-ctf-1/</guid>
+      <description>Black Bauhinia coorganized HKCERT CTF 2021 and helped 95% of the technical stuffs, including challenge setting, platform development, infrastructure and etc. I will be writing a series of blog posts talking about the contest, and the first four would be the writeups of the challenges those I wrote.
+In the first blog post, we will be going through four easier crypto challenges: A Joke Cipher, Cipher Mode Picker, Key Backup Service 1 and Key Backup Service 2.</description>
+    </item>
+    
+    <item>
+      <title>BSides Ahmedabad CTF 2021 Writeup</title>
+      <link>/posts/2021-11-07-bsides-ahmedabad/</link>
+      <pubDate>Sun, 07 Nov 2021 11:02:00 +0800</pubDate>
+      
+      <guid>/posts/2021-11-07-bsides-ahmedabad/</guid>
+      <description>No, we did not win. I see that coming and took a screenshot during the game.
+BSides Ahmedabad CTF 2021 is organized by @zer0pts. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I&#39;ll go through the harder crypto challenges and the reversing challenge called Collapsed License in this blog post.
+SSSS.RNG Challenge Summary Let $p$ be a 512-bit prime and $a, b, g_0 \in [2, p)$.</description>
+    </item>
+    
+    <item>
+      <title>Factoring a special RSA modulus from ASIS CTF 2021 Quals</title>
+      <link>/posts/2021-10-25-asis-lagleg/</link>
+      <pubDate>Mon, 25 Oct 2021 23:35:00 +0800</pubDate>
+      
+      <guid>/posts/2021-10-25-asis-lagleg/</guid>
+      <description>LagLeg is a crypto challenge in ASIS CTF Quals 2021. We are asked to factor a given $n$ with $n = (r^5 + s)(r + s)$ as part of the challenge. Hereby $r$ and $s$ are respectively 256 and 64 bits long. I think my approach used is very unique and creative - and definitely worth mentioning. It does not mean that it is a good approach, however.
+I will record the exact steps I solved the challenge.</description>
+    </item>
+    
+    <item>
+      <title>pbctf 2021: Seed Me &amp; Yet Another RSA</title>
+      <link>/posts/2021-10-11-pbctf/</link>
+      <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
+      
+      <guid>/posts/2021-10-11-pbctf/</guid>
+      <description>What&amp;rsquo;s the thumbnail? I sent it to rbtree after I sent him my solution on Yet Another PRNG and he responded &amp;ldquo;oh this works?&amp;rdquo;.  I am playing as a part of @blackb6a this time for perfect blue&#39;s annual pbctf. This time there are six crypto challenges and I first blooded 🩸 half of them. I solved five of them, and collaborated with TWY (who made 99% of the process) for Seed Me.</description>
+    </item>
+    
+    <item>
+      <title>UIUCTF 2021: phpfuck</title>
+      <link>/posts/2021-08-10-uiuctf-phpfuck/</link>
+      <pubDate>Tue, 10 Aug 2021 23:59:59 +0800</pubDate>
+      
+      <guid>/posts/2021-08-10-uiuctf-phpfuck/</guid>
+      <description>Credit. I stole the banner image from the background image of UIUCTF. I like the picture and their unique themes for these two CTFs&amp;hellip;  This is another time @blackb6a unites and plays UIUCTF together. It was my fourth time playing UIUCTF, and I still found the challenges fun. Although the crypto challenges are relatively easy, I had a lot of fun solving phpfuck with @02E774.
+Challenge Summary // Flag is inside .</description>
+    </item>
+    
+    <item>
+      <title>Google CTF 2021 Quals Writeup</title>
+      <link>/posts/2021-07-24-gooogle-ctf/</link>
+      <pubDate>Sat, 24 Jul 2021 14:42:00 +0800</pubDate>
+      
+      <guid>/posts/2021-07-24-gooogle-ctf/</guid>
+      <description>This is me playing another Google CTF with @blackb6a, ending up on the 25th place. I aced the crypto challenges and solved some challenges with my teammates. I have a strong feeling that Black Bauhinia grown a lot between the two Google CTFs and I am often backed by my teammates this time. Anyway, I will be covering all of the crypto challenges in this blog post.
+H1 Challenge Summary  Crypto is not real hacking, they say.</description>
+    </item>
+    
+    <item>
+      <title>DEF CON CTF Quals 2021: Day 2</title>
+      <link>/posts/2021-05-06-defcon-quals-2/</link>
+      <pubDate>Thu, 06 May 2021 00:15:00 +0800</pubDate>
+      
+      <guid>/posts/2021-05-06-defcon-quals-2/</guid>
+      <description>This is the summary for me on the second day I played DEF CON CTF. The commentary for day 1 is available here. In this blog post, only the solutions for qoo-or-ooo, back-to-qoo and pooow-buddy are written. Since there are a lot of new stuff, I may not be able to explain them well. Please bear with me...
+Challenge: qoo-or-ooo &amp;amp; back-to-qoo  qoo-or-ooo (58 solves, 120 points)
+This is another QOO&#39;s challenge.</description>
+    </item>
+    
+    <item>
+      <title>DEF CON CTF Quals 2021: Day 1</title>
+      <link>/posts/2021-05-04-defcon-quals-1/</link>
+      <pubDate>Tue, 04 May 2021 01:13:00 +0800</pubDate>
+      
+      <guid>/posts/2021-05-04-defcon-quals-1/</guid>
+      <description>I played DEF CON CTF Quals once again with @Shellphish and we ended up at the 10th place. This blog post describes what actually was going on from my side. If you are looking for an informative blog post, this is not a good-read for you. There would be a little useful information, since I am just hanging around most of the time. I will even shamelessly copy some memes online to make the blog post looked rich in content.</description>
+    </item>
+    
+    <item>
+      <title>PlaidCTF 2021: Leaky Block Cipher</title>
+      <link>/posts/2021-04-19-plaidctf-leaky-block-cipher/</link>
+      <pubDate>Mon, 19 Apr 2021 12:07:00 +0800</pubDate>
+      
+      <guid>/posts/2021-04-19-plaidctf-leaky-block-cipher/</guid>
+      <description>PlaidCTF this year had very insane challenges. Although I have spent a lot of time working on those crypto challenges, I was only able to solve leaky block cipher.
+Challenge Summary  This completely legitimate™ block cipher looks a bit like GCM, but my computer plumber keeps complaining about water residue. Can you help me spot the leak?
+ The challenge has a hand-crafted AEAD scheme. We are required to go through 20 rounds of challenges, and this is how each round proceeds:</description>
+    </item>
+    
+    <item>
+      <title>ångstromCTF 2021: Cache Money</title>
+      <link>/posts/2021-04-08-angstromctf-2021/</link>
+      <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-04-08-angstromctf-2021/</guid>
+      <description>I played ångstromCTF 2021 for @blackb6a to spend my Easter holiday. I solved most of the reverse and cryptography challenges alone. In particular, Cache Money is one of the harder crypto challenges that I spent more than one day dealing with. It is very rewarding, and eventually four teams ended up solving it.
+Challenge Summary This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 and 256-bit keys. The encryptor is equipped with caches and we are given a service to encrypt (or decrypt) our messages.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2020 Postmortem</title>
+      <link>/posts/2021-03-28-hkcert-ctf/</link>
+      <pubDate>Sun, 28 Mar 2021 17:54:00 +0800</pubDate>
+      
+      <guid>/posts/2021-03-28-hkcert-ctf/</guid>
+      <description>On August 2020, @blackb6a was invited to co-organize HKCERT CTF 2020 (which is held on November 2020) as one of the challenge authors. This is a CTF for secondary and tertiary students in Hong Kong. Although I had experience preparing CTFs earlier, this is actually the first CTF officially prepared by Black Bauhinia. I have written four challenges for this CTF - Sanity Check II (Web), LF2 (Reverse), Sign In Please (Crypto) and Calm Down (Crypto).</description>
+    </item>
+    
+    <item>
+      <title>Aero CTF 2021 Writeup</title>
+      <link>/posts/2021-02-28-aeroctf/</link>
+      <pubDate>Sun, 28 Feb 2021 19:35:00 +0800</pubDate>
+      
+      <guid>/posts/2021-02-28-aeroctf/</guid>
+      <description>This time I am playing alone for @blackb6a and had all the crypto challenges solved (and nothing else). I found the crypto challenges in many of the CTFs this year are worth-trying, and these are no exceptions. I ended up at the 9th place. By the way, @SuperGuesser is the first to solve for all of the crypto challenges. Can we nerf @RBTree_ and @rkm0959?
+Additionally, phoenix had seven solves and while horcrux and boggart had two.</description>
+    </item>
+    
+    <item>
+      <title>Union CTF 2021 (II): committee</title>
+      <link>/posts/2021-02-27-union-ctf-committee/</link>
+      <pubDate>Sat, 27 Feb 2021 17:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-02-27-union-ctf-committee/</guid>
+      <description>Challenge Summary  A committee was formed last year to decide the highly-sensitive contents of the flag for this challenge. Our informant managed to leak some data, but he was arrested within weeks of the committee&#39;s operation. All we have are the logs of the committee&#39;s meetings.
+Note: file fixed, please redownload
+Author: Aurel300
+ We are given log.txt that contains the full commit history of the flag-containing repository.
+... commit dca4ca5150b82e541e2f5c42d00493ba8d4aa84a Author: Christopher L.</description>
+    </item>
+    
+    <item>
+      <title>Union CTF 2021 (I): exah</title>
+      <link>/posts/2021-02-23-union-ctf-exah/</link>
+      <pubDate>Tue, 23 Feb 2021 00:45:00 +0800</pubDate>
+      
+      <guid>/posts/2021-02-23-union-ctf-exah/</guid>
+      <description>I was playing Union CTF with @blackb6a last week. Since this CTF is prepared by cr0wn where Jack and hyperreality were in (they made CryptoHack), I am convinced that the CTF will be fun. Turns out I wasn&#39;t disappointed at all. I will be writing three or four posts on the challenges, and the first of the series covers on exah, the reversing challenge I spent most of my time (yet not solving it).</description>
+    </item>
+    
+    <item>
+      <title>kurenaif 1K Subscriptions Challenges</title>
+      <link>/posts/2021-02-21-kurenaif-challenges/</link>
+      <pubDate>Sat, 20 Feb 2021 23:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-02-21-kurenaif-challenges/</guid>
+      <description>On 13 February, 2021, kurenaif (@fwarashi) has released five challenges celebrating the 1000-subscription in the YouTube channel1. Being locked at home in Lunar New Year, I have nothing else to do. Therefore I decided to attempt those challenges, which is available on GitHub.
+Note. The writeup is actually compiled on the same day. It is published on 21 Feburary to not spoil the challenges.  p_p_rsa Challenge Summary In the challenge, we are given a RSA public key and an ciphertext $c$ (of message $m$).</description>
+    </item>
+    
+    <item>
+      <title>DiceCTF 2021 Writeup (I)</title>
+      <link>/posts/2021-02-15-dicectf-1/</link>
+      <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
+      
+      <guid>/posts/2021-02-15-dicectf-1/</guid>
+      <description>DiceCTF 2021 had an assortment of challenges and most of them are tough. Although the five crypto challenges which looked unoriginal, I was only able to solve garbled during the contest and I liked the challenges very much. After the CTF, I have found writeups from various sources and learnt a lot. In this writeup, only plagiarism and benaloh will be covered. However, I haven&#39;t look at the remaining questions yet, and they are definitely on my to-do list.</description>
+    </item>
+    
+    <item>
+      <title>justCTF 2020: Oracles</title>
+      <link>/posts/2021-02-01-justctf-oracles/</link>
+      <pubDate>Mon, 01 Feb 2021 03:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-02-01-justctf-oracles/</guid>
+      <description>I was playing justCTF 2020 with the new CTFers in Yakitori (Firebird). Oracles is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up.
+Challenge Summary We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
+ Is Goldbach&#39;s conjecture true? What is the answer to everything?  On top of them, the challenge author tried to tell the agency the flag.</description>
+    </item>
+    
+    <item>
+      <title>hoifanrd&#39;s osu! Challenge</title>
+      <link>/posts/2021-01-29-hoifanrds-osu-challenge/</link>
+      <pubDate>Fri, 29 Jan 2021 21:05:00 +0800</pubDate>
+      
+      <guid>/posts/2021-01-29-hoifanrds-osu-challenge/</guid>
+      <description>There are a lot of moments which I telepathed and synced with the challenge author. If it doesn&amp;rsquo;t make sense to you, just bear with it.  This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge.</description>
+    </item>
+    
+    <item>
+      <title>Firebird Internal CTF Writeup</title>
+      <link>/posts/2021-01-18-firebird-internal-ctf/</link>
+      <pubDate>Mon, 18 Jan 2021 22:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-01-18-firebird-internal-ctf/</guid>
+      <description>I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post.
+Oofbleck (Crypto) One (out of six) team have solved this during the CTF period.
+Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8.</description>
+    </item>
+    
+    <item>
+      <title>TetCTF 2021: unevaluated</title>
+      <link>/posts/2021-01-03-tetctf-unevaluated/</link>
+      <pubDate>Sun, 03 Jan 2021 13:39:00 +0800</pubDate>
+      
+      <guid>/posts/2021-01-03-tetctf-unevaluated/</guid>
+      <description>TetCTF is the first CTF I have played in 2021. I recalled from last year that they have cool challenges. This year, there are three crypto challenges. In particular, unevaluated is the hardest among them. Although I did not solve them, I dug into rabbit holes and had a lot of struggle, uh, fun.
+Challenge Summary There is a 128-bit prime $p$. Define $\cdot: \mathbb{Z}_{p^2}^2\times\mathbb{Z}_{p^2}^2\rightarrow\mathbb{Z}_{p^2}^2$ by
+\[(x_1, y_1)\cdot(x_2, y_2) := \left(\left(x_1x_2-y_1y_2\right)\ \text{mod}\ p^2, \left(x_1y_2+y_1x_2\right)\ \text{mod}\ p^2\right),\]</description>
+    </item>
+    
+    <item>
+      <title>hxp CTF 2020: Hyper</title>
+      <link>/posts/2020-12-20-hxpctf-hyper/</link>
+      <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
+      
+      <guid>/posts/2020-12-20-hxpctf-hyper/</guid>
+      <description>I was teamed up to play hxp CTF as @blackb6a last week. The hxp team had come up with a collection of hard challenges. In particular, there are two series of crypto challenges with a total of five parts. I will be writing on the hyper challenge and some follow-up and unanswered questions regarding to hyperelliptic curves.
+ⓘ 𝗢𝗳𝗳𝗶𝗰𝗶𝗮𝗹 𝘀𝗼𝘂𝗿𝗰𝗲𝘀 𝘀𝘁𝗮𝘁𝗲𝗱 𝘁𝗵𝗮𝘁 𝘁𝗵𝗶𝘀 𝗶𝘀 𝗺𝗶𝘀𝗹𝗲𝗮𝗱𝗶𝗻𝗴
+Seriously. I knew nothing on hyperelliptic curves prior to the CTF.</description>
+    </item>
+    
+    <item>
+      <title>Dragon CTF 2020 Writeup</title>
+      <link>/posts/2020-11-23-dragonctf/</link>
+      <pubDate>Mon, 23 Nov 2020 04:33:50 +0800</pubDate>
+      
+      <guid>/posts/2020-11-23-dragonctf/</guid>
+      <description>Written from the perspective of Mystiz. babykok writeup by GeoffreyY.  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
+There are three challenges writeup in this post:
+ Bit Flip (parts 2 and 3) Frying in motion babykok  Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>
+    </item>
+    
+    <item>
+      <title>Firebird Intro CTF: Rotten Secured Algorithm</title>
+      <link>/posts/2020-09-21-firebird-intro-ctf-rsa/</link>
+      <pubDate>Mon, 21 Sep 2020 16:15:00 +0800</pubDate>
+      
+      <guid>/posts/2020-09-21-firebird-intro-ctf-rsa/</guid>
+      <description>Rotten Secured Algorithm is the only challenge that I have written for Firebird Intro CTF. Two people (out of 166) ended up solving the challenge.
+There is a Python script attached in the challenge, as well as the output file. Let&#39;s see what&#39;s going on in the Python:
+# Challenge written on Aug 26, 2020 by Mystiz. from Crypto.PublicKey import RSA import random import time from datetime import datetime from secret import flag t = int(time.</description>
+    </item>
+    
+    <item>
+      <title>CONFidence 2020 CTF: Team Trees</title>
+      <link>/posts/2020-09-08-confidencectf-team-trees/</link>
+      <pubDate>Tue, 08 Sep 2020 18:30:00 +0800</pubDate>
+      
+      <guid>/posts/2020-09-08-confidencectf-team-trees/</guid>
+      <description>This week, we have teamed up as @blackb6a to play CONFidence 2020 CTF. We end up ranked 15, but we are more proud of ourselves able to solve a reversing challenge called Team Trees (395 points, 5 solves).
+In particular, we are the first-to-solve to the challenge. It took us around two hours to win the flag. This writeup is written by @harrier_lcc and @mystiz613.
+Challenge Summary  We wanted to plant a lot of trees, but it&#39;s going kinda slow.</description>
+    </item>
+    
+    <item>
+      <title>Google CTF 2020: Oracle</title>
+      <link>/posts/2020-08-25-google-ctf-oracle/</link>
+      <pubDate>Tue, 25 Aug 2020 16:15:00 +0800</pubDate>
+      
+      <guid>/posts/2020-08-25-google-ctf-oracle/</guid>
+      <description>I was teamed-up with @blackb6a on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.
+In particular, Oracle is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be very computation intensive, just because I would like to make everything clear.</description>
+    </item>
+    
+    <item>
+      <title>UIUCTF 2020: nookcrypt</title>
+      <link>/posts/2020-07-22-uiuctf-nookcrypt/</link>
+      <pubDate>Wed, 22 Jul 2020 18:55:00 +0800</pubDate>
+      
+      <guid>/posts/2020-07-22-uiuctf-nookcrypt/</guid>
+      <description>Challenge Summary  Tom Nook is testing a new encryption scheme for nookphones, but it seems to be a bit faulty... can you break it?
+ nookcrypt is a netcat service that have no source code released. There are two functions exposed:
+ Gets an encrypted copy of the flag (and the message hello world). Encrypts an arbitrary message.  For example, this is what I had when trying out the options:</description>
+    </item>
+    
+    <item>
+      <title>De1CTF 2020 Writeup</title>
+      <link>/posts/2020-05-05-de1ctf/</link>
+      <pubDate>Tue, 05 May 2020 20:36:00 +0800</pubDate>
+      
+      <guid>/posts/2020-05-05-de1ctf/</guid>
+      <description>I was teamed up with @shellphish this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with DuSu and fs0c.
+I said that I&#39;ll commit the solution scripts to my Github after I have managed to prettify them. It never happened. I will not make the same promise again.
+Homomorphic Challenge Summary This is a cryptography challenge with 465 points.</description>
+    </item>
+    
+    <item>
+      <title>PlaidCTF 2020: A Plaid Puzzle</title>
+      <link>/posts/2020-04-21-plaidctf-puzzle/</link>
+      <pubDate>Tue, 21 Apr 2020 20:25:00 +0800</pubDate>
+      
+      <guid>/posts/2020-04-21-plaidctf-puzzle/</guid>
+      <description>This challenge is solved with R3x and @mahal0z as a part of @shellphish. Thanks @piazzt and @perribus for reviewing and giving me suggestions on this write-up.
+Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the game, you are able to control as the player and you could move around and mess with a string. The game is available online on PuzzleScript.net. Below is a screenshot of the game:</description>
+    </item>
+    
+    <item>
+      <title>De1CTF 2019 Writeup</title>
+      <link>/posts/2019-08-06-de1ctf/</link>
+      <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
+      
+      <guid>/posts/2019-08-06-de1ctf/</guid>
+      <description>It has been a very long time that I&#39;ve compiled a writeup. This time I have played on my own as @blackb6a. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup too math-intensive.
+The solution scripts will be committed to my Github repository sooner or later, after I&#39;ve managed to prettify them.
+Babylfsr (Crypto, 338 points) This is an easy challenge.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>web on Mystify</title>
+    <link>/tags/web/</link>
+    <description>Recent content in web on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 18 Nov 2021 16:05:03 +0800</lastBuildDate><atom:link href="/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</title>
+      <link>/posts/2021-11-18-hkcert-ctf-4/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      
+      <guid>/posts/2021-11-18-hkcert-ctf-4/</guid>
+      <description>We will cover the remaining challenges I wrote in this part: Flag Checker™, The Wilderness and Potion of Ciphermath.
+幫緊你！幫緊你！ / Flag Checker™ (Pwn) Challenge Summary  幫緊你 幫緊你
+當無力 堅持集氣幫你
+等風向轉天氣
+請相信你不死
+組隊會撐得起
+You will be Ok
+You will be Ok
+We are here to help validating your flag! Come use our Flag Checker™!
+nc HOST PORT When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag.</description>
+    </item>
+    
+    <item>
+      <title>ångstromCTF 2021: Cache Money</title>
+      <link>/posts/2021-04-08-angstromctf-2021/</link>
+      <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-04-08-angstromctf-2021/</guid>
+      <description>I played ångstromCTF 2021 for @blackb6a to spend my Easter holiday. I solved most of the reverse and cryptography challenges alone. In particular, Cache Money is one of the harder crypto challenges that I spent more than one day dealing with. It is very rewarding, and eventually four teams ended up solving it.
+Challenge Summary This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 and 256-bit keys. The encryptor is equipped with caches and we are given a service to encrypt (or decrypt) our messages.</description>
+    </item>
+    
+  </channel>
+</rss>

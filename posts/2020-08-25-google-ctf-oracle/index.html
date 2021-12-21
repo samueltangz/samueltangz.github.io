@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Google CTF 2020: Oracle :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I was teamed-up with @blackb6a on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.
+In particular, Oracle is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be very computation intensive, just because I would like to make everything clear." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2020-08-25-google-ctf-oracle/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Google CTF 2020: Oracle">
+<meta property="og:description" content="I was teamed-up with @blackb6a on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.
+
+In particular, Oracle is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be very computation intensive, just because I would like to make everything clear." />
+<meta property="og:url" content="/posts/2020-08-25-google-ctf-oracle/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-08-25 16:15:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2020-08-25-google-ctf-oracle/">Google CTF 2020: Oracle</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-08-25 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/google-ctf/">google-ctf</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>I was teamed-up with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.</p>
+
+<p>In particular, <em>Oracle</em> is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be <em>very</em> computation intensive, just because I would like to make everything clear.</p>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>There are two parts of the challenges. In the first part, we are required to recover an internal state for AEGIS-128L given the encryption oracle. For the second part, we are required to forge a ciphertext given an error oracle from decryption.</p>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="part-i-a-brief-summary-for-the-state-in-aegis128l">Part I: A brief summary for the state in AEGIS-128L<a href="#part-i-a-brief-summary-for-the-state-in-aegis128l" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>AEGIS-128L has an internal state that is initially computed solely by the <em>key</em> and the <em>IV</em>. It is of 128 bytes, broken into eight 16-byte blocks. Let's $S_i$ is updated to $S_{i+1}$ given 32-byte payload $M$. Let's define $S_i = (s_{i, 0}, s_{i, 1}, ..., s_{i, 7})$ and $M = (m_0, m_1)$. We have:</p>
+
+<ul>
+<li>$s_{i+1, 0} \leftarrow \text{AESEnc}(s_{i, 7}, s_{i, 0}) \oplus m_0$,</li>
+<li>$s_{i+1, 4} \leftarrow \text{AESEnc}(s_{i, 3}, s_{i, 4}) \oplus m_1$, and</li>
+<li>$s_{i+1, j} \leftarrow \text{AESEnc}(s_{i, j-1}, s_{i, j})$ for $j = 1, 2, 3, 5, 6, 7$.</li>
+</ul>
+
+<p>But what is <code>AESEnc</code>? Let's see the implementation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">aes_enc</span>(s: block, t: block) <span style="color:#f92672">-&gt;</span> block:
+  <span style="color:#e6db74">&#34;&#34;&#34;Performs the AESENC operation with tables.&#34;&#34;&#34;</span>
+  t0 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">0</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">5</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">10</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">15</span>]])
+  t1 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">4</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">9</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">14</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">3</span>]])
+  t2 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">8</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">13</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">2</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">7</span>]])
+  t3 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">12</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">1</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">6</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">11</span>]])
+  s <span style="color:#f92672">=</span> _block_from_ints([t0, t1, t2, t3])
+  <span style="color:#66d9ef">return</span> _xor(s, t)</code></pre></div>
+<p>Well... we will go through this later. Let's introduce how keystreams are generated from the state. It is (relatively) simple. The keystream $(k_{i, 0}, k_{i, 1})$ for the $i$-th round is given by:</p>
+
+<p><span  class="math">\[
+k_{i, 0} = (s_{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 6}, \\
+k_{i, 1} = (s_{i, 6} \wedge s_{i, 7}) \oplus s_{i, 5} \oplus s_{i, 2}.
+\]</span></p>
+
+<h3 id="part-ii-recovering-part-of-the-state">Part II: Recovering part of the state<a href="#part-ii-recovering-part-of-the-state" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Now we are given that key and IV are unchanged. This implies that the initial state, i.e., $s_{00}, s_{01}, ..., s_{09}$ are constants too.</p>
+
+<p>Suppose that we have two 96-byte messages $M^{(1)}$ and $M^{(2)}$ with only the first two blocks are different (Formally, if $M^{(k)} := (m^{(k)}_{00}, m^{(k)}_{01}, ..., m^{(k)}_{21}$), then $m^{(1)}_{ij} = m^{(2)}_{ij}$ if and only if $i \neq 0$).</p>
+
+<p>The following table summarizes which of the $s_{ij}$'s that would be different (marked by an <code>!</code>), when encrypting $M^{(1)}$ and $M^{(2)}$ respectively.</p>
+
+<table>
+<thead>
+<tr>
+<th>$i$ \ $j$</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>!</td>
+<td></td>
+<td></td>
+<td></td>
+<td>!</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>!</td>
+<td>!</td>
+<td></td>
+<td></td>
+<td>!</td>
+<td>!</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>What does this imply? Knowing that $s^{(1)}_{2,j} = s^{(2)}_{2,j}$ for $j = 2, 3, 6, 7$. Let's look closely on the last 32 bytes of the keystream:</p>
+
+<p><span  class="math">\[
+\begin{aligned}
+k^{(1)}_{20} \oplus k^{(2)}_{20}
+&= m^{(1)}_{20} \oplus c^{(1)}_{20} \oplus m^{(2)}_{20} \oplus c^{(2)}_{20} \\
+&= \left[ (s^{(1)}_{22} \wedge s^{(1)}_{23}) \oplus s^{(1)}_{21} \oplus s^{(1)}_{26} \right] \oplus \left[ (s^{(2)}_{22} \wedge s^{(2)}_{23}) \oplus s^{(2)}_{21} \oplus s^{(2)}_{26} \right] \\
+&= s^{(1)}_{21} \oplus s^{(2)}_{21}.
+\end{aligned}
+\]</span></p>
+
+<p>And similarly $k^{(1)}_{21} \oplus k^{(2)}_{21} = s^{(1)}_{25} \oplus s^{(2)}_{25}$.</p>
+
+<p>Why is it useful? Let's define a new function, <code>p</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">p</span>(s: block) <span style="color:#f92672">-&gt;</span> block:
+  t0 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">0</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">5</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">10</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">15</span>]])
+  t1 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">4</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">9</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">14</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">3</span>]])
+  t2 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">8</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">13</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">2</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">7</span>]])
+  t3 <span style="color:#f92672">=</span> (te0[s[<span style="color:#ae81ff">12</span>]] <span style="color:#f92672">^</span> te1[s[<span style="color:#ae81ff">1</span>]] <span style="color:#f92672">^</span> te2[s[<span style="color:#ae81ff">6</span>]] <span style="color:#f92672">^</span> te3[s[<span style="color:#ae81ff">11</span>]])
+  <span style="color:#66d9ef">return</span> _block_from_ints([t0, t1, t2, t3])</code></pre></div>
+<p>Déjà vu? It is more or less the same with <code>AESEnc</code>. We can state that <code>AESEnc(s, t) == p(s) ^ t</code> too. Looking even more closely, one could observe that the first four bytes from <code>p</code> solely depends on bytes 0, 5, 10 and 15 from <code>s</code>.</p>
+
+<p>Knowing this, we can further expand $k^{(1)}_{20} \oplus k^{(2)}_{20}$:</p>
+
+<p><span  class="math">\[\begin{aligned}
+k^{(1)}_{20} \oplus k^{(2)}_{20}
+&= s^{(1)}_{21} \oplus s^{(2)}_{21} \\
+&= \text{AESEnc}(s^{(1)}_{10}, s^{(1)}_{11}) \oplus \text{AESEnc}(s^{(2)}_{10}, s^{(2)}_{11}) \\
+&= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\
+&= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\
+&= p\left(\text{AESEnc}(s^{(1)}_{07}, s^{(1)}_{00}) \oplus m^{(1)}_{00}\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{07}, s^{(2)}_{00}) \oplus m^{(2)}_{00}\right) \\
+&= p(x \oplus m^{(1)}_{00}) \oplus p(x \oplus m^{(2)}_{00}).
+\end{aligned}\]</span></p>
+
+<p>(We define $x := \text{AESEnc}(s_{07}, s_{00}) = s_{10} \oplus m^{(1)}_{00}$ for ease of reading.)</p>
+
+<p>And now the <em>only</em> unknown is $x$. Can we solve it easily? Yes indeed: we can compute bytes 0, 5, 10, 15 of $x$ from the first four bytes of $k^{(1)}_{20} \oplus k^{(2)}_{20}$. Along with three more equalities from <code>p</code>, we are able to recover $x$ completely. I used an meet-in-the-middle approach to solve for $x$ in five seconds.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2020-08-25-googlectf/hm.png"   />
+    
+  </figure>
+
+
+
+<p>But wait. There is a problem: I am able to find 65536 candidates (or even more) instead of 1, but I am <em>unable</em> to eliminate the rest. The possible number of states will be growing exponentally! What can I do? The solution is actually simple: Just send $M^{(3)}$ and compute another solution set of $x$. After all, it is very likely that $x$ is the only element in the intersection of the two sets. With $x$, we are able to compute $s_{10}$ (respectively $s_{14}$).</p>
+
+<h3 id="part-iii-finishing-the-first-part-of-the-challenge">Part III: Finishing the first part of the challenge<a href="#part-iii-finishing-the-first-part-of-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>We can extend the above idea to leak more. By sending two 128-byte messages with blocks 3 and 4 being different, we are able to recover $s_{20}$ and $s_{24}$. We are able to leak $s_{30}$ and $s_{34}$ with the same idea.</p>
+
+<p>Two more questions remain: How is it made possible in seven queries? And more importantly, how can we recover $s_{ij}$ for all $j$, for some $i$ (preferably $i = 0\ \text{or}\ 1$)?</p>
+
+<p><strong>Challenge 1.</strong> Recover the above states in 7 queries.</p>
+
+<p>In short, we are encrypting these seven plaintexts (each <code>0</code> represents 16 <code>\x00</code>'s, etc):</p>
+
+<ol>
+<li><code>0000000000</code></li>
+<li><code>0000110000</code></li>
+<li><code>0000220000</code> - Derive $s_{10}$ and $s_{14}$ uniquely with (1) and (2)</li>
+<li><code>0000001100</code></li>
+<li><code>0000002200</code> - Derive $s_{20}$ and $s_{24}$ uniquely with (1) and (4)</li>
+<li><code>0000000011</code></li>
+<li><code>0000000022</code> - Derive $s_{30}$ and $s_{34}$ uniquely with (1) and (6)</li>
+</ol>
+
+<p><strong>Challenge 2.</strong> Recover $s_{1, j}$ for all $j$.</p>
+
+<p>From above, we are able to derive $s_{i, 0}$ and $s_{i, 4}$ for $i = 1, 2, 3$ with $m_{ij} = 0$. Hence, the state transition would be $s_{i+1, j} \leftarrow p(s_{i, j-1}) \oplus s_{ij}$ for all $i, j$. Equivalently $s_{i, j-1} = p^{-1}(s_{i+1, j} \oplus s_{ij})$.</p>
+
+<p>We are able to compute inverses of $p^{-1}$ easily. Solving system of linear equations would be all good, but I'm doing it with meet-in-the-middle. Code reuse for the win! For now, let's visualize how $s_{1, j}$'s can be derived.</p>
+
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  rankdir=BT
+  s₁₀[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₁₄[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₂₀[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₂₄[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₃₀[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₃₄[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+
+  s₂₀ -&amp;gt; s₂₇
+  s₃₀ -&amp;gt; s₂₇
+
+  s₂₄ -&amp;gt; s₂₃
+  s₃₄ -&amp;gt; s₂₃
+
+  s₁₄ -&amp;gt; s₁₃
+  s₂₄ -&amp;gt; s₁₃
+
+  s₁₃ -&amp;gt; s₁₂
+  s₂₃ -&amp;gt; s₁₂
+
+  s₁₀ -&amp;gt; s₁₇
+  s₂₀ -&amp;gt; s₁₇
+
+  s₁₇ -&amp;gt; s₁₆
+  s₂₇ -&amp;gt; s₁₆
+
+  s₁₂ -&amp;gt; s₁₁
+  s₁₃ -&amp;gt; s₁₁
+  s₁₆ -&amp;gt; s₁₁
+
+  s₁₆ -&amp;gt; s₁₅
+  s₁₇ -&amp;gt; s₁₅
+  s₁₂ -&amp;gt; s₁₅  
+
+  }
+  </div>
+</div>    
+
+<p>After all, the first part of the challenge is done.</p>
+
+<h3 id="part-iv-aegis128-vs-aegis128l">Part IV: AEGIS-128 vs AEGIS-128L<a href="#part-iv-aegis128-vs-aegis128l" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>For the second part, AEGIS-128 is used. The state is now 80 bytes (five 16-byte blocks). The payload size has been reduced to one block (let's denote it by $m$). This is how the state transited:</p>
+
+<ul>
+<li>$s_{i+1, 0} \leftarrow p(s_{i, 4}) \oplus s_{i, 0} \oplus m$, and</li>
+<li>$s_{i+1, j} \leftarrow p(s_{i, j-1}) \oplus s_{i, j}$ for $1 \leq j \leq 4$.</li>
+</ul>
+
+<p>Moreover, the keystream $k_i$ for the $i$-th round is also altered: $k_i = (s_{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 4}$.</p>
+
+<h3 id="part-v-exploring-the-challenge">Part V: Exploring the challenge<a href="#part-v-exploring-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>I have no idea what's going on, so I decided to recover the printable <code>secret_plaintext</code> first.</p>
+
+<p>It is pretty easy, and is made possible because we are able to receive the error from the oracle. In particular, from <code>pt.decode(&quot;ascii&quot;)</code>.</p>
+
+<p>We are able to recover the plaintext with bit-flipping. To begin with, we can flip the whole ciphertext by <code>\x80</code>. The first 32 bytes for the plaintext would be flipped by <code>\x80</code> as well. If we send the flipped ciphertext (denote by $c_?$) to the oracle, we will obtain:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe7 in position 0: ordinal not in range(128)</code></pre></div>
+<p>This means that the first byte of the <em>flipped</em> plaintext would be <code>\xe7</code>. Hence, the first byte of the plaintext is <code>\x67</code> (<code>g</code>). We then flip the first byte of $c_?$ by <code>\x80</code> and send it to the oracle, we will be receiving another error:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xc6 in position 1: ordinal not in range(128)</code></pre></div>
+<p>This recovers the second byte - <code>x46</code> (<code>F</code>). Since the secret plaintext is 96-byte long, we can recover it with 96 oracle calls.</p>
+
+<p><strong>REMAINING ORACLE CALLS: 231 - 96 = 135.</strong></p>
+
+<p>With a plaintext recovered, it is time for us to try to recover the internal state. Can we devise a similar strategy that is similar to the first part of the challenge? Formally, what will happen if we have two 48-byte messages $M^{(1)} := (m^{(1)}_0, m^{(1)}_1, m^{(1)}_2)$ and $M^{(2)} := (m^{(2)}_0, m^{(2)}_1, m^{(2)}_2)$ with only the first block being different. Then the last 16 bytes in the keystream will be:</p>
+
+<p><span  class="math">\[
+\begin{aligned}
+k^{(1)}_2 \oplus k^{(2)}_2
+&= \left[ (s^{(1)}_{22} \wedge s^{(1)}_{23}) \oplus s^{(1)}_{21} \oplus s^{(1)}_{24} \right] \oplus \left[ (s^{(2)}_{22} \wedge s^{(2)}_{23}) \oplus s^{(2)}_{21} \oplus s^{(2)}_{24} \right] \\
+&= s^{(1)}_{21} \oplus s^{(2)}_{21} \\
+&= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\
+&= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\
+&= p\left(\text{AESEnc}(s^{(1)}_{04}, s^{(1)}_{00}) \oplus m^{(1)}_1\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{04}, s^{(2)}_{00}) \oplus m^{(2)}_1\right) \\
+&= p(x \oplus m^{(1)}_0) \oplus p(x \oplus m^{(2)}_0).
+\end{aligned}
+\]</span></p>
+
+<p>Hereby denote $x := \text{AESEnc}(s_{04}, s_{00}) = s_{10} \oplus m^{(1)}_0$. Simply put, if we have the ciphertexts for $M^{(1)}$ and $M^{(2)}$ (denote it as $C^{(k)} = (c^{(k)}_0, c^{(k)}_1, c^{(k)}_2)$), we are able to recover one-fifths of the state if this happens.</p>
+
+<p>How are we able to do it? Well actually, we have recovered the secret plaintext above. We can flip the first block of the ciphertext arbitrarily (to $C_?$).</p>
+
+<p>However, since $k^{(2)}_2$ is altered, the third block of the message would be updated. Luckily we are able to recover the message in 17 oracle calls. Here's how:</p>
+
+<ol>
+<li>Sends $C_?$. We will obtain something like this:
+<code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xe8 in position 34...</code></li>
+<li>Flips the 35th byte by <code>\xe8</code> in $C_?$. Sends the patched $C_?$:
+<code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xcb in position 35...</code></li>
+<li>Flips the 36th byte by <code>\xcb</code> in $C_?$. Repeat the process until we receive <strong>OK</strong>, meaning that the plaintext is now ASCII-encoded.</li>
+<li>For now, we have recovered a subset of message bytes. We then flip the unknown bytes by <code>\x80</code> (for example, bytes 33 and 34) to throw errors from the oracle.</li>
+<li>Repeat step 1 until all unknown bytes are recovered.</li>
+</ol>
+
+<p>In short, we spent 16 oracle calls to recover the message, and one oracle call to indicate us to flip all the bytes those were originally printable. We are then able to recover a possible set of $s_{10}$ with 65536 entries (or more). We can spend another 17 queries to find the actual $s_{10}$, however.</p>
+
+<p><strong>REMAINING ORACLE CALLS: 135 - 17&times;2 = 101.</strong></p>
+
+<p>With the same idea, we can recover $s_{20}, s_{30}, s_{40}$ with 17&times;6 queries. This would allow us to recover $s_{10}, s_{11}, ..., s_{14}$ and hence forging arbitrary messages (along with a slightly longer AD).</p>
+
+<p><strong>REMAINING ORACLE CALLS: 101 - 17&times;6 = -1.</strong></p>
+
+<p>Shoot - we are one query short. Since we are able to recover one byte of the plaintext in each of the queries, so it doesn't hurt to sacrifice one oracle calls by guessing one byte. So... in theory, we are able to finish the challenge with once every 256 times.</p>
+
+<p>Luckily, if we are given a incorrect plaintext (actually keystream), we are unable to recover a single $s_*$. That's pretty good, we are able to solve the challenge every time.</p>
+
+<p><strong>REMAINING ORACLE CALLS: -1 + 1 = 🎉.</strong></p>
+
+<p>With the exploit script written, I am able to reach the very end locally. Congratulations to me!</p>
+
+<h3 id="part-vi-wait-arent-we-done">Part VI: Wait... Aren't we done?<a href="#part-vi-wait-arent-we-done" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>No... When I am interacting to the server, I am <em>always</em> disconnected while sending one of the 231 oracle calls. Asking the organizers in IRC, knowing that there was an 1-minute timeout - it was later increased to 10 minutes. Unfortunately, my solution runs for around 5 minutes. I have two choices:</p>
+
+<ol>
+<li>Wait until the challenge has a 10-minute timeout, or</li>
+<li>Optimize the script and have it completed in one minute.</li>
+</ol>
+
+<p>Seeing that there are already few teams solving the challenge, I think (2) would be fun.</p>
+
+<h4 id="61-reducing-online-complexity">6.1. Reducing online complexity<a href="#61-reducing-online-complexity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>For inputs that does not require immediate feedbacks, we can send them at the same time. This is an example when I am recovering <code>secret_plaintext</code> in the second part.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Before optimization</span>
+test_ciphertext <span style="color:#f92672">=</span> bytes([c<span style="color:#f92672">^</span><span style="color:#ae81ff">0x80</span> <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> ciphertext])
+m0 <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">96</span>):
+    r<span style="color:#f92672">.</span>sendline(base64<span style="color:#f92672">.</span>b64encode(test_ciphertext))
+    test_ciphertext <span style="color:#f92672">=</span> cxor(test_ciphertext, i, <span style="color:#ae81ff">0x80</span>)
+    p, mc <span style="color:#f92672">=</span> try_decrypt_read(r)
+    <span style="color:#66d9ef">assert</span> p <span style="color:#f92672">==</span> i
+    m0 <span style="color:#f92672">+=</span> bytes([mc<span style="color:#f92672">^</span><span style="color:#ae81ff">0x80</span>])
+
+<span style="color:#75715e"># After optimization</span>
+test_ciphertext <span style="color:#f92672">=</span> bytes([c<span style="color:#f92672">^</span><span style="color:#ae81ff">0x80</span> <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> ciphertext])
+m0 <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">96</span>):
+    r<span style="color:#f92672">.</span>sendline(base64<span style="color:#f92672">.</span>b64encode(test_ciphertext))
+    test_ciphertext <span style="color:#f92672">=</span> cxor(test_ciphertext, i, <span style="color:#ae81ff">0x80</span>)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">96</span>):
+    p, mc <span style="color:#f92672">=</span> try_decrypt_read(r)
+    <span style="color:#66d9ef">assert</span> p <span style="color:#f92672">==</span> i
+    m0 <span style="color:#f92672">+=</span> bytes([mc<span style="color:#f92672">^</span><span style="color:#ae81ff">0x80</span>])</code></pre></div>
+<h4 id="62-reducing-offline-complexity">6.2. Reducing offline complexity<a href="#62-reducing-offline-complexity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>For example, this is the method I implemented to solve for $x$ from $p(x \oplus a) \oplus p(x \oplus b) = c$ - it takes one second each time:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">px_subsolve</span>(a_sub, b_sub, c_sub):
+    <span style="color:#75715e"># Given a_sub, b_sub, c_sub (4 bytes), find x_sub such that</span>
+    <span style="color:#75715e"># te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]]</span>
+    <span style="color:#75715e"># ^ te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]]</span>
+    <span style="color:#75715e"># = c_sub</span>
+
+    <span style="color:#75715e"># Reformulating:</span>
+    <span style="color:#75715e"># te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ c_sub</span>
+    <span style="color:#75715e"># = te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]] ^ te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]]</span>
+    lhss <span style="color:#f92672">=</span> {}
+    <span style="color:#66d9ef">for</span> x0, x1 <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>product(range(<span style="color:#ae81ff">256</span>), repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>):
+        <span style="color:#75715e"># LHS</span>
+        xs <span style="color:#f92672">=</span> [be0[x0<span style="color:#f92672">^</span>a_sub[<span style="color:#ae81ff">0</span>]], be0[x0<span style="color:#f92672">^</span>b_sub[<span style="color:#ae81ff">0</span>]], be1[x1<span style="color:#f92672">^</span>a_sub[<span style="color:#ae81ff">1</span>]], be1[x1<span style="color:#f92672">^</span>b_sub[<span style="color:#ae81ff">1</span>]], c_sub]
+        y <span style="color:#f92672">=</span> reduce(_xor, xs)
+        lhss[y] <span style="color:#f92672">=</span> lhss<span style="color:#f92672">.</span>get(y, []) <span style="color:#f92672">+</span> [(x0, x1)]
+        
+    solns <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> x2, x3 <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>product(range(<span style="color:#ae81ff">256</span>), repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>):
+        <span style="color:#75715e"># RHS</span>
+        xs <span style="color:#f92672">=</span> [be2[x2<span style="color:#f92672">^</span>a_sub[<span style="color:#ae81ff">2</span>]], be2[x2<span style="color:#f92672">^</span>b_sub[<span style="color:#ae81ff">2</span>]], be3[x3<span style="color:#f92672">^</span>a_sub[<span style="color:#ae81ff">3</span>]], be3[x3<span style="color:#f92672">^</span>b_sub[<span style="color:#ae81ff">3</span>]]]
+        y <span style="color:#f92672">=</span> reduce(_xor, xs)
+        <span style="color:#66d9ef">for</span> x0, x1 <span style="color:#f92672">in</span> lhss<span style="color:#f92672">.</span>get(y, []):
+            solns<span style="color:#f92672">.</span>append(bytes([x0, x1, x2, x3]))
+    
+    <span style="color:#66d9ef">return</span> solns</code></pre></div>
+<p>However, if we force <code>a_sub == b'\0'*4</code> and <code>b_sub == b'\1'*4 or b_sub == b'\2'*4</code>, the right hand side can be precomputed. We are able to solve for $x$ once every 0.2 second.</p>
+
+<p>At last - we are able to get the flag in 30 seconds locally and around 55 seconds online! 🎉</p>
+
+<hr>
+
+<h2 id="credits">Credits<a href="#credits" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<ul>
+<li>Thanks <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> who noticed that my <em>lever</em> did not hurt. Playing Minecraft too much, I misspelt liver.</li>
+<li>Thanks <a href="https://twitter.com/hellman1908" target="_blank" rel="nofollow">@hellman1908</a> for pointing that we are able to bruteforce byte by byte instead of bruteforcing columns, since that we can apply <code>MixColumns</code> inverse.</li>
+</ul>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2020-09-08-confidencectf-team-trees/">
+                <span class="button__icon">←</span>
+                <span class="button__text">CONFidence 2020 CTF: Team Trees</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2020-07-22-uiuctf-nookcrypt/">
+                <span class="button__text">UIUCTF 2020: nookcrypt</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Google CTF 2020: Oracle
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

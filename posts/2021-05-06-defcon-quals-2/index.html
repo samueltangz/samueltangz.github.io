@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>DEF CON CTF Quals 2021: Day 2 :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="This is the summary for me on the second day I played DEF CON CTF. The commentary for day 1 is available here. In this blog post, only the solutions for qoo-or-ooo, back-to-qoo and pooow-buddy are written. Since there are a lot of new stuff, I may not be able to explain them well. Please bear with me...
+Challenge: qoo-or-ooo &amp;amp; back-to-qoo  qoo-or-ooo (58 solves, 120 points)
+This is another QOO&#39;s challenge." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-05-06-defcon-quals-2/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="DEF CON CTF Quals 2021: Day 2">
+<meta property="og:description" content="This is the summary for me on the second day I played DEF CON CTF. The commentary for day 1 is available here. In this blog post, only the solutions for qoo-or-ooo, back-to-qoo and pooow-buddy are written. Since there are a lot of new stuff, I may not be able to explain them well. Please bear with me..." />
+<meta property="og:url" content="/posts/2021-05-06-defcon-quals-2/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-05-06-defcon-2/scoreboard.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-05-06 00:15:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-05-06-defcon-quals-2/">DEF CON CTF Quals 2021: Day 2</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-05-06 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/defcon/">defcon</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-05-06-defcon-2/scoreboard.png" class="post-cover center" alt="DEF CON CTF Quals 2021: Day 2" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>This is the summary for me on the second day I played DEF CON CTF. The commentary for day 1 is available <a href="/posts/2021-05-04-defcon-quals-1/">here</a>. In this blog post, only the solutions for <em>qoo-or-ooo</em>, <em>back-to-qoo</em> and <em>pooow-buddy</em> are written. Since there are a lot of new stuff, I may not be able to explain them well. Please bear with me...</p>
+
+<h2 id="challenge-qooorooo--backtoqoo">Challenge: qoo-or-ooo &amp; back-to-qoo<a href="#challenge-qooorooo--backtoqoo" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<blockquote>
+<p><em><strong>qoo-or-ooo</strong> (58 solves, 120 points)</em></p>
+
+<p>This is another QOO's challenge. Wait, is this QOO or OOO?</p>
+
+<p><code>qoo-or-ooo.challenges.ooo 5000</code></p>
+
+<p>Files: <a href="https://scoreboard2021.oooverflow.io/challenge_files/4750459de3b6635ae262a7206fcaf125e5eb593dec379452f541ca372bbc5900/service.py">service.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/4750459de3b6635ae262a7206fcaf125e5eb593dec379452f541ca372bbc5900/backend.py">backend.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/4750459de3b6635ae262a7206fcaf125e5eb593dec379452f541ca372bbc5900/coin.py">coin.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/4750459de3b6635ae262a7206fcaf125e5eb593dec379452f541ca372bbc5900/game.py">game.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/4750459de3b6635ae262a7206fcaf125e5eb593dec379452f541ca372bbc5900/players.py">players.py</a></p>
+</blockquote>
+
+<h3 id="part-i-getting-started">Part I: Getting started<a href="#part-i-getting-started" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 04:56 (1256 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>OOO decided to release a crypto challenge shortly after I am asleep. While I am dreaming, <em>Poignant Pineapple</em> and <em>p_nack</em> managed to beat the game by luck and shared the complete transcript of the communication. They noticed that the problem is solvable by brute-forcing. Unfortunately, there is an implementation flaw on their solution script and they are unable to retrieve the flag at the moment.</p>
+
+<div class="alert warning">
+  <strong>It may be fortunate for me.</strong> At least I had a chance to read the challenge before it is solved&hellip;
+</div>
+
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 08:50 (1490 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>There are already 17 solves when I am awake... Well, I understand the hunger of the crypto guys during DEF CON. Since <em>p_nack</em> has already read the challenge while I am asleep, he introduced me the challenge.</p>
+
+<p>We will be playing a game involving four players: $P_1$ (ourselves), $P_2$ (Zardus), $C_1$ and $C_2$ (two random guys). We will be teaming up with Zardus competing with $C_1$ and $C_2$. There are 30 rounds in a game and in each round, each of us will toss a coin. If $P_1 \oplus P_2 = C_1 \times C_2$, then we win the round. The objective is to win over 85% of the games, i.e., at least 26 rounds.</p>
+
+<p>If we win, we will receive the flag. It is encrypted with a key derived from a subsequence of $P_2$'s when we are playing the game. That said, the key is no longer than 30 bits and it is easy to brute force.</p>
+
+<p>We are able to know $C_1$ before we decide the value of $P_1$. That said, we only have 50% chance to win a round. Hence, we have only 0.003% to win the game - we are expected to gain the flag once in 33K games.</p>
+
+<p>However, that is not the end. To make the challenge more interesting (or confusing), they tried to introduce a secret quantum coin which can be tossed and we will be automatically using the measured value as $P_1$. <em>Poignant Pineapple</em> has observed that the chances to win by tossing the coins (and do nothing else) is much higher - we are able to win once in about 10 games.</p>
+
+<div class="alert warning">
+  <strong>What is preventing us from solving?</strong> At that time, I was convinced that the entropy of the key is exactly 30 bits. Instead of reading the challenge in detailed, I decide to fix the script they wrote for the flag to brute the 30-bit entropy. The entropy could be shorter (will be mentioned in <em>Part V</em>), thus the attack did not work.
+</div>
+
+
+<h3 id="part-ii-wait-we-are-not-prepared-for-a-sequel">Part II: Wait, we are not prepared for a sequel!<a href="#part-ii-wait-we-are-not-prepared-for-a-sequel" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 10:20 (1580 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>OOO decided to release a sequel of the challenge... They have increased the number of rounds from 30 to 128 and nothing else. Well, it is very likely that there is an unintended solution in the original challenge.</p>
+
+<blockquote>
+<p><em><strong>back-to-qoo</strong> (43 solves, 128 points)</em></p>
+
+<p>You are pulled back to QOO again. QOO or OOO? Whatever.</p>
+
+<p><code>back-to-qoo.challenges.ooo 5000</code></p>
+
+<p>Files: <a href="https://scoreboard2021.oooverflow.io/challenge_files/d1010e852cc0de4b0d48beb6d2c483799a15a6de2b34eecb456139f21a967c67/service.py">service.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/d1010e852cc0de4b0d48beb6d2c483799a15a6de2b34eecb456139f21a967c67/backend.py">backend.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/d1010e852cc0de4b0d48beb6d2c483799a15a6de2b34eecb456139f21a967c67/coin.py">coin.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/d1010e852cc0de4b0d48beb6d2c483799a15a6de2b34eecb456139f21a967c67/game.py">game.py</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/d1010e852cc0de4b0d48beb6d2c483799a15a6de2b34eecb456139f21a967c67/players.py">players.py</a></p>
+</blockquote>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 10:25 (1585 minutes in)</em> ⏲️ ⏲️</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-05-06-defcon-2/qoo-2-first-blood.png"   />
+    
+  </figure>
+
+
+
+<p>Shortly later, <a href="/posts/2021-05-04-defcon-quals-1/#side-story-inspecting-the-challenge-api">the bot</a> told us that <em>back-to-qoo</em> is already solved.</p>
+
+<h3 id="part-iii-a-twominute-review-on-quantum-mechanics">Part III: A two-minute review on quantum mechanics<a href="#part-iii-a-twominute-review-on-quantum-mechanics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert warning">
+  <strong>Beginners only!</strong> For anyone who is not familiar with quantum mechanics, I am with you. <em>hoifanrd</em> taught me quantum mechanics during PlaidCTF 2021. Anyway, I&rsquo;ll only cover the details that are used in the challenge. I am not good at explaining stuffs, after all.
+</div>
+
+
+<p>Let's assume that there are four <em>quantum</em> numbers: $\lvert0\rangle$, $\lvert1\rangle$, $\lvert+\rangle$ and $\lvert-\rangle$. No some quantum logic gates:</p>
+
+<ol>
+<li>Hadamard gate $H$ - <code>qubit.H()</code>:<br>
+$H(\lvert0\rangle) = \lvert+\rangle$, $H(\lvert1\rangle) = \lvert-\rangle$, $H(\lvert+\rangle) = \lvert0\rangle$ and $H(\lvert-\rangle) = \lvert1\rangle$.</li>
+<li>Measurement $M$ - <code>qubit.measure()</code>.<br>
+This is an operation to observe a qubit and return either 0 or 1. $M(\lvert0\rangle) = 0$ and $M(\lvert1\rangle) = 1$. However for $M(\lvert+\rangle)$ and $M(\lvert-\rangle)$, there is a 50% chance to return a 0 (otherwise a 1).</li>
+</ol>
+
+<p>In reality, a superposition will be collapsed after it is measured. However, the <code>non_destructive</code> flag in <code>.measure()</code> stop the qubit from collapsing. Simply put, the qubit would not change (unlike what it usually does) after it is measured.</p>
+
+<h3 id="part-iv-putting-our-guessing-hats-on">Part IV: Putting our guessing hats on<a href="#part-iv-putting-our-guessing-hats-on" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 10:45 (1605 minutes in)</em> ⏲️ ⏲️</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-05-06-defcon-2/no-source-meme.jpeg"   />
+    
+      <figcaption class="right" >OMG no source... Stolen from <a href='https://twitter.com/oooverflow/status/1388920554111987715/photo/1'>@oooverflow's tweet</a> as promised yesterday.</figcaption>
+    
+  </figure>
+
+
+
+<p>We could only guess what's happening about the <em>secret coin</em> (which is a qubit) since we don't have its corresponding source code. Instead, let's look at the source code on how Zardus bets:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Zardus</span>(Player, SecretPlayer):
+    
+    <span style="color:#75715e"># ... omitted ...</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">bet</span>(self, gameid, referee): <span style="color:#75715e"># referee = c2</span>
+        qubit <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>qubits[gameid]
+        <span style="color:#66d9ef">if</span> referee <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+            qubit<span style="color:#f92672">.</span>H()
+            res <span style="color:#f92672">=</span> qubit<span style="color:#f92672">.</span>measure(non_destructive<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+            qubit<span style="color:#f92672">.</span>H()
+        <span style="color:#66d9ef">else</span>:
+            res <span style="color:#f92672">=</span> qubit<span style="color:#f92672">.</span>measure(non_destructive<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+        self<span style="color:#f92672">.</span>bases<span style="color:#f92672">.</span>append(referee)
+        <span style="color:#66d9ef">return</span> res
+
+    <span style="color:#75715e"># ... omitted ...</span></code></pre></div>
+<p>After while, we assumed that Zardus is actually using the secret coin to collude with us. We also assumed that the secret coin is initially either $\lvert0\rangle$ or $\lvert1\rangle$.</p>
+
+<p>Assume that $k\in\{0, 1\}$ and define $\lvert k \rangle$ be coin we and Zardus shared secretly. Denote $C_2$ be the bet of Zardus' opponent (which also serves as his referee) and $P_2$ be his bet. If $C_2 = 0$, then $P_2 = M(\lvert k\rangle) = k$. Otherwise, $P_2 = M(H(\lvert k\rangle))$ will be randomly picked from 0 or 1.</p>
+
+<p>Below shows a sequence of $P_1$, $P_2$, $C_1$ and $C_2$'s in a game, where I am tossing the secret coin every time. If my guess is correct, then $C_2 = 0$ would imply $P_1 = P_2$ - and it actually holds! We are more convinced with the assumption now.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">p1s <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>]
+p2s <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>]
+c1s <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>]
+c2s <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>]</code></pre></div>
+<p>With that said, we actually have a 75% chance winning a round! Therefore we have around 10% to beat the game and win an encrypted flag from Zardus.</p>
+
+<h3 id="part-v-why-cant-we-brute-force">Part V: Why can't we brute force?<a href="#part-v-why-cant-we-brute-force" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 12:30 (1710 minutes in)</em> ⏲️ ⏲️</p>
+
+<blockquote>
+<p><em>Poignant Pineapple — Today 12:30</em><br>
+welp, i finished running the script, no flag<br>
+so our script must still be wrong?</p>
+</blockquote>
+
+<p>At the end of part I, we fix the script that tries to brute-force the entire key space (with 30 bit entropy) but in vain. Luckily I am able to spot out the other mistake we made - the entropy is <em>not</em> 30 bits long, but 15 bits in average. Here we introduce Adamd, the one who actually encrypts the flag and sent it to Zardus (and he leaked it to us - traitor!). Let's see how do Zardus and Adamd chat implemented in <code>players.py</code>.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-05-06-defcon-2/qoo-communication.jpg"   />
+    
+      <figcaption class="right" >Visualizing Zardus' and Adamd's communication.</figcaption>
+    
+  </figure>
+
+
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 12:49 (1729 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>Let $\lvert \psi_0 \rangle$, $\lvert \psi_1 \rangle$, ..., $\lvert \psi_{29} \rangle$ be the qubits shared between us and Zardus. The qubits $\lvert \psi_i\rangle$ and the basis $b_i := C_{2, i}$ is determined before the communication, while $b'_i \in \{0, 1\}$ is randomly selected by Adamd. Since one bit of entropy is added to $\mathcal{K}$ if $b_i = b'_i$, there are in average 15 bits added. Also, as we are already given $b_i$ and $b'_i$ for $0 \leq i &lt; 30$, we actually knew the number of bits of the key entropy. We can exhaust the whole key space easily. Eventually we have the flag for <em>qoo-or-ooo</em>!</p>
+
+<p>Flag: <code>OOO{qoo_is_a_good_competitor_and_zardus_is_a_leaker}</code>.</p>
+
+<h3 id="part-vi-we-dont-need-to-brute-force-at-all">Part VI: We don't need to brute force at all!<a href="#part-vi-we-dont-need-to-brute-force-at-all" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 13:29 (1769 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>I extracted a set of <code>p2s</code>, <code>c2s</code>, <code>bs</code> and <code>key</code> that allow me to win the first flag. Hereby <code>c2s</code> and <code>bs</code> respectively stand for $\left(C_{2, 0}, C_{2, 1}, ..., C_{2, 29}\right)$ and $\left(b_0, b_1, ..., b_{29}\right)$, while <code>p2s</code> means $\left(M(\lvert \psi'_0\rangle), M(\lvert \psi'_1\rangle), ..., M(\lvert \psi'_{29}\rangle)\right)$ (where $\psi'_i = \psi_i$ if $C_{2, i} = 0$ and $\psi'_i = H(\psi_i)$ otherwise).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">c2s <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>]
+bs  <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>]
+<span style="color:#75715e">#            *                    *     *           *                 *     *  *  *  *     *</span>
+
+p2s <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>]
+key <span style="color:#f92672">=</span> [      <span style="color:#ae81ff">1</span>,                   <span style="color:#ae81ff">0</span>,    <span style="color:#ae81ff">0</span>,          <span style="color:#ae81ff">1</span>,                <span style="color:#ae81ff">1</span>,    <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>,    <span style="color:#ae81ff">0</span>   ]</code></pre></div>
+<p>Wait... <code>key</code> is actually a subsequence of <code>p2s</code>, and they are picked if <code>c2s = bs</code>. This implies we don't need to exhaust the keys at all. Therefore, when the number of rounds is increased to 128, the only difficulty is to win the game. The probability of winning the game is decreased from 10% to 0.3%. <em>Poignant Pineapple</em> is repeatedly playing with Zardus and friends while I am writing a script to decrypt the incoming flag. We are able to win the game after 500 rounds and get the flag for <em>back-to-qoo</em>.</p>
+
+<p>Flag: <code>OOO{zardus_is_still_a_leaker_and_you_win_QOO_again}</code>.</p>
+
+<h3 id="part-vii-postmortem">Part VII: Postmortem<a href="#part-vii-postmortem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Turns out the quantum challenge is not something new. It composes of two parts:</p>
+
+<ol>
+<li>The 2-on-2 game we played is the CHSH Game<sup class="footnote-ref" id="fnref:chsh-game"><a class="footnote" href="#fn:chsh-game">1</a></sup>. There is an existing strategy that wins around 85%.</li>
+<li>The key for the communication is derived by the BB84 Key Distribution<sup class="footnote-ref" id="fnref:bb84"><a class="footnote" href="#fn:bb84">2</a></sup>. Since we have everything that is used as key exchange, we of course have the key.</li>
+</ol>
+
+<p>Interestingly, we thought that OOO fixed the unintended solution for the second part. We do not know our approach on the first part is also unintended...</p>
+
+<h2 id="challenge-pooowbuddy">Challenge: pooow-buddy<a href="#challenge-pooowbuddy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<blockquote>
+<p><em><strong>pooow-buddy</strong> (52 solves, 122 points)</em></p>
+
+<p>Tired of POWs? Here's a helpful program to solve them for you!</p>
+
+<p><code>pooow-buddy.challenges.ooo 5000</code></p>
+
+<p>Files: <a href="https://scoreboard2021.oooverflow.io/challenge_files/0e83814a74804a9ae98caff1be2f4ef11c399e538a11509369d4a3bf5541c17e/service">service</a></p>
+</blockquote>
+
+<h3 id="part-i-how-do-you-turn-this-on">Part I: How do you turn this on?<a href="#part-i-how-do-you-turn-this-on" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 13:45 (1785 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>Although the challenge is not tagged with crypto, it attracts me because of its name. I made a challenge earlier called <a href="/2021-01-18-firebird-internal-ctf/#prooofooofwooork-reverse-misc">prooof-ooof-wooork</a> that is intended to mimic OOO's challenge naming style. Of course, the challenges are totally different and irrelevant. This is how it looks when <code>nc</code>-ed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">         mmmm   mmmm   mmmm                #                 #      #        
+ mmmm   m&#34;  &#34;m m&#34;  &#34;m m&#34;  &#34;mm     m        #mmm   m   m   mmm#   mmm#  m   m 
+ #&#34; &#34;#  #    # #    # #    #&#34;m m m&#34;        #&#34; &#34;#  #   #  #&#34; &#34;#  #&#34; &#34;#  &#34;m m&#34; 
+ #   #  #    # #    # #    # #m#m#         #   #  #   #  #   #  #   #   #m#  
+ ##m#&#34;   #mm#   #mm#   #mm#   # #          ##m#&#34;  &#34;mm&#34;#  &#34;#m##  &#34;#m##   &#34;#   
+ #                                                                      m&#34;   
+ &#34;                                                                     &#34;&#34;    
+┌───────────────────────────────────────────────────────────────── MAIN MENU ─┐
+│                                                                             │
+│ &gt; Dispatcher commands:                                                      │
+│                                                                             │
+│ start                                                                       │
+│ status                                                                      │
+│ stop WORKER_ID                                                              │
+│ dispatch WORKER_ID WORKER_COMMAND                                           │
+│ poll                                                                        │
+│ add_challenge NUM_ZEROES CALLBACK_TYPE CALLBACK_ARG PREFIX                  │
+│ quit                                                                        │
+│                                                                             │
+│ &gt; Worker commands:                                                          │
+│                                                                             │
+│ hash ITERATION CHALLENGE_SIZE CHALLENGE                                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+Dispatcher command&gt; </code></pre></div>
+<p>We are given few commands. Let's briefly explain what they are:</p>
+
+<ol>
+<li><code>start</code> starts a new worker.</li>
+<li><code>status</code> shows the current status of the workers and the challenges.</li>
+<li><code>stop</code> stops a worker with given id.</li>
+<li><code>dispatch</code> assigns a proof-of-work task to a worker.</li>
+<li><code>poll</code> polls the workers.</li>
+<li><code>add_challenge</code> adds a proof-of-work challenge. The callback will be called if they are able to find $x$ such that $\text{SHA256}(\text{prefix} + x)$ ends with <code>NUM_ZEROES</code> zero bits.</li>
+</ol>
+
+<p>I was still confused even if I understood what the operations are. Let's go through an example. Suppose that we are going to find <code>x</code> such that <code>SHA256(&quot;foo&quot; + x)</code> ends with 24 null bits. We can execute the below sequence of dispatcher commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">start
+add_challenge 24 echo done foo
+dispatch 0 hash 100000000 7 foolish</code></pre></div>
+<p>After a while, <code>done foolish0000000096666529</code> is printed and we can confirm that its SHA256 digest ends with three null bytes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hashlib<span style="color:#f92672">.</span>sha256(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;foolish0000000096666529&#39;</span>)<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># &#39;2a2f08e8e58da14f8cfd7af0ac69fabca766631c4012729719add8a739000000&#39;</span></code></pre></div>
+<h3 id="part-ii-command-injection-yes-command-injection">Part II: Command injection? Yes command injection!<a href="#part-ii-command-injection-yes-command-injection" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>There are three <code>CALLBACK_TYPE</code>s they provided: <code>echo</code>, <code>curl</code> and <code>exec</code>. The binary actually wraps the callback into a system call - here's how:</p>
+
+<ol>
+<li><code>echo CALLBACK_ARG PREFIX</code>: <code>echo {CALLBACK_ARG} {PREFIX}{SOLUTION}</code></li>
+<li><code>curl CALLBACK_ARG PREFIX</code>: <code>curl http://{CALLBACK_ARG}?pow={PREFIX}{SOLUTION}</code></li>
+<li><code>exec CALLBACK_ARG PREFIX</code>: <code>./{CALLBACK_ARG} {PREFIX}{SOLUTION}</code></li>
+</ol>
+
+<p>Unfortunately, the callback argument is not vulnerable to command injection. Since there are quite a number of teammates looking at the challenge, I decide to move to <em>smart-cryptooo</em>.</p>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 19:32 (2132 minutes in)</em> ⏲️ ⏲️</p>
+
+<p><em>publicqi</em> found that it is possible to perform command injection using the <code>PREFIX</code> parameter when we dispatch tasks to the workers.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">start
+add_challenge 1 echo A c
+dispatch 0 hash 131313131313 21 c;cat${IFS}flag${IFS}</code></pre></div>
+<p>Flag: <code>OOO{thread safety is not a lie}</code></p>
+
+<h2 id="challenge-smartcryptooo">Challenge: smart-cryptooo<a href="#challenge-smartcryptooo" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<blockquote>
+<p><em><strong>smart-cryptooo</strong> (5 solves, 343 points)</em></p>
+
+<p>Existing encryption schemes are just too dumb. OOO is here to change that!</p>
+
+<p>Files: <a href="https://scoreboard2021.oooverflow.io/challenge_files/4639bf6b182d390e5e02add139505ba5c1c7547786ca3dcec90b9d36fded7e84/https___oooverflow.io_philosophy.html-secret.enc">https___oooverflow.io_philosophy.html-secret.enc</a>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/4639bf6b182d390e5e02add139505ba5c1c7547786ca3dcec90b9d36fded7e84/anc.py">anc.py</a></p>
+</blockquote>
+
+<h3 id="part-i-machine-learning-how">Part I: Machine learning, how?<a href="#part-i-machine-learning-how" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert info">
+  Well&hellip; I was reluctant to read this challenge because it is also tagged with <em>machine learning</em>. During the process, I asked a lot of questions and <em>mdy</em> and <em>Paul</em> answered them patiently. Although we end up not solving this challenge, I learned.
+</div>
+
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 17:09 (1989 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>There are two files provided by the challenge. The <code>.enc</code> file is an encrypted <a href="https://oooverflow.io/philosophy.html">OOO philosophy</a>, with the flag hidden in the middle, with the cryptosystem $\mathcal{C}$. On the other hand, <code>anc.py</code> is a script that trains three neural networks:</p>
+
+<ol>
+<li><em>Alice</em> is the encryption network that takes message $m$ and key $k$ and returns a ciphertext $c$,</li>
+<li><em>Bob</em> is the decryption network that takes ciphertext $c$ and key $k$ and returns a message $m$, and</li>
+<li><em>Eve</em> is the eavesdropper network that takes only the ciphertext $c$ and returns a message $m$.</li>
+</ol>
+
+<p>Note that $m, c, k \in \mathbb{[-1, 1]}^{64}$, where $m$ and $k$ are 8 bytes. To convert a 8-byte message block to $\mathbb{R}^{64}$, it is first encoded to a 64-bit array and replace those 0s to -1. On the other hand, each entry of $c=(c_1, c_2, ..., c_{64})$ is packed as a 64-bit floating point number. Hence, a 8-byte plaintext will be encrypted to a 512-byte ciphertext.</p>
+
+<p><em>9shiba</em> noticed that ANC is short for adversarial neural cryptography<sup class="footnote-ref" id="fnref:anc-paper"><a class="footnote" href="#fn:anc-paper">3</a></sup> and found a reference implementation<sup class="footnote-ref" id="fnref:anc"><a class="footnote" href="#fn:anc">4</a></sup> that look alike to the Python file given. To summarize, the objective for the training process is to generate two models <em>Alice</em> and <em>Bob</em> such that they could encrypt and decrypt correct, while <em>Eve</em> is unable to decrypt without the key. However, we are not even given the model. What can we do?</p>
+
+<h3 id="part-ii-some-observations-and-attempts">Part II: Some observations and attempts<a href="#part-ii-some-observations-and-attempts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert warning">
+  These are some random ideas we came up while studying the challenge. They are not necessarily useful, and I am unsure if any of them work. Read it at your own risk as it may not help solving the challenge.
+</div>
+
+
+<h4 id="recovering-the-parameters">Recovering the parameters?<a href="#recovering-the-parameters" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 20:17 (2177 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>With the summary function, we are able to see what is happening between the layers. 17K parameters are trained and most of the parameters come from the dense layer. I think recovering those parameters are not difficult. Well... I don't even know where to begin.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">alice_model<span style="color:#f92672">.</span>summary()
+<span style="color:#75715e"># Model: &#34;alice&#34;</span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># Layer (type)                    Output Shape         Param #     Connected to                     </span>
+<span style="color:#75715e"># ==================================================================================================</span>
+<span style="color:#75715e"># input_1 (InputLayer)            [(None, 64)]         0                                            </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># input_2 (InputLayer)            [(None, 64)]         0                                            </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># concatenate (Concatenate)       (None, 128)          0           input_1[0][0]                    </span>
+<span style="color:#75715e">#                                                                  input_2[0][0]                    </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># dense (Dense)                   (None, 128)          16512       concatenate[0][0]                </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># activation (Activation)         (None, 128)          0           dense[0][0]                      </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># reshape (Reshape)               (None, 128, 1)       0           activation[0][0]                 </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># conv1d (Conv1D)                 (None, 128, 2)       10          reshape[0][0]                    </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># activation_1 (Activation)       (None, 128, 2)       0           conv1d[0][0]                     </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># conv1d_1 (Conv1D)               (None, 64, 4)        20          activation_1[0][0]               </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># activation_2 (Activation)       (None, 64, 4)        0           conv1d_1[0][0]                   </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># conv1d_2 (Conv1D)               (None, 64, 4)        20          activation_2[0][0]               </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># activation_3 (Activation)       (None, 64, 4)        0           conv1d_2[0][0]                   </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># conv1d_3 (Conv1D)               (None, 64, 1)        5           activation_3[0][0]               </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># activation_4 (Activation)       (None, 64, 1)        0           conv1d_3[0][0]                   </span>
+<span style="color:#75715e"># __________________________________________________________________________________________________</span>
+<span style="color:#75715e"># flatten (Flatten)               (None, 64)           0           activation_4[0][0]               </span>
+<span style="color:#75715e"># ==================================================================================================</span>
+<span style="color:#75715e"># Total params: 16,567</span>
+<span style="color:#75715e"># Trainable params: 16,567</span>
+<span style="color:#75715e"># Non-trainable params: 0</span></code></pre></div>
+<h4 id="similar-ciphertexts">Similar ciphertexts?<a href="#similar-ciphertexts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 20:53 (2213 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>Let's talk about the <em>mode of operation</em> specifically for the challenge. Suppose that we are going to encrypt $n$ message blocks: $M_1, M_2, ..., M_n$. Let $K_1$ be the initial key. The first chunk of 16 blocks $M_1, M_2, ..., M_{16}$ will be encrypted with $k_1$. If there are more to encrypt, 8 bytes will be randomly generated as $K_2$ (the next key). $K_2$ will be encrypted by $K_1$ and appended to the ciphertext. After that, encrypt the next chunk of blocks $M_{17}, M_{18}, ..., M_{32}$ with $K_2$ and generate $K_3$ as the next key. This is repeated until there are no more to encrypt.</p>
+
+<p>We have some plaintext-ciphertext pairs since we knew they are encrypting their philosophy. I was trying to find two ciphertexts in the same chunk that looked alike (by measuring their distances). Can we approximate the neural network as an affine transformation?</p>
+
+<h4 id="biased-ciphertexts">Biased ciphertexts?<a href="#biased-ciphertexts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 2, 21:08 (2228 minutes in)</em> ⏲️ ⏲️</p>
+
+<p>The last layer would be an activation layer that performs a <em>tanh</em>, their output would lie between $[-1, 1]$. However, we also observed the output is very biased. Here are some statistics for the ciphertext:</p>
+
+<ol>
+<li>Only 1K (out of 210K) numbers are positive, and</li>
+<li>The minimum and maximum are respectively -0.66 and 0.11.</li>
+</ol>
+
+<p>We had a hypothesis about the bias, but it seems that this is not helpful recovering the message...</p>
+
+<h3 id="part-iii-postmortem">Part III: Postmortem<a href="#part-iii-postmortem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Well... We are out of ideas. After the contest, I discussed with <em>Vergissmeinnicht</em> and he said that the ciphertext can be approximated as an affine relation to the plaintext. I'll try it out later...</p>
+<div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:chsh-game">Stephen DiAdamo, Janis Nötzel (2019) &quot;CHSH Game&quot;<br><a href="https://tqsd.github.io/QuNetSim/examples/chsh.html">https://tqsd.github.io/QuNetSim/examples/chsh.html</a>
+ <a class="footnote-return" href="#fnref:chsh-game">↩</a></li>
+<li id="fn:bb84">Charles H. Bennett, Gilles Brassard (1984) &quot;Quantum Cryptography: Public Key Distribution and Coin Tossing&quot;<br><a href="https://researcher.watson.ibm.com/researcher/files/us-bennetc/BB84highest.pdf">https://researcher.watson.ibm.com/researcher/files/us-bennetc/BB84highest.pdf</a>
+ <a class="footnote-return" href="#fnref:bb84">↩</a></li>
+<li id="fn:anc-paper">Mart ́ın Abadi and David G. Andersen (2016) &quot;Learning to Protect Communications with Adversarial Neural Cryptography&quot;<br><a href="https://mathybit.github.io/assets/docs/csai/Google_adv_neural_crypto.pdf">https://mathybit.github.io/assets/docs/csai/Google_adv_neural_crypto.pdf</a>
+ <a class="footnote-return" href="#fnref:anc-paper">↩</a></li>
+<li id="fn:anc">Adrian Pacurar (2018) &quot;Adversarial Neural Cryptography&quot;<br><a href="https://mathybit.github.io/adversarial-neural-crypto/">https://mathybit.github.io/adversarial-neural-crypto/</a>
+ <a class="footnote-return" href="#fnref:anc">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021-06-17-leetcode-1/">
+                <span class="button__icon">←</span>
+                <span class="button__text">LeetCode Practice: Day 1</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-05-04-defcon-quals-1/">
+                <span class="button__text">DEF CON CTF Quals 2021: Day 1</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    DEF CON CTF Quals 2021: Day 2
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

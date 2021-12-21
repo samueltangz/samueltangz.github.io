@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>leetcode on Mystify</title>
+    <link>/tags/leetcode/</link>
+    <description>Recent content in leetcode on Mystify</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 19 Jun 2021 12:50:00 +0800</lastBuildDate><atom:link href="/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode Practice: Day 3</title>
+      <link>/posts/2021-06-19-leetcode-3/</link>
+      <pubDate>Sat, 19 Jun 2021 12:50:00 +0800</pubDate>
+      
+      <guid>/posts/2021-06-19-leetcode-3/</guid>
+      <description>The problems today are Largest Magic Square1, Spiral Matrix II2, Find Kth Bit in Nth Binary String3, Reachable Nodes In Subdivided Graph4 and Subarrays with K Different Integers5. I am motivated today and decided to solve two more problems: Maximum Side Length of a Square with Sum Less than or Equal to Threshold6 and Jump Game V7.
+The solution scripts are available: A, B, C, D, E, F and G.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode Practice: Day 2</title>
+      <link>/posts/2021-06-18-leetcode-2/</link>
+      <pubDate>Fri, 18 Jun 2021 21:30:00 +0800</pubDate>
+      
+      <guid>/posts/2021-06-18-leetcode-2/</guid>
+      <description>The problems today are Construct the Lexicographically Largest Valid Sequence1, Make Sum Divisible by P2, Find the Winner of an Array Game3, Valid Permutations for DI Sequence4 and Closest Subsequence Sum5.
+The solution scripts are pushed on my Github repository: A, B, C, D and E.
+gantt dateFormat YYYY-MM-DD HH:mm axisFormat %H:%M section Problem A A :2021-06-17 22:33, 14m section Problem B B :2021-06-17 22:47, 10m B :2021-06-17 23:28, 32m section Problem C C :2021-06-17 22:57, 10m section Problem D D :2021-06-17 23:07, 4m D :2021-06-18 00:00, 37m section Problem E E :2021-06-17 23:11, 17m  A.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode Practice: Day 1</title>
+      <link>/posts/2021-06-17-leetcode-1/</link>
+      <pubDate>Thu, 17 Jun 2021 19:50:00 +0800</pubDate>
+      
+      <guid>/posts/2021-06-17-leetcode-1/</guid>
+      <description>Recently I am motivated to solve some algorithmic problems. I will be picking five challenges from LeetCode everyday, including three medium and two hard challenges. I expect that I will be spending two hours per day on solving those challenges.
+There are some objectives that I want to achieve:
+ To think algorithmically again To not rely on the test cases for debugging, nor the hints To write more self-explanatory code To learn (or re-learn) more algorithms To prove my approach is valid if it seems unsound  Additionally, I&#39;ll write blogposts on the problems I dealt.</description>
+    </item>
+    
+  </channel>
+</rss>

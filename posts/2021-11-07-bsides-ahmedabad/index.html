@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>BSides Ahmedabad CTF 2021 Writeup :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="No, we did not win. I see that coming and took a screenshot during the game.
+BSides Ahmedabad CTF 2021 is organized by @zer0pts. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I&#39;ll go through the harder crypto challenges and the reversing challenge called Collapsed License in this blog post.
+SSSS.RNG Challenge Summary Let $p$ be a 512-bit prime and $a, b, g_0 \in [2, p)$." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021-11-07-bsides-ahmedabad/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="BSides Ahmedabad CTF 2021 Writeup">
+<meta property="og:description" content="No, we did not win. I see that coming and took a screenshot during the game.
+
+BSides Ahmedabad CTF 2021 is organized by @zer0pts. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I&#39;ll go through the harder crypto challenges and the reversing challenge called Collapsed License in this blog post." />
+<meta property="og:url" content="/posts/2021-11-07-bsides-ahmedabad/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-11-07-bsides-ahmedabad/intermediate-scoreboard.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-11-07 11:02:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021-11-07-bsides-ahmedabad/">BSides Ahmedabad CTF 2021 Writeup</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-11-07 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/bsides-ahmedabad/">bsides-ahmedabad</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/algorithms/">algorithms</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-11-07-bsides-ahmedabad/intermediate-scoreboard.png" class="post-cover center" alt="BSides Ahmedabad CTF 2021 Writeup" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>No, we did not win. I see that coming and took a screenshot during the game.</p>
+
+<p>BSides Ahmedabad CTF 2021 is organized by <a href="https://twitter.com/zer0pts" target="_blank" rel="nofollow">@zer0pts</a>. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I'll go through the harder crypto challenges and the reversing challenge called <em>Collapsed License</em> in this blog post.</p>
+
+<h2 id="ssssrng">SSSS.RNG<a href="#ssssrng" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Let $p$ be a 512-bit prime and $a, b, g_0 \in [2, p)$. Let $\mathcal{G}$ be a PRNG and let $g_k$ be the $k$-th output from $\mathcal{G}$, given by</p>
+
+<p><span  class="math">\[g_k = (a\cdot g_{k-1} + b)\ \text{mod}\ p.\]</span></p>
+
+<p>Let $\text{f}(x) := g_1 + g_2 x + g_3 x^2 + g_4 x^3 + g_5 x^4 + g_6 x^5$ be a polynomial over $\mathbb{Z}_p$. Suppose that we are given $p$, $\text{f}(1), \text{f}(2), \text{f}(3), \text{f}(4)$ and $c = \text{f}(\text{flag})$. The objective is to compute $\text{flag}$.</p>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>We let $t = g_1$. Then</p>
+
+<p><span  class="math">\[\begin{aligned}
+\text{f}(x) = t &+ (at + b) x + (a^2t + ab + b) x^2 + (a^3t + a^2b + ab + b) x^3 \\
+& + (a^4t + a^3b + a^2b + ab + b) x^4 + (a^5t + a^4b + a^3b + a^2b + ab + b) x^5
+\end{aligned}\]</span></p>
+
+<p>Since we are given $\text{f}(1), ..., \text{f}(4)$, then we have relations in terms of $a, b, t$. By using Gröbner basis, we are able to get $a, b$ and $t$ (Please refer to my blog post on <a href="/posts/2021-02-15-dicectf-1/#benaloh">benaloh in DiceCTF 2021</a> about Grobner basis). After we have $a, b$ and $t$, we can find the roots of $\text{f}(m) = c$. One of the roots $m$ is the flag - <code>Neko{7h3_SSSS_way_wa5_imp3rf3c7}</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Fp <span style="color:#f92672">=</span> GF(p)
+P<span style="color:#f92672">.&lt;</span>a, b, t<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> PolynomialRing(Fp)
+
+I <span style="color:#f92672">=</span> []
+
+<span style="color:#66d9ef">for</span> x, y <span style="color:#f92672">in</span> vs:
+    I<span style="color:#f92672">.</span>append(
+        t <span style="color:#f92672">+</span>
+        (a <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span>
+        (a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span>
+        (a<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span>
+        (a<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">+</span>
+        (a<span style="color:#f92672">^</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">-</span>
+        y
+    )
+
+I <span style="color:#f92672">=</span> ideal(I)
+B <span style="color:#f92672">=</span> I<span style="color:#f92672">.</span>groebner_basis()
+print(B)
+<span style="color:#75715e"># [</span>
+<span style="color:#75715e">#   a + 2266836953589743257351224509273439729689541525677993833001930920472782742737910602275706868772676759946821904069905859968756597270976151522409326524927600,</span>
+<span style="color:#75715e">#   b + 2788740700292957168049099171058712103000578129267348979215398750092376230150013503532084224750557141914333611578327023620351350891306875949435645505020009,</span>
+<span style="color:#75715e">#   t + 2396732332549055902303832537638214877286359297511891847206728175987402024672248779417486082181632073168252809943847197628520807355008794399778015958945044</span>
+<span style="color:#75715e"># ]</span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2266836953589743257351224509273439729689541525677993833001930920472782742737910602275706868772676759946821904069905859968756597270976151522409326524927600</span>
+b <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2788740700292957168049099171058712103000578129267348979215398750092376230150013503532084224750557141914333611578327023620351350891306875949435645505020009</span>
+t <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2396732332549055902303832537638214877286359297511891847206728175987402024672248779417486082181632073168252809943847197628520807355008794399778015958945044</span>
+
+P<span style="color:#f92672">.&lt;</span>x<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> PolynomialRing(Fp)
+f <span style="color:#f92672">=</span> t <span style="color:#f92672">+</span> \
+    (a <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> \
+    (a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> \
+    (a<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> \
+    (a<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">+</span> \
+    (a<span style="color:#f92672">^</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> t <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>b <span style="color:#f92672">+</span> b) <span style="color:#f92672">*</span> x<span style="color:#f92672">^</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">-</span> \
+    c
+
+<span style="color:#66d9ef">for</span> m, _ <span style="color:#f92672">in</span> f<span style="color:#f92672">.</span>roots():
+    m <span style="color:#f92672">=</span> int(m)
+    flag <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>to_bytes(m, (m<span style="color:#f92672">.</span>bit_length()<span style="color:#f92672">+</span><span style="color:#ae81ff">7</span>)<span style="color:#f92672">//</span><span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#39;big&#39;</span>)
+    print(flag)</code></pre></div>
+<h2 id="eccrsa-2">ECC-RSA 2<a href="#eccrsa-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Let $n = p\cdot q$ with $p$ and $q$ being 512-bit primes. An elliptic curve $\mathcal{C}$ is given by:</p>
+
+<p><span  class="math">\[\mathcal{C}:\quad y^2 \equiv x^3 + a x + b\ (\text{mod}\ n),\]</span></p>
+
+<p>where $a = -3$. Let $P \in \mathcal{C}$ and let $m_0, m_1, ... \in [0, 256)$ be the characters of the flag. The $k$-th character of the flag $m_k$ is encrypted to $c_k$ (here $e = 65537$):</p>
+
+<p><span  class="math">\[c_k \equiv ((2^k\cdot P)_x \cdot m_k)^e \ (\text{mod}\ n).\]</span></p>
+
+<p>Given $n, a, b$ and $c_0, c_1, ...$. It is known that the flag satisfies the format <code>Neko{\w+}</code>, the objective is to recover the flag.</p>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="part-i-elliptic-curve-doubling">Part I: Elliptic curve doubling<a href="#part-i-elliptic-curve-doubling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>It is another time I looked up how a point in elliptic curve is doubled. Suppose that $Q = (x_1, y_1)$ and $2Q = (x_2, y_2)$:</p>
+
+<p><span  class="math">\[\begin{cases}
+& \lambda = (3x_1^2 + a) / 2y_1 \\
+& x_2 = \lambda^2 - 2x_1 \\
+& y_2 = \lambda(x_1 - x_2) - y_1
+\end{cases}\]</span></p>
+
+<p>We can express $x_2$ in terms of $x_1$:</p>
+
+<p><span  class="math">\[\begin{aligned}
+x_2 &= \lambda^2 - 2x_1 = \left(\frac{3x_1^2 + a}{2y_1}\right)^2 - 2x_1 = \frac{(3x_1^2 + a)^2}{4y_1^2} - 2x_1 = \frac{(3x_1^2 + a)^2}{4(x_1^3 + ax_1 + b)} - 2x_1 \\
+&= \frac{9x_1^4 + 6ax_1^2 + a^2 - 8x_1^4 - 8ax_1^2 - 8bx_1}{4(x_1^3 + ax_1 + b)} = \frac{x_1^4 - 2ax_1^2 - 8bx_1 + a^2}{4(x_1^3 + ax_1 + b)}
+\end{aligned}\]</span></p>
+
+<p>From above, we could recover the $x$-coordinate of $2Q$ if we have the $x$-coordinate of $Q$. Inductively, we can recover the $x$-coordinates of $4Q$, $8Q$, $16Q$, etc... Wait, we don't even have an $x$-coordinate yet.</p>
+
+<h4 id="part-ii-recovering-the-xcoordinate-of-p">Part II: Recovering the $x$-coordinate of $P$<a href="#part-ii-recovering-the-xcoordinate-of-p" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Let $x_0$ and $x_1$ be the $x$-coordinates of $P$ and $2P$. We know the prefix of the flag, i.e., $m_0, ..., m_4$. That said, we have ${x_0}^e = c_0 / {m_0}^e$, ${x_1}^e = c_1 / {m_1}^e$ and so on. From the previous part, we can express $x_1$ in terms of $x_0$. In that way we have two polynomials that shares a common root $x_0$:</p>
+
+<p><span  class="math">\[\begin{cases}
+& A(x) = x^e - c_0 / {m_0}^e \\
+& B(x) = (x^4 - 2ax^2 - 8bx + a^2)^e - [4(x^3 + ax + b)]^e \cdot c_1 / {m_1}^e
+\end{cases}\]</span></p>
+
+<p>Since $x_0$ is a common root of the polynomials, we can compute $g(x) := \gcd(A(x), B(x))$ with half GCD algorithm (or Euclidean algorithm but it is significantly slower).</p>
+
+<h4 id="part-iii-finishing-up">Part III: Finishing up<a href="#part-iii-finishing-up" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Now we have $x_0, x_1, ...$. Since each ciphertext corresponds to one byte of the flag, we can easily generate $(x_k \cdot m_k)^e\ \text{mod}\ n$ for all $m_k \in [0, 256)$. This can serve as a lookup table to get $c_k$ from $m_k$. After all, the flag is <code>Neko{h4lf_gcd_g0es_brrr...}</code>.</p>
+
+<h2 id="they-were-eleven">They Were Eleven<a href="#they-were-eleven" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Suppose that we have a 111-byte message $m$. Let $p_1, p_2, ..., p_{11}, q_1, q_2, ..., q_{11}$ be 512-bit primes and $r_1, r_2, ..., r_{11} \in [0, 2^{11})$.</p>
+
+<p>We are given $n_i = p_i\cdot q_i$ and $c_i = m^{11}\cdot r_i\ \text{mod}\ n_i$ for $i = 1, 2, ..., 11$. The objective is to recover $m$.</p>
+
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="part-i-comparing-with-the-broadcast-attack">Part I: Comparing with the broadcast attack<a href="#part-i-comparing-with-the-broadcast-attack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>It looked very similar to broadcast attack. $e = 11$ and we have 11 messages encrypted with different moduli. The only difference is the each ciphertext is multiplied with a 11-bit number. I think of Chinese remainder theorem that is used by the broadcast attack (hereby $N_k = (\prod{n_i}) / n_k$):</p>
+
+<p><span  class="math">\[c = \left(\sum_{k=1}^{11} c_i \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k)\right)\ \text{mod}\ N.\qquad[\dagger]\]</span></p>
+
+<p>On a second thought, $c$ is not meaningful at all. Although $c$ is not useful, the expression actually helped.</p>
+
+<h4 id="part-ii-when-in-doubt-use-lattice">Part II: When in doubt, use lattice<a href="#part-ii-when-in-doubt-use-lattice" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>One thing that caught my attention is the size of $m$. It is 111-byte long, which is a bit short when compiled to the moduli. Does it mean that it is a &quot;short solution&quot; of a system of equations? The picture is clearer if we substitute $c_k = m^{11}\cdot r_k$ on $[\dagger]$:</p>
+
+<p><span  class="math">\[c = \left(\sum_{k=1}^{11} m^{11} \cdot r_k \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k)\right)\ \text{mod}\ N.\]</span></p>
+
+<p>Right, this is <em>still</em> useless. The only difference is those problematic $r_i$'s. If we remove those $r_k$'s our world would be much cleaner:</p>
+
+<p><span  class="math">\[m^{11} = \left(\sum_{k=1}^{11} m^{11} \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k)\right)\ \text{mod}\ N.\]</span></p>
+
+<p>In particular, $m^{11}$ is $9768 = 111 \cdot 8 \cdot 11$ bits long. Since $N$ is $11264 = 1024 \cdot 11$ bits long, $m^{11}$ is considered short. Maybe we can find short $r_1, r_2, ..., r_{11}$ such that</p>
+
+<p><span  class="math">\[m^{11} = \left(\sum_{k=1}^{11} c_k \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k) \cdot {r_k}^{-1}\right)\ \text{mod}\ N.\]</span></p>
+
+<p>I don't know how to formulate ${r_k}^{-1}$ in lattice for small $r_k$'s. Luckily we can rewrite the equation (denote $R = \prod r_i$ and $R_k = R / r_k$) by multiplying $R$ on both sides:</p>
+
+<p><span  class="math">\[m^{11} R = \left(\sum_{k=1}^{11} c_k \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k) \cdot R_k\right)\ \text{mod}\ N.\]</span></p>
+
+<p>Well, it doesn't sound <em>lucky</em> at all. Hear me out: The left hand side is now 9889 bits long. There are 11 unknowns on the right hand side, namely $R_1, R_2, ..., R_{11}$. Each of them is 88 bits long. There are total of 10857 bits, which is still smaller than 11264. Now we can try putting the whole thing in a lattice:</p>
+
+<p><span  class="math">\[\left[\begin{matrix}
+-1 & 1 & 0 & ... & 0 \\
+c_1 \cdot N_1 \cdot {N_1}^{-1} & 0 & 1 & ... & 0 \\
+&&\vdots \\
+c_{11} \cdot N_{11} \cdot {N_{11}}^{-1} & 0 & 0 & ... & 1 \\
+N & 0 & 0 & ... & 0
+\end{matrix}\right]\]</span></p>
+
+<div class="alert info">
+  <strong>Note.</strong> I used ${N_{k}}^{-1}$ as a shorthand for ${N_{k}}^{-1}\ \text{mod}\ n_k$. That was too long.
+</div>
+
+
+<p>It is expected that $(0, m^{11}R, R_1, R_2, ..., R_{11})$ is an vector spanned by the lattice. It could be found assigning appropriate weights to the vectors and perform LLL. I exhausted $r_1$ and computed $R := r_1R_1$. After that, we can derive $m$ from $m^{11}R$ and $R$. Finally, those integral $m$'s could be the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Neko{th3_5tud3nts_0f_spac3_univ3rsity_sh0u1d_b3_wis3_1ik3_a_cat}</code></pre></div>
+<h4 id="addendum">Addendum<a href="#addendum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p><em>Updated 2021.11.10 16:30 (HKT).</em></p>
+
+<p><em>maple3142</em> suggested that $m^{11}R$ should be $m^{11}R'$ where $R' = \text{lcm}(r_1, r_2, ..., r_{11})$. This is correct, and below is a shorter vector that should be contained in the lattice:</p>
+
+<p><span  class="math">\[(0, m^{11}R', R'_1, R'_2, ..., R'_{11}),\]</span></p>
+
+<p>where $R' = \text{lcm}(r_1, r_2, ..., r_{11})$ and $R'_k = R' / r_k$. Note that $(0, m^{11}R, R_1, R_2, ..., R_{11})$ is an integer multiple of the above vector. That said, this vector is still spanned by the lattice, but it would not be one of the vectors those constitute to the basis. We can use the same way to solve the problem with the new vector.</p>
+
+<h3 id="solve-script">Solve script<a href="#solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">xs <span style="color:#f92672">=</span> [<span style="color:#f92672">...</span>] <span style="color:#75715e"># omitted</span>
+
+ns <span style="color:#f92672">=</span> [n <span style="color:#66d9ef">for</span> c, n <span style="color:#f92672">in</span> xs]
+cs <span style="color:#f92672">=</span> [c <span style="color:#66d9ef">for</span> c, n <span style="color:#f92672">in</span> xs]
+
+N <span style="color:#f92672">=</span> product(ns)
+Ns <span style="color:#f92672">=</span> [int(N<span style="color:#f92672">/</span>n) <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> ns]
+Ninvs <span style="color:#f92672">=</span> [int(pow(int(Nc), <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, int(n))) <span style="color:#66d9ef">for</span> Nc, n <span style="color:#f92672">in</span> zip(Ns, ns)]
+
+bounds <span style="color:#f92672">=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">11264</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">11264</span> <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">9889</span>] <span style="color:#f92672">+</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">11264</span> <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">110</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">11</span>)]
+Q <span style="color:#f92672">=</span> diagonal_matrix(bounds)
+
+A <span style="color:#f92672">=</span> Matrix(<span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">13</span>)
+
+<span style="color:#66d9ef">if</span> <span style="color:#66d9ef">True</span>:
+    A[<span style="color:#ae81ff">0</span>,   <span style="color:#ae81ff">0</span>  ] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+    A[<span style="color:#ae81ff">12</span>,  <span style="color:#ae81ff">0</span>  ] <span style="color:#f92672">=</span> N
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">11</span>):
+    A[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>  ] <span style="color:#f92672">=</span> int(cs[i] <span style="color:#f92672">*</span> Ns[i] <span style="color:#f92672">*</span> Ninvs[i] <span style="color:#f92672">%</span> N)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">12</span>):
+    A[i,   i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+A <span style="color:#f92672">*=</span> Q
+A <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>LLL()
+A <span style="color:#f92672">/=</span> Q
+
+<span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> A:
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+    <span style="color:#66d9ef">if</span> row[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>: row <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>row
+    <span style="color:#66d9ef">if</span> min(row[<span style="color:#ae81ff">1</span>:]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+
+    <span style="color:#75715e"># Guess k1</span>
+    <span style="color:#66d9ef">for</span> k1 <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">11</span>):
+        k_prod <span style="color:#f92672">=</span> k1 <span style="color:#f92672">*</span> row[<span style="color:#ae81ff">2</span>]
+        <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">%</span> k_prod <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+        c1 <span style="color:#f92672">=</span> int(row[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">//</span> k_prod)
+        m <span style="color:#f92672">=</span> c1<span style="color:#f92672">^</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">/</span><span style="color:#ae81ff">11</span>)
+        <span style="color:#66d9ef">if</span> m <span style="color:#f92672">!=</span> int(m): <span style="color:#66d9ef">continue</span>
+        flag <span style="color:#f92672">=</span> int(m)
+        flag <span style="color:#f92672">=</span> flag<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">111</span>, <span style="color:#e6db74">&#39;big&#39;</span>)
+        print(flag)
+
+<span style="color:#75715e"># Neko{th3_5tud3nts_0f_spac3_univ3rsity_sh0u1d_b3_wis3_1ik3_a_cat}</span></code></pre></div>
+<h2 id="collapsed-license">Collapsed License<a href="#collapsed-license" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>We are given a binary executable compiled in C++ (luckily unstripped). It reads a &quot;license file&quot; and valiates it, and prints us the flag if the license file is valid.</p>
+
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="part-i-what-is-a-valid-license">Part I: What is a valid license?<a href="#part-i-what-is-a-valid-license" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>I understood the validation logic after spending some time reversing the binary. A valid license file should be 8192 bytes long (i.e., 65536 bits). It is converted into a $256 \times 256$ grid with each entry being either 0 or 1. There should be exactly 256 set bits, satisfying both conditions:</p>
+
+<ul>
+<li>Each row (and each column) should contain exactly one set bit.</li>
+<li>Suppose that $(x_1, y_1)$ and $(x_2, y_2)$ are two distinct set bits in the grid. If $(x_1', y_1')$ and $(x_2', y_2')$ are two set bits satisfying $x_1 - x_2 = x_1' - x_2'$ and $y_1 - y_2 = y_1' - y_2'$, then $(x_1', y_1') = (x_1, y_1)$ and $(x_2', y_2') = (x_2, y_2)$.</li>
+</ul>
+
+<p>Let $(0, y_0), (1, y_1), ..., (63, y_{63})$ be the coordinates of the set bits. The below conditions are equivalent to the above ones:</p>
+
+<ul>
+<li>$y_0, y_1, ..., y_{63}$ are all distinct, and</li>
+<li>$y_1 - y_0, y_2 - y_1, ..., y_{63} - y_{62}$ are all distinct, and</li>
+<li>$y_2 - y_0, y_3 - y_1, ..., y_{63} - y_{61}$ are all distinct, and</li>
+<li>...</li>
+<li>$y_{62} - y_0, y_{63} - y_1$ are all distinct.</li>
+</ul>
+
+<div class="alert info">
+  <strong>What is the array called?</strong> According to <em>ptr-yudai</em>, the array $y_0, y_1, &hellip;, y_{n-1}$ is called a Costas array. We need to find such an array when $n = 256$.
+</div>
+
+
+<h4 id="part-ii-a-symbolic-solution">Part II: A symbolic solution<a href="#part-ii-a-symbolic-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>I wrote a script with Z3. It worked for $n$ is as small as 10-ish. When $n = 256$ my laptop crashed after running the program for 30 minutes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> z3 <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+n <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
+s <span style="color:#f92672">=</span> Solver()
+
+y <span style="color:#f92672">=</span> [Int(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;y</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n)]
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n): s<span style="color:#f92672">.</span>add(And(y[i] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>, y[i] <span style="color:#f92672">&lt;</span> n))
+s<span style="color:#f92672">.</span>add(Distinct(y))
+<span style="color:#66d9ef">for</span> d <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, n):
+    s<span style="color:#f92672">.</span>add(Distinct([y[i]<span style="color:#f92672">-</span>y[i<span style="color:#f92672">-</span>d] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(d, n)]))
+
+<span style="color:#66d9ef">assert</span> s<span style="color:#f92672">.</span>check() <span style="color:#f92672">==</span> sat
+md <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>model()
+
+y0 <span style="color:#f92672">=</span> [md<span style="color:#f92672">.</span>evaluate(y[i])<span style="color:#f92672">.</span>as_long() <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n)]
+
+grid <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>)] <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>)]
+
+<span style="color:#66d9ef">for</span> x, y <span style="color:#f92672">in</span> enumerate(y0):
+    grid[x][y] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;test&#39;</span>, <span style="color:#e6db74">&#39;wb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">8</span>):
+            by <span style="color:#f92672">=</span> sum(b<span style="color:#f92672">&lt;&lt;</span>k <span style="color:#66d9ef">for</span> k, b <span style="color:#f92672">in</span> enumerate(grid[i][j:j<span style="color:#f92672">+</span><span style="color:#ae81ff">8</span>]))
+            by <span style="color:#f92672">=</span> bytes([by])
+            f<span style="color:#f92672">.</span>write(by)</code></pre></div>
+<h4 id="part-iii-the-adrenaline-rush-when-my-laptop-was-crashed">Part III: The adrenaline rush when my laptop was crashed<a href="#part-iii-the-adrenaline-rush-when-my-laptop-was-crashed" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert success">
+  I am really excited able to think of the correct solution.
+</div>
+
+
+<p>I was forced to work on paper and pen when my laptop was crashed. Suppose that $(0, y_0), (1, y_1), ..., (63, y_{63})$ are the coordinates of the set bits.</p>
+
+<p>There are a number of failed attempts, like $y_k = \sum_{i=0}^{k} i$. At some point of time I think of <em>primitive roots</em>, which led me to the final solution.</p>
+
+<hr>
+
+<p><strong>Claim.</strong> Let $g$ be a primitive root under modulo 257. Below is a valid solution:</p>
+
+<p><span  class="math">\[y_k = (g^k\ \text{mod}\ 257)-1,\]</span></p>
+
+<p>for $k = 0, 1, 2, ..., 255$.</p>
+
+<p><strong>Proof.</strong></p>
+
+<p>Since g is a primitive root under modulo 257, $g^0, g^1, ..., g^{255}$ are all distinct. That said, $y_k$'s are all distinct.</p>
+
+<p>Also, let $d &gt; 0$. Suppose that $y_{i+d} - y_i = y_{j + d} - y_j$ for $0 \leq i, j \leq 255-d$.</p>
+
+<p><span  class="math">\[\begin{aligned}
+& g^i (g^d - 1) \equiv y_{i+d} - y_i \equiv y_{j + d} - y_j \equiv g^j (g^d - 1)\ (\text{mod}\ 257)\\
+& \Longrightarrow i = j \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\blacksquare
+\end{aligned}\]</span></p>
+
+<hr>
+
+<p>I substituted $g = 3$ to created a license file. Sending the license to the server, we have the flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Neko{c4n_U_f1nd_0ut_h0w_m4ny_v4L1d_l1c3ns3_3x1St5?}</code></pre></div>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021-11-18-hkcert-ctf-1/">
+                <span class="button__icon">←</span>
+                <span class="button__text">HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021-10-25-asis-lagleg/">
+                <span class="button__text">Factoring a special RSA modulus from ASIS CTF 2021 Quals</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    BSides Ahmedabad CTF 2021 Writeup
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2021 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>
