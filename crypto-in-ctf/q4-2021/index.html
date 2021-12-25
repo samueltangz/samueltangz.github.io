@@ -468,6 +468,30 @@
 <td>caBalS puking 🔥</td>
 <td>6/150 (⭐⭐)</td>
 </tr>
+
+<tr>
+<td>ASIS CTF Finals 2021</td>
+<td>Stairs</td>
+<td>43/198 ()</td>
+</tr>
+
+<tr>
+<td>ASIS CTF Finals 2021</td>
+<td>RAS</td>
+<td>36/198 ()</td>
+</tr>
+
+<tr>
+<td>ASIS CTF Finals 2021</td>
+<td>nDLP</td>
+<td>37/198 ()</td>
+</tr>
+
+<tr>
+<td>ASIS CTF Finals 2021</td>
+<td>mDLP</td>
+<td>30/198 ()</td>
+</tr>
 </tbody>
 </table>
 
@@ -1479,7 +1503,83 @@ r_1p & r_2p & r_3p & r_4p \\
 </ul>
 
 <p>We are given two <em>Signal</em> backup files, one of which represents the state of an empty account. The objective is to recover the flag from the backup files.</p>
-<div class="footnotes">
+
+<h2 id="asis-ctf-finals-2021">ASIS CTF Finals 2021<a href="#asis-ctf-finals-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="stairs">Stairs<a href="#stairs" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>Solves: 43/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>math</code></li>
+</ul>
+
+<p>An asymmetric cipher is defined in this challenge. A composite $n$ is used as the public key and the ciphertext of a message $m$ is given by</p>
+
+<p><span  class="math">\[\text{Enc}(m) = (m^5 + m)\ \text{mod}\ n.\]</span></p>
+
+<p>When connected to the server, a public key is generated and given. We are also given the encryption oracle - for any given message $m$ we will retrieve $\text{Enc}(m + f)$ where $f$ is the flag. The objective is to recover the flag.</p>
+
+<h3 id="ras">RAS<a href="#ras" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>Solves: 36/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+
+<p>We are given a RSA public key $(n, e)$ and the encrypted flag $c$. Here the two 512-bit prime factors of $n$ are generated such that there exists $2 \leq a_p, a_q &lt; 512$, $32 \leq b_p, b_q &lt; 512$ and $0 \leq d_p, d_q &lt; 2^{31}$ with</p>
+
+<p><span  class="math">\[p = {a_p}^{b_p} + {d_p}\qquad\text{and}\qquad q = {a_q}^{b_q} + {d_q}.\]</span></p>
+
+<p>The objective is to recover the flag.</p>
+
+<h3 id="ndlp">nDLP<a href="#ndlp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>Solves: 37/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>discrete log</code></li>
+</ul>
+
+<p>We are given $g, n, y \in \mathbb{Z}$ (as below) such that $g^x \equiv y\ (\text{mod}\ n)$ for a secret $x$. The objective is to recover $x$ (the flag).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">g <span style="color:#f92672">=</span> <span style="color:#ae81ff">685780528648223163108441</span>
+n <span style="color:#f92672">=</span> <span style="color:#ae81ff">12588567055208488159342105634949357220607702491616160304212767442540158416811459761519218454720193189</span>
+y <span style="color:#f92672">=</span> <span style="color:#ae81ff">9136134187598897896238293762558529068838567704462064643828064439262538588237880419716728404254970025</span></code></pre></div>
+<h3 id="mdlp">mDLP<a href="#mdlp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>Solves: 30/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>discrete log</code></li>
+</ul>
+
+<p>An asymmetric cipher is defined in this challenge. Let $p$ be a prime and $d \in [2, p)$ be the private key. The public key is given by $(A, Q) \in \text{GL}_2(p) \times \text{GL}_2(p)$ with $Q = A^d$. A ciphertext $(C, E) \in \text{GL}_2(p) \times \text{GL}_2(p)$ of the message $M \in \text{GL}_2(p)$ is given by:</p>
+
+<p><span  class="math">\[\begin{cases}
+C & = A^r \\
+E & = Q^r \cdot M 
+\end{cases},\]</span></p>
+
+<p>where $r \in [2, p)$ is randomly generated. We are given a prime $p$ and the four matrices $A, Q, C, E \in \text{GL}_2(p)$ (as below). The objective is to recover $M$, i.e., the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">p <span style="color:#f92672">=</span> <span style="color:#ae81ff">94413310751917369305079812653655619566021075449954923397392050181976939189891</span>
+A <span style="color:#f92672">=</span> [
+    [<span style="color:#ae81ff">38199337272663519912859864066101528484023656231849338967558894235177040565160</span>, <span style="color:#ae81ff">39708167173513090810083500967474691943646789486489990958101592717502452906918</span>],
+    [ <span style="color:#ae81ff">8216211510625558273096642057121313417997488994504871245106775381995665925783</span>, <span style="color:#ae81ff">56213973479253849392219948587554091081997419218105584429833155946799898624740</span>]
+]
+Q <span style="color:#f92672">=</span> [
+    [<span style="color:#ae81ff">61709241598677561125021718690991651934557899286972116933820920757636771220273</span>,  <span style="color:#ae81ff">1945367449329759288724720626216309893787847192907494307536759223359193510642</span>],
+    [<span style="color:#ae81ff">37495232301500074672571996664644922614693962264764098174213150757616575323566</span>,  <span style="color:#ae81ff">7348269231944161963123250652171976847627786311806728904368575861561449853500</span>]
+]
+
+C <span style="color:#f92672">=</span> [
+    [<span style="color:#ae81ff">47566868540912475779105819546118874217903268597017385039977593878486632022506</span>, <span style="color:#ae81ff">86073162301954995219912739344010659248720823814557810528618517154406350653517</span>],
+    [<span style="color:#ae81ff">23443866424088482893369441934221448179896589659663581973508963775891809430857</span>, <span style="color:#ae81ff">74567333640177484678138574534395714128854315440076840728428649074147859070975</span>]
+]
+E <span style="color:#f92672">=</span> [
+    [<span style="color:#ae81ff">56937964695156855099385034285428853461603799261684034842341841781057485084327</span>, <span style="color:#ae81ff">82459328835322885824854425864023809222717401981993182346342472865578156162544</span>],
+    [<span style="color:#ae81ff">85092677346274708324092648597361729755305119435989183201786866456596369562681</span>, <span style="color:#ae81ff">22228861714953585357281182780002271505668586948202416054453861940155538803489</span>]
+]</code></pre></div><div class="footnotes">
 
 <hr>
 

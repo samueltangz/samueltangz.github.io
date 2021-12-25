@@ -6,7 +6,19 @@
     <description>Recent content in ctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 29 Nov 2021 23:30:00 +0800</lastBuildDate><atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 31 Dec 2021 00:00:00 +0800</lastBuildDate><atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hxp CTF 2021: reasonable</title>
+      <link>/posts/2021-12-31-hxp-reasonable/</link>
+      <pubDate>Fri, 31 Dec 2021 00:00:00 +0800</pubDate>
+      
+      <guid>/posts/2021-12-31-hxp-reasonable/</guid>
+      <description>reasonable is a reverse challenge from hxp CTF 2021. Although it is said to be of medium difficulty, this is the only challenge that has zero solves after the CTF ends.
+Challenge Summary TODO  We are given two files, flag.hpp and reasonable.cpp.
+flag.hpp:
+using 🐋 = 🔭&amp;lt; 🧘&amp;lt; 🧵&amp;lt;🛫&amp;lt;🦚&amp;lt;4.18970_👺&amp;gt;, 🦚&amp;lt;85.58454_👺&amp;gt;, 🦚&amp;lt;70.21769_👺&amp;gt;&amp;gt;, 🛫&amp;lt;1.65858_👺, 3.60281_👺, 0.96354_👺&amp;gt;, 🛫&amp;lt;0.92891_👺, 🦚&amp;lt;0.00941_👺&amp;gt;, 🦚&amp;lt;2.48813_👺&amp;gt;&amp;gt;, 🛫&amp;lt;1.10475_👺, 4.09722_👺, 0.39722_👺&amp;gt;, 🥠&amp;gt;, // ...  😁&amp;lt;🛫&amp;lt;50.73104_👺, 126.49901_👺, 🦚&amp;lt;153.14259_👺&amp;gt;&amp;gt;, 🛫&amp;lt;49.52199_👺, 108.10803_👺, 🦚&amp;lt;143.</description>
+    </item>
+    
     <item>
       <title>Dragon CTF 2021: CRC Recursive Challenge (Warmup)</title>
       <link>/posts/2021-11-29-dragonctf-crc/</link>
