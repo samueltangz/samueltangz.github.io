@@ -1528,7 +1528,7 @@ r_1p & r_2p & r_3p & r_4p \\
 <li>Tags: <code>rsa</code></li>
 </ul>
 
-<p>We are given a RSA public key $(n, e)$ and the encrypted flag $c$. Here the two 512-bit prime factors of $n$ are generated such that there exists $2 \leq a_p, a_q &lt; 512$, $32 \leq b_p, b_q &lt; 512$ and $0 \leq d_p, d_q &lt; 2^{31}$ with</p>
+<p>We are given a RSA public key $(n = pq, e)$ and the encrypted flag $c$. Here $p$ and $q$ are generated so that there are $2 \leq a_p, a_q &lt; 512$, $32 \leq b_p, b_q &lt; 512$ and $0 \leq d_p, d_q &lt; 2^{31}$ with</p>
 
 <p><span  class="math">\[p = {a_p}^{b_p} + {d_p}\qquad\text{and}\qquad q = {a_q}^{b_q} + {d_q}.\]</span></p>
 
