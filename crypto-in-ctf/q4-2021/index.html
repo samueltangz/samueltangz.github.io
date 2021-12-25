@@ -1557,8 +1557,8 @@ y <span style="color:#f92672">=</span> <span style="color:#ae81ff">9136134187598
 <p>An asymmetric cipher is defined in this challenge. Let $p$ be a prime and $d \in [2, p)$ be the private key. The public key is given by $(A, Q) \in \text{GL}_2(p) \times \text{GL}_2(p)$ with $Q = A^d$. A ciphertext $(C, E) \in \text{GL}_2(p) \times \text{GL}_2(p)$ of the message $M \in \text{GL}_2(p)$ is given by:</p>
 
 <p><span  class="math">\[\begin{cases}
-C & = A^r \\
-E & = Q^r \cdot M 
+C = A^r \\
+E = Q^r \cdot M 
 \end{cases},\]</span></p>
 
 <p>where $r \in [2, p)$ is randomly generated. We are given a prime $p$ and the four matrices $A, Q, C, E \in \text{GL}_2(p)$ (as below). The objective is to recover $M$, i.e., the flag.</p>
