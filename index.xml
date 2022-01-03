@@ -441,6 +441,15 @@ Cousin is a crypto guy in Black Bauhinia who is researching for his master of ph
     </item>
     
     <item>
+      <title>Crypto in CTF: Q1 2022</title>
+      <link>/crypto-in-ctf/q1-2022/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/crypto-in-ctf/q1-2022/</guid>
+      <description>CTF Challenge Name Solves (Difficulty)     TetCTF 2022 shares 🔥 29/602 (⭐⭐⭐)   TetCTF 2022 shares_v2 🔥 15/602 (⭐⭐⭐)   TetCTF 2022 fault 🔥 14/602 (⭐⭐⭐)   TetCTF 2022 algebra 🔥 14/602 (⭐⭐⭐)    TetCTF 2022 shares 🔥  Solves: 29/602 Difficulty: ⭐⭐⭐ Tags: secret sharing  Define a secret sharing scheme $\text{SecretSharing}(s, n, t)$. Hereby $s$ is the secret to share, $n$ and $t$ are respectively the number of shares returned and the minimum number of shares for recovery.</description>
+    </item>
+    
+    <item>
       <title>Crypto in CTF: Q3 2021</title>
       <link>/crypto-in-ctf/q3-2021/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
