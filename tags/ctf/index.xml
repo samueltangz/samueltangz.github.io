@@ -6,7 +6,17 @@
     <description>Recent content in ctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Jan 2022 23:00:00 +0800</lastBuildDate><atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jan 2022 22:07:00 +0800</lastBuildDate><atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Firebird Internal CTF 2022 Writeup</title>
+      <link>/posts/2022-01-23-firebird-internal-ctf/</link>
+      <pubDate>Sun, 23 Jan 2022 22:07:00 +0800</pubDate>
+      
+      <guid>/posts/2022-01-23-firebird-internal-ctf/</guid>
+      <description>This is the time that Firebird Internal CTF happens. I made three crypto challenges this year - Lack of Entropy (⭐), Authenticator (⭐⭐) and Collider (⭐⭐). I will discuss the solution for all of them in the blog post.
+What are the stars? They are the difficulties I estimated when comparing to global CTFs (where I documented them here since Q3 last year).  Lack of Entropy (Crypto) Three (out of six) teams solved this during the CTF.</description>
+    </item>
+    
     <item>
       <title>Intigriti&#39;s XSS Challenge (January 2022)</title>
       <link>/posts/2022-01-17-intigriti-xss/</link>
