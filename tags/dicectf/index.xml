@@ -8,13 +8,13 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 08 Feb 2022 14:00:00 +0800</lastBuildDate><atom:link href="/tags/dicectf/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>DiceCTF 2022 (I): committment-issues</title>
-      <link>/posts/2022-02-08-dicectf-committment/</link>
+      <title>DiceCTF 2022 (I): commitment-issues</title>
+      <link>/posts/2022-02-08-dicectf-commitment/</link>
       <pubDate>Tue, 08 Feb 2022 14:00:00 +0800</pubDate>
       
-      <guid>/posts/2022-02-08-dicectf-committment/</guid>
+      <guid>/posts/2022-02-08-dicectf-commitment/</guid>
       <description>DiceCTF is an annual CTF competition prepared by @dicegangctf. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.
-Deja vu? I said similar things last year. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.  I will first cover on a crypto challenge called committment-issues, which had 16 solves (out of 1127 participating teams).</description>
+Deja vu? I said similar things last year. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.  I will first cover on a crypto challenge called commitment-issues, which had 16 solves (out of 1127 participating teams).</description>
     </item>
     
     <item>

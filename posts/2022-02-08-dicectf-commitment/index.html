@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   
-    <title>DiceCTF 2022 (I): committment-issues :: Mystify</title>
+    <title>DiceCTF 2022 (I): commitment-issues :: Mystify</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="DiceCTF is an annual CTF competition prepared by @dicegangctf. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.
-Deja vu? I said similar things last year. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.  I will first cover on a crypto challenge called committment-issues, which had 16 solves (out of 1127 participating teams)." />
+Deja vu? I said similar things last year. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.  I will first cover on a crypto challenge called commitment-issues, which had 16 solves (out of 1127 participating teams)." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="/posts/2022-02-08-dicectf-committment/" />
+<link rel="canonical" href="/posts/2022-02-08-dicectf-commitment/" />
 
 
 
@@ -41,11 +41,11 @@ Deja vu? I said similar things last year. Until now, part 2 of my writeup series
 
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="DiceCTF 2022 (I): committment-issues">
+<meta property="og:title" content="DiceCTF 2022 (I): commitment-issues">
 <meta property="og:description" content="DiceCTF is an annual CTF competition prepared by @dicegangctf. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.
 
-I will first cover on a crypto challenge called committment-issues, which had 16 solves (out of 1127 participating teams)." />
-<meta property="og:url" content="/posts/2022-02-08-dicectf-committment/" />
+I will first cover on a crypto challenge called commitment-issues, which had 16 solves (out of 1127 participating teams)." />
+<meta property="og:url" content="/posts/2022-02-08-dicectf-commitment/" />
 <meta property="og:site_name" content="Mystify" />
 
   <meta property="og:image" content="/images/2022-02-08-dicectf/banner.png">
@@ -145,7 +145,7 @@ I will first cover on a crypto challenge called committment-issues, which had 16
     
 <div class="post">
   <h1 class="post-title">
-    <a href="/posts/2022-02-08-dicectf-committment/">DiceCTF 2022 (I): committment-issues</a></h1>
+    <a href="/posts/2022-02-08-dicectf-commitment/">DiceCTF 2022 (I): commitment-issues</a></h1>
   <div class="post-meta">
     
       <span class="post-date">
@@ -174,7 +174,7 @@ I will first cover on a crypto challenge called committment-issues, which had 16
   
 
   
-    <img src="/images/2022-02-08-dicectf/banner.png" class="post-cover center" alt="DiceCTF 2022 (I): committment-issues" />
+    <img src="/images/2022-02-08-dicectf/banner.png" class="post-cover center" alt="DiceCTF 2022 (I): commitment-issues" />
   
 
   <div class="post-content js-toc-content"><div>
@@ -185,16 +185,16 @@ I will first cover on a crypto challenge called committment-issues, which had 16
 </div>
 
 
-<p>I will first cover on a crypto challenge called <em>committment-issues</em>, which had 16 solves (out of 1127 participating teams).</p>
+<p>I will first cover on a crypto challenge called <em>commitment-issues</em>, which had 16 solves (out of 1127 participating teams).</p>
 
 <h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<p>Define a committment scheme $\mathcal{C}$ that uses a composite modulus $n$ (which is a product of two 1024-bit primes $p, q$ with $p, q \neq 1\ (\text{mod}\ 5)$). To commit a secret $s$:</p>
+<p>Define a commitment scheme $\mathcal{C}$ that uses a composite modulus $n$ (which is a product of two 1024-bit primes $p, q$ with $p, q \neq 1\ (\text{mod}\ 5)$). To commit a secret $s$:</p>
 
 <ol>
 <li>Generate a random number $r \in [0, n)$,</li>
 <li>Compute $c_1 := (s + r)\ \text{mod}\ n$ and $c_2 := r^5\ \text{mod}\ n$, and</li>
-<li>Return $(c_1, c_2)$ as the committment.</li>
+<li>Return $(c_1, c_2)$ as the commitment.</li>
 </ol>
 
 <p>Suppose that $s$ is the RSA signature of the flag (i.e., $m^d\ \text{mod}\ n$, the $m$ is the flag and $n$ serves as the modulus for $\mathcal{C}$ as well). We are given the public key of RSA $(n, e)$ and a commitment $\mathcal{C}(s) = (c_1, c_2)$. The objective is to recover the flag $m$ (flag format being <code>dice{???????????????????????}</code>).</p>
@@ -365,7 +365,7 @@ B <span style="color:#f92672">/=</span> Q
 
 <aside class="toc-container">
   <a href="#" style="text-decoration: none; font-weight: 700;">
-    DiceCTF 2022 (I): committment-issues
+    DiceCTF 2022 (I): commitment-issues
   </a>
   <div class="js-toc"></div>
 </aside>
