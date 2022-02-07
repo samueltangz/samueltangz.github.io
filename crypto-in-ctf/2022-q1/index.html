@@ -341,7 +341,7 @@ cipher <span style="color:#f92672">=</span> <span style="color:#ae81ff">19441066
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>rsa</code></li>
 </ul>
-<p>Define a committment scheme $\mathcal{C}$ that uses a composite modulus $n$ (which is a product of two primes $p, q$ with $p, q \neq 1\ (\text{mod}\ 5)$). To commit a secret $s$:</p>
+<p>Define a committment scheme $\mathcal{C}$ that uses a composite modulus $n$ (which is a product of two 1024-bit primes $p, q$ with $p, q \neq 1\ (\text{mod}\ 5)$). To commit a secret $s$:</p>
 <ol>
 <li>Generate a random number $r \in [0, n)$,</li>
 <li>Compute $c_1 := (s + r)\ \text{mod}\ n$ and $c_2 := r^5\ \text{mod}\ n$, and</li>
