@@ -6,7 +6,18 @@
     <description>Recent content on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Feb 2022 04:30:00 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Feb 2022 10:00:00 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intigriti&#39;s XSS Challenge (February 2022)</title>
+      <link>/posts/2022-02-14-intigriti-xss/</link>
+      <pubDate>Mon, 14 Feb 2022 10:00:00 +0800</pubDate>
+      
+      <guid>/posts/2022-02-14-intigriti-xss/</guid>
+      <description>This is another round of @intigriti&#39;s XSS challenge, and this time it is written by @aszx87410. I spent around four hours solving it.
+Challenge Summary We are given a form that allows us a create a character. We are allowed to
+ choose a name (shorter than 24 characters), and inform if we have played the game.  We will be redirected to /challenge/xss.html?q=mystiz&amp;amp;first=yes (if you are mystiz who is not a first-timer to the game).</description>
+    </item>
+    
     <item>
       <title>DiceCTF 2022 (I): commitment-issues</title>
       <link>/posts/2022-02-08-dicectf-commitment/</link>
@@ -453,7 +464,7 @@ Babylfsr (Crypto, 338 points) This is an easy challenge.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about-me/</guid>
-      <description>This is Mystiz, a made in Hong Kong 🇭🇰 software engineer.
+      <description>This is Mystiz, a made in Hong Kong 🇭🇰 software engineer. Currently stationed at Taiwan 🇹🇼 working for Google.
  Twitter: @mystiz613 Github: @samueltangz Website: mystiz.hk  Capture-the-Flag I am better-known as a Capture the Flag player and I hack with Black Bauhinia as a former captain and Shellphish. I like to struggle at crypto and reverse challenges, and sometimes pulling my hair on ad hoc problems. You may expect me doing writeups on the challenges I liked (if I have time).</description>
     </item>
     
