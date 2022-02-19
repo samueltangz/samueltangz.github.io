@@ -15,7 +15,7 @@
       <guid>/posts/2022-02-19-mocsctf/</guid>
       <description>@blackb6a helped preparing some challenges for MOCSCTF, a 8.5-hour long CTF in Macau. This time I wrote nine challenges and @hoifanrd made one of them (3-AES). This blog post covers the intended solution for all of them.
 These are the summary of the challenges:
-   Challenge Name Category Solves     RSA Trio Crypto 1/41   Slightly Informative Crypto 2/41   NP-SHA256 Crypto 1/41   HMAC-SHA256 Crypto 2/41   RC4 Crypto 0/41   HashTable Misc 2/41   Wordle Crypto, Misc 0/41   3-AES Crypto, Misc 0/41   Elementary Reverse 1/41   Redactor Reverse 0/41    RSA Trio (Crypto) Challenge Summary When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated.</description>
+   Challenge Name Category Solves     RSA Trio Crypto 1/43   Slightly Informative Crypto 2/43   NP-SHA256 Crypto 1/43   HMAC-SHA256 Crypto 2/43   RC4 Crypto 0/43   HashTable Misc 2/43   Wordle Crypto, Misc 0/43   3-AES Crypto, Misc 0/43   Elementary Reverse 1/43   Redactor Reverse 0/43    RSA Trio (Crypto) Challenge Summary When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated.</description>
     </item>
     
     <item>
