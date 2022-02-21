@@ -327,6 +327,17 @@ t = 7967501076725747803058232903884621217031867311480596291389476854702834454579
 
 <p>Eventually, we can compute $\phi(n) = (p - 1)(q - 1)$ and compute $d = e^{-1}\ \text{mod}\ \phi(n)$. We can use the private exponent to recover the flag:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">MOCSCTF{st0p_l34k1ng_3x7r4_5tuffs_ab0u7_y0ur_r5a_k3y}</code></pre></div>
+<p>&nbsp;</p>
+
+<div class="alert info">
+  <p><strong>Postmortem.</strong> <em>sahuang</em> from team <em>Project SEKAI</em> has an alternate solution, which is pretty elegant:</p>
+<p>Since $e \cdot d \equiv 1\ (\text{mod}\ \phi(n))$, we also have $e \cdot d \equiv 1\ (\text{mod}\ (p-1))$ which lead to</p>
+<p>$$e \cdot (sp + t) \equiv 1\ (\text{mod}\ (p-1)) \Longrightarrow e \cdot (s + t) \equiv 1\ (\text{mod}\ (p-1)).$$</p>
+<p>That said, $p - 1$ is a factor of $M := e \cdot (s + t) - 1$. To be accurate, $M$ is a small multiple of $p - 1$. We can factor $M$ from <em>factordb</em> and obtain $p$, thus factoring $n$ as well.</p>
+
+</div>
+
+
 <h2 id="npsha256-crypto">NP-SHA256 (Crypto)<a href="#npsha256-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
 <h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
