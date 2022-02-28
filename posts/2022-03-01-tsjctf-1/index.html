@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>TSJ CTF 2022 (I): Cipher Switching Service :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Credits. I stole the banner image from TSJ CTF. Thanks!  @blackb6a played TSJ CTF and CODEGATE CTF this weekend. Both of the CTFs had a bunch of epic (and hard-ish) crypto challenges, which made our head scratched for days.
+We were two points behind @balsnctf few minutes before the game ends and I found one more flag. It is proud to tell that we won TSJ CTF 🎉!
+Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, namely Cipher Switching Service, Signature and Genie." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2022-03-01-tsjctf-1/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="TSJ CTF 2022 (I): Cipher Switching Service">
+<meta property="og:description" content="@blackb6a played TSJ CTF and CODEGATE CTF this weekend. Both of the CTFs had a bunch of epic (and hard-ish) crypto challenges, which made our head scratched for days.
+
+We were two points behind @balsnctf few minutes before the game ends and I found one more flag. It is proud to tell that we won TSJ CTF 🎉!
+
+Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, namely Cipher Switching Service, Signature and Genie. I will go through Cipher Switching Service as the first part of the series." />
+<meta property="og:url" content="/posts/2022-03-01-tsjctf-1/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2022-03-01-tsjctf/tsjctf.jpg">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-03-01 00:23:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2022-03-01-tsjctf-1/">TSJ CTF 2022 (I): Cipher Switching Service</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-03-01 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/tsj-ctf/">tsj-ctf</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2022-03-01-tsjctf/tsjctf.jpg" class="post-cover center" alt="TSJ CTF 2022 (I): Cipher Switching Service" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <div class="alert warning">
+  <strong>Credits.</strong> I stole the banner image from TSJ CTF. Thanks!
+</div>
+
+
+<p><a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> played <em>TSJ CTF</em> and <em>CODEGATE CTF</em> this weekend. Both of the CTFs had a bunch of epic (and hard-ish) crypto challenges, which made our head scratched for days.</p>
+
+<p>We were two points behind <a href="https://twitter.com/balsnctf" target="_blank" rel="nofollow">@balsnctf</a> few minutes before the game ends and I found one more flag. It is proud to tell that we won <em>TSJ CTF</em> 🎉!</p>
+
+<p>Anyway, I will compile writeups for (at least) three challenges for <em>TSJ CTF</em>, namely <em>Cipher Switching Service</em>, <em>Signature</em> and <em>Genie</em>. I will go through <em>Cipher Switching Service</em> as the first part of the series.</p>
+
+<div class="alert success">
+  <strong>Fun fact.</strong> I have recently moved to Taiwan and today is a public holiday (the peace memorial day) there. That said, I could spend more time playing today and win a CTF made in Taiwan. What a coincidence.
+</div>
+
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>When connected to the server, the below encryption keys are generated:</p>
+
+<ol>
+<li>RSA keys $(n, e)$, here $n = pq$ ($p, q$ are both 512 bits) and $e = 65537$; and</li>
+<li>ElGamal keys $(p, g, h = g^x\ \text{mod}\ p)$, here $p$ is 1024 bits.</li>
+</ol>
+
+<p>We are given that the flag and the padded flag are of respectively 20 and 96 bytes. We are also given $\text{Enc}_\text{RSA}(\text{padded flag})$. We can call the below functions in a total of 1337 times:</p>
+
+<ol>
+<li><strong>[RSA to ElGamal]</strong> Give $c$ and we will obtain $(c_1, c_2) = \text{Enc}_\text{ElGamal}(\text{Dec}_\text{RSA}(c)))$, or</li>
+<li><strong>[ElGamal to RSA]</strong> Give $(c_1, c_2)$ and we will obtain $c = \text{Enc}_\text{RSA}(\text{Dec}_\text{ElGamal}(c_1, c_2)))$.</li>
+</ol>
+
+<p>The objective is to recover $\text{flag}$.</p>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert warning">
+  <strong>Unintended solution alert!</strong> The <a href="https://github.com/maple3142/My-CTF-Challenges/tree/master/TSJ%20CTF%202022/Top%20Secret">intended solution</a> uses Legendre symbol. I will only cover the solution that could recover the flag in two oracle calls that I found in the contest.
+</div>
+
+
+<h3 id="part-i-the-homomorphic-properties-for-rsa-and-elgamal">Part I: The homomorphic properties for RSA and ElGamal<a href="#part-i-the-homomorphic-properties-for-rsa-and-elgamal" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="homomorphic-property-over-multiplication-for-rsa">Homomorphic property over multiplication for RSA<a href="#homomorphic-property-over-multiplication-for-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Let $(n, e)$ be the public key of RSA. Then</p>
+
+<p><span  class="math">\[k^e \cdot \text{Enc}(m) \equiv \text{Enc}(k \cdot m)\ (\text{mod}\ n).\]</span></p>
+
+<p><strong>Proof.</strong></p>
+
+<p><span  class="math">\[k^e \cdot \text{Enc}(m) \equiv k^e \cdot m^e \equiv (k \cdot m)^e \equiv \text{Enc}(k \cdot m)\ (\text{mod}\ n). \qquad \blacksquare\]</span></p>
+
+<h4 id="homomorphic-property-over-multiplication-for-elgamal">Homomorphic property over multiplication for ElGamal<a href="#homomorphic-property-over-multiplication-for-elgamal" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Let $(p, g, h = g^x)$ be the public key of ElGamal. If $(c_1, c_2)$ be a ciphertext of $m$. Then $(c_1, k \cdot c_2)$ is a ciphertext of $k \cdot m$.</p>
+
+<p><strong>Proof.</strong></p>
+
+<p>Let $m'$ be the corresponding plaintext for $(c_1', c_2') := (c_1, k \cdot c_2)$.</p>
+
+<p><span  class="math">\[m' \equiv c_2' \cdot c_1'^{-x} \equiv (k \cdot c_2) \cdot c_1^{-x} \equiv k \cdot (c_2 \cdot c_1^{-x}) \equiv k \cdot m \ (\text{mod}\ p). \qquad \blacksquare\]</span></p>
+
+<h3 id="part-ii-applying-the-homomorphic-properties">Part II: Applying the homomorphic properties<a href="#part-ii-applying-the-homomorphic-properties" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>One can apply a homomorphic property without knowing the private key. These are what we can do if we have a ciphertext of $m$ (in different cryptosystems)</p>
+
+<ul>
+<li>If we have $\text{Enc}_\text{RSA}(m)$, we can:
+
+<ul>
+<li><strong>[Homomorphic]</strong> compute $\text{Enc}_\text{RSA}(k \cdot m\ \text{mod}\ n)$ for any $k$, and</li>
+<li><strong>[Feature]</strong> obtain $\text{Enc}_\text{ElGamal}(m\ \text{mod}\ p)$.</li>
+</ul></li>
+<li>If we have $\text{Enc}_\text{ElGamal}(m)$, we can:
+
+<ul>
+<li><strong>[Homomorphic]</strong> compute $\text{Enc}_\text{ElGamal}(k \cdot m\ \text{mod}\ p)$ for any $k$, and</li>
+<li><strong>[Feature]</strong> obtain $\text{Enc}_\text{RSA}(m\ \text{mod}\ n)$.</li>
+</ul></li>
+</ul>
+
+<div class="alert info">
+  <p><strong>Note.</strong> It is necessary to mention $\text{mod}\ p$ (resp. $\text{mod}\ n$) when converting RSA to ElGamal (resp. vice versa). For example, when $n &lt; m &lt; p$, the below is wrong:</p>
+<p>$$\text{Enc}_\text{ElGamal}(m) \xrightarrow{\text{ElGamal to RSA}} \text{Enc}_\text{RSA}(m)$$</p>
+<p>As the message space for RSA is $\mathcal{M} := [0, n)$ and since $m \not\in \mathcal{M}$, modulo $m$ will be taken.</p>
+
+</div>
+
+
+<p>Now we are trying to obtain $\text{Enc}_\text{RSA}(am + b)$ for some constants $a$ and $b$ ($a, b \neq 0$). If we are able to get that, then we are not far from recovering $m$ directly.</p>
+
+<div class="alert success">
+  <p><strong>Why?</strong> Obviously, if $c_0$ is the RSA ciphertext of $m_0$, then $x - m_0$ is a factor of $x^e - c_0$ (under modulo $n$). We want to find another polynomial $\text{g}(x)$ under modulo $n$ such that it is divisible by $x - m_0$.</p>
+<p>As long as $x^e - c_0$ and $\text{g}(x)$ does not share other common factors than $x - m_0$, we can compute $x - m_0$ from $\text{GCD}(x^e - c_0, \text{g}(x))$. We can then recover $m_0$.</p>
+
+</div>
+
+
+<p>Given that we start with $c_0 := \text{Enc}_\text{RSA}(m_0)$. The below is a flow of operations that we are going to proceed:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& c_0 = \text{Enc}_\text{RSA}(m_0) \\
+& \qquad\xrightarrow{\text{RSA to ElGamal}} \text{Enc}_\text{ElGamal}(m_0\ \text{mod}\ p) \\
+& \qquad\xrightarrow{\text{Homomorphic}\ (\times k)} \text{Enc}_\text{ElGamal}(k \cdot m_0\ \text{mod}\ p) \\
+& \qquad\xrightarrow{\text{ElGamal to RSA}} \text{Enc}_\text{RSA}(k \cdot m_0\ \text{mod}\ p\ \text{mod}\ n) \\
+\end{aligned}\]</span></p>
+
+<p>There are a lot of modulos which is pretty confusing. Let's assume $n &lt; p$ (that happens most of the cases) and read again:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& c_0 = \text{Enc}_\text{RSA}(m_0) \\
+& \qquad\xrightarrow{\text{RSA to ElGamal}} \text{Enc}_\text{ElGamal}(m_0) \\
+& \qquad\xrightarrow{\text{Homomorphic}\ (\times k)} \text{Enc}_\text{ElGamal}(k \cdot m_0\ \text{mod}\ p) \\
+& \qquad\xrightarrow{\text{ElGamal to RSA}} \text{Enc}_\text{RSA}(k \cdot m_0\ \text{mod}\ p\ \text{mod}\ n) \\
+\end{aligned}\]</span></p>
+
+<p>Well, that is pretty much the same as the first one. Let me introduce the <em>weirdest</em> assumption in this writeup: $p \leq k \cdot m_0 &lt; p + n$. This implies $0 \leq k \cdot m_0 - p &lt; n &lt; p$. Now back to the flow:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& c_0 = \text{Enc}_\text{RSA}(m_0) \\
+& \qquad\xrightarrow{\text{RSA to ElGamal}} \text{Enc}_\text{ElGamal}(m_0) \\
+& \qquad\xrightarrow{\text{Homomorphic}\ (\times k)} \text{Enc}_\text{ElGamal}(k \cdot m_0 - p) \\
+& \qquad\xrightarrow{\text{ElGamal to RSA}} \text{Enc}_\text{RSA}(k \cdot m_0 - p) \\
+\end{aligned}\]</span></p>
+
+<p>Sounds good! If we can find an appropriate $k$, we can obtain $\text{Enc}_\text{RSA}(k \cdot m_0 - p)$.</p>
+
+<h3 id="part-iii-finding-k-and-finishing-up">Part III: Finding $k$ and finishing up<a href="#part-iii-finding-k-and-finishing-up" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Suppose that $m_0 \in [0, n)$. If we pick $k = \lceil p / m_0 \rceil$, then</p>
+
+<p><span  class="math">\[k \cdot m_0 = \lceil p / m_0 \rceil \cdot m_0 \geq p \qquad\text{and}\qquad k \cdot m_0 = \lceil p / m_0 \rceil \cdot m_0 < p + m_0 < p + n.\]</span></p>
+
+<p>However, we are unable to pick $k$ in such way because we don't even have $m_0$.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-03-01-tsjctf/k-vs-m0.jpg"   />
+    
+      <figcaption class="right" >The response times when $m < n$.</figcaption>
+    
+  </figure>
+
+
+
+<p>Luckily, although we don't have $m_0$, we still have a good estimation of it.</p>
+
+<p>Since it is a padded flag which is 96 bytes long and starts with <code>TSJ</code> (in ASCII, $\text{54535A}_{16} = 5526346$), we have</p>
+
+<p><span  class="math">\[5526346 \times 256^{93} \leq m_0 < 5526347 \times 256^{93}.\]</span></p>
+
+<p>We can estimate $\tilde{m_0}$ from above and thus compute $k = \lceil p / \tilde{m_0} \rceil$. After all, $x - m_0$ is divisible to the two polynomials below (here $c_1 := \text{Enc}_\text{RSA}(k \cdot m_0 - p)$):</p>
+
+<p><span  class="math">\[\text{f}(x) := x^e - c_0 \qquad \text{and} \qquad \text{g}(x) := (k \cdot x - p)^e - c_1.\]</span></p>
+
+<p>As said above, we can compute $\text{GCD}(\text{f}(x), \text{g}(x))$ to recover $x - m_0$. Finally we have the flag: <code>TSJ{a_weird_oracle?}</code>.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2022-02-19-mocsctf/">
+                <span class="button__text">MOCSCTF 2022 Postmortem</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    TSJ CTF 2022 (I): Cipher Switching Service
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

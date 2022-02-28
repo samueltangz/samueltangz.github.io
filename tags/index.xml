@@ -6,22 +6,40 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Feb 2022 17:50:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Mar 2022 00:23:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>challenge-writing</title>
-      <link>/tags/challenge-writing/</link>
-      <pubDate>Sat, 19 Feb 2022 17:50:00 +0800</pubDate>
+      <title>crypto</title>
+      <link>/tags/crypto/</link>
+      <pubDate>Tue, 01 Mar 2022 00:23:00 +0800</pubDate>
       
-      <guid>/tags/challenge-writing/</guid>
+      <guid>/tags/crypto/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ctf</title>
       <link>/tags/ctf/</link>
-      <pubDate>Sat, 19 Feb 2022 17:50:00 +0800</pubDate>
+      <pubDate>Tue, 01 Mar 2022 00:23:00 +0800</pubDate>
       
       <guid>/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tsj-ctf</title>
+      <link>/tags/tsj-ctf/</link>
+      <pubDate>Tue, 01 Mar 2022 00:23:00 +0800</pubDate>
+      
+      <guid>/tags/tsj-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>challenge-writing</title>
+      <link>/tags/challenge-writing/</link>
+      <pubDate>Sat, 19 Feb 2022 17:50:00 +0800</pubDate>
+      
+      <guid>/tags/challenge-writing/</guid>
       <description></description>
     </item>
     
@@ -49,15 +67,6 @@
       <pubDate>Mon, 14 Feb 2022 10:00:00 +0800</pubDate>
       
       <guid>/tags/xss/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>crypto</title>
-      <link>/tags/crypto/</link>
-      <pubDate>Tue, 08 Feb 2022 04:30:00 +0800</pubDate>
-      
-      <guid>/tags/crypto/</guid>
       <description></description>
     </item>
     
