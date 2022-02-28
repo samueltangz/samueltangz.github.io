@@ -507,9 +507,9 @@ T <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span><span
 <p>When connected to the server, the below encryption keys are generated:</p>
 <ol>
 <li>RSA keys $(n, e)$, here $n = pq$ ($p, q$ are both 512 bits) and $e = 65537$; and</li>
-<li>ElGamal keys $(p, g, y)$, here $p$ is 1024 bits.</li>
+<li>ElGamal keys $(p, g, h = g^x\ \text{mod}\ p)$, here $p$ is 1024 bits.</li>
 </ol>
-<p>We are given that the flag is 20 bytes long and is given $\text{Enc}_\text{RSA}(\text{flag})$. We can also call the below functions in a total of 1337 times:</p>
+<p>We are given that the flag and the padded flag are of respectively 20 and 96 bytes. We are also given $\text{Enc}_\text{RSA}(\text{padded flag})$. We can call the below functions in a total of 1337 times:</p>
 <ol>
 <li><strong>[RSA to ElGamal]</strong> Give $c$ and we will obtain $(c_1, c_2) = \text{Enc}_\text{ElGamal}(\text{Dec}_\text{RSA}(c)))$, or</li>
 <li><strong>[ElGamal to RSA]</strong> Give $(c_1, c_2)$ and we will obtain $c = \text{Enc}_\text{RSA}(\text{Dec}_\text{ElGamal}(c_1, c_2)))$.</li>
