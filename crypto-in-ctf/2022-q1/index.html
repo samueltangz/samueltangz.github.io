@@ -523,7 +523,7 @@ T <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span><span
 <li>Author: <a href="https://twitter.com/maple3142" target="_blank" rel="nofollow">@maple3142</a></li>
 </ul>
 <p>Suppose that $d$ is the private key for ECDSA (over curve secp256k1). We are given six signatures signed with the above private key. However, $k$ is computed by $k = d \oplus z$ ($z$ is the hash of the message) rather than generated randomly.</p>
-<p>The objective is to recover $d$.</p>
+<p>$d$ is then used to derive a key for AES-CTR which is used to encrypt the message, which is in the form <code>Congrats! This is your flag: [FLAG]</code>. The objective is to recover the flag.</p>
 <h3 id="rng">RNG++<a href="#rng" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 21/428</li>

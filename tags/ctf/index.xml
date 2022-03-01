@@ -6,7 +6,17 @@
     <description>Recent content in ctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Mar 2022 00:23:00 +0800</lastBuildDate><atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Mar 2022 00:38:00 +0800</lastBuildDate><atom:link href="/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TSJ CTF 2022 (II): Signature</title>
+      <link>/posts/2022-03-02-tsjctf-2/</link>
+      <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
+      
+      <guid>/posts/2022-03-02-tsjctf-2/</guid>
+      <description>Signature is a crypto challenge from TSJ CTF 2022, which ended up having two solves. From this challenge, we can see how ECDSA private keys can be recovered by having a (weak) deterministic ephemeral key, $k$.
+Challenge Summary Suppose that $d$ is the private key for ECDSA (over curve secp256k1). We are given six signatures signed with the above private key. However, $k$ is computed by $k = d \oplus z$ ($z$ is the hash of the message) rather than generated randomly.</description>
+    </item>
+    
     <item>
       <title>TSJ CTF 2022 (I): Cipher Switching Service</title>
       <link>/posts/2022-03-01-tsjctf-1/</link>

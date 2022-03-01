@@ -6,11 +6,11 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Mar 2022 00:23:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Mar 2022 00:38:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>crypto</title>
       <link>/tags/crypto/</link>
-      <pubDate>Tue, 01 Mar 2022 00:23:00 +0800</pubDate>
+      <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
       
       <guid>/tags/crypto/</guid>
       <description></description>
@@ -19,16 +19,25 @@
     <item>
       <title>ctf</title>
       <link>/tags/ctf/</link>
-      <pubDate>Tue, 01 Mar 2022 00:23:00 +0800</pubDate>
+      <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
       
       <guid>/tags/ctf/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>ecdsa</title>
+      <link>/tags/ecdsa/</link>
+      <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
+      
+      <guid>/tags/ecdsa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>tsj-ctf</title>
       <link>/tags/tsj-ctf/</link>
-      <pubDate>Tue, 01 Mar 2022 00:23:00 +0800</pubDate>
+      <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
       
       <guid>/tags/tsj-ctf/</guid>
       <description></description>
