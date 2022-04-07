@@ -523,6 +523,15 @@ Cousin is a crypto guy in Black Bauhinia who is researching for his master of ph
     </item>
     
     <item>
+      <title>Crypto in CTF: Q2 2022</title>
+      <link>/crypto-in-ctf/2022-q2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/crypto-in-ctf/2022-q2/</guid>
+      <description>CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus.</description>
+    </item>
+    
+    <item>
       <title>Crypto in CTF: Q3 2021</title>
       <link>/crypto-in-ctf/2021-q3/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
