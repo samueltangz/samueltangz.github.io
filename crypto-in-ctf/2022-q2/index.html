@@ -6,7 +6,7 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus." />
+<meta name="description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)   PlaidCTF 2022 pressure ?/? (❓)   PlaidCTF 2022 choreography ?/? (❓)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/crypto-in-ctf/2022-q2/" />
@@ -41,7 +41,7 @@
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Crypto in CTF: Q2 2022">
-<meta property="og:description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus." />
+<meta property="og:description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)   PlaidCTF 2022 pressure ?/? (❓)   PlaidCTF 2022 choreography ?/? (❓)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus." />
 <meta property="og:url" content="/crypto-in-ctf/2022-q2/" />
 <meta property="og:site_name" content="Mystify" />
 
@@ -182,6 +182,16 @@
 <td>WeedSolomon 420</td>
 <td>3/346 (❓)</td>
 </tr>
+<tr>
+<td>PlaidCTF 2022</td>
+<td>pressure</td>
+<td>?/? (❓)</td>
+</tr>
+<tr>
+<td>PlaidCTF 2022</td>
+<td>choreography</td>
+<td>?/? (❓)</td>
+</tr>
 </tbody>
 </table>
 <h2 id="midnight-sun-ctf-quals-2022">Midnight Sun CTF Quals 2022<a href="#midnight-sun-ctf-quals-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
@@ -253,6 +263,65 @@
   <strong>Needs more information.</strong> I am unsure about this challenge yet. I will update the details later.
 </div>
 
+<h2 id="plaidctf-2022">PlaidCTF 2022<a href="#plaidctf-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="pressure">pressure<a href="#pressure" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 18/431</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>ecc</code>, <code>private set intersection</code></li>
+<li>Author: <em>mserrano</em></li>
+</ul>
+<div class="alert info">
+  <p><strong>Notations.</strong> Denote $G$ be a generator of the curve ED25519. Let also $\mathcal{P}$ be the set of points on that curve.</p>
+<p>Also, if $k \in \mathbb{Z}$ and $S \in \mathcal{P}$, the set $k \cdot S$ is given by $\{k Q \in \mathcal{P} : Q \in S\}$.</p>
+
+</div>
+
+<p>When connected to the server, the below private parameters are randomly generated:</p>
+<ol>
+<li>$r \in [1, 2^{32})$,</li>
+<li>$n \in [128, 256]$,</li>
+<li>$(x_0, &hellip;, x_{n-1}) \in \{1, 2, &hellip;, 255\}^n$, and</li>
+<li>$b_1, b_2 \in [0, 2^{512})$.</li>
+</ol>
+<p>It is used to generate a secret set $\mathcal{S}$ with $n + 4096$ entries:</p>
+<ol>
+<li><strong>[The $n$]</strong> $\text{SHA512}(25037 \cdot r \cdot x_i + i) \cdot G \in \mathcal{S}$ for $i = 0, 1, &hellip;, n-1$.</li>
+<li><strong>[The 4096]</strong> $\text{SHA512}(k + 4096 \cdot (r\ \text{mod}\ k)) \cdot G \in \mathcal{S}$ for $k = 1, 2, &hellip;, 4096$.</li>
+</ol>
+<p>The client (us) interacts with the server with the below procedures:</p>
+<ul>
+<li>The client sends a set $A_1 \subseteq \mathcal{P}$ to the server.</li>
+<li>The server computes $T = b_1 \cdot A$ and $B_1 = b_1 \cdot \mathcal{S}$ and sends them to the client.</li>
+<li>The server computes $B_2 = b_2 \cdot \mathcal{S}$ and sends it to the client.</li>
+<li>The client sends sets $A_2, B_2' \subseteq \mathcal{P}$ to the server.</li>
+<li>The server checks if $\left|B_2\right| = \left|B'_2\right|$ and $B_2 \cap B'_2 = \phi$ and $B'_2 = b_2 \cdot A$. If that is the case, the server sends the flag to the client.</li>
+</ul>
+<p>The goal is to win the flag from the server.</p>
+<h3 id="choreography">choreography<a href="#choreography" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 14/431</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>block cipher</code></li>
+<li>Author: <a href="https://twitter.com/ubuntor" target="_blank" rel="nofollow">@ubuntor</a></li>
+</ul>
+<p>The challenge defined two ciphers <code>encrypt1</code> and <code>encrypt2</code> which encrypts a 4-byte message into a 4-byte ciphertext using a 4-byte key. Hereby <code>sbox</code> is a permutation of $\mathbb{Z}_{256}$ and <code>ROUNDS = 2**22 + 2</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt1</span>(k, plaintext):
+    a,b,c,d <span style="color:#f92672">=</span> plaintext
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(ROUNDS):
+        a <span style="color:#f92672">^=</span> sbox[b <span style="color:#f92672">^</span> k[(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>i)<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">3</span>]]
+        c <span style="color:#f92672">^=</span> sbox[d <span style="color:#f92672">^</span> k[(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">3</span>]]
+        a,b,c,d <span style="color:#f92672">=</span> b,c,d,a
+    <span style="color:#66d9ef">return</span> bytes([a,b,c,d])
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt2</span>(k, plaintext):
+    a,b,c,d <span style="color:#f92672">=</span> plaintext
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(ROUNDS)[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]:
+        b,c,d,a <span style="color:#f92672">=</span> a,b,c,d
+        c <span style="color:#f92672">^=</span> sbox[d <span style="color:#f92672">^</span> k[(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>i)<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">3</span>]]
+        a <span style="color:#f92672">^=</span> sbox[b <span style="color:#f92672">^</span> k[(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">3</span>]]
+    <span style="color:#66d9ef">return</span> bytes([a,b,c,d])
+</code></pre></div><p>When connected to the server, a 4-byte key $k$ is generated. We can send 1000 4-byte plaintexts $m_1, &hellip;, m_{500}, m'_1, &hellip;, m'_{500}$ to the server. After that, we will obtain 1000 4-byte ciphertexts $\text{Enc}_1(k, m_1), &hellip;, \text{Enc}_1(k, m_{500}), \text{Enc}_2(k, m'_1), &hellip;, \text{Enc}_2(k, m'_{500})$. The goal is to recover $k$ in 30 seconds.</p>
 
       </div></div>
 
