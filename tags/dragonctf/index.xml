@@ -9,20 +9,20 @@
     <lastBuildDate>Mon, 29 Nov 2021 23:30:00 +0800</lastBuildDate><atom:link href="/tags/dragonctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dragon CTF 2021: CRC Recursive Challenge (Warmup)</title>
-      <link>/posts/2021-11-29-dragonctf-crc/</link>
+      <link>/posts/2021/2021-11-29-dragonctf-crc/</link>
       <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
       
-      <guid>/posts/2021-11-29-dragonctf-crc/</guid>
+      <guid>/posts/2021/2021-11-29-dragonctf-crc/</guid>
       <description>@blackb6a played Dragon CTF 2021 last weekend and I spent most of the time solving the CRC duo. They are very fun but unfortunately that we were close enough while unable to get the second flag.
 Warmup edition only. If you are interested to learn the harder edition that involves a 128-bit CRC, you may want to look at hellman&amp;rsquo;s writeup. I would only cover a solution of the easier edition with some unsuccessful attempts of the harder one.</description>
     </item>
     
     <item>
       <title>Dragon CTF 2020 Writeup</title>
-      <link>/posts/2020-11-23-dragonctf/</link>
+      <link>/posts/2020/2020-11-23-dragonctf/</link>
       <pubDate>Mon, 23 Nov 2020 04:33:50 +0800</pubDate>
       
-      <guid>/posts/2020-11-23-dragonctf/</guid>
+      <guid>/posts/2020/2020-11-23-dragonctf/</guid>
       <description>Written from the perspective of Mystiz. babykok writeup by GeoffreyY.  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
 There are three challenges writeup in this post:
  Bit Flip (parts 2 and 3) Frying in motion babykok  Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>

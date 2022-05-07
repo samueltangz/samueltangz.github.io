@@ -6,7 +6,7 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)   PlaidCTF 2022 pressure 18/431 (⭐⭐)   PlaidCTF 2022 choreography 14/431 (⭐⭐)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus." />
+<meta name="description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)   PlaidCTF 2022 pressure 18/431 (⭐⭐)   PlaidCTF 2022 choreography 14/431 (⭐⭐)   ångstromCTF 2022 Randomly Sampled Algorithm ?" />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/crypto-in-ctf/2022-q2/" />
@@ -41,7 +41,7 @@
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Crypto in CTF: Q2 2022">
-<meta property="og:description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)   PlaidCTF 2022 pressure 18/431 (⭐⭐)   PlaidCTF 2022 choreography 14/431 (⭐⭐)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus." />
+<meta property="og:description" content="CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)   PlaidCTF 2022 pressure 18/431 (⭐⭐)   PlaidCTF 2022 choreography 14/431 (⭐⭐)   ångstromCTF 2022 Randomly Sampled Algorithm ?" />
 <meta property="og:url" content="/crypto-in-ctf/2022-q2/" />
 <meta property="og:site_name" content="Mystify" />
 
@@ -192,6 +192,36 @@
 <td>choreography</td>
 <td>14/431 (⭐⭐)</td>
 </tr>
+<tr>
+<td>ångstromCTF 2022</td>
+<td>Randomly Sampled Algorithm</td>
+<td>?/? (?)</td>
+</tr>
+<tr>
+<td>ångstromCTF 2022</td>
+<td>Vinegar Factory</td>
+<td>?/? (?)</td>
+</tr>
+<tr>
+<td>ångstromCTF 2022</td>
+<td>log log log</td>
+<td>?/? (?)</td>
+</tr>
+<tr>
+<td>ångstromCTF 2022</td>
+<td>Prophet</td>
+<td>?/? (?)</td>
+</tr>
+<tr>
+<td>ångstromCTF 2022</td>
+<td>Strike-Slip Fault</td>
+<td>?/? (?)</td>
+</tr>
+<tr>
+<td>ångstromCTF 2022</td>
+<td>RSA-AES 🔥</td>
+<td>?/? (?)</td>
+</tr>
 </tbody>
 </table>
 <h2 id="midnight-sun-ctf-quals-2022">Midnight Sun CTF Quals 2022<a href="#midnight-sun-ctf-quals-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
@@ -322,6 +352,56 @@
         a <span style="color:#f92672">^=</span> sbox[b <span style="color:#f92672">^</span> k[(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">3</span>]]
     <span style="color:#66d9ef">return</span> bytes([a,b,c,d])
 </code></pre></div><p>When connected to the server, a 4-byte key $k$ is generated. We can send 1000 4-byte plaintexts $m_1, &hellip;, m_{500}, m'_1, &hellip;, m'_{500}$ to the server. After that, we will obtain 1000 4-byte ciphertexts $\text{Enc}_1(k, m_1), &hellip;, \text{Enc}_1(k, m_{500}), \text{Enc}_2(k, m'_1), &hellip;, \text{Enc}_2(k, m'_{500})$. The goal is to recover $k$ in 30 seconds.</p>
+<h2 id="ångstromctf-2022">ångstromCTF 2022<a href="#ångstromctf-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="log-log-log">log log log<a href="#log-log-log" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: ?/?</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>dlog</code></li>
+<li>Author: <em>lamchcl</em></li>
+</ul>
+<p>Suppose that $p$ and $q$ are two primes such that $p = 2^{1024} q + 1$. Let $g \in \text{GF}(p)$ be a generator and $h \equiv g^x\ \text{mod}\ p$ for some hidden $x$. We are given $p$, $g$ and $h$ and the goal is to recover $x$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">q <span style="color:#f92672">=</span> <span style="color:#ae81ff">127049168626532606399765615739991416718436721363030018955400489736067198869364016429387992001701094584958296787947271511542470576257229386752951962268029916809492721741399393261711747273503204896435780180020997260870445775304515469411553711610157730254858210474308834307348659449375607755507371266459204680043</span>
+p <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> q <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+
+g <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+h <span style="color:#f92672">=</span> <span style="color:#ae81ff">22167430376059430630679676235652972242459549427184424487101004659078731951275684400544395455032520211526504936260764167543579962894859895105461241638191329157341317508524604123528869569970436522398088133282816501026124675867597303023053315921006794737150458893962604878313958214001541026011431916550491653311353413427974497947502149907519824065494644815580044942957676947079119519638286167265601768018850753567210484166464342762618682061366667502051134347228205613775687498269608568148198217826596701451568949937835734503519735835665755712108573943924004834183073368205468093930976680849195434185471527862856627210807</span>
+</code></pre></div><h3 id="prophet">Prophet<a href="#prophet" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: ?/?</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>prng</code></li>
+<li>Author: <em>aplet123</em></li>
+</ul>
+<p>Let $\mathcal{R}$ be the PRNG that is used in the <code>math</code> package in <em>Golang 1.18</em> with a hidden 64-bit seed. Let $v_k$ be the $k$-th 64-bit output (zero-indexed) from $\mathcal{R}$. We are given</p>
+<ul>
+<li>the encrypted flag (the flag XOR-ed with $v_{100000}, v_{100001}, v_{100002}$ and $v_{100003}$), and</li>
+<li>607 non-consecutive outputs: $v_{n_0}, v_{n_1}, &hellip;, v_{n_{606}}$.</li>
+</ul>
+<p>Here $n_0 = 100004$ and $n_{k+1} = n_k + 1 + (k\ \text{mod}\ 13)$ for all $k \geq 0$. The objective is to recover the flag.</p>
+<h3 id="strike-slip-fault">Strike-Slip Fault<a href="#strike-slip-fault" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: ?/?</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+<li>Author: <em>lamchcl</em></li>
+</ul>
+<p>We are given a RSA public key $(n, e)$ and the encrypted flag $c$. Denote $d$ be the private exponent, and $d'$ to be $d$ with three bits flipped. We are also given</p>
+<p>$$m' = c^{d'}\ \text{mod}\ n.$$</p>
+<p>The goal is to recover the flag.</p>
+<h3 id="rsa-aes-">RSA-AES 🔥<a href="#rsa-aes-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: ?/?</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>?</code></li>
+<li>Author: <em>lamchcl</em></li>
+</ul>
+<p>We are given a RSA exponent $(n, e)$ and the encrypted flag $c$ (this is unchanged for all server connections). Upon connecting to the server, a 32-byte key $\mathcal{K}$ and a 16-byte IV (used for AES-CBC) are generated.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xbb7bbd6bb62e0cbbc776f9ceb974eca6f3d30295d31caf456d9bec9b98822de3cb941d3a40a0fba531212f338e7677eb2e3ac05ff28629f248d0bc9f98950ce7e5e637c9764bb7f0b53c2532f3ce47ecbe1205172f8644f28f039cae6f127ccf1137ac88d77605782abe4560ae3473d9fb93886625a6caa7f3a5180836f460c98bbc60df911637fa3f52556fa12a376e3f5f87b5956b705e4e42a30ca38c79e7cd94c9b53a7b4344f2e9de06057da350f3cd9bd84f9af28e137e5190cbe90f046f74ce22f4cd747a1cc9812a1e057b97de39f664ab045700c40c9ce16cf1742d992c99e3537663ede6673f53fbb2f3c28679fb747ab9db9753e692ed353e3551</span>
+e <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x10001</span>
+</code></pre></div><p>We are allow to interact with the server by sending $c \in [0, n)$. We will then obtain $s$:</p>
+<p>$$s := \text{AES-CBC}_\mathcal{K}(c^d\ \text{mod}\ n),$$</p>
+<p>where $d$ is the private exponent of RSA, and the IV used in $\text{AES-CBC}$ is the last ciphertext block (or IV if no encryptions are done yet). The objective is to recover the flag.</p>
 
       </div></div>
 

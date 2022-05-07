@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 18 Nov 2021 16:05:02 +0800</lastBuildDate><atom:link href="/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HKCERT CTF 2021 Postmortem (III): The Reverse Challenges</title>
-      <link>/posts/2021-11-18-hkcert-ctf-3/</link>
+      <link>/posts/2021/2021-11-18-hkcert-ctf-3/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:02 +0800</pubDate>
       
-      <guid>/posts/2021-11-18-hkcert-ctf-3/</guid>
+      <guid>/posts/2021/2021-11-18-hkcert-ctf-3/</guid>
       <description>As the third part of the series, three reversing challenges will be included: The Hardest Path, A Junior Mathematician and Let&#39;s Chill.
 最難行的路 / The Hardest Path (Reverse) Challenge Summary  寧願不揀最易的路 行極還未到
 寧願你最後未傾慕 但信念安好
@@ -26,19 +26,19 @@ nc HOST PORT We are given two Python files excerpted below:</description>
     
     <item>
       <title>Union CTF 2021 (I): exah</title>
-      <link>/posts/2021-02-23-union-ctf-exah/</link>
+      <link>/posts/2021/2021-02-23-union-ctf-exah/</link>
       <pubDate>Tue, 23 Feb 2021 00:45:00 +0800</pubDate>
       
-      <guid>/posts/2021-02-23-union-ctf-exah/</guid>
+      <guid>/posts/2021/2021-02-23-union-ctf-exah/</guid>
       <description>I was playing Union CTF with @blackb6a last week. Since this CTF is prepared by cr0wn where Jack and hyperreality were in (they made CryptoHack), I am convinced that the CTF will be fun. Turns out I wasn&#39;t disappointed at all. I will be writing three or four posts on the challenges, and the first of the series covers on exah, the reversing challenge I spent most of my time (yet not solving it).</description>
     </item>
     
     <item>
       <title>CONFidence 2020 CTF: Team Trees</title>
-      <link>/posts/2020-09-08-confidencectf-team-trees/</link>
+      <link>/posts/2020/2020-09-08-confidencectf-team-trees/</link>
       <pubDate>Tue, 08 Sep 2020 18:30:00 +0800</pubDate>
       
-      <guid>/posts/2020-09-08-confidencectf-team-trees/</guid>
+      <guid>/posts/2020/2020-09-08-confidencectf-team-trees/</guid>
       <description>This week, we have teamed up as @blackb6a to play CONFidence 2020 CTF. We end up ranked 15, but we are more proud of ourselves able to solve a reversing challenge called Team Trees (395 points, 5 solves).
 In particular, we are the first-to-solve to the challenge. It took us around two hours to win the flag. This writeup is written by @harrier_lcc and @mystiz613.
 Challenge Summary  We wanted to plant a lot of trees, but it&#39;s going kinda slow.</description>
@@ -46,10 +46,10 @@ Challenge Summary  We wanted to plant a lot of trees, but it&#39;s going kinda s
     
     <item>
       <title>PlaidCTF 2020: A Plaid Puzzle</title>
-      <link>/posts/2020-04-21-plaidctf-puzzle/</link>
+      <link>/posts/2020/2020-04-21-plaidctf-puzzle/</link>
       <pubDate>Tue, 21 Apr 2020 20:25:00 +0800</pubDate>
       
-      <guid>/posts/2020-04-21-plaidctf-puzzle/</guid>
+      <guid>/posts/2020/2020-04-21-plaidctf-puzzle/</guid>
       <description>This challenge is solved with R3x and @mahal0z as a part of @shellphish. Thanks @piazzt and @perribus for reviewing and giving me suggestions on this write-up.
 Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the game, you are able to control as the player and you could move around and mess with a string. The game is available online on PuzzleScript.net. Below is a screenshot of the game:</description>
     </item>

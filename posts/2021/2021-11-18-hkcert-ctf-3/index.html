@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>HKCERT CTF 2021 Postmortem (III): The Reverse Challenges :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="As the third part of the series, three reversing challenges will be included: The Hardest Path, A Junior Mathematician and Let&#39;s Chill.
+最難行的路 / The Hardest Path (Reverse) Challenge Summary  寧願不揀最易的路 行極還未到
+寧願你最後未傾慕 但信念安好
+在意的 不再是 愛的煩惱
+是哪樣做人 更清高
+餘生那段旅途
+與哪類人共舞
+When you think reverse engineering is hard, try working on reverse engineering challenges those need your algorithmic thinking skills!
+nc HOST PORT We are given two Python files excerpted below:" />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021/2021-11-18-hkcert-ctf-3/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HKCERT CTF 2021 Postmortem (III): The Reverse Challenges">
+<meta property="og:description" content="As the third part of the series, three reversing challenges will be included: The Hardest Path, A Junior Mathematician and Let&#39;s Chill." />
+<meta property="og:url" content="/posts/2021/2021-11-18-hkcert-ctf-3/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-11-18-hkcert-ctf/thumbnail-3.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-11-18 16:05:02 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021/2021-11-18-hkcert-ctf-3/">HKCERT CTF 2021 Postmortem (III): The Reverse Challenges</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-11-18 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/hkcert-ctf/">hkcert-ctf</a>&nbsp;
+    
+    #<a href="/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="/tags/reverse/">reverse</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-11-18-hkcert-ctf/thumbnail-3.png" class="post-cover center" alt="HKCERT CTF 2021 Postmortem (III): The Reverse Challenges" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>As the third part of the series, three reversing challenges will be included: <em>The Hardest Path</em>, <em>A Junior Mathematician</em> and <em>Let's Chill</em>.</p>
+
+<h2 id="最難行的路--the-hardest-path-reverse">最難行的路 / The Hardest Path (Reverse)<a href="#最難行的路--the-hardest-path-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>寧願不揀最易的路 行極還未到</em><br>
+<em>寧願你最後未傾慕 但信念安好</em><br>
+<em>在意的 不再是 愛的煩惱</em><br>
+<em>是哪樣做人 更清高</em><br>
+<em>餘生那段旅途</em><br>
+<em>與哪類人共舞</em></p>
+
+<p>When you think reverse engineering is hard, try working on reverse engineering challenges those need your algorithmic thinking skills!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT</code></pre></div></blockquote>
+
+<p>We are given two Python files excerpted below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># lost.py</span>
+
+<span style="color:#f92672">import</span> os
+
+mystery <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;NEWS&#39;</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_29aa7a86665899ed</span>(_050ca071ab51aece): <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;😵‍💫💫🧱&#39;</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_f42fb5e137443877</span>(_a78810bb76cc7d70, <span style="color:#f92672">*</span>_ab1bbf35017f4f42):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_e6aea2db2242b19f</span>(_41d28eb8c27952c3):
+        <span style="color:#66d9ef">if</span> len(_41d28eb8c27952c3) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> _a78810bb76cc7d70: <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;🤷🏁😕&#39;</span>)
+            <span style="color:#66d9ef">return</span>
+        _03d38fa3a589db14, _41d28eb8c27952c3 <span style="color:#f92672">=</span> _41d28eb8c27952c3[<span style="color:#ae81ff">0</span>], _41d28eb8c27952c3[<span style="color:#ae81ff">1</span>:]
+        <span style="color:#66d9ef">return</span> globals()[_ab1bbf35017f4f42[mystery<span style="color:#f92672">.</span>index(_03d38fa3a589db14)]](_41d28eb8c27952c3) <span style="color:#66d9ef">if</span> _03d38fa3a589db14 <span style="color:#f92672">in</span> mystery <span style="color:#66d9ef">else</span> _e6aea2db2242b19f(_41d28eb8c27952c3)
+
+    <span style="color:#66d9ef">return</span> _e6aea2db2242b19f
+
+_328518a497015157 <span style="color:#f92672">=</span> _f42fb5e137443877(<span style="color:#66d9ef">False</span>, <span style="color:#e6db74">&#34;_ef5d07da6a407ff3&#34;</span>, <span style="color:#e6db74">&#34;_3f49b6a9053121fb&#34;</span>, <span style="color:#e6db74">&#34;_60de30732830eab8&#34;</span>, <span style="color:#e6db74">&#34;_3ff69bef8add0e90&#34;</span>)
+_5551904aa8bcdf8f <span style="color:#f92672">=</span> _29aa7a86665899ed
+_3ff69bef8add0e90 <span style="color:#f92672">=</span> _f42fb5e137443877(<span style="color:#66d9ef">False</span>, <span style="color:#e6db74">&#34;_328518a497015157&#34;</span>, <span style="color:#e6db74">&#34;_4403b7c481dc4765&#34;</span>, <span style="color:#e6db74">&#34;_be69bd3c24b2b668&#34;</span>, <span style="color:#e6db74">&#34;_45b7590f73dac4d3&#34;</span>)
+<span style="color:#75715e"># ...40398 lines omitted (Lines 17 - 40417)...</span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># chall.py</span>
+
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> base64
+<span style="color:#f92672">import</span> hashlib
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">work</span>():
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+    
+    challenge <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">8</span>)
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🔧 </span><span style="color:#e6db74">{</span>base64<span style="color:#f92672">.</span>b64encode(challenge)<span style="color:#f92672">.</span>decode()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+    response <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(input(<span style="color:#e6db74">&#39;🔩 &#39;</span>))
+    h <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha256(challenge <span style="color:#f92672">+</span> response)<span style="color:#f92672">.</span>digest()
+    <span style="color:#66d9ef">return</span> h<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00\x00\x00</span><span style="color:#e6db74">&#39;</span>)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">attempt</span>(data):
+    <span style="color:#f92672">from</span> lost <span style="color:#f92672">import</span> _328518a497015157
+
+    _328518a497015157(data)
+    flag <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;FLAG&#39;</span>, <span style="color:#e6db74">&#39;hkcert21{***REDACTED***}&#39;</span>)
+    print(flag)
+
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    <span style="color:#66d9ef">if</span> work():
+        data <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#39;🥺 &#39;</span>)
+        attempt(data)
+    <span style="color:#66d9ef">else</span>:
+        print(<span style="color:#e6db74">&#39;😡&#39;</span>)</code></pre></div>
+<p>The objective is to send a valid input to print the flag.</p>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="understanding-the-script">Understanding the script<a href="#understanding-the-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p><code>lost.py</code> is really bulky (3.4 MB) but repetitive. Before we look into lines 17 up to 40417, let's look at the two methods <code>_29aa7a86665899ed</code> and <code>_f42fb5e137443877</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_29aa7a86665899ed</span>(_050ca071ab51aece): <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;😵‍💫💫🧱&#39;</span>)</code></pre></div>
+<p>The first method simply raise an exception. We should not call this if we want the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_f42fb5e137443877</span>(_a78810bb76cc7d70, <span style="color:#f92672">*</span>_ab1bbf35017f4f42):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_e6aea2db2242b19f</span>(_41d28eb8c27952c3):
+        <span style="color:#66d9ef">if</span> len(_41d28eb8c27952c3) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> _a78810bb76cc7d70: <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;🤷🏁😕&#39;</span>)
+            <span style="color:#66d9ef">return</span>
+        _03d38fa3a589db14, _41d28eb8c27952c3 <span style="color:#f92672">=</span> _41d28eb8c27952c3[<span style="color:#ae81ff">0</span>], _41d28eb8c27952c3[<span style="color:#ae81ff">1</span>:]
+        <span style="color:#66d9ef">return</span> globals()[_ab1bbf35017f4f42[mystery<span style="color:#f92672">.</span>index(_03d38fa3a589db14)]](_41d28eb8c27952c3) <span style="color:#66d9ef">if</span> _03d38fa3a589db14 <span style="color:#f92672">in</span> mystery <span style="color:#66d9ef">else</span> _e6aea2db2242b19f(_41d28eb8c27952c3)
+
+    <span style="color:#66d9ef">return</span> _e6aea2db2242b19f</code></pre></div>
+<p>Looks unreadable. Let's rewrite the method:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">outer</span>(done, <span style="color:#f92672">*</span>next_steps):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inner</span>(payload):
+        <span style="color:#66d9ef">if</span> len(payload) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> done: <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;🤷🏁😕&#39;</span>)
+            <span style="color:#66d9ef">return</span>
+        current, payload <span style="color:#f92672">=</span> payload[<span style="color:#ae81ff">0</span>], payload[<span style="color:#ae81ff">1</span>:]
+        <span style="color:#66d9ef">return</span> globals()[next_steps[<span style="color:#e6db74">&#39;NEWS&#39;</span><span style="color:#f92672">.</span>index(current)]](payload) <span style="color:#66d9ef">if</span> current <span style="color:#f92672">in</span> <span style="color:#e6db74">&#39;NEWS&#39;</span> <span style="color:#66d9ef">else</span> inner(payload)
+
+    <span style="color:#66d9ef">return</span> inner</code></pre></div>
+<p>For the <code>inner</code> function, it reads the first character from <code>payload</code>. If <code>current</code> is either <code>N</code>, <code>E</code>, <code>W</code> or <code>S</code>, then it would call some function with the remaining characters from <code>payload</code>. Otherwise, it would call itself with the first character dropped.</p>
+
+<p>What does the <em>some function</em> I meant above? It depends on <code>outer</code>. As an example, we will look at the function <code>_328518a497015157</code>, the first one we call with our input.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">_328518a497015157 <span style="color:#f92672">=</span> outer(<span style="color:#66d9ef">False</span>, <span style="color:#e6db74">&#34;_ef5d07da6a407ff3&#34;</span>, <span style="color:#e6db74">&#34;_3f49b6a9053121fb&#34;</span>, <span style="color:#e6db74">&#34;_60de30732830eab8&#34;</span>, <span style="color:#e6db74">&#34;_3ff69bef8add0e90&#34;</span>)</code></pre></div>
+<p>The following are six example inputs. It would either call the second, third, fourth or fifth parameter depending on the first character of the input. In rare cases, it would call itself (if the input does not start with <code>N</code>, <code>E</code>, <code>W</code> nor <code>S</code>) or even raise an exception (if the input is empty).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">_328518a497015157(<span style="color:#e6db74">&#34;NEVERLAND&#34;</span>) <span style="color:#75715e"># _ef5d07da6a407ff3(&#34;EVERLAND&#34;) 👈 Starts with N</span>
+_328518a497015157(<span style="color:#e6db74">&#34;ELSEWHERE&#34;</span>) <span style="color:#75715e"># _3f49b6a9053121fb(&#34;LSEWHERE&#34;) 👈 Starts with E</span>
+_328518a497015157(<span style="color:#e6db74">&#34;WATERFALL&#34;</span>) <span style="color:#75715e"># _60de30732830eab8(&#34;ATERFALL&#34;) 👈 Starts with W</span>
+_328518a497015157(<span style="color:#e6db74">&#34;SPECTATOR&#34;</span>) <span style="color:#75715e"># _3ff69bef8add0e90(&#34;PECTATOR&#34;) 👈 Starts with S</span>
+_328518a497015157(<span style="color:#e6db74">&#34;OTHERWISE&#34;</span>) <span style="color:#75715e"># _328518a497015157(&#34;THERWISE&#34;) 👈 Does not start with N, E, W nor S</span>
+_328518a497015157(<span style="color:#e6db74">&#34;&#34;</span>)          <span style="color:#75715e"># Exception: 🤷🏁😕</span></code></pre></div>
+<p>Notably, there is exactly one <code>outer</code> call with the first parameter being <code>True</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">_8b0eb6f195ae182a <span style="color:#f92672">=</span> outer(<span style="color:#66d9ef">True</span>, <span style="color:#e6db74">&#34;_92ccf583b1b065ea&#34;</span>, <span style="color:#e6db74">&#34;_d3084505a4a12123&#34;</span>, <span style="color:#e6db74">&#34;_e335a503c47e5243&#34;</span>, <span style="color:#e6db74">&#34;_ebff1548ca6e8dbd&#34;</span>)</code></pre></div>
+<p>Let's use the same set of example inputs - there is a subtle difference. When the input is empty, it no longer raises an exception.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">_8b0eb6f195ae182a(<span style="color:#e6db74">&#34;NEVERLAND&#34;</span>) <span style="color:#75715e"># _92ccf583b1b065ea(&#34;EVERLAND&#34;) 👈 Starts with N</span>
+_8b0eb6f195ae182a(<span style="color:#e6db74">&#34;ELSEWHERE&#34;</span>) <span style="color:#75715e"># _d3084505a4a12123(&#34;LSEWHERE&#34;) 👈 Starts with E</span>
+_8b0eb6f195ae182a(<span style="color:#e6db74">&#34;WATERFALL&#34;</span>) <span style="color:#75715e"># _e335a503c47e5243(&#34;ATERFALL&#34;) 👈 Starts with W</span>
+_8b0eb6f195ae182a(<span style="color:#e6db74">&#34;SPECTATOR&#34;</span>) <span style="color:#75715e"># _ebff1548ca6e8dbd(&#34;PECTATOR&#34;) 👈 Starts with S</span>
+_8b0eb6f195ae182a(<span style="color:#e6db74">&#34;OTHERWISE&#34;</span>) <span style="color:#75715e"># _8b0eb6f195ae182a(&#34;THERWISE&#34;) 👈 Does not start with N, E, W nor S</span>
+_8b0eb6f195ae182a(<span style="color:#e6db74">&#34;&#34;</span>)          <span style="color:#75715e"># return nothing</span></code></pre></div>
+<p>Since we do not want to raise errors, we would like to find an input such that it would lead to a chain of function calls that finishes with <code>_8b0eb6f195ae182a(&quot;&quot;)</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">_328518a497015157(<span style="color:#e6db74">&#34;INPUT...&#34;</span>)
+<span style="color:#75715e"># that calls _XXXXXXXXXXXXXXXX(&#34;NPUT...&#34;)</span>
+<span style="color:#75715e">#  that calls _XXXXXXXXXXXXXXXX(&#34;PUT...&#34;)</span>
+<span style="color:#75715e">#   ...</span>
+<span style="color:#75715e">#    that calls _XXXXXXXXXXXXXXXX(&#34;.&#34;)</span>
+<span style="color:#75715e">#     that calls _8b0eb6f195ae182a(&#34;&#34;)</span>
+<span style="color:#75715e"># does not throw error!</span></code></pre></div>
+<h4 id="visualizing-the-function-calls">Visualizing the function calls<a href="#visualizing-the-function-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>At this stage, maybe we could draw a directed graph mentioning how the function calls are triggered. For example, we will use the following subgraph to describe the functions <code>_328518a497015157</code> can reach:</p>
+
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
+_328518a497015157-&amp;gt;_ef5d07da6a407ff3[label=&amp;#34;N&amp;#34;]
+_328518a497015157-&amp;gt;_3f49b6a9053121fb[label=&amp;#34;E&amp;#34;]
+_328518a497015157-&amp;gt;_60de30732830eab8[label=&amp;#34;W&amp;#34;]
+_328518a497015157-&amp;gt;_3ff69bef8add0e90[label=&amp;#34;S&amp;#34;]
+_328518a497015157-&amp;gt;_328518a497015157[style=dashed]
+
+  }
+  </div>
+</div>    
+
+<p>We can see that <code>_ef5d07da6a407ff3</code> raises the 😵‍💫💫🧱 exception. Let's mark it with a dashed border because it would lead us to nowhere.</p>
+
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;dashed,rounded&amp;#34;]
+    _ef5d07da6a407ff3
+
+  }
+  </div>
+</div>    
+
+<p>Since the graph could go very large (there are 40401 vertices), I will only include part of the graph below:</p>
+
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
+_328518a497015157-&amp;gt;_ef5d07da6a407ff3[label=&amp;#34;N&amp;#34;]
+_328518a497015157-&amp;gt;_3f49b6a9053121fb[label=&amp;#34;E&amp;#34;]
+_328518a497015157-&amp;gt;_3ff69bef8add0e90[label=&amp;#34;S&amp;#34;]
+_328518a497015157-&amp;gt;_60de30732830eab8[label=&amp;#34;W&amp;#34;]
+_328518a497015157-&amp;gt;_328518a497015157[style=dashed]
+_3ff69bef8add0e90-&amp;gt;_328518a497015157[label=&amp;#34;N&amp;#34;]
+_3ff69bef8add0e90-&amp;gt;_4403b7c481dc4765[label=&amp;#34;E&amp;#34;]
+_3ff69bef8add0e90-&amp;gt;_45b7590f73dac4d3[label=&amp;#34;S&amp;#34;]
+_3ff69bef8add0e90-&amp;gt;_be69bd3c24b2b668[label=&amp;#34;W&amp;#34;]
+_3ff69bef8add0e90-&amp;gt;_3ff69bef8add0e90[style=dashed]
+_45b7590f73dac4d3-&amp;gt;_3ff69bef8add0e90[label=&amp;#34;N&amp;#34;]
+_45b7590f73dac4d3-&amp;gt;_e18a56066b9fad85[label=&amp;#34;E&amp;#34;]
+_45b7590f73dac4d3-&amp;gt;_fd5aa08fd7e3bbf8[label=&amp;#34;S&amp;#34;]
+_45b7590f73dac4d3-&amp;gt;_7a9d4be175a7d351[label=&amp;#34;W&amp;#34;]
+_45b7590f73dac4d3-&amp;gt;_45b7590f73dac4d3[style=dashed]
+_fd5aa08fd7e3bbf8-&amp;gt;_45b7590f73dac4d3[label=&amp;#34;N&amp;#34;]
+_fd5aa08fd7e3bbf8-&amp;gt;_cdc4ac909cc2968d[label=&amp;#34;E&amp;#34;]
+_fd5aa08fd7e3bbf8-&amp;gt;_7dbe20d51cdf3195[label=&amp;#34;S&amp;#34;]
+_fd5aa08fd7e3bbf8-&amp;gt;_65f5c5d291c9d575[label=&amp;#34;W&amp;#34;]
+_fd5aa08fd7e3bbf8-&amp;gt;_fd5aa08fd7e3bbf8[style=dashed]
+_7dbe20d51cdf3195-&amp;gt;_fd5aa08fd7e3bbf8[label=&amp;#34;N&amp;#34;]
+_7dbe20d51cdf3195-&amp;gt;_805c0aea921e78c0[label=&amp;#34;E&amp;#34;]
+_7dbe20d51cdf3195-&amp;gt;_f2a00ce6abf90e26[label=&amp;#34;W&amp;#34;]
+_7dbe20d51cdf3195-&amp;gt;_69b6af99d9ec1424[label=&amp;#34;S&amp;#34;]
+_7dbe20d51cdf3195-&amp;gt;_7dbe20d51cdf3195[style=dashed]
+_805c0aea921e78c0-&amp;gt;_cdc4ac909cc2968d[label=&amp;#34;N&amp;#34;]
+_805c0aea921e78c0-&amp;gt;_8792d51c0c90d618[label=&amp;#34;E&amp;#34;]
+_805c0aea921e78c0-&amp;gt;_7dbe20d51cdf3195[label=&amp;#34;W&amp;#34;]
+_805c0aea921e78c0-&amp;gt;_0f3b311bbfff72dd[label=&amp;#34;S&amp;#34;]
+_805c0aea921e78c0-&amp;gt;_805c0aea921e78c0[style=dashed]
+_8792d51c0c90d618-&amp;gt;_d1211b2b3302974c[label=&amp;#34;E&amp;#34;]
+_8792d51c0c90d618-&amp;gt;_01c8e59f068ec3f3[label=&amp;#34;N&amp;#34;]
+_8792d51c0c90d618-&amp;gt;_805c0aea921e78c0[label=&amp;#34;W&amp;#34;]
+_8792d51c0c90d618-&amp;gt;_db538ba7c5acf45d[label=&amp;#34;S&amp;#34;]
+
+_01c8e59f068ec3f3-&amp;gt;more1
+
+more1[label=&amp;#34;...&amp;#34;, shape=&amp;#34;plaintext&amp;#34;]
+
+_328518a497015157[label=&amp;#34;_328518...&amp;#34;,style=&amp;#34;filled,rounded&amp;#34;]
+_ef5d07da6a407ff3[label=&amp;#34;_ef5d07...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_3f49b6a9053121fb[label=&amp;#34;_3f49b6...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_3ff69bef8add0e90[label=&amp;#34;_3ff69b...&amp;#34;]
+_60de30732830eab8[label=&amp;#34;_60de30...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_4403b7c481dc4765[label=&amp;#34;_4403b7...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_be69bd3c24b2b668[label=&amp;#34;_be69bd...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_e18a56066b9fad85[label=&amp;#34;_e18a56...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_7a9d4be175a7d351[label=&amp;#34;_7a9d4b...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_cdc4ac909cc2968d[label=&amp;#34;_cdc4ac...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_65f5c5d291c9d575[label=&amp;#34;_65f5c5...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_f2a00ce6abf90e26[label=&amp;#34;_f2a00c...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_69b6af99d9ec1424[label=&amp;#34;_69b6af...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_0f3b311bbfff72dd[label=&amp;#34;_0f3b31...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_45b7590f73dac4d3[label=&amp;#34;_45b759...&amp;#34;]
+_fd5aa08fd7e3bbf8[label=&amp;#34;_fd5aa0...&amp;#34;]
+_7dbe20d51cdf3195[label=&amp;#34;_7dbe20...&amp;#34;]
+_805c0aea921e78c0[label=&amp;#34;_805c0a...&amp;#34;]
+_8792d51c0c90d618[label=&amp;#34;_8792d5...&amp;#34;]
+_01c8e59f068ec3f3[label=&amp;#34;_01c8e5...&amp;#34;]
+_d1211b2b3302974c[label=&amp;#34;_d1211b...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+_db538ba7c5acf45d[label=&amp;#34;_db538b...&amp;#34;,style=&amp;#34;dashed,rounded&amp;#34;]
+
+  }
+  </div>
+</div>    
+
+<p>Up to now, some may know that the nodes may form a two-dimensional grid so far. For example, walking <code>N</code> followed by <code>S</code> would always return to itself (unless you hit the deadend). Of course, I am the challenge author so I know it is a 2D grid. You can verify it by drawing the grid too. Below is the grid I made. Note that the red square on the top-left is the function <code>_328518a497015157</code> (the starting function), and the red square on the bottom-right is the function <code>_8b0eb6f195ae182a</code> (the finishing function). After all, it is a maze. Amazing!</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-11-18-hkcert-ctf/the-hardest-path-maze.png"   />
+    
+  </figure>
+
+
+
+<h4 id="dodging-a-builtin-exception">Dodging a built-in exception<a href="#dodging-a-builtin-exception" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>It seems that we are required to find an arbitrary path between two ends. However, for most of the path it will still print <code>no good!</code>. Why? Let's patch <code>chall.py</code> to see what error it actually shows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#f92672">- try:
+</span><span style="color:#f92672">-     _328518a497015157(data)
+</span><span style="color:#f92672">-     flag = os.environ.get(&#39;FLAG&#39;, &#39;hkcert21{***REDACTED***}&#39;)
+</span><span style="color:#f92672">-     print(flag)
+</span><span style="color:#f92672">- except:
+</span><span style="color:#f92672">-     print(&#39;no good!&#39;)
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ _328518a497015157(data)
+</span><span style="color:#a6e22e">+ flag = os.environ.get(&#39;FLAG&#39;, &#39;hkcert21{***REDACTED***}&#39;)
+</span><span style="color:#a6e22e">+ print(flag)
+</span></code></pre></div>
+<p>Sending an arbitrary (incorrect) path that traverses from the beginning to the end, we obtain the below error:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">RecursionError: maximum recursion depth exceeded while calling a Python object</code></pre></div>
+<p>Hmm, stack overflow. That means that we need to find a short path from the ends. We can use breadth-first search (BFS) to find a shortest path. We actually can craft an input that does not raise an exception when passed to <code>_328518a497015157</code>. Below is a corresponding input:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">SSSSEENNEESSSSEENNEEEEEEEESSSSEESSSSWWSSSSEESSEESSSSWWSSSSWWWWWWSSWWSSSSSSEEEESSSSEESSEESSSSSSSSEENNEESSEEEESSEESSSSEESSEEEEEEEESSEEEESSSSEEEEEENNNNNNEENNWWNNEEEENNNNEEEENNEEEEEESSSSWWSSWWSSSSEEEESSWWSSEESSEEEESSSSEENNNNNNEEEESSEESSEESSEEEESSEENNEENNWWNNEEEEEESSEEEEEENNNNWWWWNNWWNNNNWWNNEEEEEENNEENNWWWWNNWWNNEENNEEEEEEEESSEESSEESSSSEESSEEEEEENNEESSSSSSEEEEEENNNNNNNNNNNNNNNNEEEEEEEEEEEESSEESSSSWWWWSSSSSSWWSSEESSEEEEEENNNNEESSEESSEEEENNEENNNNEEEEEENNEENNWWWWWWNNNNWWSSSSWWSSSSWWWWNNNNNNNNNNEENNEENNEENNEEEESSEESSSSEEEEEESSEEEEEEEENNNNEENNNNWWNNEEEENNNNEEEEEESSSSSSSSSSSSSSSSSSSSSSEESSSSEEEEEESSEESSWWSSSSEESSSSEEEENNEEEESSWWSSSSSSSSWWSSWWWWWWSSWWWWSSWWNNNNWWWWWWSSEESSWWSSWWSSEESSSSSSSSSSWWSSEEEESSSSSSEEEESSSSEESSEESSSSEEEESSEENNEEEESSSSWWSSEESSWWSSSSWWWWNNWWSSSSEESSEEEESSWWSSSSWWWWNNWWNNWWSSSSWWWWWWWWWWWWWWSSSSSSWWWWSSEESSWWSSWWWWWWSSWWWWWWWWSSSSEESSEEEEEESSSSSSEEEESSSSEEEEEESSWWWWSSSSSSSSSSSSEEEEEESSEEEENNEEEENNEEEENNEEEENNEEEESSEENNEEEESSSSSSSSWWSSWWSSSSWWSSSSSSEESSSSEEEESSEENNEESSEEEE</code></pre></div>
+<p>I have carefully generated the maze to accept only the shortest paths. Even those paths those are slightly longer will be rejected.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-11-18-hkcert-ctf/the-hardest-path-algo-ja5on.png"   />
+    
+      <figcaption class="right" >Credit: Ja5on in team AVADA KEDAVRA</figcaption>
+    
+  </figure>
+
+
+
+<div class="alert info">
+  There were two players asking me to increase the recursion limit. Of course I did not update that because this is part of the challenge.
+</div>
+
+
+<h2 id="中二病人--a-junior-mathematician-reverse">中二病人 / A Junior Mathematician (Reverse)<a href="#中二病人--a-junior-mathematician-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>平凡人笑吧 望着你於地上爬</em><br>
+<em>靈魂和熱血 如砂礫風化</em><br>
+<em>你嘲笑的 是那時你都一樣</em><br>
+<em>離奇神化</em><br>
+<em>這自由密碼 卻伴隨成長退化</em></p>
+
+<p>Do you know that you can write programs with numbers? Does it mean that everyone is born to be programmers?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">./chall.py prog.frac
+hkcert21{***REDACTED***}
+(:</code></pre></div></blockquote>
+
+<p>We are given a FRACTRAN interpreter implemented in Python <code>chall.py</code> and a FRACTRAN program <code>prog.frac</code>. The initial value is set to $2 \cdot 3^{m_1} \cdot 5^{m_2} \cdot ...$ where $m_1m_2...$ is the flag. Also, $\text{chr}(k\ \text{mod}\ 128)$ will be printed whenever the state is $2^{k}$.</p>
+
+<p>It is known that the program will be printing <code>(:</code> if given the correct flag. The goal is, of course, to find the flag.</p>
+
+<h3 id="motivation">Motivation<a href="#motivation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>When I was in the secondary school, I learned about the existence of FRACTRAN on Project Euler<sup class="footnote-ref" id="fnref:pe-308"><a class="footnote" href="#fn:pe-308">1</a></sup> and was very excited about it.</p>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>We can let $n$ be the state and its prime factorization being $n = {p_1}^{k_1} {p_2}^{k_2} ... {p_m}^{k_m}$. Suppose that we have a fraction $u/v$ with</p>
+
+<p><span  class="math">\[\begin{cases}
+u = {p_1}^{s_1} {p_2}^{s_2} ... {p_m}^{s_m} \\
+v = {p_1}^{t_1} {p_2}^{t_2} ... {p_m}^{t_m}
+\end{cases}.\]</span></p>
+
+<p>Then it is equivalent to the below lines of pseudo-Python code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># &#34;if u/v * n is an integer&#34;</span>
+<span style="color:#66d9ef">if</span> k_1 <span style="color:#f92672">&gt;=</span> s_1 <span style="color:#f92672">and</span> k_2 <span style="color:#f92672">&gt;=</span> s_2 <span style="color:#f92672">and</span> <span style="color:#f92672">...</span> <span style="color:#f92672">and</span> k_m <span style="color:#f92672">&gt;=</span> s_m:
+    <span style="color:#75715e"># update &#34;n = u/v * n&#34;</span>
+    k_1 <span style="color:#f92672">-=</span> s_1
+    k_2 <span style="color:#f92672">-=</span> s_2
+    <span style="color:#f92672">...</span>
+    k_m <span style="color:#f92672">-=</span> s_m
+
+    k_1 <span style="color:#f92672">+=</span> t_1
+    k_2 <span style="color:#f92672">+=</span> t_2
+    <span style="color:#f92672">...</span>
+    k_m <span style="color:#f92672">+=</span> t_m</code></pre></div>
+<p>With that idea in mind, I wrote a program in <em>Sagemath</em> that could convert FRACTRAN programs into Python scripts:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">primes <span style="color:#f92672">=</span> [<span style="color:#ae81ff">2</span>]
+<span style="color:#75715e"># If p is the n-th prime, return n</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_n</span>(p):
+    <span style="color:#66d9ef">while</span> primes[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;</span> p:
+        primes<span style="color:#f92672">.</span>append(next_prime(primes[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))
+    <span style="color:#66d9ef">return</span> primes<span style="color:#f92672">.</span>index(p)
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;prog.frac&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    fractions <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+fractions <span style="color:#f92672">=</span> [tuple(map(int, fraction<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;/&#39;</span>))) <span style="color:#66d9ef">for</span> fraction <span style="color:#f92672">in</span> fractions]
+
+print(<span style="color:#e6db74">&#39;while True:&#39;</span>)
+
+<span style="color:#66d9ef">for</span> u, v <span style="color:#f92672">in</span> fractions:
+    condition <span style="color:#f92672">=</span> []
+    action    <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> p, k <span style="color:#f92672">in</span> factor(v):
+        condition<span style="color:#f92672">.</span>append((get_n(p), k))
+        action<span style="color:#f92672">.</span>append((get_n(p), <span style="color:#f92672">-</span>k))
+    <span style="color:#66d9ef">for</span> p, k <span style="color:#f92672">in</span> factor(u):
+        action<span style="color:#f92672">.</span>append((get_n(p), k))
+
+    action_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;; &#39;</span><span style="color:#f92672">.</span>join([<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;p_</span><span style="color:#e6db74">{</span>p<span style="color:#e6db74">}</span><span style="color:#e6db74"> += </span><span style="color:#e6db74">{</span>k<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">for</span> p, k <span style="color:#f92672">in</span> action]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;; continue&#39;</span>
+
+    <span style="color:#66d9ef">if</span> len(condition) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;  if True: </span><span style="color:#e6db74">{</span>action_string<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+    <span style="color:#66d9ef">else</span>:
+        condition_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; and &#39;</span><span style="color:#f92672">.</span>join([<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;p_</span><span style="color:#e6db74">{</span>p<span style="color:#e6db74">}</span><span style="color:#e6db74"> &gt;= </span><span style="color:#e6db74">{</span>k<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">for</span> p, k <span style="color:#f92672">in</span> condition])
+        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;  if </span><span style="color:#e6db74">{</span>condition_string<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>action_string<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;  break&#39;</span>)</code></pre></div>
+<p>I also added extra lines to the generated code to align with the functionalities defined in <code>chall.py</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#a6e22e">+ p = [0 for _ in range(2000)]
+</span><span style="color:#a6e22e">+ 
+</span><span style="color:#a6e22e">+ flag = b&#39;...&#39;
+</span><span style="color:#a6e22e">+ p[1] = 1
+</span><span style="color:#a6e22e">+ for i, c in enumerate(flag):
+</span><span style="color:#a6e22e">+   p[i+2] = c
+</span><span style="color:#a6e22e">+ 
+</span><span style="color:#a6e22e"></span>  while True:
+<span style="color:#a6e22e">+   if sum(p) == p[0]: print(chr(p[0] &amp; 0x7f), end=&#39;&#39;)
+</span><span style="color:#a6e22e"></span>    if p[2] &gt;= 2: p[2] += -2; p[102] += 1; continue
+    if p[3] &gt;= 2: p[3] += -2; p[103] += 1; continue
+    if p[4] &gt;= 2: p[4] += -2; p[104] += 1; continue
+    if p[5] &gt;= 2: p[5] += -2; p[105] += 1; continue
+    if p[6] &gt;= 2: p[6] += -2; p[106] += 1; continue
+    ...
+</code></pre></div>
+<p>The full generated code is available <a href="https://gist.github.com/samueltangz/cc13eff4804e8a8a87c498baccf55223">here</a>. Even though we cannot fully understand what the <code>.frac</code> program does for now, it runs faster because we do not need to compute large numbers anymore.</p>
+
+<p>From the generated code, we can see that there are a number of segments:</p>
+
+<ul>
+<li><strong>[L10-L709]</strong> Two units of $p_{k}$ is consumed for one unit of $p_{k+100}$ ($2 \leq k \leq 701$).</li>
+<li><strong>[L710]</strong> $p_1$ will be converted to $p_{802}$.</li>
+<li><strong>[L711-L1510]</strong> One unit of $p_i$ (and sometimes one unit of $p_k$) is consumed for one unit of $p_{i+1}$ ($2 \leq k \leq 801$ and $802 \leq i \leq 1601$).</li>
+<li><strong>[L1511-L2310]</strong> One unit of $p_i$ is consumed for one unit of $p_{1603}$ ($802 \leq i \leq 1601)$.</li>
+<li><strong>[L2311-L5510]</strong> One unit of $p_i$ and $p_{1602}$ is consumed for one unit of $p_{1603}$, and the remaining $p_i$'s will be disposed ($2 \leq i \leq 1601$).</li>
+<li><strong>[L5511-L5517]</strong> Prints <code>(:</code> if $p_{1602} = 1$, and <code>):</code> if $p_{1603} = 1$.</li>
+</ul>
+
+<p>In this program when a new segment is reached, the previous segments would not be called anymore. This is because the constraints those satisfies the former segments will not be regenerated.</p>
+
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+rankdir=LR
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
+&amp;#34;L10-L709&amp;#34; -&amp;gt; &amp;#34;L710&amp;#34; -&amp;gt; &amp;#34;L711-L1510&amp;#34;
+&amp;#34;L711-L1510&amp;#34; -&amp;gt; &amp;#34;L1511-L2310&amp;#34; [constraint=false]
+&amp;#34;L1511-L2310&amp;#34; -&amp;gt; &amp;#34;L2311-L5510&amp;#34; -&amp;gt; &amp;#34;L5511-L5517&amp;#34;
+
+  }
+  </div>
+</div>    
+
+<p>We understand that the goal is to get $p_{1602} = 1$ to hit the last segment of code, which we then can print <code>(:</code> as the result. To achieve this, we need to generate a unit of $p_{1602}$ during lines 711 to 1510 (this is the only place that makes $p_{1602}$). Also, no actions should be taken during lines 2311 to 5510. Therefore we need to correctly generate $p_2, p_3, ..., p_{801}$ in lines 10 to 709.</p>
+
+<p>Looking closely to the first segment (lines 10 to 709) of the program. To reiterate, every two units of $p_{k}$ is consumed for one unit of $p_{k+100}$. Also, based on the input, we know that $0 \leq p_2, p_3, ..., p_{101} &lt; 256$. If $p'_2, p'_3, ..., p'_{801}$ are the final values after the segment is executed, then</p>
+
+<p><span  class="math">\[p_k = p'_k + 2 \cdot p'_{k+100} + 2^2 \cdot p'_{k+200} + ... + 2^7 \cdot p'_{k+700}\]</span></p>
+
+<p>for every $k = 2, 3, ..., 101$, and $0 \leq p'_2, p'_3, ..., p'_{801} \leq 1$. That said $\overline{p'_{k+700}p'_{k+600}...p'_k}$ is the binary representation of $p_k$.</p>
+
+<p>We then can look at lines 711 to 1510 in order to identify which $p'_k$'s should be set to 1. In the first ten lines, we knew that $p'_{262}, p'_{449}, p'_{316}$ and $p'_{616}$ should be all 1s.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">802</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">802</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">803</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">262</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> p[<span style="color:#ae81ff">803</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">262</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">803</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">804</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">449</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> p[<span style="color:#ae81ff">804</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">449</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">804</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">805</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">805</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">805</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">806</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">806</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">806</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">807</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">807</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">807</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">808</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">808</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">808</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">809</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">316</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> p[<span style="color:#ae81ff">809</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">316</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">809</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">810</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">810</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">810</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">811</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#66d9ef">if</span> p[<span style="color:#ae81ff">616</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> p[<span style="color:#ae81ff">811</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>: p[<span style="color:#ae81ff">616</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">811</span>] <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; p[<span style="color:#ae81ff">812</span>] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">continue</span>
+<span style="color:#f92672">...</span></code></pre></div>
+<p>Although there is a list of variables those should be 1s, it does not mean that the remaining variables are zero. This is yet enforced in lines 2311 to 5310. After all, we can solely recover $p'_2, p'_3, ..., p'_{801}$ which prints <code>(:</code> from lines 711 to 1510. We then can recover $p_2, p_3, ..., p_{101}$ (the flag) from $p'_2, p'_3, ..., p'_{801}$, its binary representation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hkcert21{c0nw4y_1nv3n7ed_th1s_pr0gr4mm1n9_l4ngu4g3_w1th_m4th}</code></pre></div>
+<h2 id="今天我不想做嘢--lets-chill-reverse">今天我不想做嘢 / Let's Chill (Reverse)<a href="#今天我不想做嘢--lets-chill-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>今天我不想做嘢 只想懶</em><br>
+<em>可不可輕鬆陣呢 嘆一嘆</em><br>
+<em>讓時間 慢慢變慢</em></p>
+
+<p>I knew you just want to spend your time chilling instead of spending time CTFs. Let's visit the page, have a cup of coffee and wait for the flag.</p>
+</blockquote>
+
+<p>We are given a HTML file with a large proportion of JavaScript code. It is executed so that the player could eventually wait for the flag.</p>
+
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="maybe-we-should-wait">Maybe we should wait...?<a href="#maybe-we-should-wait" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>The challenge description said that we can get flag by simply opening the webpage and wait. I suppose that is the intended solution for a 450 point challenge, right?</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-11-18-hkcert-ctf/lets-chill-wait.png"   />
+    
+      <figcaption class="right" >Most of the Hongkongers do not believe that waiting is meaningful. Credit: Stand News</figcaption>
+    
+  </figure>
+
+
+
+<h4 id="beautifying-the-code">Beautifying the code<a href="#beautifying-the-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Without doubt, the JavaScript code is the most important thing in the HTML file. We can use online tools to prettify the code. For example, we can use <a href="https://beautifier.io/">Online JavaScript Beautifier</a>. This is my attempt to further prettify the code after using the tool.</p>
+
+<h5 id="phase-1-replace-the-function-calls-relating-to-0x1f23">Phase 1: Replace the function calls relating to <code>_0x1f23</code><a href="#phase-1-replace-the-function-calls-relating-to-0x1f23" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>This involves few steps:</p>
+
+<ul>
+<li>Replace <code>_0x363e23(0x1c3)</code> to <code>&quot;hkcert21{this_is_definitely_not_the_flag!}&quot;</code> and <code>_0x363e23(0x1cd)</code> to <code>&quot;split&quot;</code> in the scope of <code>_0x363e23 = _0x1f23</code>.</li>
+<li>Replace <code>-parseInt(_0x435581(0x1c7)) / 0x1 * ... + -parseInt(_0x435581(0x1bd)) / 0xa</code> to <code>176668</code> in the scope of <code>_0x435581 = _0x1f23</code>.</li>
+<li>Replace <code>_0x2bf188(0x1cb)</code> to <code>&quot;fromCharCode&quot;</code>, <code>_0x2bf188(0x1be)</code> to <code>&quot;length&quot;</code>, <code>_0x2bf188(0x1ca)</code> to <code>&quot;getElementById&quot;</code>, <code>_0x2bf188(0x1c8)</code> to <code>&quot;abs&quot;</code> and so on in the scope of <code>_0x2bf188 = _0x1f23</code>.</li>
+</ul>
+
+<p>The below code snippets explains how the expressions are replaced. They are executed on the developers' console of an browser when the given <code>index.html</code> is opened.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">_0x363e23</span>(<span style="color:#ae81ff">0x1c3</span>)
+<span style="color:#75715e">// &#34;hkcert21{this_is_definitely_not_the_flag!}&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">_0x363e23</span>(<span style="color:#ae81ff">0x1cd</span>)
+<span style="color:#75715e">// &#34;split&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">_0x435581</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x1f23</span>; <span style="color:#f92672">-</span>parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1c7</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x1</span> <span style="color:#f92672">*</span> (parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1bc</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x2</span>) <span style="color:#f92672">+</span> parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1c5</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x3</span> <span style="color:#f92672">+</span> <span style="color:#f92672">-</span>parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1c4</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x4</span> <span style="color:#f92672">*</span> (<span style="color:#f92672">-</span>parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1c0</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x5</span>) <span style="color:#f92672">+</span> parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1c9</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x6</span> <span style="color:#f92672">*</span> (parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1c6</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x7</span>) <span style="color:#f92672">+</span> <span style="color:#f92672">-</span>parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1c2</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x8</span> <span style="color:#f92672">+</span> <span style="color:#f92672">-</span>parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1cc</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0x9</span> <span style="color:#f92672">+</span> <span style="color:#f92672">-</span>parseInt(<span style="color:#a6e22e">_0x435581</span>(<span style="color:#ae81ff">0x1bd</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">0xa</span>
+<span style="color:#75715e">// 176668
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">_0x2bf188</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x1f23</span>; <span style="color:#a6e22e">_0x2bf188</span>(<span style="color:#ae81ff">0x1cb</span>)
+<span style="color:#75715e">// &#34;fromCharCode&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// ...
+</span></code></pre></div>
+<p>The below code is an intermediate result after the first phase of prettifying:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">_0x1294fd</span>, <span style="color:#a6e22e">_0x22b230</span>) {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0x123741</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x1294fd</span>();
+    <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!!</span>[]) {
+        <span style="color:#66d9ef">try</span> {
+            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0x40545f</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">176668</span>;
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_0x40545f</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">_0x22b230</span>) <span style="color:#66d9ef">break</span>;
+            <span style="color:#66d9ef">else</span> <span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;push&#39;</span>](<span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;shift&#39;</span>]());
+        } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">_0x4a0568</span>) {
+            <span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;push&#39;</span>](<span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;shift&#39;</span>]());
+        }
+    }
+}(<span style="color:#a6e22e">_0x3592</span>, <span style="color:#ae81ff">0x2b21c</span>));
+<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">flag</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hkcert21{this_is_definitely_not_the_flag!}&#34;</span>[<span style="color:#e6db74">&#34;split&#34;</span>](<span style="color:#e6db74">&#39;&#39;</span>);
+
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_0x3592</span>() {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0xdbd692</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;11166WHNYgN&#39;</span>, <span style="color:#e6db74">&#39;getElementById&#39;</span>, <span style="color:#e6db74">&#39;fromCharCode&#39;</span>, <span style="color:#e6db74">&#39;553698JoiHCo&#39;</span>, <span style="color:#e6db74">&#39;split&#39;</span>, <span style="color:#e6db74">&#39;2SOiWzA&#39;</span>, <span style="color:#e6db74">&#39;1323560vDNHlU&#39;</span>, <span style="color:#e6db74">&#39;length&#39;</span>, <span style="color:#e6db74">&#39;reduce&#39;</span>, <span style="color:#e6db74">&#39;757205AqJtbg&#39;</span>, <span style="color:#e6db74">&#39;join&#39;</span>, <span style="color:#e6db74">&#39;2460768ecYZOk&#39;</span>, <span style="color:#e6db74">&#39;hkcert21{this_is_definitely_not_the_flag!}&#39;</span>, <span style="color:#e6db74">&#39;8wdMNpV&#39;</span>, <span style="color:#e6db74">&#39;990753HsBKBA&#39;</span>, <span style="color:#e6db74">&#39;399soVHoe&#39;</span>, <span style="color:#e6db74">&#39;61068BicfOM&#39;</span>, <span style="color:#e6db74">&#39;abs&#39;</span>];
+    <span style="color:#a6e22e">_0x3592</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">_0xdbd692</span>;
+    };
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">_0x3592</span>();
+}
+
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">exec</span>() {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0x291954</span> <span style="color:#f92672">=</span> [
+        [
+            [<span style="color:#f92672">-</span><span style="color:#ae81ff">0x1a95b158398</span>, <span style="color:#ae81ff">0x163d12e52747</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0x490a9659fc2</span>, <span style="color:#ae81ff">0x16b6ddb08c44</span>, <span style="color:#ae81ff">0x1f9573043e67</span>], <span style="color:#ae81ff">0x8f9e9388f2b</span>
+        ],
+       <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>    ];
+    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">_0x5e98ba</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+        <span style="color:#a6e22e">_0x589c1b</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1</span>,
+        <span style="color:#a6e22e">_0xd9ed48</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Infinity</span>,
+        <span style="color:#a6e22e">_0x3b7a05</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">undefined</span>;
+    <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">setInterval</span>(<span style="color:#a6e22e">_0x3f26fe</span>, <span style="color:#ae81ff">0xa</span>), <span style="color:#ae81ff">0x1f4</span>);
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_0x3f26fe</span>() {
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0x400608</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x291954</span>[<span style="color:#a6e22e">_0x5e98ba</span>][<span style="color:#ae81ff">0x0</span>][<span style="color:#e6db74">&#39;length&#39;</span>];
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_0x589c1b</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0x1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#a6e22e">_0x400608</span>) {
+            <span style="color:#a6e22e">_0x5e98ba</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">_0x291954</span>[<span style="color:#e6db74">&#39;length&#39;</span>] <span style="color:#f92672">&amp;&amp;</span> (<span style="color:#a6e22e">_0x5e98ba</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">0x1</span>, <span style="color:#a6e22e">_0x589c1b</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>, <span style="color:#a6e22e">_0xd9ed48</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Infinity</span>);
+            <span style="color:#a6e22e">_0x5e98ba</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">_0x291954</span>[<span style="color:#e6db74">&#34;length&#34;</span>] <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">clearInterval</span>(<span style="color:#a6e22e">_0x3b7a05</span>);
+            <span style="color:#66d9ef">return</span>;
+        }
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0x581f7b</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x291954</span>[<span style="color:#a6e22e">_0x5e98ba</span>][<span style="color:#ae81ff">0x0</span>][<span style="color:#e6db74">&#39;filter&#39;</span>]((<span style="color:#a6e22e">_0x18f251</span>, <span style="color:#a6e22e">_0x1089a2</span>) =&gt; <span style="color:#ae81ff">0x1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#a6e22e">_0x1089a2</span> <span style="color:#f92672">&amp;</span> <span style="color:#a6e22e">_0x589c1b</span>)[<span style="color:#e6db74">&#34;reduce&#34;</span>]((<span style="color:#a6e22e">_0x36542b</span>, <span style="color:#a6e22e">_0x391261</span>) =&gt; <span style="color:#a6e22e">_0x36542b</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">_0x391261</span>, <span style="color:#ae81ff">0x0</span>);
+        <span style="color:#66d9ef">if</span> (Math[<span style="color:#e6db74">&#34;abs&#34;</span>](<span style="color:#a6e22e">_0x581f7b</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">_0x291954</span>[<span style="color:#a6e22e">_0x5e98ba</span>][<span style="color:#ae81ff">0x1</span>]) <span style="color:#f92672">&lt;</span> Math[<span style="color:#e6db74">&#34;abs&#34;</span>](<span style="color:#a6e22e">_0xd9ed48</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">_0x291954</span>[<span style="color:#a6e22e">_0x5e98ba</span>][<span style="color:#ae81ff">0x1</span>])) <span style="color:#a6e22e">_0xd9ed48</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x581f7b</span>;
+        <span style="color:#a6e22e">_0x589c1b</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">0x1</span>, <span style="color:#a6e22e">flag</span>[<span style="color:#a6e22e">_0x5e98ba</span>] <span style="color:#f92672">=</span> String[<span style="color:#e6db74">&#34;fromCharCode&#34;</span>](<span style="color:#ae81ff">0x21</span> <span style="color:#f92672">+</span> (<span style="color:#a6e22e">_0xd9ed48</span> <span style="color:#f92672">%</span> <span style="color:#ae81ff">0x5e</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x5e</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">0x5e</span>);
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">_0x26d021</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x5e98ba</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1</span>; <span style="color:#a6e22e">_0x26d021</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">flag</span>[<span style="color:#e6db74">&#34;length&#34;</span>]; <span style="color:#a6e22e">_0x26d021</span><span style="color:#f92672">++</span>) {
+            <span style="color:#a6e22e">flag</span>[<span style="color:#a6e22e">_0x26d021</span>] <span style="color:#f92672">=</span> String[<span style="color:#e6db74">&#34;fromCharCode&#34;</span>](<span style="color:#ae81ff">0x21</span> <span style="color:#f92672">+</span> (<span style="color:#a6e22e">_0x26d021</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">_0x589c1b</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">0x5e</span>);
+        }
+        document[<span style="color:#e6db74">&#34;getElementById&#34;</span>](<span style="color:#e6db74">&#39;flag&#39;</span>)[<span style="color:#e6db74">&#39;innerHTML&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">flag</span>[<span style="color:#e6db74">&#34;join&#34;</span>](<span style="color:#e6db74">&#39;&#39;</span>);
+    }
+}</code></pre></div>
+<h5 id="phase-2-understand-the-anonymous-function">Phase 2: Understand the anonymous function<a href="#phase-2-understand-the-anonymous-function" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">_0x1294fd</span>, <span style="color:#a6e22e">_0x22b230</span>) {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0x123741</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">_0x1294fd</span>();
+    <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!!</span>[]) {
+        <span style="color:#66d9ef">try</span> {
+            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">_0x40545f</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">176668</span>;
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_0x40545f</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">_0x22b230</span>) <span style="color:#66d9ef">break</span>; <span style="color:#75715e">// 👈
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">else</span> <span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;push&#39;</span>](<span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;shift&#39;</span>]());
+        } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">_0x4a0568</span>) {
+            <span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;push&#39;</span>](<span style="color:#a6e22e">_0x123741</span>[<span style="color:#e6db74">&#39;shift&#39;</span>]());
+        }
+    }
+}(<span style="color:#a6e22e">_0x3592</span>, <span style="color:#ae81ff">0x2b21c</span>));</code></pre></div>
+<p>Since <code>0x2b21c === 176668</code>, the function actually ends up at the highlighted line. That said the function is actually meaningless and we can safely remove the whole part. As <code>_0x3592</code> is not called anywhere else, it is considered as a dead code and can be deleted.</p>
+
+<h5 id="part-3-pretty-the-exec-function">Part 3: Pretty the <code>exec</code> function<a href="#part-3-pretty-the-exec-function" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>In this phase, we can do the following things to improve the code readability (some of them are subjective):</p>
+
+<ul>
+<li>Rename the variables like <code>_0x291954</code> to <code>values</code>, <code>_0x5e98ba</code> to <code>i</code>.</li>
+<li>Replace <code>[&quot;length&quot;]</code> to <code>.length</code>, <code>[&quot;filter&quot;]</code> to <code>.filter</code> and so on.</li>
+<li>Convert the numbers from base 16 to base 10 (except those in <code>values</code>, there are too much numbers to be converted).</li>
+<li>Format the code.</li>
+</ul>
+
+<p>After all, this is the final prettified code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">flag</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hkcert21{this_is_definitely_not_the_flag!}&#34;</span>.<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#39;&#39;</span>);
+
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">exec</span>() {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">values</span> <span style="color:#f92672">=</span> [
+        [
+            [<span style="color:#f92672">-</span><span style="color:#ae81ff">0x1a95b158398</span>, <span style="color:#ae81ff">0x163d12e52747</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0x490a9659fc2</span>, <span style="color:#ae81ff">0x16b6ddb08c44</span>, <span style="color:#ae81ff">0x1f9573043e67</span>], <span style="color:#ae81ff">0x8f9e9388f2b</span>
+        ],
+        <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>    ];
+    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+        <span style="color:#a6e22e">mask</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>,
+        <span style="color:#a6e22e">answer</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Infinity</span>,
+        <span style="color:#a6e22e">interval</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">undefined</span>;
+    <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">setInterval</span>(<span style="color:#a6e22e">_0x3f26fe</span>, <span style="color:#ae81ff">10</span>), <span style="color:#ae81ff">500</span>);
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_0x3f26fe</span>() {
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">values</span>[<span style="color:#a6e22e">i</span>][<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">length</span>;
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">mask</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#a6e22e">n</span>) {
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">length</span>) {
+                <span style="color:#a6e22e">i</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>;
+                <span style="color:#a6e22e">mask</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+                <span style="color:#a6e22e">answer</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Infinity</span>;
+            }
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">i</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">length</span>) {
+                <span style="color:#a6e22e">clearInterval</span>(<span style="color:#a6e22e">interval</span>);
+            }
+            <span style="color:#66d9ef">return</span>;
+        }
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sum</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">values</span>[<span style="color:#a6e22e">i</span>][<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">filter</span>((<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">k</span>) =&gt; <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#a6e22e">k</span> <span style="color:#f92672">&amp;</span> <span style="color:#a6e22e">mask</span>).<span style="color:#a6e22e">reduce</span>((<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) =&gt; <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>, <span style="color:#ae81ff">0</span>);
+        <span style="color:#66d9ef">if</span> (Math.<span style="color:#a6e22e">abs</span>(<span style="color:#a6e22e">sum</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">values</span>[<span style="color:#a6e22e">i</span>][<span style="color:#ae81ff">1</span>]) <span style="color:#f92672">&lt;</span> Math.<span style="color:#a6e22e">abs</span>(<span style="color:#a6e22e">answer</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">values</span>[<span style="color:#a6e22e">i</span>][<span style="color:#ae81ff">1</span>])) {
+            <span style="color:#a6e22e">answer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>;
+        }
+        <span style="color:#a6e22e">mask</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>;
+        <span style="color:#a6e22e">flag</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">=</span> String.<span style="color:#a6e22e">fromCharCode</span>(<span style="color:#ae81ff">33</span> <span style="color:#f92672">+</span> (<span style="color:#a6e22e">answer</span> <span style="color:#f92672">%</span> <span style="color:#ae81ff">94</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">94</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">94</span>);
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i2</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i2</span><span style="color:#f92672">++</span>) {
+            <span style="color:#a6e22e">flag</span>[<span style="color:#a6e22e">i2</span>] <span style="color:#f92672">=</span> String.<span style="color:#a6e22e">fromCharCode</span>(<span style="color:#ae81ff">33</span> <span style="color:#f92672">+</span> (<span style="color:#a6e22e">i2</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">mask</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">94</span>);
+        }
+        document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;flag&#39;</span>).<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#39;&#39;</span>);
+    }
+}</code></pre></div>
+<p>We can see from <code>_0x3f26fe</code> the underlying algorithm challenge we gotta deal with.</p>
+
+<h4 id="solving-an-algorithmic-puzzle">Solving an algorithmic puzzle<a href="#solving-an-algorithmic-puzzle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>We can see that the program is actually solving a problem in a slow way. Let's write down the challenge statement and discuss an algorithm solving it:</p>
+
+<blockquote>
+<p>Given an array $a_1, a_2, ..., a_n$ and a target $b$, find $x_1, x_2, ..., x_n \in \{0, 1\}$ such that</p>
+
+<p><span  class="math">\[\left|a_1 x_1 + a_2 x_2 + ... + a_n x_n - b\right|\qquad[\dagger]\]</span></p>
+
+<p>is minimized. Moreover, $5 \leq n \leq 46$, $-2^{45} \leq a_1, a_2, ..., a_n \leq 2^{45}$ and $-2^{50} \leq b \leq 2^{50}$.</p>
+</blockquote>
+
+<div class="alert success">
+  <strong>Intuitive meaning.</strong> We need to pick some numbers from $a_1, a_2, &hellip;, a_n$ such that the sum is closest to $b$.
+</div>
+
+
+<p>It is a standard meet-in-the-middle challenge. We can exhaust half of the $x_i$'s each time to attain an time complexity $\mathcal{O}(2^{n/2})$. This is the outline of the algorithm (let $m = \lfloor n/2 \rfloor$):</p>
+
+<ol>
+<li>Exhaust $x_1, ..., x_m$ and let $L \leftarrow \{a_1 x_1 + ... + a_m x_m: x_1, ..., x_m \in \{0, 1\} \}$.</li>
+<li>Exhaust $x_{m+1}, ..., x_n$ and let $R \leftarrow \{-a_{m+1} x_{m+1} - ... - a_n x_n + b: x_{m+1}, ..., x_n \in \{0, 1\} \}$.</li>
+<li>Sort $L$ and $R$ in ascending order.</li>
+<li>Let $i \leftarrow 0$, $j \leftarrow 0$ and $u \leftarrow \infty$.</li>
+<li>While $i+1 &lt; 2^m$ and $L_{i+1} &lt; R_j$, set $i \leftarrow i + 1$.</li>
+<li>If $\left|L_i - R_j\right| &lt; \left|u - b\right|$ set $u \leftarrow L_i - R_j + b$.</li>
+<li>If $i+1 &lt; 2^m$ and $\left|L_{i+1} - R_j\right| &lt; \left|u - b\right|$ set $u \leftarrow L_{i+1} - R_j + b$.</li>
+<li>Set $j \leftarrow j + 1$. If $j &lt; 2^{n-m}$ go back to step 5.</li>
+<li>Return $u$.</li>
+</ol>
+
+<div class="alert info">
+  <p><strong>What does the algorithm do?</strong> In short, we are rewriting the expression $[\dagger]$ into two quantities:</p>
+<p>$$a_1 x_1 + a_2 x_2 + &hellip; + a_m x_m, \qquad - a_{m+1} x_{m+1} - a_{m+2} x_{m+2} + &hellip; - a_n x_n + b.$$</p>
+<p>The goal is to find $x_1, x_2, &hellip;, x_m$ (for the left) and $x_{m+1}, x_{m+2}, &hellip;, x_n$ (for the right) such that the difference between the quantities is the smallest.</p>
+
+</div>
+
+
+<p>Having the algorithm implemented and running it, we have the flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hkcert21{l3t5_ch1ll_4nd_w41t_f0r_th3_f14g}</code></pre></div>
+<p>Ironically, you will not be able to obtain the flag if you wait for the original algorithm to finish.</p>
+
+<h4 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> tqdm
+
+candidates <span style="color:#f92672">=</span> [<span style="color:#f92672">...</span>] <span style="color:#75715e"># plug that in yourselves!</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_subarray_sums</span>(nums, base<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>):
+    <span style="color:#66d9ef">if</span> len(nums) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">yield</span> base
+        <span style="color:#66d9ef">return</span>
+
+    <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> get_subarray_sums(nums[<span style="color:#ae81ff">1</span>:], base):
+        <span style="color:#66d9ef">yield</span> k
+        <span style="color:#66d9ef">yield</span> k <span style="color:#f92672">+</span> nums[<span style="color:#ae81ff">0</span>]
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">min_abs_distance</span>(a: List[int], b: int) <span style="color:#f92672">-&gt;</span> int:
+    n <span style="color:#f92672">=</span> len(nums)
+    m <span style="color:#f92672">=</span> n<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>
+
+    lhs <span style="color:#f92672">=</span> sorted(get_subarray_sums([<span style="color:#f92672">+</span>k <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> a[:m]]))
+    rhs <span style="color:#f92672">=</span> sorted(get_subarray_sums([<span style="color:#f92672">-</span>k <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> a[m:]], b))
+            
+    i, j, u <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span><span style="color:#f92672">**</span><span style="color:#ae81ff">100</span>
+    <span style="color:#75715e"># We assumed that 10**100 is infinity.</span>
+    
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>(n<span style="color:#f92672">-</span>m)):
+        <span style="color:#66d9ef">while</span> i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>m <span style="color:#f92672">and</span> lhs[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;=</span> rhs[j]:
+            i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+        
+        <span style="color:#66d9ef">if</span>                abs(lhs[i  ] <span style="color:#f92672">-</span> rhs[j]) <span style="color:#f92672">&lt;</span> abs(u <span style="color:#f92672">-</span> b): u <span style="color:#f92672">=</span> lhs[i  ] <span style="color:#f92672">-</span> rhs[j] <span style="color:#f92672">+</span> b
+        <span style="color:#66d9ef">if</span> i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>m <span style="color:#f92672">and</span> abs(lhs[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> rhs[j]) <span style="color:#f92672">&lt;</span> abs(u <span style="color:#f92672">-</span> b): u <span style="color:#f92672">=</span> lhs[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> rhs[j] <span style="color:#f92672">+</span> b
+
+    <span style="color:#66d9ef">return</span> u
+
+flag <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span>
+<span style="color:#66d9ef">for</span> nums, goal <span style="color:#f92672">in</span> tqdm(candidates):
+    flag <span style="color:#f92672">+=</span> bytes([<span style="color:#ae81ff">0x21</span> <span style="color:#f92672">+</span> min_abs_distance(nums, goal) <span style="color:#f92672">%</span> <span style="color:#ae81ff">0x5e</span>])
+
+print(flag)</code></pre></div><div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:pe-308">Project Euler (2010). &quot;An amazing Prime-generating Automaton&quot;<br><a href="https://projecteuler.net/problem=308">https://projecteuler.net/problem=308</a>
+ <a class="footnote-return" href="#fnref:pe-308">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021/2021-11-18-hkcert-ctf-4/">
+                <span class="button__icon">←</span>
+                <span class="button__text">HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021/2021-11-18-hkcert-ctf-2/">
+                <span class="button__text">HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    HKCERT CTF 2021 Postmortem (III): The Reverse Challenges
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

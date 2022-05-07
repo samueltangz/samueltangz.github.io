@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>DiceCTF 2022 (I): commitment-issues :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DiceCTF is an annual CTF competition prepared by @dicegangctf. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.
+Deja vu? I said similar things last year. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.  I will first cover on a crypto challenge called commitment-issues, which had 16 solves (out of 1127 participating teams)." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2022/2022-02-08-dicectf-commitment/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="DiceCTF 2022 (I): commitment-issues">
+<meta property="og:description" content="DiceCTF is an annual CTF competition prepared by @dicegangctf. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.
+
+I will first cover on a crypto challenge called commitment-issues, which had 16 solves (out of 1127 participating teams). @grhkm2023 and I spent a good 3 to 4 hours working on this challenge." />
+<meta property="og:url" content="/posts/2022/2022-02-08-dicectf-commitment/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2022-02-08-dicectf/banner.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-02-08 04:30:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2022/2022-02-08-dicectf-commitment/">DiceCTF 2022 (I): commitment-issues</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-02-08 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/dicectf/">dicectf</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/rsa/">rsa</a>&nbsp;
+    
+    #<a href="/tags/lll/">lll</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2022-02-08-dicectf/banner.png" class="post-cover center" alt="DiceCTF 2022 (I): commitment-issues" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>DiceCTF is an annual CTF competition prepared by <a href="https://twitter.com/dicegangctf" target="_blank" rel="nofollow">@dicegangctf</a>. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.</p>
+
+<div class="alert warning">
+  <strong>Deja vu?</strong> I said similar things <a href="/posts/2021-02-15-dicectf-1/">last year</a>. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.
+</div>
+
+
+<p>I will first cover on a crypto challenge called <em>commitment-issues</em>, which had 16 solves (out of 1127 participating teams). <a href="https://twitter.com/grhkm2023" target="_blank" rel="nofollow">@grhkm2023</a> and I spent a good 3 to 4 hours working on this challenge.</p>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>Define a commitment scheme $\mathcal{C}$ that uses a composite modulus $n$ (which is a product of two 1024-bit primes $p, q$ with $p, q \neq 1\ (\text{mod}\ 5)$). To commit a secret $s$:</p>
+
+<ol>
+<li>Generate a random number $r \in [0, n)$,</li>
+<li>Compute $c_1 := (s + r)\ \text{mod}\ n$ and $c_2 := r^5\ \text{mod}\ n$, and</li>
+<li>Return $(c_1, c_2)$ as the commitment.</li>
+</ol>
+
+<p>Suppose that $s$ is the RSA signature of the flag (i.e., $m^d\ \text{mod}\ n$, the $m$ is the flag and $n$ serves as the modulus for $\mathcal{C}$ as well). We are given the public key of RSA $(n, e)$ and a commitment $\mathcal{C}(s) = (c_1, c_2)$. The objective is to recover the flag $m$ (flag format being <code>dice{???????????????????????}</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">e <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xd4088c345ced64cbbf8444321ef2af8b</span>
+N <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xba8cb3257c0c83edf4f56f5b7e139d3d6ac8adf71618b5f16a02d61b63426c2c275ce631a0927b2725c6cc7bdbe30cd8a8494bc7c7f6601bcee5d005b86016e79919e22da4c431cec16be1ee72c056723fbbec1543c70bff8042630c5a9c23f390e2221bed075be6a6ac71ad89a3905f6c706b4fb6605c08f154ff8b8e28445a7be24cb184cb0f648db5c70dc3581419b165414395ae4282285c04d6a00a0ce8c06a678181c3a3c37b426824a5a5528ee532bdd90f1f28b7ec65e6658cb463e867eb5280bda80cbdb066cbdb4019a6a2305a03fd29825158ce32487651d9bfa675f2a6b31b7d05e7bd74d0f366cbfb0eb711a57e56e6db6d6f1969d52bf1b27b</span>
+c1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x75240fcc256f1e2fc347f75bba11a271514dd6c4e58814e1cb20913195db3bd0440c2ca47a72efee41b0f9a2674f6f46a335fd7e54ba8cd1625daeaaaa45cc9550c566f6f302b7c4c3a4694c0f5bb05cd461b5ca9017f2eb0e5f60fb0c65e0a67f3a1674d74990fd594de692951d4eed32eac543f193b70777b14e86cf8fa1927fe27535e727613f9e4cd00acb8fab336894caa43ad40a99b222236afc219397620ca766cef2fe47d53b07e302410063eae3d0bf0a9d67793237281e0bfdd48255b58b2c1f8674a21754cf62fab0ba56557fa276241ce99140473483f3e5772fcb75b206b3e7dfb756005cec2c19a3cb7fa17a4d17f5edd10a8673607047a0d1</span>
+c2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xdb8f645b98f71b93f248442cfc871f9410be7efee5cff548f2626d12a81ee58c1a65096a042db31a051904d7746a56147cc02958480f3b5d5234b738a1fb01dc8bf1dffad7f045cac803fa44f51cbf8abc74a17ee3d0b9ed59c844a23274345c16ba56d43f17d16d303bb1541ee1c15b9c984708a4a002d10188ccc5829940dd7f76107760550fac5c8ab532ff9f034f4fc6aab5ecc15d5512a84288d6fbe4b2d58ab6e326500c046580420d0a1b474deca052ebd93aaa2ef972aceba7e6fa75b3234463a68db78fff85c3a1673881dcb7452390a538dfa92e7ff61f57edf48662991b8dd251c0474b59c6f73d4a23fe9191ac8e52c8c409cf4902eeaa71714</span></code></pre></div>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>We will first write the flag $m$ with $m = m_0 + 256 \cdot x$, where $m_0$ represents the known part (i.e., <code>dice{_________________________}</code> and each <code>_</code> is a null byte) and $x$ is the unknown part.</p>
+
+<p>Since $c_1 \equiv s + r\ (\text{mod}\ n)$ and $c_2 \equiv r^5\ (\text{mod}\ n)$, we can express $s^k$ in terms of $s$, $s^2$, $s^3$ and $s^4$. These are the $s^k$ for smaller values of $k$:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& c_2 \equiv r^5 \equiv (c_1 - s)^5 \equiv {c_1}^5 - 5 {c_1}^4 \cdot s + 10 {c_1}^3 \cdot s^2 - 10 {c_1}^2 \cdot s^3 + 5 {c_1} \cdot s^4 - s^5\ (\text{mod}\ n) \\
+& \Longrightarrow s^5 \equiv 5 c_1 \cdot s^4 - 10 {c_1}^2 \cdot s^3 + 10 {c_1}^3 \cdot s^2 - 5 {c_1}^4 \cdot s + ({c_1}^5 - c_2)\ (\text{mod}\ n)
+\end{aligned}\]</span></p>
+
+<p><span  class="math">\[\begin{aligned}
+s^6 &\equiv s \cdot \left[5 c_1 \cdot s^4 - 10 {c_1}^2 \cdot s^3 + 10 {c_1}^3 \cdot s^2 - 5 {c_1}^4 \cdot s + ({c_1}^5 - c_2)\right] \\
+&\equiv 5 c_1 \cdot s^5 - 10 {c_1}^2 \cdot s^4 + 10 {c_1}^3 \cdot s^3 - 5 {c_1}^4 \cdot s^2 + ({c_1}^5 - c_2) \cdot s \\
+&\equiv 5 c_1 \cdot \left[5 c_1 \cdot s^4 - 10 {c_1}^2 \cdot s^3 + 10 {c_1}^3 \cdot s^2 - 5 {c_1}^4 \cdot s + ({c_1}^5 - c_2)\right] \\
+&\qquad\qquad - 10 {c_1}^2 \cdot s^4 + 10 {c_1}^3 \cdot s^3 - 5 {c_1}^4 \cdot s^2 + ({c_1}^5 - c_2) \cdot s \\
+&\equiv 15 {c_1}^2 \cdot s^4 - 40 {c_1}^3 \cdot s^3 + 45 {c_1}^4 \cdot s^2 - (24 {c_1}^5 + c_2) \cdot s + 5 c_1 \cdot ({c_1}^5 - c_2)\ (\text{mod}\ n)
+\end{aligned}\]</span></p>
+
+<p>We can effectively compute $s^n$ in terms of $s$, $s^2$, $s^3$ and $s^4$ using matrix:</p>
+
+<p><span  class="math">\[\left[\begin{matrix}s^{n+4} \\ s^{n+3} \\ s^{n+2} \\ s^{n+1} \\ s^n \end{matrix}\right] = \left[\begin{matrix}
+5 c_1 & -10 {c_1}^2 & 10 {c_1}^3 & -5 {c_1}^4 & {c_1}^5 - c_2 \\
+1 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0
+\end{matrix}\right]^n
+\left[\begin{matrix}s^4 \\ s^3 \\ s^2 \\ s^1 \\ 1 \end{matrix}\right]\]</span></p>
+
+<p>In particular, since $m = s^e\ \text{mod}\ n$, we have the below modular congruence:</p>
+
+<p><span  class="math">\[m \equiv A \cdot s^4 + B \cdot s^3 + C \cdot s^2 + D \cdot s + E\ (\text{mod}\ n)\]</span></p>
+
+<p>for some constants $A, B, C, D$ and $E$. Since $m = m_0 + 256 \cdot x$, we can easily write</p>
+
+<p><span  class="math">\[x \equiv A_1 \cdot s^4 + B_1 \cdot s^3 + C_1 \cdot s^2 + D_1 \cdot s + E_1\ (\text{mod}\ n), \quad [\dagger]\]</span></p>
+
+<p>for some constants $A_1, B_1, C_1, D_1$ and $E_1$ (can be computed with the matrix approach). Unfortunately, the equation has $200 + 4 \cdot 2048 = 8392$ bits of unknown while had only 2048 bits of information.</p>
+
+<div class="alert info">
+  <strong>How do we deduce that $200 + 4 \cdot 2048$?</strong> Each of $s, s^2, s^3$ and $s^4$ is a 2048-bit unknown and $m$ has 200 bits of unknown (it matches the regex <code>dice\{.{25}\}</code>).
+</div>
+
+
+<p>We can exploit the matrix to its extreme to squeeze more data. For example, we can write $x^2 \equiv A_2 \cdot s^4 + B_2 \cdot s^3 + C_2 \cdot s^2 + D_2 \cdot s + E_2\ (\text{mod}\ n)$ and that only adds 400 bits of unknown (which comes from $m^2$) when combining with $[\dagger]$. Essentially, we can add</p>
+
+<p><span  class="math">\[x^k \equiv A_k \cdot s^4 + B_k \cdot s^3 + C_k \cdot s^2 + D_k \cdot s + E_k\ (\text{mod}\ n)\]</span></p>
+
+<p>for all $k = 1, 2, ..., 10$ because the unknown size is only $200k &lt; 2048$ bits. After all, we have $(200 + 400 + ... + 2000) + 4 \cdot 2048 = 19192$ bits of unknown and $10 \cdot 2048 = 20480$ bits of information. We can recover the information via LLL on the below matrix:</p>
+
+<p><span  class="math">\[\left[\begin{matrix}
+A_1 & A_2 &         & A_{10} & 1 & 0 &        & 0 \\
+B_1 & B_2 &         & B_{10} & 0 & 1 &        & 0 \\
+C_1 & C_2 &  ...    & C_{10} & 0 & 0 & \ddots & 0 \\
+D_1 & D_2 &         & D_{10} & 0 & 0 &        & 0 \\
+E_1 & E_2 &         & E_{10} & 0 & 0 &        & 1 \\
+n   & 0   &         & 0      & 0 & 0 &        & 0 \\
+0   & n   &         & 0      & 0 & 0 &        & 0 \\
+&         & \ddots  &        &   &   & \ddots &   \\
+0   & 0   &         & n      & 0 & 0 &        & 0 \\
+\end{matrix}\right]\]</span></p>
+
+<p>With that, we have the flag: <code>dice{wh4t!!-wh0_g4ve_u-thE-k3y}</code>.</p>
+
+<h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">e <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xd4088c345ced64cbbf8444321ef2af8b</span>
+
+m0 <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;dice{&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">25</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;}&#39;</span>, <span style="color:#e6db74">&#39;big&#39;</span>)
+<span style="color:#75715e"># m = m0 + 256*x, with 0 &lt;= x &lt; 2^200</span>
+
+N <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xba8cb3257c0c83edf4f56f5b7e139d3d6ac8adf71618b5f16a02d61b63426c2c275ce631a0927b2725c6cc7bdbe30cd8a8494bc7c7f6601bcee5d005b86016e79919e22da4c431cec16be1ee72c056723fbbec1543c70bff8042630c5a9c23f390e2221bed075be6a6ac71ad89a3905f6c706b4fb6605c08f154ff8b8e28445a7be24cb184cb0f648db5c70dc3581419b165414395ae4282285c04d6a00a0ce8c06a678181c3a3c37b426824a5a5528ee532bdd90f1f28b7ec65e6658cb463e867eb5280bda80cbdb066cbdb4019a6a2305a03fd29825158ce32487651d9bfa675f2a6b31b7d05e7bd74d0f366cbfb0eb711a57e56e6db6d6f1969d52bf1b27b</span>
+c1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x75240fcc256f1e2fc347f75bba11a271514dd6c4e58814e1cb20913195db3bd0440c2ca47a72efee41b0f9a2674f6f46a335fd7e54ba8cd1625daeaaaa45cc9550c566f6f302b7c4c3a4694c0f5bb05cd461b5ca9017f2eb0e5f60fb0c65e0a67f3a1674d74990fd594de692951d4eed32eac543f193b70777b14e86cf8fa1927fe27535e727613f9e4cd00acb8fab336894caa43ad40a99b222236afc219397620ca766cef2fe47d53b07e302410063eae3d0bf0a9d67793237281e0bfdd48255b58b2c1f8674a21754cf62fab0ba56557fa276241ce99140473483f3e5772fcb75b206b3e7dfb756005cec2c19a3cb7fa17a4d17f5edd10a8673607047a0d1</span>
+c2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xdb8f645b98f71b93f248442cfc871f9410be7efee5cff548f2626d12a81ee58c1a65096a042db31a051904d7746a56147cc02958480f3b5d5234b738a1fb01dc8bf1dffad7f045cac803fa44f51cbf8abc74a17ee3d0b9ed59c844a23274345c16ba56d43f17d16d303bb1541ee1c15b9c984708a4a002d10188ccc5829940dd7f76107760550fac5c8ab532ff9f034f4fc6aab5ecc15d5512a84288d6fbe4b2d58ab6e326500c046580420d0a1b474deca052ebd93aaa2ef972aceba7e6fa75b3234463a68db78fff85c3a1673881dcb7452390a538dfa92e7ff61f57edf48662991b8dd251c0474b59c6f73d4a23fe9191ac8e52c8c409cf4902eeaa71714</span>
+
+
+Zn <span style="color:#f92672">=</span> Zmod(N)
+P<span style="color:#f92672">.&lt;</span>s<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> PolynomialRing(Zn)
+
+p <span style="color:#f92672">=</span> (c1 <span style="color:#f92672">-</span> s)<span style="color:#f92672">^</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">-</span> c2
+
+p <span style="color:#f92672">/=</span> p<span style="color:#f92672">.</span>leading_coefficient()
+_e, _d, _c, _b, _a, _ <span style="color:#f92672">=</span> (<span style="color:#f92672">-</span>p)<span style="color:#f92672">.</span>coefficients() <span style="color:#75715e"># s^5 = _a s^4 + _b s^3 + _c s^2 + _d s + _e</span>
+
+A <span style="color:#f92672">=</span> Matrix(Zn, [
+    [_a, _b, _c, _d, _e],
+    [ <span style="color:#ae81ff">1</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>],
+    [ <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">1</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>],
+    [ <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">1</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>],
+    [ <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">1</span>,  <span style="color:#ae81ff">0</span>],
+])
+
+
+b11, b12, b13, b14, b15 <span style="color:#f92672">=</span> map(int, (A<span style="color:#f92672">^</span>e)[<span style="color:#ae81ff">4</span>])
+
+b11 <span style="color:#f92672">=</span> int(pow(<span style="color:#ae81ff">256</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, N) <span style="color:#f92672">*</span> b11)
+b12 <span style="color:#f92672">=</span> int(pow(<span style="color:#ae81ff">256</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, N) <span style="color:#f92672">*</span> b12)
+b13 <span style="color:#f92672">=</span> int(pow(<span style="color:#ae81ff">256</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, N) <span style="color:#f92672">*</span> b13)
+b14 <span style="color:#f92672">=</span> int(pow(<span style="color:#ae81ff">256</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, N) <span style="color:#f92672">*</span> b14)
+b15 <span style="color:#f92672">=</span> int(pow(<span style="color:#ae81ff">256</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, N) <span style="color:#f92672">*</span> (b15 <span style="color:#f92672">-</span> m0))
+
+x <span style="color:#f92672">=</span> b11 <span style="color:#f92672">*</span> s<span style="color:#f92672">^</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">+</span> b12 <span style="color:#f92672">*</span> s<span style="color:#f92672">^</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> b13 <span style="color:#f92672">*</span> s<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> b14 <span style="color:#f92672">*</span> s <span style="color:#f92672">+</span> b15
+
+weights  <span style="color:#f92672">=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>(<span style="color:#ae81ff">2048</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">200</span><span style="color:#f92672">*</span>k) <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)]
+weights <span style="color:#f92672">+=</span> [<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">2048</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]
+
+B <span style="color:#f92672">=</span> Matrix(<span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">15</span>)
+
+<span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+    coefficients <span style="color:#f92672">=</span> (x<span style="color:#f92672">^</span>(j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> p)<span style="color:#f92672">.</span>coefficients()
+
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
+        B[i, j] <span style="color:#f92672">=</span> coefficients[i]
+    
+    B[j<span style="color:#f92672">+</span><span style="color:#ae81ff">5</span>, j] <span style="color:#f92672">=</span> N
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
+    B[i, i<span style="color:#f92672">+</span><span style="color:#ae81ff">10</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+Q <span style="color:#f92672">=</span> diagonal_matrix(weights)
+
+B <span style="color:#f92672">*=</span> Q
+B <span style="color:#f92672">=</span> B<span style="color:#f92672">.</span>LLL()
+B <span style="color:#f92672">/=</span> Q
+
+<span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> B:
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">10</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>: row <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>row
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">10</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">continue</span>
+    
+    x0 <span style="color:#f92672">=</span> int(row[<span style="color:#ae81ff">0</span>])
+
+    print(x0<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">25</span>, <span style="color:#e6db74">&#39;big&#39;</span>))</code></pre></div>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2022/2022-02-14-intigriti-xss/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Intigriti&#39;s XSS Challenge (February 2022)</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2022/2022-01-23-firebird-internal-ctf/">
+                <span class="button__text">Firebird Internal CTF 2022 Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    DiceCTF 2022 (I): commitment-issues
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

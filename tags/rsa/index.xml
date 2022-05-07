@@ -9,20 +9,20 @@
     <lastBuildDate>Tue, 08 Feb 2022 04:30:00 +0800</lastBuildDate><atom:link href="/tags/rsa/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DiceCTF 2022 (I): commitment-issues</title>
-      <link>/posts/2022-02-08-dicectf-commitment/</link>
+      <link>/posts/2022/2022-02-08-dicectf-commitment/</link>
       <pubDate>Tue, 08 Feb 2022 04:30:00 +0800</pubDate>
       
-      <guid>/posts/2022-02-08-dicectf-commitment/</guid>
+      <guid>/posts/2022/2022-02-08-dicectf-commitment/</guid>
       <description>DiceCTF is an annual CTF competition prepared by @dicegangctf. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.
 Deja vu? I said similar things last year. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.  I will first cover on a crypto challenge called commitment-issues, which had 16 solves (out of 1127 participating teams).</description>
     </item>
     
     <item>
       <title>justCTF 2020: Oracles</title>
-      <link>/posts/2021-02-01-justctf-oracles/</link>
+      <link>/posts/2021/2021-02-01-justctf-oracles/</link>
       <pubDate>Mon, 01 Feb 2021 03:00:00 +0800</pubDate>
       
-      <guid>/posts/2021-02-01-justctf-oracles/</guid>
+      <guid>/posts/2021/2021-02-01-justctf-oracles/</guid>
       <description>I was playing justCTF 2020 with the new CTFers in Yakitori (Firebird). Oracles is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up.
 Challenge Summary We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
  Is Goldbach&#39;s conjecture true? What is the answer to everything?  On top of them, the challenge author tried to tell the agency the flag.</description>

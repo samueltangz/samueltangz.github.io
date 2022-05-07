@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 07 Nov 2021 11:02:00 +0800</lastBuildDate><atom:link href="/tags/bsides-ahmedabad/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>BSides Ahmedabad CTF 2021 Writeup</title>
-      <link>/posts/2021-11-07-bsides-ahmedabad/</link>
+      <link>/posts/2021/2021-11-07-bsides-ahmedabad/</link>
       <pubDate>Sun, 07 Nov 2021 11:02:00 +0800</pubDate>
       
-      <guid>/posts/2021-11-07-bsides-ahmedabad/</guid>
+      <guid>/posts/2021/2021-11-07-bsides-ahmedabad/</guid>
       <description>No, we did not win. I see that coming and took a screenshot during the game.
 BSides Ahmedabad CTF 2021 is organized by @zer0pts. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I&#39;ll go through the harder crypto challenges and the reversing challenge called Collapsed License in this blog post.
 SSSS.RNG Challenge Summary Let $p$ be a 512-bit prime and $a, b, g_0 \in [2, p)$.</description>

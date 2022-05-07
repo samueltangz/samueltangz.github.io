@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>LeetCode Practice: Day 3 :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The problems today are Largest Magic Square1, Spiral Matrix II2, Find Kth Bit in Nth Binary String3, Reachable Nodes In Subdivided Graph4 and Subarrays with K Different Integers5. I am motivated today and decided to solve two more problems: Maximum Side Length of a Square with Sum Less than or Equal to Threshold6 and Jump Game V7.
+The solution scripts are available: A, B, C, D, E, F and G." />
+<meta name="keywords" content="algorithms" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021/2021-06-19-leetcode-3/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="LeetCode Practice: Day 3">
+<meta property="og:description" content="The problems today are Largest Magic Square, Spiral Matrix II, Find Kth Bit in Nth Binary String, Subarrays with K Different Integers and Reachable Nodes In Subdivided Graph. I am motivated today and decided to solve two more problems: Maximum Side Length of a Square with Sum Less than or Equal to Threshold and Jump Game V." />
+<meta property="og:url" content="/posts/2021/2021-06-19-leetcode-3/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-06-19 12:50:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021/2021-06-19-leetcode-3/">LeetCode Practice: Day 3</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-06-19 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/algorithms/">algorithms</a>&nbsp;
+    
+    #<a href="/tags/leetcode/">leetcode</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>The problems today are <em>Largest Magic Square</em><sup class="footnote-ref" id="fnref:a"><a class="footnote" href="#fn:a">1</a></sup>, <em>Spiral Matrix II</em><sup class="footnote-ref" id="fnref:b"><a class="footnote" href="#fn:b">2</a></sup>, <em>Find Kth Bit in Nth Binary String</em><sup class="footnote-ref" id="fnref:c"><a class="footnote" href="#fn:c">3</a></sup>, <em>Reachable Nodes In Subdivided Graph</em><sup class="footnote-ref" id="fnref:d"><a class="footnote" href="#fn:d">4</a></sup> and <em>Subarrays with K Different Integers</em><sup class="footnote-ref" id="fnref:e"><a class="footnote" href="#fn:e">5</a></sup>. I am motivated today and decided to solve two more problems: <em>Maximum Side Length of a Square with Sum Less than or Equal to Threshold</em><sup class="footnote-ref" id="fnref:f"><a class="footnote" href="#fn:f">6</a></sup> and <em>Jump Game V</em><sup class="footnote-ref" id="fnref:g"><a class="footnote" href="#fn:g">7</a></sup>.</p>
+
+<p>The solution scripts are available: <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1895.py">A</a>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/59.py">B</a>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1545.py">C</a>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/882.py">D</a>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/992.py">E</a>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1292.py">F</a> and <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1340.py">G</a>.</p>
+
+<div class="mermaid" style="text-align: center;">
+    
+gantt
+  dateFormat  YYYY-MM-DD HH:mm
+  axisFormat  %H:%M
+
+  section Problem A
+  A           :2021-06-18 22:04, 13m
+
+  section Problem B
+  B           :2021-06-18 22:17, 7m
+
+  section Problem C
+  C           :2021-06-18 22:24, 14m
+
+  section Problem D
+  D           :2021-06-18 22:38, 4m
+  D           :2021-06-18 23:22, 28m
+
+  section Problem E
+  E           :2021-06-18 22:42, 40m
+  
+  section Problem F
+  F           :2021-06-18 23:52, 11m
+  
+  section Problem G
+  G           :2021-06-19 00:06, 12m
+
+</div>
+  
+
+<h2 id="a-largest-magic-square">A. Largest Magic Square<a href="#a-largest-magic-square" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert info">
+  <strong>Idea.</strong> Just exhaust the squares $\mathcal{O}(mn\cdot\text{min}\{m, n\})$ and check if it is a magic square with $\mathcal{O}(k^2)$.
+</div>
+
+
+<h3 id="timeline">Timeline<a href="#timeline" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>[2021.06.18 22:04] Start</li>
+<li>[2021.06.18 22:17] First attempt (AC)</li>
+</ul>
+
+<h2 id="b-spiral-matrix-ii">B. Spiral Matrix II<a href="#b-spiral-matrix-ii" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert info">
+  <strong>Idea.</strong> Simple simulation.
+</div>
+
+
+<h3 id="timeline-1">Timeline<a href="#timeline-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>[2021.06.18 22:17] Start</li>
+<li>[2021.06.18 22:24] First attempt (AC)</li>
+</ul>
+
+<h2 id="c-find-kth-bit-in-nth-binary-string">C. Find Kth Bit in Nth Binary String<a href="#c-find-kth-bit-in-nth-binary-string" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="commentary">Commentary<a href="#commentary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>There is a naive solution that computes all the bits of $S_n$ and take the $k$-th. I decided to use recursion that solves the problem with $\mathcal{O}(\text{log}\ k)$. Although it is an overkill, I practised.</p>
+
+<p>The recursion is simple. Suppose that $B_k$ is the $k$-th bit of the sequence (one-indexed):</p>
+
+<ul>
+<li><strong>[Base Case]</strong> $B_k = 0$ if $k = 1$.</li>
+<li><strong>[Base Case]</strong> $B_k = 1$ if $k = 2^b$ for some integer $b &gt; 0$.</li>
+<li><strong>[Transition]</strong> $B_k = 1 - B_{2^b - r}$ if $k = 2^b + r$ for some integers $b &gt; 0$ and $0 &lt; r &lt; 2^b$.</li>
+</ul>
+
+<h3 id="timeline-2">Timeline<a href="#timeline-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>[2021.06.18 22:24] Start</li>
+<li>[2021.06.18 22:36] First attempt (RE: 4/63)
+
+<ul>
+<li>Reason: Caused a stack overflow because I mishandled the second base case.</li>
+</ul></li>
+<li>[2021.06.18 22:38] Second attempt (AC)</li>
+</ul>
+
+<h2 id="d-reachable-nodes-in-subdivided-graph">D. Reachable Nodes In Subdivided Graph<a href="#d-reachable-nodes-in-subdivided-graph" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert info">
+  <strong>Idea.</strong> Use Dijkstra&rsquo;s algorithm to compute the distance from node 0 to the other nodes. Then for each edge in the original graph, count the number of new nodes those are reachable. Count also the nodes in the original graph those are reachable too.
+</div>
+
+
+<h3 id="timeline-3">Timeline<a href="#timeline-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>[2021.06.18 22:36] Start</li>
+<li>[2021.06.18 22:42] Paused</li>
+<li>[2021.06.18 23:22] Resumed</li>
+<li>[2021.06.18 23:43] First attempt (WA: 28/47)
+
+<ul>
+<li>Reason: Heaps are sorted incorrectly.</li>
+</ul></li>
+<li>[2021.06.18 23:50] Second attempt (AC)</li>
+</ul>
+
+<h2 id="e-subarrays-with-k-different-integers">E. Subarrays with K Different Integers<a href="#e-subarrays-with-k-different-integers" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert info">
+  <strong>Idea.</strong> For each $0 \leq l &lt; n$, find the minimum value of $r$ such that $a_l, a_{l+1}, &hellip;, a_r$ has $k$ distinct elements. It can be computed in $\mathcal{O}(n)$ using sliding window. Similarly, find $r'$ such that $a_l, a_{l+1}, &hellip;, a_{r'}$ has $k+1$ distinct elements. Then the answer would be $\sum (r' - r)$.
+</div>
+
+
+<h3 id="timeline-4">Timeline<a href="#timeline-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>[2021.06.18 22:42] Start</li>
+<li>[2021.06.18 23:22] First attempt (AC)</li>
+</ul>
+
+<h2 id="f-maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold">F. Maximum Side Length of a Square with Sum Less than or Equal to Threshold<a href="#f-maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert info">
+  <strong>Idea.</strong> Similar to A: exhaust the squares $\mathcal{O}(mn\cdot\text{min}\{m, n\})$. Compute the sum of the square with <em>linear</em> time from precomputation.
+</div>
+
+
+<h3 id="timeline-5">Timeline<a href="#timeline-5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>[2021.06.18 23:52] Start</li>
+<li>[2021.06.19 00:03] First attempt (AC)</li>
+</ul>
+
+<h2 id="g-jump-game-v">G. Jump Game V<a href="#g-jump-game-v" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert info">
+  <strong>Idea.</strong> The goal is to find the length of a longest path of the given DAG.
+</div>
+
+
+<h3 id="timeline-6">Timeline<a href="#timeline-6" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<ul>
+<li>[2021.06.19 00:06] Start</li>
+<li>[2021.06.19 00:22] First attempt (AC)</li>
+</ul>
+<div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:a">LeetCode &quot;Largest Magic Square&quot;<br><a href="https://leetcode.com/problems/largest-magic-square/">https://leetcode.com/problems/largest-magic-square/</a>
+ <a class="footnote-return" href="#fnref:a">↩</a></li>
+<li id="fn:b">LeetCode &quot;Spiral Matrix I&quot;<br><a href="https://leetcode.com/problems/spiral-matrix-ii/">https://leetcode.com/problems/spiral-matrix-ii/</a>
+ <a class="footnote-return" href="#fnref:b">↩</a></li>
+<li id="fn:c">LeetCode &quot;Find Kth Bit in Nth Binary String&quot;<br><a href="https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/">https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/</a>
+ <a class="footnote-return" href="#fnref:c">↩</a></li>
+<li id="fn:d">LeetCode &quot;Reachable Nodes In Subdivided Graph&quot;<br><a href="https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/">https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/</a>
+ <a class="footnote-return" href="#fnref:d">↩</a></li>
+<li id="fn:e">LeetCode &quot;Subarrays with K Different Integers&quot;<br><a href="https://leetcode.com/problems/subarrays-with-k-different-integers/">https://leetcode.com/problems/subarrays-with-k-different-integers/</a>
+ <a class="footnote-return" href="#fnref:e">↩</a></li>
+<li id="fn:f">LeetCode &quot;Maximum Side Length of a Square with Sum Less than or Equal to Threshold&quot;<br><a href="https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/">https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/</a>
+ <a class="footnote-return" href="#fnref:f">↩</a></li>
+<li id="fn:g">LeetCode &quot;Jump Game V&quot;<br><a href="https://leetcode.com/problems/jump-game-v/">https://leetcode.com/problems/jump-game-v/</a>
+ <a class="footnote-return" href="#fnref:g">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021/2021-07-24-google-ctf/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Google CTF 2021 Quals Writeup</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021/2021-06-18-leetcode-2/">
+                <span class="button__text">LeetCode Practice: Day 2</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    LeetCode Practice: Day 3
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

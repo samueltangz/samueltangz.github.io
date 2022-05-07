@@ -20,13 +20,13 @@
     <loc>/tags/</loc>
     <lastmod>2022-03-02T00:38:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2022-03-02-tsjctf-2/</loc>
+    <loc>/posts/2022/2022-03-02-tsjctf-2/</loc>
     <lastmod>2022-03-02T00:38:00+08:00</lastmod>
   </url><url>
     <loc>/tags/tsj-ctf/</loc>
     <lastmod>2022-03-02T00:38:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2022-03-01-tsjctf-1/</loc>
+    <loc>/posts/2022/2022-03-01-tsjctf-1/</loc>
     <lastmod>2022-03-01T00:23:00+08:00</lastmod>
   </url><url>
     <loc>/tags/challenge-writing/</loc>
@@ -35,10 +35,10 @@
     <loc>/tags/mocsctf/</loc>
     <lastmod>2022-02-19T17:50:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2022-02-19-mocsctf/</loc>
+    <loc>/posts/2022/2022-02-19-mocsctf/</loc>
     <lastmod>2022-02-19T17:50:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2022-02-14-intigriti-xss/</loc>
+    <loc>/posts/2022/2022-02-14-intigriti-xss/</loc>
     <lastmod>2022-02-14T10:00:00+08:00</lastmod>
   </url><url>
     <loc>/tags/intigriti-challenge/</loc>
@@ -50,7 +50,7 @@
     <loc>/tags/dicectf/</loc>
     <lastmod>2022-02-08T04:30:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2022-02-08-dicectf-commitment/</loc>
+    <loc>/posts/2022/2022-02-08-dicectf-commitment/</loc>
     <lastmod>2022-02-08T04:30:00+08:00</lastmod>
   </url><url>
     <loc>/tags/lll/</loc>
@@ -59,25 +59,25 @@
     <loc>/tags/rsa/</loc>
     <lastmod>2022-02-08T04:30:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2022-01-23-firebird-internal-ctf/</loc>
+    <loc>/posts/2022/2022-01-23-firebird-internal-ctf/</loc>
     <lastmod>2022-01-23T22:07:00+08:00</lastmod>
   </url><url>
     <loc>/tags/firebird-training/</loc>
     <lastmod>2022-01-23T22:07:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2022-01-17-intigriti-xss/</loc>
+    <loc>/posts/2022/2022-01-17-intigriti-xss/</loc>
     <lastmod>2022-01-17T23:00:00+08:00</lastmod>
   </url><url>
     <loc>/tags/crc/</loc>
     <lastmod>2021-11-29T23:30:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-11-29-dragonctf-crc/</loc>
+    <loc>/posts/2021/2021-11-29-dragonctf-crc/</loc>
     <lastmod>2021-11-29T23:30:00+08:00</lastmod>
   </url><url>
     <loc>/tags/dragonctf/</loc>
     <lastmod>2021-11-29T23:30:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-11-27-balsn-dlog/</loc>
+    <loc>/posts/2021/2021-11-27-balsn-dlog/</loc>
     <lastmod>2021-11-27T15:55:00+08:00</lastmod>
   </url><url>
     <loc>/tags/balsn-ctf/</loc>
@@ -92,7 +92,7 @@
     <loc>/tags/algorithms/</loc>
     <lastmod>2021-11-18T16:05:03+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-11-18-hkcert-ctf-4/</loc>
+    <loc>/posts/2021/2021-11-18-hkcert-ctf-4/</loc>
     <lastmod>2021-11-18T16:05:03+08:00</lastmod>
   </url><url>
     <loc>/tags/hkcert-ctf/</loc>
@@ -104,19 +104,19 @@
     <loc>/tags/web/</loc>
     <lastmod>2021-11-18T16:05:03+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-11-18-hkcert-ctf-3/</loc>
+    <loc>/posts/2021/2021-11-18-hkcert-ctf-3/</loc>
     <lastmod>2021-11-18T16:05:02+08:00</lastmod>
   </url><url>
     <loc>/tags/reverse/</loc>
     <lastmod>2021-11-18T16:05:02+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-11-18-hkcert-ctf-2/</loc>
+    <loc>/posts/2021/2021-11-18-hkcert-ctf-2/</loc>
     <lastmod>2021-11-18T16:05:01+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-11-18-hkcert-ctf-1/</loc>
+    <loc>/posts/2021/2021-11-18-hkcert-ctf-1/</loc>
     <lastmod>2021-11-18T16:05:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-11-07-bsides-ahmedabad/</loc>
+    <loc>/posts/2021/2021-11-07-bsides-ahmedabad/</loc>
     <lastmod>2021-11-07T11:02:00+08:00</lastmod>
   </url><url>
     <loc>/tags/bsides-ahmedabad/</loc>
@@ -128,7 +128,7 @@
     <loc>/tags/factor/</loc>
     <lastmod>2021-10-25T23:35:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-10-25-asis-lagleg/</loc>
+    <loc>/posts/2021/2021-10-25-asis-lagleg/</loc>
     <lastmod>2021-10-25T23:35:00+08:00</lastmod>
   </url><url>
     <loc>/tags/boneh-durfee/</loc>
@@ -137,7 +137,7 @@
     <loc>/tags/pbctf/</loc>
     <lastmod>2021-10-11T20:26:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-10-11-pbctf/</loc>
+    <loc>/posts/2021/2021-10-11-pbctf/</loc>
     <lastmod>2021-10-11T20:26:00+08:00</lastmod>
   </url><url>
     <loc>/tags/phpfuck/</loc>
@@ -146,10 +146,10 @@
     <loc>/tags/uiuctf/</loc>
     <lastmod>2021-08-10T23:59:59+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-08-10-uiuctf-phpfuck/</loc>
+    <loc>/posts/2021/2021-08-10-uiuctf-phpfuck/</loc>
     <lastmod>2021-08-10T23:59:59+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-07-24-google-ctf/</loc>
+    <loc>/posts/2021/2021-07-24-google-ctf/</loc>
     <lastmod>2021-07-24T14:42:00+08:00</lastmod>
   </url><url>
     <loc>/tags/google-ctf/</loc>
@@ -158,28 +158,28 @@
     <loc>/tags/leetcode/</loc>
     <lastmod>2021-06-19T12:50:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-06-19-leetcode-3/</loc>
+    <loc>/posts/2021/2021-06-19-leetcode-3/</loc>
     <lastmod>2021-06-19T12:50:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-06-18-leetcode-2/</loc>
+    <loc>/posts/2021/2021-06-18-leetcode-2/</loc>
     <lastmod>2021-06-18T21:30:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-06-17-leetcode-1/</loc>
+    <loc>/posts/2021/2021-06-17-leetcode-1/</loc>
     <lastmod>2021-06-17T19:50:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-05-06-defcon-quals-2/</loc>
+    <loc>/posts/2021/2021-05-06-defcon-quals-2/</loc>
     <lastmod>2021-05-06T00:15:00+08:00</lastmod>
   </url><url>
     <loc>/tags/defcon/</loc>
     <lastmod>2021-05-06T00:15:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-05-04-defcon-quals-1/</loc>
+    <loc>/posts/2021/2021-05-04-defcon-quals-1/</loc>
     <lastmod>2021-05-04T01:13:00+08:00</lastmod>
   </url><url>
     <loc>/tags/plaidctf/</loc>
     <lastmod>2021-04-19T12:07:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-04-19-plaidctf-leaky-block-cipher/</loc>
+    <loc>/posts/2021/2021-04-19-plaidctf-leaky-block-cipher/</loc>
     <lastmod>2021-04-19T12:07:00+08:00</lastmod>
   </url><url>
     <loc>/tags/aes/</loc>
@@ -188,19 +188,19 @@
     <loc>/tags/angstromctf/</loc>
     <lastmod>2021-04-08T08:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-04-08-angstromctf-2021/</loc>
+    <loc>/posts/2021/2021-04-08-angstromctf-2021/</loc>
     <lastmod>2021-04-08T08:00:00+08:00</lastmod>
   </url><url>
     <loc>/tags/binary-exploitation/</loc>
     <lastmod>2021-04-01T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-04-01-binary-exploitation-1/</loc>
+    <loc>/posts/2021/2021-04-01-binary-exploitation-1/</loc>
     <lastmod>2021-04-01T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-03-28-hkcert-ctf/</loc>
+    <loc>/posts/2021/2021-03-28-hkcert-ctf/</loc>
     <lastmod>2021-03-28T17:54:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-02-28-aeroctf/</loc>
+    <loc>/posts/2021/2021-02-28-aeroctf/</loc>
     <lastmod>2021-02-28T19:35:00+08:00</lastmod>
   </url><url>
     <loc>/tags/aero-ctf/</loc>
@@ -209,7 +209,7 @@
     <loc>/tags/git/</loc>
     <lastmod>2021-02-27T17:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-02-27-union-ctf-committee/</loc>
+    <loc>/posts/2021/2021-02-27-union-ctf-committee/</loc>
     <lastmod>2021-02-27T17:00:00+08:00</lastmod>
   </url><url>
     <loc>/tags/union-ctf/</loc>
@@ -221,16 +221,16 @@
     <loc>/tags/haxe/</loc>
     <lastmod>2021-02-23T00:45:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-02-23-union-ctf-exah/</loc>
+    <loc>/posts/2021/2021-02-23-union-ctf-exah/</loc>
     <lastmod>2021-02-23T00:45:00+08:00</lastmod>
   </url><url>
     <loc>/tags/kurenaif/</loc>
     <lastmod>2021-02-20T23:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-02-21-kurenaif-challenges/</loc>
+    <loc>/posts/2021/2021-02-21-kurenaif-challenges/</loc>
     <lastmod>2021-02-20T23:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-02-15-dicectf-1/</loc>
+    <loc>/posts/2021/2021-02-15-dicectf-1/</loc>
     <lastmod>2021-02-15T01:30:00+08:00</lastmod>
   </url><url>
     <loc>/tags/grobner-basis/</loc>
@@ -242,13 +242,13 @@
     <loc>/tags/justctf/</loc>
     <lastmod>2021-02-01T03:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-02-01-justctf-oracles/</loc>
+    <loc>/posts/2021/2021-02-01-justctf-oracles/</loc>
     <lastmod>2021-02-01T03:00:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-01-29-hoifanrds-osu-challenge/</loc>
+    <loc>/posts/2021/2021-01-29-hoifanrds-osu-challenge/</loc>
     <lastmod>2021-01-29T21:05:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-01-18-firebird-internal-ctf/</loc>
+    <loc>/posts/2021/2021-01-18-firebird-internal-ctf/</loc>
     <lastmod>2021-01-18T22:00:00+08:00</lastmod>
   </url><url>
     <loc>/tags/discrete-logarithm/</loc>
@@ -257,10 +257,10 @@
     <loc>/tags/tetctf/</loc>
     <lastmod>2021-01-03T13:39:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2021-01-03-tetctf-unevaluated/</loc>
+    <loc>/posts/2021/2021-01-03-tetctf-unevaluated/</loc>
     <lastmod>2021-01-03T13:39:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-12-20-hxpctf-hyper/</loc>
+    <loc>/posts/2020/2020-12-20-hxpctf-hyper/</loc>
     <lastmod>2020-12-20T23:53:00+08:00</lastmod>
   </url><url>
     <loc>/tags/hxpctf/</loc>
@@ -269,19 +269,19 @@
     <loc>/tags/hyperelliptic-curves/</loc>
     <lastmod>2020-12-20T23:53:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-11-23-dragonctf/</loc>
+    <loc>/posts/2020/2020-11-23-dragonctf/</loc>
     <lastmod>2020-11-23T04:33:50+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-09-21-firebird-intro-ctf-rsa/</loc>
+    <loc>/posts/2020/2020-09-21-firebird-intro-ctf-rsa/</loc>
     <lastmod>2020-09-21T16:15:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-09-08-confidencectf-team-trees/</loc>
+    <loc>/posts/2020/2020-09-08-confidencectf-team-trees/</loc>
     <lastmod>2020-09-08T18:30:00+08:00</lastmod>
   </url><url>
     <loc>/tags/confidence-ctf/</loc>
     <lastmod>2020-09-08T18:30:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-08-25-google-ctf-oracle/</loc>
+    <loc>/posts/2020/2020-08-25-google-ctf-oracle/</loc>
     <lastmod>2020-08-25T16:15:00+08:00</lastmod>
   </url><url>
     <loc>/tags/elliptic-curve/</loc>
@@ -290,22 +290,22 @@
     <loc>/tags/parameter-recovery/</loc>
     <lastmod>2020-07-22T18:55:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-07-22-uiuctf-nookcrypt/</loc>
+    <loc>/posts/2020/2020-07-22-uiuctf-nookcrypt/</loc>
     <lastmod>2020-07-22T18:55:00+08:00</lastmod>
   </url><url>
     <loc>/tags/de1ctf/</loc>
     <lastmod>2020-05-05T20:36:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-05-05-de1ctf/</loc>
+    <loc>/posts/2020/2020-05-05-de1ctf/</loc>
     <lastmod>2020-05-05T20:36:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2020-04-21-plaidctf-puzzle/</loc>
+    <loc>/posts/2020/2020-04-21-plaidctf-puzzle/</loc>
     <lastmod>2020-04-21T20:25:00+08:00</lastmod>
   </url><url>
     <loc>/tags/puzzlescript/</loc>
     <lastmod>2020-04-21T20:25:00+08:00</lastmod>
   </url><url>
-    <loc>/posts/2019-08-06-de1ctf/</loc>
+    <loc>/posts/2019/2019-08-06-de1ctf/</loc>
     <lastmod>2019-08-06T10:20:00+08:00</lastmod>
   </url><url>
     <loc>/tags/interpolation-attack/</loc>

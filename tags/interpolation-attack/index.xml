@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 06 Aug 2019 10:20:00 +0800</lastBuildDate><atom:link href="/tags/interpolation-attack/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>De1CTF 2019 Writeup</title>
-      <link>/posts/2019-08-06-de1ctf/</link>
+      <link>/posts/2019/2019-08-06-de1ctf/</link>
       <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
       
-      <guid>/posts/2019-08-06-de1ctf/</guid>
+      <guid>/posts/2019/2019-08-06-de1ctf/</guid>
       <description>It has been a very long time that I&#39;ve compiled a writeup. This time I have played on my own as @blackb6a. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup too math-intensive.
 The solution scripts will be committed to my Github repository sooner or later, after I&#39;ve managed to prettify them.
 Babylfsr (Crypto, 338 points) This is an easy challenge.</description>

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>hoifanrd&#39;s osu! Challenge :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="There are a lot of moments which I telepathed and synced with the challenge author. If it doesn&amp;rsquo;t make sense to you, just bear with it.  This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021/2021-01-29-hoifanrds-osu-challenge/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="hoifanrd&#39;s osu! Challenge">
+<meta property="og:description" content="This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge. To kick-start, let&#39;s look at hoifanrd from Firebird CTF team has shared a challenge he created some days ago." />
+<meta property="og:url" content="/posts/2021/2021-01-29-hoifanrds-osu-challenge/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-01-29-hoifanrd/step-1.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-01-29 21:05:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021/2021-01-29-hoifanrds-osu-challenge/">hoifanrd&rsquo;s osu! Challenge</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-01-29 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-01-29-hoifanrd/step-1.png" class="post-cover center" alt="hoifanrd&#39;s osu! Challenge" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <div class="alert warning">
+  There are a lot of moments which I telepathed and synced with the challenge author. If it doesn&rsquo;t make sense to you, just bear with it.
+</div>
+
+
+<p>This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge.</p>
+
+<p>To kick-start, let's look at <em>hoifanrd</em> from Firebird CTF team has shared a challenge he created some days ago.</p>
+
+<div class="alert info">
+  Some readers may not be familiar of <em>Firebird CTF team</em>. It is formed by students from the <em>Hong Kong University of Science and Technology</em> (HKUST). I was not a student there, but most of my teammates of Black Bauhinia were. Hence, it is natural I got invited to the Discord server. This is their team on <a href="https://ctftime.org/team/65249">CTFtime</a>.
+</div>
+
+
+<h2 id="background">Background<a href="#background" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>At around 11pm of January 25, I received a direct message from <em>hoifanrd</em> that he is going to make a guessy challenge. I replied &quot;make it&quot; in few minutes. On the next morning, I saw a challenge came alive in the Discord server of the Firebird CTF team.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/background.png"   />
+    
+      <figcaption class="right" >Did you see a pandora's box?</figcaption>
+    
+  </figure>
+
+
+
+<div class="alert info">
+  🔎 <strong>What is &ldquo;tuning&rdquo;?</strong> Tuning has a similar pronunciation to 通靈 in Cantonese and it means <em>mediumship</em>. UCCU hacker from Taiwan used it to describe the guessy challenges that required telepathy between the players and the challenge authors, and is quickly popularized in the CTF teams we knew in Hong Kong.
+</div>
+
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/tuning.jpeg"   />
+    
+      <figcaption class="right" >Shamelessly stolen from the <a href='https://www.facebook.com/UCCU.Hacker/photos/1775516999254715'>Facebook page of UCCU hacker</a>.</figcaption>
+    
+  </figure>
+
+
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>This is the challenge description he left in the Discord server:</p>
+
+<blockquote>
+<p>The journey starts here...
+<code>P2k9ZmhuM2U5U2pkeDA=</code></p>
+</blockquote>
+
+<p>On top of that, he also commented that the challenge would be fun since it involves some abnormal stego and hiding techniques.</p>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="part-i-an-obvious-base64">Part I: An obvious base64<a href="#part-i-an-obvious-base64" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Instead of the above base64-encoded string, I started with the challenge description he DMed me (as below). At that time I was not awared of the description he sent to the server is different from what he sent to me.</p>
+
+<blockquote>
+<p>The journey starts here...
+<code>ZmhuM2U5U2pkeDA=</code></p>
+</blockquote>
+
+<p>Noticing that the string being encoded in base64 is not hard. Decoding it, I have <code>fhn3e9Sjdx0</code>. Knowing that being an <em>osu!</em>-related challenge, I thought this is an username he created in <em>osu!</em>. Turns out it isn't. I honestly had no clues and searched <code>osu fhn3e9Sjdx0</code> on Google. It returns only one entry - A YouTube video recording the <em>osu!</em> gameplay of <em>firebat92</em>. Well it is very likely to be unrelated. I don't even know the reason it came to my search result, since the second keyword isn't found anywhere. In particular, the video ID is <code>jbTebNnwarg</code>, which is not what I expected.</p>
+
+<p>Well... I was messing around and tried to plug <code>fhn3e9Sjdx0</code> as the video ID. <em>Video unavailable</em>. However, one thing I learnt is that the video ID of YouTube is 11 characters long... Coincidence? Later I was reminded by <em>hoifanrd</em> that the challenge description I received is not up-to-date. For the updated one, it is <code>?i=fhn3e9Sjdx0</code> decoded. I am more convinced that it is a YouTube video. Let's figure out how to convert the <code>i</code> into <code>v</code>?</p>
+
+<p>The first thing I think is <em>Caesar cipher</em>. I bet it wouldn't be <em>Vigenere cipher</em> owing to its short message, and I would definitely question the author's knowledge on computer science if it is Vigenere cipher. I threw the ciphertext to cryptii.com and eventually found <code>?v=sua3r9Fwqk0</code>...</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/step-1.png"   />
+    
+      <figcaption class="right" >Oh wow. So it is actually an video on YouTube.</figcaption>
+    
+  </figure>
+
+
+
+<p>⏰ <em>Time elapsed: 10 minutes.</em></p>
+
+<h3 id="part-ii-figuring-out-that-being-a-wav-stego">Part II: Figuring out that being a <code>.wav</code> stego...<a href="#part-ii-figuring-out-that-being-a-wav-stego" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert warning">
+  It is almost impossible to solve the challenge by myself since this part. I am heavily hinted by <em>hoifanrd</em>.
+</div>
+
+
+<p><em>hoifanrd</em> played two beatmaps in the video. They are</p>
+
+<ol>
+<li><a href="https://osu.ppy.sh/beatmapsets/1337388#osu/2770393">Hyakka Ryouran Hanafubuki [Iceluin's Hard] mapped by <em>Hojo Karen</em></a> (0:00-3:47), and</li>
+<li><a href="https://osu.ppy.sh/beatmapsets/1339791#osu/2775742">Koyoi Tsuki no Yakata Nite (Cover) [Hard] mapped by <em>hoifanrd</em></a> (3:55-7:43).</li>
+</ol>
+
+<p>Knowing that being a stego challenge, it must be the second beatmap that the secret is hidden. At first, I wanted to see if something inside the video. I was soon stopped by <em>hoifanrd</em> and pointed that I am not on the right track. Well, since we can download the beatmap from osu.ppy.sh, let's download the beatmap and analyse. It is an <code>.osz</code> file that can be opened like zip file.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/osz-file.png"   />
+    
+  </figure>
+
+
+
+<p>I suspect that there is only one file with the secret hidden. I could immediately eliminate five files because they are modified earlier than Jan 25, the day he told me that he had an idea. I quickly looked into the three <code>.osu</code> files and didn't find anything fishy. After all, it is very likely to be a <code>.wav</code> stego.</p>
+
+<div class="alert info">
+  Of course, I would not have the above conclusion unless <em>hoifanrd</em> confirms that. He also informed me that there should be a <em>passphrase</em>&hellip;
+</div>
+
+
+<p>Okay, so what I have to do is to find both the <em>passphrase</em> and the correct <em>tool</em> hiding the secret bits.</p>
+
+<p>⏰ <em>Time elapsed: 75 minutes (+ 65 minutes).</em></p>
+
+<h3 id="part-iii-finding-the-passphrase">Part III: Finding the passphrase<a href="#part-iii-finding-the-passphrase" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>After a long break (i.e. my working hours), I am back to the challenge. Without the passphrase, I am unable to tell if the tool is correct. Hence I decided to find the passphrase first. Knowing that there are two beatmaps in the video those serve their own purpose, I was focusing on the first gameplay. If the second gameplay contains the secret, then the key must be hidden in the first one.</p>
+
+<p>Well... I made no progress for an hour and at some point of time I decided to stream on the Discord server. Eventually <em>hoifanrd</em> thinks I am too weak and decided to give me some hints:</p>
+
+<blockquote>
+<p>It should be something that is easy to aware... notice the cursor</p>
+</blockquote>
+
+<p>After a short while, I noticed a cursor having a <em>heartbeat</em> behaviour on 2:46, the cursor was not pumping on the other timestamps. It must be morse code.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<video autoplay loop  style="width: 100%; margin: 0 auto; display: block;">
+  <source src="/images/2021-01-29-hoifanrd/gameplay.webm" type="video/webm">
+</video>
+
+<p>However there is no significant time difference between a dash and a dot. What can we do to distinguish dashes from dots? Well, if you met <em>some</em> conditions, then the replay will be recorded and uploaded to osu.ppy.sh (as an <code>.osr</code> file). The first gameplay satisfies such conditions and is available online. There are multiple approaches to read an <code>.osr</code> file, since I am lazy to install <em>osu!</em> for that, I found a Python package on Github called <a href="https://github.com/kszlim/osu-replay-parser">osrparse</a>. Doing some math, I identified the time interval of the heartbeat and extracted the key pressed during the interval.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/step-3.png"   />
+    
+  </figure>
+
+
+
+<p>The above figure marks the keys pressed during the interval:</p>
+
+<ul>
+<li>A blue dot is the place he pressed M1,</li>
+<li>a red dot is the place he pressed M2, and</li>
+<li>a green dot is the place he pressed M1 and M2.</li>
+</ul>
+
+<p>After all, we have <code>.​-- . .​-.. --- ...- . ... .​- --</code>, which decodes into <code>WELOVESAM</code>.</p>
+
+<div class="alert info">
+  <strong>Who&rsquo;s Sam?</strong> Sam is a well-loved trainer of their team. He once made a guessy forensics challenge and pretended that it was made by another trainer in the team. The Firebird members made the below picture to express their love to Sam&hellip;
+</div>
+
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/we-love-sam.png"   />
+    
+  </figure>
+
+
+
+<p>⏰ <em>Time elapsed: 200 minutes (+ 135 minutes).</em></p>
+
+<h3 id="part-iv-the-final-bits">Part IV: The final bits<a href="#part-iv-the-final-bits" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>The only thing remaining is to find the correct tool to extract the secret hidden in the <code>.wav</code> file. Since <em>steghide</em> is the most common one amongst them, I am able to extract the secret with the following command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">steghide extract -sf audio.wav -p WELOVESAM</code></pre></div>
+<p>I have extracted the message below. Well, I quickly realized that is nonogram.</p>
+
+
+
+
+  <div class="collapsable-code">
+    <input id="975648132" type="checkbox" checked />
+    <label for="975648132">
+      <span class="collapsable-code__language">text</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
+    </label>
+    <pre class="language-text" ><code>
+7 2 2 1 1 7
+1 1 2 1 1 1
+1 3 1 1 6 2 1 3 1
+1 3 1 2 1 3 1 1 3 1
+1 3 1 4 3 2 1 3
+1
+1 1 1 1 1 1 2 1 1
+7 1 1 1 1 1 1 1 7
+1 1 2 2 1
+4 1 1 4 1 2 3 1
+1 2 2 1 3 2
+1
+1 1 1 1 3 2 1
+1 1 5 4 2
+1 5 1 1 2 1 3
+1 1 5 1 2 1 1 1 1
+3 1 3 1 1 2 1 1 3
+2 1
+1 1 2 3 4 1
+1 3 1 1 1 3 5
+1 1 1 2 2 1 2 1
+1 6 3 1 3
+3 4 1 4 1 1 1
+1 1 2 1 3 8
+3
+1 1 3 5 1 2
+7 1 3 1 3 1 2 1
+1 1 1 2 1 2
+1 3 1 1 1 6
+1 3 1 2 2 3 2 1 2 1
+1 3
+1 4 1 2 1 1 1
+1 1 4 2 1 1 2 1
+7 3 1 1 1 3 1 1
+
+7 1 1 1 7
+1 1 2 2 1 1 1 1 1
+1
+3 1 1 1 1 1 1 3 1
+1 3 1 1 4 3 1 3 1
+1 3 1 1 1 1 1 2 1 3 1
+1 1 1 2 1 1 1 1
+7 1
+1 1 1 1 1 1 7
+3 1 3
+1 3 1 2 2 1 2 1 4
+1 3 1 1 3 2 1 4
+1 1 3 3 1 3
+3 1 3 1 1 1
+1 3
+1 2 1 2 6 2 1
+1 1 1 2 1 1 1 1 3 1
+1 1 5 2 1 1 2 2
+3 1 1 3 1 1 1
+4 5 2 2 1
+2 1 1
+1 1 1 1 1 2 3 1
+1 1 1 1 2 4 4 2
+1 1 2 1 1 4 4 1 2
+1 1 2 4 3 5 1 1
+1 2 1
+1 1 2 1
+7 1 2 1 1 1 1
+1 1 1 2 1 1 2 1
+1 3 1 3 3 1 6 2
+1 3 1 3 1 2 1 1 2 1
+1 3
+1 1 1 1 1 3 1
+1 1 4 3 4 2
+7 2 1 2 1 3 1 2
+
+I like playing puzzle...
+</code></pre>
+  </div>
+
+
+
+<p>Unfortunately, <em>hoifanrd</em> noticed that the message isn't correct owing to some issues regarding to line breaks. I have received an updated message from him:</p>
+
+
+
+
+  <div class="collapsable-code">
+    <input id="736495281" type="checkbox" checked />
+    <label for="736495281">
+      <span class="collapsable-code__language">text</span>
+      
+      <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
+    </label>
+    <pre class="language-text" ><code>
+7 2 2 1 1 7
+1 1 2 1 1 1
+1 3 1 1 6 2 1 3 1
+1 3 1 2 1 3 1 1 3 1
+1 3 1 4 3 2 1 3 1
+1 1 1 1 1 1 2 1 1
+7 1 1 1 1 1 1 1 7
+1 1 2 2 1
+4 1 1 4 1 2 3 1
+1 2 2 1 3 2
+1 1 1 1 1 3 2 1
+1 1 5 4 2
+1 5 1 1 2 1 3
+1 1 5 1 2 1 1 1 1
+3 1 3 1 1 2 1 1 3
+2 1 1 1 2 3 4 1
+1 3 1 1 1 3 5
+1 1 1 2 2 1 2 1
+1 6 3 1 3
+3 4 1 4 1 1 1
+1 1 2 1 3 8 3
+1 1 3 5 1 2
+7 1 3 1 3 1 2 1
+1 1 1 2 1 2
+1 3 1 1 1 6
+1 3 1 2 2 3 2 1 2 1
+1 3 1 4 1 2 1 1 1
+1 1 4 2 1 1 2 1
+7 3 1 1 1 3 1 1
+
+7 1 1 1 7
+1 1 2 2 1 1 1 1 1
+1 3 1 1 1 1 1 1 3 1
+1 3 1 1 4 3 1 3 1
+1 3 1 1 1 1 1 2 1 3 1
+1 1 1 2 1 1 1 1
+7 1 1 1 1 1 1 1 7
+3 1 3
+1 3 1 2 2 1 2 1 4
+1 3 1 1 3 2 1 4
+1 1 3 3 1 3
+3 1 3 1 1 1 1 3
+1 2 1 2 6 2 1
+1 1 1 2 1 1 1 1 3 1
+1 1 5 2 1 1 2 2
+3 1 1 3 1 1 1
+4 5 2 2 1 2 1 1
+1 1 1 1 1 2 3 1
+1 1 1 1 2 4 4 2
+1 1 2 1 1 4 4 1 2
+1 1 2 4 3 5 1 1
+1 2 1 1 1 2 1
+7 1 2 1 1 1 1
+1 1 1 2 1 1 2 1
+1 3 1 3 3 1 6 2
+1 3 1 3 1 2 1 1 2 1
+1 3 1 1 1 1 1 3 1
+1 1 4 3 4 2
+7 2 1 2 1 3 1 2
+
+I like playing puzzle...
+</code></pre>
+  </div>
+
+
+
+<p>I have imported the nonogram to <a href="http://a.teall.info/nonogram/">an online nonogram solver</a>. The solver occasionally stop working owing to unknown reasons (maybe the solution is not unique), so I decided to guess the shaded bits. Luckily I am streaming this, so that the ones who are watching can also deal with it while I am stuck.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/qrcode.png"   />
+    
+      <figcaption class="right" >Crowd-sourcing nonogram. Credit to TWY.</figcaption>
+    
+  </figure>
+
+
+
+<p>Shortly after, we have enough information for the QR code to be scanned correctly: <code>flag{W3_l0v3_S4m_4nd_p1z_dun_1ov3_m3}</code>. Sam is blushed.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-01-29-hoifanrd/sam-final.png"   />
+    
+  </figure>
+
+
+
+<p>⏰ <em>Time elapsed: 220 minutes (+ 20 minutes).</em></p>
+
+<h2 id="my-feedback">My Feedback<a href="#my-feedback" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>In short, there are a few steps to get it through.</p>
+
+<ol>
+<li>Decode with base64 and decrypt with Caesar cipher for the video link</li>
+<li>Find the file that conceals the secret something</li>
+<li>Find the passphrase to open the secret</li>
+<li>Find the steganographic tool to open the secret</li>
+<li>Solve the puzzle from the secret for the flag</li>
+</ol>
+
+<p>The challenge is not difficult itself, but I am very sure that I am unable to solve it on my own. Parts 1 and 5 are okay. I would think part 4 is guessy if it is not <em>steghide</em>. However, parts 2 and 3 are the toughest parts. They are the most guessy, but at the same time I learnt something interesting.</p>
+
+<p>To solve parts 2 and 3, you need to know what <em>hoifanrd</em> thinks (or wait until he gives hints). There are two beatmaps, and the reason why it got to be <em>two</em> is:</p>
+
+<ol>
+<li>The replay will be uploaded only if the gameplay is one of the top 1000 games in a given <em>ranked beatmap</em>. The first beatmap (Hyakka Ryouran Hanafubuki) satisfies the condition, hence you are able to download the replay from osu.ppy.sh.</li>
+<li>Needless to say, you can hide steganographically the <code>.wav</code> file in your own beatmaps.</li>
+</ol>
+
+<p>Apart from this, you do need good eyesight to solve the challenge. Otherwise it will be impossible to notice the morse code during the break time... It is good to learn parsing <code>.osr</code> files and liked the idea of hiding something in such a way.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021/2021-02-01-justctf-oracles/">
+                <span class="button__icon">←</span>
+                <span class="button__text">justCTF 2020: Oracles</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021/2021-01-18-firebird-internal-ctf/">
+                <span class="button__text">Firebird Internal CTF 2021 Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    hoifanrd&rsquo;s osu! Challenge
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>TSJ CTF 2022 (II): Signature :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Signature is a crypto challenge from TSJ CTF 2022, which ended up having two solves. From this challenge, we can see how ECDSA private keys can be recovered by having a (weak) deterministic ephemeral key, $k$.
+Challenge Summary Suppose that $d$ is the private key for ECDSA (over curve secp256k1). We are given six signatures signed with the above private key. However, $k$ is computed by $k = d \oplus z$ ($z$ is the hash of the message) rather than generated randomly." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2022/2022-03-02-tsjctf-2/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="TSJ CTF 2022 (II): Signature">
+<meta property="og:description" content="Signature is a crypto challenge from TSJ CTF 2022, which ended up having two solves. From this challenge, we can see how ECDSA private keys can be recovered by having a (weak) deterministic ephemeral key, $k$." />
+<meta property="og:url" content="/posts/2022/2022-03-02-tsjctf-2/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-03-02 00:38:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2022/2022-03-02-tsjctf-2/">TSJ CTF 2022 (II): Signature</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-03-02 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/tsj-ctf/">tsj-ctf</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/ecdsa/">ecdsa</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p><em>Signature</em> is a crypto challenge from TSJ CTF 2022, which ended up having two solves. From this challenge, we can see how ECDSA private keys can be recovered by having a (weak) deterministic ephemeral key, $k$.</p>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>Suppose that $d$ is the private key for ECDSA (over curve secp256k1). We are given six signatures signed with the above private key. However, $k$ is computed by $k = d \oplus z$ ($z$ is the hash of the message) rather than generated randomly.</p>
+
+<p>$d$ is then used to derive a key for AES-CTR which is used to encrypt the message, which is in the form <code>Congrats! This is your flag: [FLAG]</code>. The objective is to recover the flag.</p>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="part-i-modelling-the-unknowns-with-a-linear-congruence">Part I: Modelling the unknowns with a linear congruence<a href="#part-i-modelling-the-unknowns-with-a-linear-congruence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Below is the most important equation that is used to solve the challenge:</p>
+
+<p><span  class="math">\[k \cdot s \equiv z + r \cdot d\ (\text{mod}\ n) \qquad [\dagger]\]</span></p>
+
+<div class="alert info">
+  <p><strong>Where does the equation comes from?</strong> When signing a digest $z$, we have</p>
+<p>$$s = k^{-1} (z + r \cdot d)\ (\text{mod}\ n).$$</p>
+<p>Therefore, we can obtain $[\dagger]$ by rearranging the terms.</p>
+
+</div>
+
+
+<p>From the challenge setting, we have six pairs of $(z, r, s)$. Also, $k$ is deterministic and is given by $k = d \oplus z$. If we write</p>
+
+<p><span  class="math">\[k = \sum_{i=0}^{255} 2^i \cdot k_i \qquad \text{and} \qquad d = \sum_{i=0}^{255} 2^i \cdot d_i,\]</span></p>
+
+<p>here $k_i, d_i \in \{0, 1\}$. We can express $k_i$ in terms of $d_i$ for each $i = 0, 1, ..., 255$. If we denote $z_i$ by the $i$-th bit of $z$, we have the below truth table that everybody knows:</p>
+
+<table style="width: 50%; margin: 0 auto;">
+    <tr>
+        <th style="width: 50%; text-align: center;">$d_i$</th>
+        <td style="text-align: center;">0</td>
+        <td style="text-align: center;">0</td>
+        <td style="text-align: center;">1</td>
+        <td style="text-align: center;">1</td>
+    </tr
+    <tr>
+        <th style="width: 50%; text-align: center;">$z_i$</th>
+        <td style="text-align: center;">0</td>
+        <td style="text-align: center;">1</td>
+        <td style="text-align: center;">0</td>
+        <td style="text-align: center;">1</td>
+    </tr
+    <tr>
+        <th style="width: 50%; text-align: center;">$k_i = d_i \oplus z_i$</th>
+        <td style="text-align: center;">0</td>
+        <td style="text-align: center;">1</td>
+        <td style="text-align: center;">1</td>
+        <td style="text-align: center;">0</td>
+    </tr>
+</table>
+
+<p>Since $z_i$'s are known, we can simply write $k_i$ in terms of $d_i$:</p>
+
+<p><span  class="math">\[k_i = \begin{cases}
+d_i & \text{if}\ z_i = 0 \\
+1 - d_i & \text{otherwise}
+\end{cases}.\]</span></p>
+
+<p>It is just that simple. If we let $i = i_1, i_2, ..., i_p$ to be the indexes such that $z_i = 0$ and $i = j_1, j_2, ..., j_q$ be the indexes such that $z_i = 1$, we can rewrite $[\dagger]$ as an equation with 256 bits of unknown (reduced from 512 bits):</p>
+
+<p><span  class="math">\[\begin{aligned}
+&0 \equiv z + r \cdot \left(\sum_{i=0}^{255} 2^i \cdot d_i\right) - \left(\sum_{i=0}^{255} 2^i \cdot k_i\right) \cdot s \\
+& \qquad \equiv z + r \cdot \left(\sum_{u=1}^p 2^{i_u} \cdot d_{i_u} + \sum_{u=1}^q 2^{j_u} \cdot d_{j_u}\right) - \left(\sum_{u=1}^p 2^{i_u} \cdot k_{i_u} + \sum_{u=1}^q 2^{j_u} \cdot k_{j_u}\right) \cdot s \\
+& \qquad \equiv z + r \cdot \left(\sum_{u=1}^p 2^{i_u} \cdot d_{i_u} + \sum_{u=1}^q 2^{j_u} \cdot d_{j_u}\right) - \left(\sum_{u=1}^p 2^{i_u} \cdot d_{i_u} + \sum_{u=1}^q 2^{j_u} \cdot (1 - d_{j_u})\right) \cdot s \\
+& \qquad \equiv z + r \cdot \left(\sum_{u=1}^p 2^{i_u} \cdot d_{i_u} + \sum_{u=1}^q 2^{j_u} \cdot d_{j_u}\right) - \left(\sum_{u=1}^p 2^{i_u} \cdot d_{i_u} + \sum_{u=1}^q 2^{j_u} - \sum_{u=1}^q 2^{j_u} \cdot d_{j_u}\right) \cdot s \\
+& \qquad \equiv \sum_{u=1}^p 2^{i_u} (r - s) \cdot \htmlStyle{color: yellow;}{d_{i_u}} + \sum_{u=1}^q 2^{j_u} (r + s) \cdot \htmlStyle{color: yellow;}{d_{j_u}} + z - \sum_{u=1}^q 2^{j_u} \quad (\text{mod}\ n) \qquad\qquad [\dagger']
+\end{aligned}\]</span></p>
+
+<h3 id="part-ii-lll-ftw-as-always">Part II: LLL FTW (as always)<a href="#part-ii-lll-ftw-as-always" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Since $[\dagger']$ is affine, we can write it as</p>
+
+<p><span  class="math">\[a_0 \cdot \htmlStyle{color: yellow;}{d_0} + a_1 \cdot \htmlStyle{color: yellow;}{d_1} + ... + a_{255} \cdot \htmlStyle{color: yellow;}{d_{255}} + b \equiv 0 \quad (\text{mod}\ n), \qquad\qquad [\dagger'']\]</span></p>
+
+<p>where $a_0, a_1, ..., a_{255}, b$ are all known constants.</p>
+
+<p>Although the size of unknown is reduced from 512 bits to 256 bits, it is not enough for us to recover those $d_i$'s because we only have 256 bits of information.</p>
+
+<p>In reality, we have six pairs of $(z, r, s)$. This is equivalent to $256 \times 6 = 1536$ bits of information. At the same time, they shares the same unknowns $d_0, d_1, ..., d_{255}$, which is only 256 bits. Thus for $i = 0, 1, ..., 5$, we have the below equations (based on $[\dagger'']$):</p>
+
+<p><span  class="math">\[a_{i,0} \cdot \htmlStyle{color: yellow;}{d_0} + a_{i,1} \cdot \htmlStyle{color: yellow;}{d_1} + ... + a_{i,255} \cdot \htmlStyle{color: yellow;}{d_{255}} + b_i \equiv 0 \quad (\text{mod}\ n)\]</span></p>
+
+<p>Since we have much more information than the unknown and the relation is affine, we can use LLL to find those $d_i$'s. Anyway this is the lattice we used to LLL:</p>
+
+<p><span  class="math">\[A = \left[\begin{array}{ccc|ccc|c}
+a_{0,0}   &        & a_{5,0}   & 1 &        &   &   \\
+&           \ddots &           &   & \ddots &   & 0 \\
+a_{0,255} &        & a_{5,255} &   &        & 1 &   \\
+\hline
+b         & \dots  & b         &   & 0      &   & 1 \\
+\hline
+n         &        &           &   &        &   &   \\
+&           \ddots &           &   & 0      &   & 0 \\
+&                  & n         &   &        &   &   \\ 
+\end{array}\right]\]</span></p>
+
+<p>It would span to the vector $\left[\begin{array}{ccc|ccc|c}0 &amp; \dots &amp; 0 &amp; d_0 &amp; \cdots &amp; d_{255} &amp; 1 \end{array}\right]$ because</p>
+
+<p><span  class="math">\[
+\left[\begin{matrix}
+0 \\ \vdots \\ 0 \\ \hline d_0 \\ \vdots \\ d_{255} \\ \hline 1
+\end{matrix}\right]
+= A^T 
+\left[\begin{matrix}
+d_0 \\ \vdots \\ d_{255} \\ \hline 1 \\ \hline \psi_0 \\ \vdots \\ \psi_5
+\end{matrix}\right].
+\]</span></p>
+
+<p>Here each $\psi_i$ is just a number that allow the expression to take &quot;$\text{mod}\ n$&quot;, and we don't care about what that is. We can write $[\dagger'']$ (again!) to show what $\psi_i$ is:</p>
+
+<p><span  class="math">\[a_0 \cdot \htmlStyle{color: yellow;}{d_0} + a_1 \cdot \htmlStyle{color: yellow;}{d_1} + ... + a_{255} \cdot \htmlStyle{color: yellow;}{d_{255}} + b + n \cdot \htmlStyle{color: yellow;}{\psi_i} = 0\]</span></p>
+
+<p>We have <code>d = 0xfadda15bda82cc9f8779bff57fb23e3a6b5d0e50dfd809249d36c1af0ed258f4</code> from LLL. Now we have the AES key. We are almost done!</p>
+
+<h3 id="part-iii-recovering-the-flag-from-aesctr">Part III: Recovering the flag from AES-CTR<a href="#part-iii-recovering-the-flag-from-aesctr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>Now we have <code>d</code>. The last few lines of their <code>challenge.py</code> lies the last problem yet to be solved. It must be straight forward!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">msg <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Congrats! This is your flag: </span><span style="color:#e6db74">{</span>flag<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+key <span style="color:#f92672">=</span> sha256(str(d)<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>digest()[:<span style="color:#ae81ff">16</span>]
+cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_CTR)
+print(cipher<span style="color:#f92672">.</span>encrypt(msg<span style="color:#f92672">.</span>encode()))</code></pre></div>
+<p>During the contest, I was very puzzled since I was unable to recover the flag with the below snippet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_CTR)
+print(cipher<span style="color:#f92672">.</span>decrypt(c))</code></pre></div>
+<p>Of course I don't! From the documentation of <em>PyCryptodome</em>, a 8-byte nonce will be generated whenever the <code>nonce</code> parameter is not present.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-03-01-tsjctf/ctr-default-nonce.png"   />
+    
+  </figure>
+
+
+
+<p>I thought that exhausting a 8-byte nonce is infeasible. Sarcastically, this is not the first time I have such thoughts. I even DMed <a href="https://twitter.com/maple3142" target="_blank" rel="nofollow">@maple3142</a> to ask if the setting is correct... Of course that is!</p>
+
+<p>Well, as we have the first 16 bytes of the message (<code>Congrats! This i</code>), we can get the first 16 bytes of the keystream. We have <code>nonce || counter</code> by simply decrypting the keystream. We have the key to decrypt stuffs, after all...</p>
+
+<p>After fixing the stupid mistakes those I made, we have the flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">TSJ{who_needs_gaussian_elimination_when_you_have_LLL?_https://github.com/jonasnick/ecdsaPredictableNonce}</code></pre></div>
+<h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> hashlib
+<span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
+<span style="color:#f92672">from</span> fastecdsa.curve <span style="color:#f92672">import</span> secp256k1 <span style="color:#66d9ef">as</span> CURVE
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">xor</span>(a, b):
+    <span style="color:#66d9ef">return</span> bytes([u<span style="color:#f92672">^^</span>v <span style="color:#66d9ef">for</span> u, v <span style="color:#f92672">in</span> zip(a, b)])
+
+q <span style="color:#f92672">=</span> CURVE<span style="color:#f92672">.</span>q
+
+sigs <span style="color:#f92672">=</span> [
+    [<span style="color:#ae81ff">68628903551760154000300039815420920736833607628328728397865761689137575263983</span>, <span style="color:#ae81ff">15443603266495080692405049373908575802334630966756172054216234269624270469394</span>, <span style="color:#ae81ff">22981409647080659483954459639297160899607455746832364780169145673684744217331</span>],
+    [<span style="color:#ae81ff">78718753887900409677937247756515988306958319672631190519685073607080826418294</span>, <span style="color:#ae81ff">54276644149626679124071775426283215897696024493497440097979013953212408253734</span>, <span style="color:#ae81ff">55041549251920287655053310452444903772819013365729781587201778245299568302064</span>],
+    [<span style="color:#ae81ff">76095801129518609512809073275431964691465208338605553566026645469843430112342</span>, <span style="color:#ae81ff">13243268453692556572476611015151647125720859921369299900977957389460914346512</span>, <span style="color:#ae81ff">36340755739784353369950946724334315371788689739091478499529319569139128625422</span>],
+    [<span style="color:#ae81ff">14730727965324371353827007106163274690512416783313793290093026161256262981745</span>, <span style="color:#ae81ff">61155679185854480315452772506628842842531730179984684102346013415628266033721</span>, <span style="color:#ae81ff">23105235892108839369406685343889200404631332972108556923344303689260664287078</span>],
+    [<span style="color:#ae81ff">1873902112306026140517260545900147482389676444908353863350522632481552764819</span>, <span style="color:#ae81ff">7259111370509779279520618531388517380717524647694957730980169106713190467749</span>, <span style="color:#ae81ff">47964977855256430218836508671575141052659514288194710563910728384541064927004</span>],
+    [<span style="color:#ae81ff">82140969634605912978034198684963146226227701184998942661897478141366806021323</span>, <span style="color:#ae81ff">83925169940944825117018170424384235795850122118608830570830266120233738605795</span>, <span style="color:#ae81ff">18779900738289102423955738918979596192495903397022523360371032408971788920887</span>],
+]
+c0 <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\xd8</span><span style="color:#e6db74">n</span><span style="color:#ae81ff">\x81\xcf</span><span style="color:#e6db74">rN=</span><span style="color:#ae81ff">\xa8\xda\xa0</span><span style="color:#e6db74">pIR</span><span style="color:#ae81ff">\xdb</span><span style="color:#e6db74">8</span><span style="color:#ae81ff">\x98\xdb</span><span style="color:#e6db74">.s;</span><span style="color:#ae81ff">\xec</span><span style="color:#e6db74">OG</span><span style="color:#ae81ff">\xe2\x07\x99\x93\x1a</span><span style="color:#e6db74">h</span><span style="color:#ae81ff">\x08</span><span style="color:#e6db74">G</span><span style="color:#ae81ff">\xb2\x82\xe5\xef</span><span style="color:#e6db74">2</span><span style="color:#ae81ff">\xe9\x92\x8b\xfa</span><span style="color:#e6db74">A</span><span style="color:#ae81ff">\x8f\xa3\xa5\xcc</span><span style="color:#e6db74">8</span><span style="color:#ae81ff">\x90\x95\xff</span><span style="color:#e6db74">?</span><span style="color:#ae81ff">\xef\x1c\xfd\xff</span><span style="color:#e6db74">L(</span><span style="color:#ae81ff">\xb4</span><span style="color:#e6db74">6H</span><span style="color:#ae81ff">\x0e</span><span style="color:#e6db74">/z/</span><span style="color:#ae81ff">\xfe\x9e</span><span style="color:#e6db74">h[</span><span style="color:#ae81ff">\xb3\xc6</span><span style="color:#e6db74">Y</span><span style="color:#ae81ff">\x0e\x90\xe5\xda</span><span style="color:#e6db74">U</span><span style="color:#ae81ff">\xcc\x84\xed\x81\xcb\x1d</span><span style="color:#e6db74">&lt;`]</span><span style="color:#ae81ff">\xd2</span><span style="color:#e6db74">E</span><span style="color:#ae81ff">\xd9\xa3\xa5</span><span style="color:#e6db74">u</span><span style="color:#ae81ff">\xa3</span><span style="color:#e6db74">/b</span><span style="color:#ae81ff">\xf3</span><span style="color:#e6db74">qz</span><span style="color:#ae81ff">\x19\xfa\x8e</span><span style="color:#e6db74">$</span><span style="color:#ae81ff">\xa3</span><span style="color:#e6db74">S</span><span style="color:#ae81ff">\xac</span><span style="color:#e6db74">{,</span><span style="color:#ae81ff">\xbc</span><span style="color:#e6db74">YIZ</span><span style="color:#ae81ff">\xa9</span><span style="color:#e6db74">Z</span><span style="color:#ae81ff">\xd6</span><span style="color:#e6db74">M-</span><span style="color:#ae81ff">\x06</span><span style="color:#e6db74">Io&gt;</span><span style="color:#ae81ff">\xb2\xa3</span><span style="color:#e6db74">5</span><span style="color:#ae81ff">\x97</span><span style="color:#e6db74">=</span><span style="color:#ae81ff">\x10</span><span style="color:#e6db74">]</span><span style="color:#ae81ff">\xb3</span><span style="color:#e6db74">6</span><span style="color:#ae81ff">\xf6\xb2</span><span style="color:#e6db74">.</span><span style="color:#ae81ff">\x8c\xd4</span><span style="color:#e6db74">8</span><span style="color:#ae81ff">\xe4</span><span style="color:#e6db74">&#39;</span>
+
+<span style="color:#75715e"># Note: d is the secret key</span>
+<span style="color:#75715e"># d = d0 + 2 * d1 + ... + 2^255 * d255</span>
+<span style="color:#75715e"># we can know each k in terms of d because if</span>
+<span style="color:#75715e">#   zi = 0 then ki = di, and zi = 1 then ki = 1-di</span>
+
+<span style="color:#75715e"># s * (k0 + 2 k1 + ... + 2^255 k255) = z + r * (d0 + 2 d1 + ... + 2^255 d255) (mod q)</span>
+
+P <span style="color:#f92672">=</span> PolynomialRing(Zmod(q), [<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;d</span><span style="color:#e6db74">{</span>k<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>)])
+ds <span style="color:#f92672">=</span> P<span style="color:#f92672">.</span>gens()
+
+A <span style="color:#f92672">=</span> Matrix(ZZ, <span style="color:#ae81ff">6</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#f92672">+</span><span style="color:#ae81ff">256</span>)
+
+print(<span style="color:#e6db74">&#39;[!] Defining the matrix&#39;</span>)
+<span style="color:#66d9ef">for</span> j, (z, r, s) <span style="color:#f92672">in</span> enumerate(sigs):
+    zs <span style="color:#f92672">=</span> [(z<span style="color:#f92672">&gt;&gt;</span>i)<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>)]
+    
+    ks <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> zi, di <span style="color:#f92672">in</span> zip(zs, ds):
+        <span style="color:#66d9ef">if</span> zi <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: ks<span style="color:#f92672">.</span>append(di)
+        <span style="color:#66d9ef">else</span>:       ks<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> di)
+
+    <span style="color:#75715e"># f = s * k - (z + r * d)</span>
+    f  <span style="color:#f92672">=</span> s <span style="color:#f92672">*</span> sum([<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>i <span style="color:#f92672">*</span> ki <span style="color:#66d9ef">for</span> i, ki <span style="color:#f92672">in</span> enumerate(ks)])
+    f <span style="color:#f92672">-=</span> z <span style="color:#f92672">+</span> r <span style="color:#f92672">*</span> sum([<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>i <span style="color:#f92672">*</span> di <span style="color:#66d9ef">for</span> i, di <span style="color:#f92672">in</span> enumerate(ds)])
+
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> [<span style="color:#ae81ff">0</span>]:
+        A[i,   j] <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>constant_coefficient()
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+        A[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, j] <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>coefficient({ ds[i]: <span style="color:#ae81ff">1</span> })
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> [j<span style="color:#f92672">+</span><span style="color:#ae81ff">257</span>]:
+        A[i,   j] <span style="color:#f92672">=</span> q
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">257</span>):
+    A[i, i<span style="color:#f92672">+</span><span style="color:#ae81ff">6</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+print(<span style="color:#e6db74">&#39;[*] Defining the matrix: Done&#39;</span>)
+
+print(<span style="color:#e6db74">&#39;[!] Running LLL&#39;</span>)
+A <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>LLL()
+print(<span style="color:#e6db74">&#39;[*] Running LLL: Done&#39;</span>)
+
+<span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> A:
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">6</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>: row <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>row
+    <span style="color:#66d9ef">if</span> row[<span style="color:#ae81ff">6</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">continue</span>
+
+    <span style="color:#66d9ef">if</span> min(row[:<span style="color:#ae81ff">6</span>]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+    <span style="color:#66d9ef">if</span> max(row[:<span style="color:#ae81ff">6</span>]) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+    
+    <span style="color:#66d9ef">if</span> min(row[<span style="color:#ae81ff">7</span>:]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+    <span style="color:#66d9ef">if</span> max(row[<span style="color:#ae81ff">7</span>:]) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">continue</span>
+
+    ds <span style="color:#f92672">=</span> row[<span style="color:#ae81ff">7</span>:]
+    d <span style="color:#f92672">=</span> int(sum(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>i <span style="color:#f92672">*</span> di <span style="color:#66d9ef">for</span> i, di <span style="color:#f92672">in</span> enumerate(ds)))
+    
+    key <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha256(str(d)<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>digest()[:<span style="color:#ae81ff">16</span>]
+    cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_ECB)
+    m1 <span style="color:#f92672">=</span> cipher<span style="color:#f92672">.</span>decrypt(xor(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Congrats! This is your flag: TSJ&#39;</span>, c0[:<span style="color:#ae81ff">32</span>]))
+
+    cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_CTR, nonce<span style="color:#f92672">=</span>m1[:<span style="color:#ae81ff">8</span>])
+    m0 <span style="color:#f92672">=</span> cipher<span style="color:#f92672">.</span>decrypt(c0)
+
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[*] </span><span style="color:#e6db74">{</span>d <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[*] </span><span style="color:#e6db74">{</span>key <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[*] </span><span style="color:#e6db74">{</span>m1 <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[*] </span><span style="color:#e6db74">{</span>m0 <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+
+<span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">[!] Defining the matrix
+</span><span style="color:#e6db74">[*] Defining the matrix: Done
+</span><span style="color:#e6db74">[!] Running LLL
+</span><span style="color:#e6db74">[*] Running LLL: Done
+</span><span style="color:#e6db74">[*] d = 113469799004661487320247409448796883146298153010773207076143627146899378821364
+</span><span style="color:#e6db74">[*] key = b&#34;</span><span style="color:#ae81ff">\xc4\xb1\x8d\xdc\xa2</span><span style="color:#e6db74">#</span><span style="color:#ae81ff">\xa0\xc6\xe5\xa3</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x89</span><span style="color:#e6db74">,</span><span style="color:#ae81ff">\xd0</span><span style="color:#e6db74">S</span><span style="color:#ae81ff">\xd2</span><span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">[*] m1 = b&#39;</span><span style="color:#ae81ff">\xb7\x8f\x8a\xd1\x07\x1b\x1e</span><span style="color:#e6db74">?</span><span style="color:#ae81ff">\x00\x00\x00\x00\x00\x00\x00\x00\xb7\x8f\x8a\xd1\x07\x1b\x1e</span><span style="color:#e6db74">?</span><span style="color:#ae81ff">\x00\x00\x00\x00\x00\x00\x00\x01</span><span style="color:#e6db74">&#39;
+</span><span style="color:#e6db74">[*] m0 = b&#39;Congrats! This is your flag: TSJ{who_needs_gaussian_elimination_when_you_have_LLL?_https://github.com/jonasnick/ecdsaPredictableNonce}&#39;
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span></code></pre></div>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2022/2022-03-01-tsjctf-1/">
+                <span class="button__text">TSJ CTF 2022 (I): Cipher Switching Service</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    TSJ CTF 2022 (II): Signature
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

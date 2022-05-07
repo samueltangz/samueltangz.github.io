@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>justCTF 2020: Oracles :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I was playing justCTF 2020 with the new CTFers in Yakitori (Firebird). Oracles is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up.
+Challenge Summary We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:
+ Is Goldbach&#39;s conjecture true? What is the answer to everything?  On top of them, the challenge author tried to tell the agency the flag." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021/2021-02-01-justctf-oracles/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="justCTF 2020: Oracles">
+<meta property="og:description" content="I was playing justCTF 2020 with the new CTFers in Yakitori (Firebird). Oracles is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up." />
+<meta property="og:url" content="/posts/2021/2021-02-01-justctf-oracles/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-02-01-justctf/oracles-1.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-02-01 03:00:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021/2021-02-01-justctf-oracles/">justCTF 2020: Oracles</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-02-01 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/justctf/">justctf</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/rsa/">rsa</a>&nbsp;
+    
+    #<a href="/tags/timing-attack/">timing-attack</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-02-01-justctf/oracles-1.png" class="post-cover center" alt="justCTF 2020: Oracles" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>I was playing <em>justCTF 2020</em> with the new CTFers in <em>Yakitori</em> (Firebird). <em>Oracles</em> is a fun cryptography challenge that I solved during the game, and I thought this is worth compiling the write-up.</p>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<p>We are given a chance to ask the agencies for oracles. The challenge author have prepared some questions for us:</p>
+
+<ul>
+<li>Is Goldbach's conjecture true?</li>
+<li>What is the answer to everything?</li>
+</ul>
+
+<p>On top of them, the challenge author tried to tell the agency the flag. Well, the agencies are so indifferent and they will not be responding anyway. By the way, the questions (or the flag) are encrypted with RSA-OAEP. It is not possible to read the flag solely from the ciphertext.</p>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<div class="alert warning">
+  <del><strong>Note.</strong> This is likely to be an unintentional solution. The challenge author said that this should be solvable within ten minutes.</del> Turns out it is! I was using the correct approach though, and unfortunately my algorithm isn&rsquo;t efficient.
+</div>
+
+
+<h3 id="part-i-recovering-the-public-keys">Part I: Recovering the public keys<a href="#part-i-recovering-the-public-keys" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert info">
+  <strong>Why?</strong> When the challenge is released, the entire <code>key</code> file is redacted and the public key is not given.
+</div>
+
+
+<p>Although the agencies seemed indifferent to our questions, they are curious and actually would decrypt the questions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">oracle</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">asmCrypto</span>.<span style="color:#a6e22e">RSA_OAEP</span>(
+    <span style="color:#a6e22e">privkey</span>,
+    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">asmCrypto</span>.<span style="color:#a6e22e">Sha256</span>(),
+    <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFileSync</span>(<span style="color:#e6db74">&#39;./oracles_stuff/&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">oracleName</span>)
+);
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;I won\&#39;t answer.&#39;</span>;
+<span style="color:#66d9ef">try</span> {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">oracle</span>.<span style="color:#a6e22e">decrypt</span>(<span style="color:#a6e22e">question</span>);
+    <span style="color:#a6e22e">asmCrypto</span>.<span style="color:#a6e22e">bytes_to_string</span>(<span style="color:#a6e22e">result</span>);
+} <span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span>) {}
+
+<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">render</span>(<span style="color:#e6db74">&#39;index&#39;</span>, {<span style="color:#a6e22e">response</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">response</span>});</code></pre></div>
+<p>We can easily identify the LFI vulnerability as we are the ones who can manipulate <code>oracleName</code>, and it isn't being checked. However it does not seem useful since the hash of the content is computed and being used. Having this, we are not able to recover the content even we are able to obtain its hash.</p>
+
+<p>However, would it be possible that the functions inside the <code>try</code> block to overwrite the <code>response</code>? In this case, it will actually return something other than <code>I won't answer</code>? Well, <code>response</code> isn't even used as a variable in the <a href="https://github.com/asmcrypto/asmcrypto.js/">asmCrypto.js</a>, not to mention if it is being misused. This is not the way.</p>
+
+<p>This part did not struggle me a lot. I linked this challenge with <a href="http://localhost:1313/posts/2021-01-18-firebird-internal-ctf/#obvious-transfer-crypto">Obvious Transfer</a> (a challenge that I made) at an early time because there are some common factors. When I look at the source code for asmCrypto.js, I am able to found the place that I could recover $n$. Let's read the code together!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Excerpted from https://github.com/asmcrypto/asmcrypto.js/blob/v2.3.2/src/rsa/pkcs1.ts
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RSA_OAEP</span> {
+    
+    <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>
+    <span style="color:#a6e22e">decrypt</span>(<span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Uint8Array</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Uint8Array</span> {
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">rsa</span>.<span style="color:#a6e22e">key</span>) <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">IllegalStateError</span>(<span style="color:#e6db74">&#39;no key is associated with the instance&#39;</span>);
+
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">key_size</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">ceil</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">rsa</span>.<span style="color:#a6e22e">key</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">bitLength</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">8</span>);
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">hash_size</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hash</span>.<span style="color:#a6e22e">HASH_SIZE</span>;
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data_length</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">byteLength</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">0</span>;
+
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">data_length</span> <span style="color:#f92672">!==</span> <span style="color:#a6e22e">key_size</span>) <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">IllegalArgumentError</span>(<span style="color:#e6db74">&#39;bad data&#39;</span>);
+
+        <span style="color:#75715e">// [!] Calls the `decrypt` method in the `RSA` class excerpted below
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">rsa</span>.<span style="color:#a6e22e">decrypt</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">BigNumber</span>(<span style="color:#a6e22e">data</span>));
+
+        <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>    }
+    <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>}</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Excerpted from https://github.com/asmcrypto/asmcrypto.js/blob/v2.3.2/src/rsa/rsa.ts
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RSA</span> {
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">key</span>;
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">result</span><span style="color:#f92672">!:</span> <span style="color:#a6e22e">Uint8Array</span>;
+    
+    <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>    
+    <span style="color:#a6e22e">decrypt</span>(<span style="color:#a6e22e">msg</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">BigNumber</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span> {
+        <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">key</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">compare</span>(<span style="color:#a6e22e">msg</span>) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">RangeError</span>(<span style="color:#e6db74">&#39;data too large&#39;</span>);
+
+        <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+    }
+    <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>}</code></pre></div>
+<p>The <code>decrypt</code> method in the <code>RSA</code> class checks whether $m &lt; n$! If $m \geq n$, an error is thrown and the remaining operations are not performed. It is obvious that they should be responding faster... But how can we detect it?</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-02-01-justctf/times-m-le-n.png"   />
+    
+      <figcaption class="right" >The response times when $m < n$.</figcaption>
+    
+  </figure>
+
+
+
+
+  <figure class="center" >
+    <img src="/images/2021-02-01-justctf/times-m-geq-n.png"   />
+    
+      <figcaption class="right" >The response times when $m \geq n$.</figcaption>
+    
+  </figure>
+
+
+
+<p>It seems that the latency has highly fluctuated, which makes the results unreliable. Luckily the <code>response-time</code> package is used, adding a <code>X-Response-Time</code> header to the responses showing the time the server has processed the request. When $m &lt; n$, it is around 10 - 15ms. Otherwise it can be done within 5ms. Knowing this, we can recover $n$ with binary search! For $e$, I suppose that would be 65537 as always...</p>
+
+<h3 id="part-ii-back-to-square-one">Part II: Back to square one<a href="#part-ii-back-to-square-one" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+
+  <figure class="center" >
+    <img src="/images/2021-02-01-justctf/announcement.png"   />
+    
+      <figcaption class="right" >Uh oh. Our progress is ruined.</figcaption>
+    
+  </figure>
+
+
+
+<p>While I am struggling on how to recover $m$ from a given ciphertext, the organizers made the above announcement... and now the public key $(n, e)$ are given. Although this may be a sad news for us, we knew that the public keys are unchanged for all sandboxes. With that said, if we have partial results in ten minutes, we can create another sandbox and continue our work over there.</p>
+
+<h3 id="part-iii-slower-and-even-slower">Part III: Slower... and even slower...<a href="#part-iii-slower-and-even-slower" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>I cannot stop myself from thinking this to be vulnerable to timing attack, and keep reading the source code of asmCrypto.js. Some RSA-OAEP implementations are known vulnerable to Manger's padding oracle attack by checking if the first byte is a null byte ($m &lt; 2^{1016}$ in our case). This package checks and raise an exception too... but how can I detect that?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Excerpted from https://github.com/asmcrypto/asmcrypto.js/blob/v2.3.2/src/rsa/pkcs1.ts
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RSA_OAEP</span> {
+    
+    <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>
+    <span style="color:#a6e22e">decrypt</span>(<span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Uint8Array</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Uint8Array</span> {
+        
+        <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">rsa</span>.<span style="color:#a6e22e">decrypt</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">BigNumber</span>(<span style="color:#a6e22e">data</span>));
+
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">z</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">rsa</span>.<span style="color:#a6e22e">result</span>[<span style="color:#ae81ff">0</span>];
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">seed</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">rsa</span>.<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">subarray</span>(<span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">hash_size</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data_block</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">rsa</span>.<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">subarray</span>(<span style="color:#a6e22e">hash_size</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+
+        <span style="color:#75715e">// [!] How can I detect this?
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">z</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SecurityError</span>(<span style="color:#e6db74">&#39;decryption failed&#39;</span>);
+
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">seed_mask</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">RSA_MGF1_generate</span>(<span style="color:#a6e22e">data_block</span>, <span style="color:#a6e22e">seed</span>.<span style="color:#a6e22e">length</span>);
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">seed</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) <span style="color:#a6e22e">seed</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">^=</span> <span style="color:#a6e22e">seed_mask</span>[<span style="color:#a6e22e">i</span>];
+
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data_block_mask</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">RSA_MGF1_generate</span>(<span style="color:#a6e22e">seed</span>, <span style="color:#a6e22e">data_block</span>.<span style="color:#a6e22e">length</span>);
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">data_block</span>.<span style="color:#a6e22e">length</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) <span style="color:#a6e22e">data_block</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">^=</span> <span style="color:#a6e22e">data_block_mask</span>[<span style="color:#a6e22e">i</span>];
+
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lhash</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hash</span>
+            .<span style="color:#a6e22e">reset</span>()
+            .<span style="color:#a6e22e">process</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">label</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Uint8Array</span>(<span style="color:#ae81ff">0</span>))
+            .<span style="color:#a6e22e">finish</span>().<span style="color:#a6e22e">result</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">Uint8Array</span>;
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">hash_size</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">lhash</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">!==</span> <span style="color:#a6e22e">data_block</span>[<span style="color:#a6e22e">i</span>]) <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SecurityError</span>(<span style="color:#e6db74">&#39;decryption failed&#39;</span>);
+        }
+
+        <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>    }
+    <span style="color:#75715e">// omitted
+</span><span style="color:#75715e"></span>}</code></pre></div>
+<p>In particular, the operations do not seemed expensive between two security errors. The server takes a similar amount of time for both valid and invalid OAEP-padded messages. The majority of time is used to compute $m = c^d\ \text{mod}\ n$... Or is it? We can see that <code>hash(label)</code> is computed after $m$ is computed. We are able to use other <em>labels</em>... can we find a label that is slow enough for us to detect whether $m &lt; 2^{2016}$? Yes - From the source code, apart from the three agencies, we can make use with the LFI vulnerability to include any of the files inside the container. We can use a long file and it will be more expensive to compute its hash. One file I found inside the container is <code>/usr/lib/x86_64-linux-gnu/libicui18n.a</code>, which is around 35MB.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ls -al /usr/lib/x86_64-linux-gnu/libicui18n.a
+<span style="color:#75715e"># -rw-r--r-- 1 root root 34867974 Mar 14  2020 /usr/lib/x86_64-linux-gnu/libicui18n.a</span></code></pre></div>
+<p>We can set the oracle name to be <code>../../../../usr/lib/x86_64-linux-gnu/libicui18n.a</code>. Given a ciphertext $c$, it takes around 300ms to respond if $m &lt; 2^{1016}$, while it takes only 30ms otherwise. This is pretty reliable! After all, we can use this to check if a given message falls in $m &lt; 2^{1016}$. By implementing the Manger's attack, I am able to recover the OAEP-padded $m$. Eventually, the flag pops out after 100 minutes with around 20K calls - <code>justCTF{60c173b4c6554af11e43a8c95190dcde749443}</code>. First blood! 🎉</p>
+
+
+  <figure class="center" >
+    <img src="/images/2021-02-01-justctf/oracles-solved.png"   />
+    
+  </figure>
+
+
+
+<p><em>Addendum.</em> I am awared from <a href="https://twitter.com/josep68_" target="_blank" rel="nofollow">@josep68_</a>'s <a href="https://www.josephsurin.me/posts/2021-01-31-justctf-2020-crypto-writeups">writeup</a> that 1.1K oracle calls should be sufficient to recover the padded message. It <em>is</em> my implementation to Manger's attack that made it super inefficient...</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021/2021-02-15-dicectf-1/">
+                <span class="button__icon">←</span>
+                <span class="button__text">DiceCTF 2021 Writeup (I)</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021/2021-01-29-hoifanrds-osu-challenge/">
+                <span class="button__text">hoifanrd&#39;s osu! Challenge</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    justCTF 2020: Oracles
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="In this part, three harder crypto challenges will be covered: Tenet: The Plagarism, Sratslla SEA and Sign in Please, Again.
+FreeRider / Tenet: The Plagarism (Crypto) Challenge Summary  平日我又講 對住你講
+email要check deadline要追
+前日我提咗 你嗰part嘅功課
+點解變咗我最立糯
+The deadline for writing challenges is coming!
+Mystiz, who claimed himself not well-known reusing challenges, decided to free-ride and plagarize challenges from HKCERT CTF 2020. Maybe you can reuse the solve script last year for the flag." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2021/2021-11-18-hkcert-ctf-2/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges">
+<meta property="og:description" content="In this part, three harder crypto challenges will be covered: Tenet: The Plagarism, Sratslla SEA and Sign in Please, Again." />
+<meta property="og:url" content="/posts/2021/2021-11-18-hkcert-ctf-2/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2021-11-18-hkcert-ctf/thumbnail-2.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-11-18 16:05:01 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2021/2021-11-18-hkcert-ctf-2/">HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-11-18 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/hkcert-ctf/">hkcert-ctf</a>&nbsp;
+    
+    #<a href="/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2021-11-18-hkcert-ctf/thumbnail-2.png" class="post-cover center" alt="HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>In this part, three harder crypto challenges will be covered: <em>Tenet: The Plagarism</em>, <em>Sratslla SEA</em> and <em>Sign in Please, Again</em>.</p>
+
+<h2 id="freerider--tenet-the-plagarism-crypto">FreeRider / Tenet: The Plagarism (Crypto)<a href="#freerider--tenet-the-plagarism-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>平日我又講 對住你講</em><br>
+<em>email要check deadline要追</em><br>
+<em>前日我提咗 你嗰part嘅功課</em><br>
+<em>點解變咗我最立糯</em></p>
+
+<p>The deadline for writing challenges is coming!</p>
+
+<p>Mystiz, who claimed himself <a href="https://mystiz.hk/posts/2021-03-28-hkcert-ctf/#interesting-flag-submissions-osint-master">not well-known reusing challenges</a>, decided to free-ride and plagarize challenges from HKCERT CTF 2020. Maybe you can reuse the solve script last year for the flag.</p>
+
+<p>Ciphertext:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">6ccb80c46c19243a37633d316a66871ca70ec8a44f48a80134f31d8d27f920c6bd5d810831833221d0f282130d2c222de38c2080ef995b2ad10dc5af8518</code></pre></div></blockquote>
+
+<p>Suppose that the flag matches the regular expression <code>hkcert21\{\w{35}\}</code>. We define an encryption algorithm, $\mathcal{E}$, with a 16-byte key $k_1k_2...k_{16}$. Let $m$ be the message we would like to encrypt (all of the counters are set to zero):</p>
+
+<ol>
+<li>Encrypt $m$ with AES-CTR using the key <code>k1 00 00 00 ... 00</code> ($k_1$ followed by 15 null bytes) and denote it by $t_1$.</li>
+<li>Encrypt $t_1$ with AES-CTR using the key <code>k2 00 00 00 ... 00</code> and denote it by $t_2$.</li>
+<li>...</li>
+<li>Encrypt $t_{15}$ with AES-CTR using the key <code>k16 00 00 00 ... 00</code> and denote it by $t_{16}$.</li>
+<li>Return $t_{16}$ as the ciphertext.</li>
+</ol>
+
+<p>$\mathcal{E}$ is used to encrypt the message <code>Congratulations! [FLAG]</code> and we are given its ciphertext. The objective is to recover the flag. Notably, the challenge is highly referenced from <a href="https://github.com/hkcert-ctf/CTF-Challenges/blob/main/CTF-2020/1.%20%20Cryptography/5.%20Tenet/Challenge/enc.py">Tenet in HKCERT CTF 2020</a>.</p>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert warning">
+  <strong>Tenet vs FreeRider.</strong> The intended solution of Tenet is <em>meet-in-the-middle</em>. However, this is not the case in this challenge because it would take $2^{68}$ AES-CTR calls. This is infeasible under time constraints.
+</div>
+
+
+<p>Note that AES-CTR is a stream cipher. The bitstream would be the same if we supply AES-CTR with the same key and the same counter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">AES<span style="color:#f92672">.</span>new(key<span style="color:#f92672">=</span>key[ <span style="color:#ae81ff">0</span>: <span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">15</span>, mode<span style="color:#f92672">=</span>AES<span style="color:#f92672">.</span>MODE_CTR, counter<span style="color:#f92672">=</span>Counter<span style="color:#f92672">.</span>new(<span style="color:#ae81ff">128</span>, initial_value<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>))
+AES<span style="color:#f92672">.</span>new(key<span style="color:#f92672">=</span>key[ <span style="color:#ae81ff">1</span>: <span style="color:#ae81ff">2</span>] <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">15</span>, mode<span style="color:#f92672">=</span>AES<span style="color:#f92672">.</span>MODE_CTR, counter<span style="color:#f92672">=</span>Counter<span style="color:#f92672">.</span>new(<span style="color:#ae81ff">128</span>, initial_value<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>))
+AES<span style="color:#f92672">.</span>new(key<span style="color:#f92672">=</span>key[ <span style="color:#ae81ff">2</span>: <span style="color:#ae81ff">3</span>] <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">15</span>, mode<span style="color:#f92672">=</span>AES<span style="color:#f92672">.</span>MODE_CTR, counter<span style="color:#f92672">=</span>Counter<span style="color:#f92672">.</span>new(<span style="color:#ae81ff">128</span>, initial_value<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>))
+AES<span style="color:#f92672">.</span>new(key<span style="color:#f92672">=</span>key[ <span style="color:#ae81ff">3</span>: <span style="color:#ae81ff">4</span>] <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">15</span>, mode<span style="color:#f92672">=</span>AES<span style="color:#f92672">.</span>MODE_CTR, counter<span style="color:#f92672">=</span>Counter<span style="color:#f92672">.</span>new(<span style="color:#ae81ff">128</span>, initial_value<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>))
+<span style="color:#75715e"># ...</span></code></pre></div>
+<p>There are only 256 possible bitstreams by AES-CTR. Let $b_{kj}$ be the $j$-th bit of the bitstream if the key is <code>k 00 00 00 ... 00</code>. If we encrypt the message $m_1 m_2 ... m_n$ (represented in bits) with key $k_1 k_2 ... k_{16}$, then the $j$-th bit of the ciphertext, $c_j$, will be:</p>
+
+<p><span  class="math">\[\begin{aligned}
+c_j &= t_{15, j} \oplus b_{k_{16}, j} = (t_{14, j} \oplus b_{k_{15}, j}) \oplus b_{k_{16}, j} = ... \\
+&= m_j \oplus b_{k_{1}, j} \oplus b_{k_{2}, j} \oplus ... \oplus b_{k_{16}, j}
+\end{aligned}\]</span></p>
+
+<h4 id="solving-linear-equations">Solving linear equations<a href="#solving-linear-equations" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>We are given the entire ciphertext, i.e., all of the $c_j$'s. Suppose that we know (we do!) some of the $m_j$'s as well, then we have</p>
+
+<p><span  class="math">\[m_j \oplus c_j = b_{k_{1}, j} \oplus b_{k_{2}, j} \oplus ... \oplus b_{k_{16}, j}.\]</span></p>
+
+<p>Here we have 16 unknowns: $k_1$, $k_2$, ..., $k_{16}$. This however does not bring us insights solving the problem. Luckily we can rewrite the above equation:</p>
+
+<p><span  class="math">\[m_j \oplus c_j = x_0 b_{0, j} \oplus x_1 b_{1, j} \oplus ... \oplus x_{255} b_{255, j}.\]</span></p>
+
+<p>Now $b_{i, j}$ are all known because we can generate the bitstream ourselves. We now have 256 unknowns: $x_0, x_1, ..., x_{255}$ (each of them is either a 0 or an 1). Ideally, if we know $m_{j_1}, m_{j_2}, ..., m_{j_{256}}$, then:</p>
+
+<p><span  class="math">\[\begin{cases}\begin{matrix}
+m_{j_1} \oplus c_{j_1} &=& x_0 b_{0, j_1} & \oplus & x_1 b_{1, j_1} & \oplus & ... & \oplus & x_{255} b_{255, j_1} \\
+m_{j_2} \oplus c_{j_2} &=& x_0 b_{0, j_2} & \oplus & x_1 b_{1, j_2} & \oplus & ... & \oplus & x_{255} b_{255, j_2} \\
+&&&\vdots \\
+m_{j_{256}} \oplus c_{j_{256}} &=& x_0 b_{0, j_{256}} & \oplus & x_1 b_{1, j_{256}} & \oplus & ... & \oplus & x_{255} b_{255, j_{256}} \\
+\end{matrix}\end{cases}.\]</span></p>
+
+<p>We have 256 linear equations and 256 unknowns. This is similar to what we learnt in the secondary school, except that there are much more equations and unknowns. Also, the $+$ operation is replaced by $\oplus$.</p>
+
+<div class="alert warning">
+  <strong>If you are still puzzled&hellip;</strong> I suggest you watch the video series about the relation between the <em>Lights Out</em> puzzle and linear algebra by <em>mathapptician</em> for more insights. Links: <a href="https://www.youtube.com/watch?v=oCHCD_-nhg4">[Part I]</a>, <a href="https://www.youtube.com/watch?v=Ulrq07M7W-k">[Part II]</a>, <a href="https://www.youtube.com/watch?v=Lyb75E4bHdU">[Part III]</a>.
+</div>
+
+
+<h4 id="every-bit-matters">Every bit matters<a href="#every-bit-matters" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert info">
+  <strong>Note.</strong> We will use $+$ in place of $\oplus$ in this section. To be accurate, we will compute everything in modulo 2.
+</div>
+
+
+<p>We are given the ciphertext. Where do we gather 256 message bits? From <code>challenge.py</code> we know that</p>
+
+<ol>
+<li>the flag matches the regular expression <code>hkcert21\{\w{35}\}</code>, and</li>
+<li>the message encrypted is <code>Congratulations! [FLAG]</code>.</li>
+</ol>
+
+<p>Apparently we know 27 bytes (i.e., 216 bits):</p>
+
+<ol>
+<li>the 26-byte prefix <code>Congratulations! hkcert21{</code> and</li>
+<li>the one-byte suffix <code>}</code>.</li>
+</ol>
+
+<p>However, knowing that content of the flag matches <code>\w{35}</code>, the most significant bit for each byte would be 0. That said, we have an additional 35 bits, resulting in 251 bits in total.</p>
+
+<p>Since we need only five bits, we can do either exhaust five unknown bits or do it mathematically. In this writeup, we will do the latter.</p>
+
+<p>Let's build a $251 \times 256$ matrix $A$ and a $251 \times 1$ matrix $b$, with entries being 0 or 1:</p>
+
+<p><span  class="math">\[
+A = \left[\begin{matrix}
+b_{0, j_1} & b_{1, j_1} & b_{2, j_1} & ... & b_{255, j_1} \\
+b_{0, j_2} & b_{1, j_2} & b_{2, j_2} & ... & b_{255, j_2} \\
+&& \vdots \\
+b_{0, j_{251}} & b_{1, j_{251}} & b_{2, j_{251}} & ... & b_{255, j_{251}} \\
+\end{matrix}\right],
+b = \left[\begin{matrix}
+m_{j_1} + c_{j_1} \\
+m_{j_2} + c_{j_2} \\
+\vdots \\
+m_{j_{251}} + c_{j_{251}}
+\end{matrix}\right]
+\]</span></p>
+
+<p>We can find a particular solution $x_0$ (such that $A \cdot x_0 = b$) and a set of $\Delta x$s (such that $A \cdot \Delta x = 0$). Then $x = x_0 + \Delta x$ is also a root of $A \cdot x = b$. The below snippet written in Sagemath finds all the roots $x$ such that $Ax = b$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x0 <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>solve_right(b)
+<span style="color:#66d9ef">for</span> dx <span style="color:#f92672">in</span> A<span style="color:#f92672">.</span>right_kernel():
+    x <span style="color:#f92672">=</span> x0<span style="color:#f92672">+</span>dx <span style="color:#75715e"># This is a root such that A*x = b.</span></code></pre></div>
+<h4 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>This is the solution script written in Sagemath.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> re
+<span style="color:#f92672">from</span> Crypto.Util <span style="color:#f92672">import</span> Counter
+<span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">xor</span>(a, b):
+    <span style="color:#66d9ef">return</span> bytes([u<span style="color:#f92672">^^</span>v <span style="color:#66d9ef">for</span> u, v <span style="color:#f92672">in</span> zip(a, b)])
+
+<span style="color:#75715e">#                      C o n g r a t u l a t i o n s ! _ h k c e r t 2 1 {                                                                       }</span>
+known <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;ffffffffffffffffffffffffffffffffffffffffffffffffffff8080808080808080808080808080808080808080808080808080808080808080808080ff&#39;</span>)
+m <span style="color:#f92672">=</span>     bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;436f6e67726174756c6174696f6e732120686b6365727432317b00000000000000000000000000000000000000000000000000000000000000000000007d&#39;</span>)
+c <span style="color:#f92672">=</span>     bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;6ccb80c46c19243a37633d316a66871ca70ec8a44f48a80134f31d8d27f920c6bd5d810831833221d0f282130d2c222de38c2080ef995b2ad10dc5af8518&#39;</span>)
+
+keystreams <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+    cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(bytes([k]) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">15</span>, AES<span style="color:#f92672">.</span>MODE_CTR, counter<span style="color:#f92672">=</span>Counter<span style="color:#f92672">.</span>new(<span style="color:#ae81ff">128</span>, initial_value<span style="color:#f92672">=</span>int(<span style="color:#ae81ff">0</span>)))
+    keystreams<span style="color:#f92672">.</span>append(
+        cipher<span style="color:#f92672">.</span>encrypt(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>len(c))
+    )
+
+A <span style="color:#f92672">=</span> []
+b <span style="color:#f92672">=</span> []
+
+<span style="color:#66d9ef">for</span> i, (rc, mc, cc) <span style="color:#f92672">in</span> enumerate(zip(known, m, c)):
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+        <span style="color:#66d9ef">if</span> (rc<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+        mb <span style="color:#f92672">=</span> (mc<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>
+        cb <span style="color:#f92672">=</span> (cc<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>
+
+        row <span style="color:#f92672">=</span> [(k[i]<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> keystreams]
+
+        A<span style="color:#f92672">.</span>append(row)
+        b<span style="color:#f92672">.</span>append(mb<span style="color:#f92672">^^</span>cb)
+
+F <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">2</span>)
+A <span style="color:#f92672">=</span> Matrix(F, A)
+b <span style="color:#f92672">=</span> vector(F, b)
+
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Expecting </span><span style="color:#e6db74">{</span><span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>(A<span style="color:#f92672">.</span>ncols() <span style="color:#f92672">-</span> A<span style="color:#f92672">.</span>rank())<span style="color:#e6db74">}</span><span style="color:#e6db74"> candidates to be guessed (</span><span style="color:#e6db74">{</span>A<span style="color:#f92672">.</span>ncols()<span style="color:#e6db74">}</span><span style="color:#e6db74"> unknowns vs </span><span style="color:#e6db74">{</span>A<span style="color:#f92672">.</span>nrows()<span style="color:#e6db74">}</span><span style="color:#e6db74"> equations)&#39;</span>)
+
+x0 <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>solve_right(b)
+<span style="color:#66d9ef">for</span> dx <span style="color:#f92672">in</span> A<span style="color:#f92672">.</span>right_kernel():
+    x <span style="color:#f92672">=</span> x0<span style="color:#f92672">+</span>dx
+
+    flag <span style="color:#f92672">=</span> c
+    <span style="color:#66d9ef">for</span> k, xc <span style="color:#f92672">in</span> zip(keystreams, x):
+        <span style="color:#66d9ef">if</span> xc <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+        flag <span style="color:#f92672">=</span> xor(flag, k)
+    flag <span style="color:#f92672">=</span> flag<span style="color:#f92672">.</span>decode()
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> re<span style="color:#f92672">.</span>match(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;Congratulations! hkcert21\{\w+\}&#39;</span>, flag): <span style="color:#66d9ef">continue</span>
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[*] Flag recovered: </span><span style="color:#e6db74">{</span>flag<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)</code></pre></div>
+<h2 id="集合吧地球保衛隊--sratslla-sea-crypto">集合吧！地球保衛隊 / Sratslla SEA (Crypto)<a href="#集合吧地球保衛隊--sratslla-sea-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>一加一加一再合成做注碼</em><br>
+<em>若然加多一位相信事情就變化</em><br>
+<em>就回隊吧 尊貴的磚瓦</em><br>
+<em>去抵抗風化</em></p>
+
+<p><code>AddRoundKey</code>, <code>SubBytes</code>, <code>ShiftRows</code> and <code>MixColumns</code> are four crucial components are AES. They are used to protect the world in 2021. I wonder what will happen if some of them is out of function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT</code></pre></div></blockquote>
+
+<p>We will use the Advanced Encryption Standard (AES) for encryption in the challenge. Let $k_0k_1k_2...k_{15}$ be a 16-byte key and let $K_n := k_nk_nk_nk_n$ for $n = 0, 1, 2, ..., 15$. When connected to the server, $k_0k_1k_2...k_{15}$ is randomly created and we are able to access the below functions for 128 times:</p>
+
+<ol>
+<li><strong>[ark secret]</strong> encrypts $K_0K_1K_2K_3$ without the <code>AddRoundKey</code> operation and returns the ciphertext.</li>
+<li><strong>[sb secret]</strong> encrypts $K_4K_5K_6K_7$ without the <code>SubBytes</code> operation and returns the ciphertext.</li>
+<li><strong>[sr secret]</strong> encrypts $K_8K_9K_{10}K_{11}$ without the <code>ShiftRows</code> operation and returns the ciphertext.</li>
+<li><strong>[mc secret]</strong> encrypts $K_{12}K_{13}K_{14}K_{15}$ without the <code>MixColumns</code> operation and returns the ciphertext.</li>
+<li><strong>[ark data]</strong> (resp. <strong>[sb data]</strong>, <strong>[sr data]</strong> or <strong>[mc data]</strong>) encrypts a 16-byte user-defined data without the <code>AddRoundKey</code> operation (resp. <code>SubBytes</code>, <code>ShiftRows</code> or <code>MixColumns</code>) and returns the ciphertext.</li>
+</ol>
+
+<p>We are also given a 64-byte encrypted flag when connected to the server. The goal is to collect enough information for the key in 128 calls and decrypt for the flag.</p>
+
+<h3 id="background">Background<a href="#background" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<p>This challenge is inspired by the group <em>C AllStar</em>. The group has four people, and AES consists of four subfunctions. Coincidence? I think not.</p>
+
+<p>There is a question in Cryptography Stack Exchange<sup class="footnote-ref" id="fnref:cse-aes"><a class="footnote" href="#fn:cse-aes">1</a></sup> saying that it was easy to attack without any of the components. I found it really hard when setting up the first draft of the challenge... Back then I only gave <strong>[ark data]</strong>, <strong>[sb data]</strong>, <strong>[sr data]</strong> and <strong>[mc data]</strong> to the players. Well, that was a bad decision because I spent one week not solving it. I also <a href="https://twitter.com/mystiz613/status/1428766964277596163">tweeted</a> about that in the middle... Yeah, this is what happened at that time.</p>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert info">
+  <strong>Prerequisite.</strong> This challenge requires a good understanding of AES internals. It is strongly suggested to watch <a href="https://www.youtube.com/watch?v=gP4PqVGudtg">AppliedGo&rsquo;s illustration</a> to begin.
+</div>
+
+
+<h4 id="recovering-k0-k1-k2-and-k3-with-one-call">Recovering $k_0$, $k_1$, $k_2$ and $k_3$ with one call<a href="#recovering-k0-k1-k2-and-k3-with-one-call" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>The <code>AddRoundKey</code> step is where the key mixed with the state. Since the key is not used elsewhere, the same plaintext would be encrypted to the same ciphertext with any key. We can recover $K_0K_1K_2K_3$ by calling <code>ark secret</code> and decrypting with an arbitrary key (while skipping <code>AddRoundKey</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># [*] 1 oracle call</span>
+r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">&#39;ark secret&#39;</span>)
+c <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+
+cipher <span style="color:#f92672">=</span> AES(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">16</span>)
+cipher<span style="color:#f92672">.</span>_add_round_key <span style="color:#f92672">=</span> no_op
+m <span style="color:#f92672">=</span> cipher<span style="color:#f92672">.</span>decrypt(c)
+<span style="color:#66d9ef">assert</span> m[<span style="color:#ae81ff">0</span>::<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> m[<span style="color:#ae81ff">1</span>::<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> m[<span style="color:#ae81ff">2</span>::<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> m[<span style="color:#ae81ff">3</span>::<span style="color:#ae81ff">4</span>]
+key[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> m[<span style="color:#ae81ff">0</span>::<span style="color:#ae81ff">4</span>]</code></pre></div>
+<h4 id="recovering-k4-k5-k6-and-k7-with-2-calls">Recovering $k_4$, $k_5$, $k_6$ and $k_7$ with 2 calls<a href="#recovering-k4-k5-k6-and-k7-with-2-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>The <code>SubBytes</code> step is the only place where non-linearity in AES is introduced. Under $\text{GF}(2^{128})$, the ciphertext $c$ of a given plaintext $m$ satisfies $c = S \cdot m + T_k$ for some $S, T_k \in \text{GF}(2^{128})$ with $S \neq 0$ and $T_k$ is dependent to the key $k$.</p>
+
+<hr>
+
+<p><strong>Lemma.</strong> Let $k$ be a key. $\text{Dec}_k(c) = S^{-1}(c + T_k)$.</p>
+
+<p><strong>Proof.</strong></p>
+
+<p><span  class="math">\[\begin{aligned}
+c &= S \cdot \text{Dec}_k(c) + T_k \\
+S \cdot \text{Dec}_k(c) &= c + T_k \\ 
+\text{Dec}_k(c) &= S^{-1}(c + T_k)\qquad\qquad \blacksquare
+\end{aligned}\]</span></p>
+
+<div class="alert info">
+  <strong>Why isn&rsquo;t the right hand side of step two $c - T_k$?</strong> We are operating under the field $\text{GF}(2^{128})$, where $+$ is actually the XOR operation. That said, $+$ behaves the same as $-$. This would also imply that $a + a = 0$ for every $a \in \text{GF}(2^{128})$.
+</div>
+
+
+<hr>
+
+<p><strong>Theorem.</strong> Let $k$ and $k'$ be two keys. Let also $c_0 = \text{Enc}_k(0)$ and $c_1 = \text{Enc}_k(m)$. Then</p>
+
+<p><span  class="math">\[m = \text{Dec}_{k'}(c_0) + \text{Dec}_{k'}(c_1).\]</span></p>
+
+<p><strong>Proof.</strong></p>
+
+<p><span  class="math">\[\begin{aligned}
+\text{Dec}_{k'}(c_0) + \text{Dec}_{k'}(c_1) &= S^{-1}(c_0 + T_{k'}) + S^{-1}(c_1 + T_{k'}) \\
+&= S^{-1} (c_0 + T_{k'} + c_1 + T_{k'}) = S^{-1} (c_0 + c_1) \\
+&= S^{-1} [\text{Enc}_k(0) + \text{Enc}_k(m)] = S^{-1} [T_k + S \cdot m + T_k] \\
+&= S^{-1}(S \cdot m) = m \qquad\qquad\qquad\qquad\qquad\qquad\qquad \blacksquare
+\end{aligned}\]</span></p>
+
+<hr>
+
+<p>From the above theorem, we can recover four bytes of the key with 16 oracle calls.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># [*] +2 oracle calls (3 in total)</span>
+r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">&#39;sb data 00000000000000000000000000000000&#39;</span>)
+c0 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">&#39;sb secret&#39;</span>)
+c1 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+cipher <span style="color:#f92672">=</span> AES(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">16</span>)
+cipher<span style="color:#f92672">.</span>_inv_sub_bytes <span style="color:#f92672">=</span> no_op
+m <span style="color:#f92672">=</span> xor(cipher<span style="color:#f92672">.</span>decrypt(c0), cipher<span style="color:#f92672">.</span>decrypt(c1))
+<span style="color:#66d9ef">assert</span> m[<span style="color:#ae81ff">0</span>::<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> m[<span style="color:#ae81ff">1</span>::<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> m[<span style="color:#ae81ff">2</span>::<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> m[<span style="color:#ae81ff">3</span>::<span style="color:#ae81ff">4</span>]
+key[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">8</span>] <span style="color:#f92672">=</span> m[<span style="color:#ae81ff">0</span>::<span style="color:#ae81ff">4</span>]</code></pre></div>
+<h4 id="recovering-k12-k13-k14-and-k15-with-65-calls">Recovering $k_{12}$, $k_{13}$, $k_{14}$ and $k_{15}$ with 65 calls<a href="#recovering-k12-k13-k14-and-k15-with-65-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p><code>MixColumns</code> is the primary source of diffusion in AES. If <code>MixColumns</code> is dropped in AES, one byte of message would correspond to one byte of the ciphertext.</p>
+
+<div class="alert info">
+  <strong>What is diffusion?</strong> Diffusion is a property that one bit of message would affect multiple bits of the ciphertext.
+</div>
+
+
+<p>It can be proved (I did it by experiment) that the $k$-th byte of the message would affect only $(9k\ \text{mod}\ 16)$-th byte of the ciphertext. We can recover $k_8$ up to $k_{11}$ by encrypting those 64 messages:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& \text{Enc}_k(\texttt{00 01 02 03 00 01 02 03 00 01 02 03 00 01 02 03}) \\
+& \text{Enc}_k(\texttt{04 05 06 07 04 05 06 07 04 05 06 07 04 05 06 07}) \\
+& \qquad \qquad \qquad \qquad \qquad \qquad \qquad \vdots \\
+& \text{Enc}_k(\texttt{FC FD FE FF FC FD FE FF FC FD FE FF FC FD FE FF})
+\end{aligned}\]</span></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cs <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">64</span>):
+    m <span style="color:#f92672">=</span> bytes([<span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> j<span style="color:#f92672">%</span><span style="color:#ae81ff">4</span> <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>)])
+    r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;mc data </span><span style="color:#e6db74">{</span>m<span style="color:#f92672">.</span>hex()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+    c <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+    c <span style="color:#f92672">=</span> bytes([c[<span style="color:#ae81ff">9</span><span style="color:#f92672">*</span>k<span style="color:#f92672">%</span><span style="color:#ae81ff">16</span>] <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>)]) <span style="color:#75715e"># Rearrange so that m[i] will affect c[i] instead of c[9i mod 16]</span>
+    cs<span style="color:#f92672">.</span>append(c)
+
+r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">&#39;mc secret&#39;</span>)
+c <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+c <span style="color:#f92672">=</span> [c[<span style="color:#ae81ff">9</span><span style="color:#f92672">*</span>i<span style="color:#f92672">%</span><span style="color:#ae81ff">16</span>] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>)]
+
+<span style="color:#75715e"># This is the last four bytes of the key</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">64</span>):
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+        <span style="color:#66d9ef">if</span> cs[i][j] <span style="color:#f92672">!=</span> c[j]: <span style="color:#66d9ef">continue</span>
+        key[<span style="color:#ae81ff">12</span> <span style="color:#f92672">+</span> j<span style="color:#f92672">//</span><span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>i <span style="color:#f92672">+</span> j<span style="color:#f92672">%</span><span style="color:#ae81ff">4</span></code></pre></div>
+<h4 id="reducing-the-search-space-for-k8-k9-k10-and-k11-with-60-calls">Reducing the search space for $k_8$, $k_9$, $k_{10}$ and $k_{11}$ with 60 calls<a href="#reducing-the-search-space-for-k8-k9-k10-and-k11-with-60-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Without <code>ShiftRows</code>, each byte of the message affects <em>four bytes</em> (instead of 16 bytes) of the ciphertext. That said, for $0 \leq m &lt; 256$ be one byte and $c_{m,j}$ be a 4-byte subblock for $j = 1, 2, 3, 4$. Let $c_{m,1}c_{m,2}c_{m,3}c_{m,4}$ is the ciphertext of a message block of 16 $m$'s, i.e.:</p>
+
+<p><span  class="math">\[c_{m,1}c_{m,2}c_{m,3}c_{m,4} = \text{Enc}_k(\overline{m\ m\ m\ m}\ \overline{m\ m\ m\ m}\ \overline{m\ m\ m\ m}\ \overline{m\ m\ m\ m})\]</span></p>
+
+<p>In this case, the ciphertext of the message $\overline{m_1m_1m_1m_1}\ \overline{m_2m_2m_2m_2}\ \overline{m_3m_3m_3m_3}\ \overline{m_4m_4m_4m<em>4}$ would be $c</em>{m<em>1,1}c</em>{m<em>2,2}c</em>{m<em>3,3}c</em>{m_4,4}$.</p>
+
+<p>Since <strong>mc secret</strong> is $K_{12}K_{13}K_{14}K_{15}$ encrypted, its corresponding ciphertext would be $c_{k_{12},1}c_{k_{13},2}c_{k_{14},3}c_{k_{15},4}$. To recover those $k_i$'s, we can encrypt the below 256 messages to compute a lookup table:</p>
+
+<p><span  class="math">\[\begin{aligned}
+c_{0,1}c_{0,2}c_{0,3}c_{0,4} &= \text{Enc}_k(\overline{\texttt{00 00 00 00}}\texttt{ }\overline{\texttt{00 00 00 00}}\texttt{ }\overline{\texttt{00 00 00 00}}\texttt{ }\overline{\texttt{00 00 00 00}}) \\
+c_{1,1}c_{1,2}c_{1,3}c_{1,4} &= \text{Enc}_k(\overline{\texttt{01 01 01 01}}\texttt{ }\overline{\texttt{01 01 01 01}}\texttt{ }\overline{\texttt{01 01 01 01}}\texttt{ }\overline{\texttt{01 01 01 01}}) \\
+& \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\vdots \\
+c_{255,1}c_{255,2}c_{255,3}c_{255,4} &= \text{Enc}_k(\overline{\texttt{FF FF FF FF}}\texttt{ }\overline{\texttt{FF FF FF FF}}\texttt{ }\overline{\texttt{FF FF FF FF}}\texttt{ }\overline{\texttt{FF FF FF FF}}) \\
+\end{aligned}\]</span></p>
+
+<p>Then we can identify $k_{12} = m$ by looking for $c_{k_{12},1} = c_{m, 1}$ and so on. However, owing to budget issues (the number of oracles are limited), we could not afford sending another 256 requests. We can however send 59 requests to reduce the search space. Depending on the number of $k_i$'s are less than 59, the search space is reduced:</p>
+
+<table>
+<thead><tr><th style="width: 40%;">Number $i$ with of $0 \leq k_i < 59$</th><th style="width: 35%;">Number of possible keys</th><th style="width: 25%;">Probability</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>$197^4$</td><td>35.07%</td></tr>
+<tr><td>1</td><td>$197^3$</td><td>42.01%</td></tr>
+<tr><td>2</td><td>$197^2$</td><td>18.87%</td></tr>
+<tr><td>3</td><td>$197$</td><td>3.77%</td></tr>
+<tr><td>4</td><td>$1$</td><td>0.28%</td></tr>
+</tbody>
+</table>
+
+<p>There are around 20% that there are only less than 40K candidates to test through (which could be exhausted within one second). We can reconnect to the server until this happens.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># [*] +60 oracle calls (128 in total)</span>
+<span style="color:#75715e"># Try to reduce the search space by 23% (or even more if there is a match)</span>
+cs <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">59</span>):
+    m <span style="color:#f92672">=</span> bytes([i])<span style="color:#f92672">*</span><span style="color:#ae81ff">16</span>
+    r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;sr data </span><span style="color:#e6db74">{</span>m<span style="color:#f92672">.</span>hex()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+    c <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+    cs<span style="color:#f92672">.</span>append(c)
+
+r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">&#39;sr secret&#39;</span>)
+c <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+
+matched <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+candidates <span style="color:#f92672">=</span> [list(range(<span style="color:#ae81ff">59</span>, <span style="color:#ae81ff">256</span>)) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>)]
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">59</span>):
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
+        <span style="color:#66d9ef">if</span> cs[i][<span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>j:<span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>j<span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>] <span style="color:#f92672">!=</span> c[<span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>j:<span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>j<span style="color:#f92672">+</span><span style="color:#ae81ff">4</span>]: <span style="color:#66d9ef">continue</span>
+        candidates[j] <span style="color:#f92672">=</span> [i]
+        matched <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+
+total <span style="color:#f92672">=</span> (<span style="color:#ae81ff">256</span><span style="color:#f92672">-</span><span style="color:#ae81ff">59</span>)<span style="color:#f92672">**</span>(<span style="color:#ae81ff">4</span><span style="color:#f92672">-</span>matched)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>matched<span style="color:#e6db74">}</span><span style="color:#e6db74">/4 bytes matched (the more the better). Need to search </span><span style="color:#e6db74">{</span>total<span style="color:#e6db74">}</span><span style="color:#e6db74"> AES keys.&#39;</span>)
+
+<span style="color:#66d9ef">for</span> subkey <span style="color:#f92672">in</span> tqdm(itertools<span style="color:#f92672">.</span>product(<span style="color:#f92672">*</span>candidates), total<span style="color:#f92672">=</span>(<span style="color:#ae81ff">256</span><span style="color:#f92672">-</span><span style="color:#ae81ff">59</span>)<span style="color:#f92672">**</span>(<span style="color:#ae81ff">4</span><span style="color:#f92672">-</span>matched)):
+    key[<span style="color:#ae81ff">8</span>:<span style="color:#ae81ff">12</span>] <span style="color:#f92672">=</span> subkey
+    cipher <span style="color:#f92672">=</span> RealAES<span style="color:#f92672">.</span>new(bytes(key), RealAES<span style="color:#f92672">.</span>MODE_ECB)
+    m <span style="color:#f92672">=</span> cipher<span style="color:#f92672">.</span>decrypt(c_flag)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> m<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hkcert21{&#39;</span>): <span style="color:#66d9ef">continue</span>
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;The flag is found! </span><span style="color:#e6db74">{</span>m<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+    <span style="color:#66d9ef">break</span></code></pre></div>
+<h2 id="約定的夢幻島--sign-in-please-again-crypto">約定的夢幻島 / Sign In Please, Again (Crypto)<a href="#約定的夢幻島--sign-in-please-again-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p><em>不枉我們奮鬥過 和壞人拼搏過</em><br>
+<em>燃亮如熊熊烈火</em><br>
+<em>當初有誰諷刺過 胡亂抨擊過 亦也走得過</em><br>
+<em>或誰也會照笑 笑我傻 說這裏也有折磨</em><br>
+<em>卻有你有我 曾無懼逐關過</em><br>
+<em>重新開始我們上多課</em></p>
+
+<p>Okay. My secure authentication system was proved insecure (see <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20201006-hkcert-ctf/sign-in-please">here</a>) as it got exploited last year by a bunch of bad guys. I improved the system and you would not be able to eavesdrop the passwords ever again.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT</code></pre></div></blockquote>
+
+<p>Define the below authentication algorithm $\mathcal{P}$. Suppose that a user have a $n$ character-long password, $p_1p_2...p_n$:</p>
+
+<ol>
+<li>The server generates a 4-byte salt $s_1s_2s_3s_4$ and generate a permutation of $\{1, 2, ..., n+5\}$, denote it as $\sigma$.</li>
+<li>A user
+
+<ul>
+<li>generates one byte of pepper $r$,</li>
+<li>denotes $x_k = p_k$ for $k = 1, 2, ..., n$, $x_{n+k} = s_k$ for $k = 1, 2, ..., 4$ and $x_{n+5} = r$,</li>
+<li>computes $y_k = x_{\sigma(k)}$ for $k = 1, 2, ..., n+5$ and $h := \text{SHA256}(y_1y_2...y_{n+5})$, and</li>
+<li>send $h$ to the server.</li>
+</ul></li>
+<li>The server computes $h'$ from $p_1p_2...p_n$, the salt $s_1s_2s_3s_4$ and all $r \in [0, 256)$. If there exists $r$ such that $h = h'$, the user is authenticated.</li>
+</ol>
+
+<p>The netcat service implements the above algorithm $\mathcal{P}$ and the player, who acts as the man in-the-middle, can play with below operations in a total of 50 times:</p>
+
+<ol>
+<li><strong>[🕵️]</strong> The player impersonates the server and sends a salt $s_1s_2s_3s_4$ and surjective mapping $\sigma: \{1, 2, ..., k\} \rightarrow \{1, 2, ..., 21\}$ to the user. The user replies with a digest $h$. By surjective $\sigma$ should satisfy the below condition:
+
+<ul>
+<li>For all $v = 1, 2, ..., 21$, there exists $u \in \{1, 2, ..., k\}$ such that $\sigma(u) = v$.</li>
+</ul></li>
+<li><strong>[🖥️]</strong> The server sends a permutation $\sigma$ and a salt $s_1s_2s_3s_4$. If the player supplies with a valid digest $h$, the server replies with the flag.</li>
+</ol>
+
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="merkledamgard-scheme-and-length-extension-attack">Merkle-Damgard scheme and length extension attack<a href="#merkledamgard-scheme-and-length-extension-attack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>SHA-256 is operated under the Merkle-Damgard scheme and length extension attack is a well-known attack regarding the scheme. Please refer to <a href="https://asecuritysite.com/encryption/lenattack">asecuritysite.com</a> for more details of the attack. Note that the attack is largely related to the challenge, so please prepared for that.</p>
+
+<p>In the following, we use $h' = \mathcal{H}(h, m_1m_2...m_{64})$ where $\mathcal{H}$ is a Merkle-Damgard function (this time the SHA-256 function). $h$ and $h'$ are the hash values before and after the transition, and $m_1m_2...m_{64}$ is the 64-byte message block. Also, we will use $h_0$ as the initial hash value. For SHA-256,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">h0 = 0x6a09e667bb67ae853c6ef372a54ff53a510e527f9b05688c1f83d9ab5be0cd19</code></pre></div>
+<h4 id="recovering-a-pepper-probabilisticly">Recovering a pepper probabilisticly<a href="#recovering-a-pepper-probabilisticly" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>We can control $\sigma$ and the salt $s_1s_2s_3s_4$. A major difference between this challenge and its predecessor, <em>Sign in Please</em>, is the existence of a pepper byte. We are allowed to trigger 40 more calls. It seems that recovering a random pepper byte would be a big challenge, which is true.</p>
+
+<div class="alert info">
+  <strong>Is there an writeup for <em>Sign in Please</em>?</strong> You can refer to <a href="https://hackmd.io/@amyriad/hkcert-signin">writeup</a> compiled by the winning team of the tertiary division in HKCERT CTF 2020.
+</div>
+
+
+<p>Suppose $\sigma$ is the identity permutation (i.e., <code>pbox = [0, 1, 2, ..., 20]</code>). That said, the permutated password is simply the password, salt and pepper concatenated. If also $s_1 = s_2 = s_3 = s_4 = \text{00}$, the final hash would be $h_1$, where</p>
+
+<p><span  class="math">\[\begin{aligned}
+h_1 &= \mathcal{H}(h_0, \underbrace{p_1 p_2 ... p_{16}}_{1,\ ...,\ 16} \underbrace{s_1 s_2 s_3 s_4}_{17,\ ...,\ 20} \underbrace{r}_{21} \underbrace{\text{80}}_{22} \underbrace{\text{00 00 ... 00}}_{23,\ ...,\ 63} \underbrace{\text{A8}}_{64}) \\
+&= \mathcal{H}(h_0, \underbrace{p_1 p_2 ... p_{16}}_{1,\ ...,\ 16} \underbrace{\text{00 00 00 00}}_{17,\ ...,\ 20} \underbrace{r}_{21} \underbrace{\text{80}}_{22} \underbrace{\text{00 00 ... 00}}_{23,\ ...,\ 63} \underbrace{\text{A8}}_{64}).
+\end{aligned}\]</span></p>
+
+<p>For the second call, we let $s_1 = \text{00}, s_2 = x, s_3 = \text{80}, s_4 = \text{A8}$, and let $\sigma$ be:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pbox <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#f92672">...</span>, <span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">18</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#f92672">...</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">19</span>, <span style="color:#ae81ff">20</span>]
+<span style="color:#75715e">#       0  1  2       15  16  17  18  19  20  21  22  23  ...  62  63  64</span></code></pre></div>
+<p>Denote the above $\sigma$ by $\sigma^*$. The permutated password is 65 bytes long, thus there will be two blocks supplied to the Merkle-Damgard scheme. In this case, suppose that $h_1'$ and $h_2'$ are the intermediate and the final hashes. We denote the pepper this time to be $r'$ (which may or may not equal to $r$):</p>
+
+<p><span  class="math">\[\begin{aligned}
+h_1' &= \mathcal{H}(h_0, \underbrace{p_1 p_2 ... p_{16}}_{1,\ ...,\ 16} \underbrace{s_1 s_1 s_1 s_1}_{17,\ ...,\ 20} \underbrace{s_2}_{21} \underbrace{s_3}_{22} \underbrace{s_1 s_1 ... s_1}_{24,\ ...,\ 63} \underbrace{s_4}_{64}) \\
+&= \mathcal{H}(h_0, \underbrace{p_1 p_2 ... p_{16}}_{1,\ ...,\ 16} \underbrace{\text{00 00 00 00}}_{17,\ ...,\ 20} \underbrace{x}_{21} \underbrace{\text{80}}_{22} \underbrace{\text{00 00 ... 00}}_{24,\ ...,\ 63} \underbrace{\text{A8}}_{64}). \\
+h_2' &= \mathcal{H}(h_1', \underbrace{r'}_{65} \underbrace{\text{00 00 ... 00}}_{66,\ ...,\ 126} \underbrace{\text{02}}_{127} \underbrace{\text{08}}_{128})
+\end{aligned}\]</span></p>
+
+<p>The goal is to check whether $r = x$. If it happens, we have $h_1 = h_1'$. We can compute $t_0, t_1, ..., t_{255}$ from $h_1$ with:</p>
+
+<p><span  class="math">\[t_{j} := \mathcal{H}(h_1, \underbrace{j}_{65} \underbrace{\text{00 00 ... 00}}_{66,\ ...,\ 126} \underbrace{\text{02}}_{127} \underbrace{\text{08}}_{128})\]</span></p>
+
+<p>If there is a $j \in \{0, 1, ..., 255\}$ such that $h_2' = t_j$, then we can say that either</p>
+
+<ol>
+<li>$r = x$, or</li>
+<li>we found a hash collision for SHA-256 (which is <em>far</em> more unlikely)</li>
+</ol>
+
+<div class="alert warning">
+  <strong>What if we found a hash collision for SHA-256?</strong> <del>Please contact me privately and send me the colliding pairs.</del> Congrats! You have just broken SHA-256 and would be famous!
+</div>
+
+
+<h4 id="improving-the-probability-by-increasing-the-number-of-calls">Improving the probability by increasing the number of calls<a href="#improving-the-probability-by-increasing-the-number-of-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Unfortunately, with two calls the probability of finding $r = x$ would be $1/256$, which is pretty infeasible. However, the probability can be increased to around 64% if we send 32 calls in the below way:</p>
+
+<ol>
+<li>🕵️ 16 times with $\sigma$ being the identity permutation and $s_1 = s_2 = s_3 = s_4 = \text{00}$ and put the hash outputs in the set $\mathcal{U}$.</li>
+<li>For $k = \text{00}, \text{01}, \text{02}, ..., \text{0F}$, 🕵️ with $\sigma = \sigma^*$, and $s_1 = \text{00}, s_2 = k, s_3 = \text{80}, s_4 = \text{A8}$. Let $v_k$ be the hash output.</li>
+</ol>
+
+<p>If there exists $h \in \mathcal{U}, v_r$ and $j \in \{0, 1, ..., 255\}$ such that the below expression holds, then we know that the pepper used for obtaining $h$ is $r$:</p>
+
+<p><span  class="math">\[v_k := \mathcal{H}(h, \underbrace{j}_{65} \underbrace{\text{00 00 ... 00}}_{66,\ ...,\ 126} \underbrace{\text{02}}_{127} \underbrace{\text{08}}_{128})\]</span></p>
+
+<div class="alert info">
+  <strong>Why 64%? And what shall we do if this doesn&rsquo;t happen?</strong> The probability for recovering a pepper is $1 - (1 - 16/256)^{16} \approx 64\%$. If it did not happen, you can simply reconnect and retry the entire process.
+</div>
+
+
+<h4 id="recovering-the-password-characterbycharacter">Recovering the password character-by-character<a href="#recovering-the-password-characterbycharacter" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Now we have a hash $h$ which is computed from a known pepper $r$. The remaining issue would be pretty evident, yet a bit different from the predecessor. If we want to retrieve $p_n$, we can let $s_1 = \text{00}, s_2 = r, s_3 = \text{80}, s_4 = \text{A8}$ and set $\sigma$ to be</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pbox <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#f92672">...</span>, <span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">18</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">16</span>, <span style="color:#f92672">...</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">19</span>, n,  <span style="color:#ae81ff">20</span>]
+<span style="color:#75715e">#       0  1  2       15  16  17  18  19  20  21  22  23  ...  62  63  64  65</span></code></pre></div>
+<p>Eventually, we recovered the password and can successfully get the flag via 🖥️.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hkcert21{1t_d03sn7_h31p_by_4dd1n9_p3pp3r5}</code></pre></div><div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:cse-aes">Cryptography Stack Exchange (2014). &quot;Consequences of AES without any one of its operations&quot;<br><a href="https://crypto.stackexchange.com/questions/20228/consequences-of-aes-without-any-one-of-its-operations">https://crypto.stackexchange.com/questions/20228/consequences-of-aes-without-any-one-of-its-operations</a>
+ <a class="footnote-return" href="#fnref:cse-aes">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2021/2021-11-18-hkcert-ctf-3/">
+                <span class="button__icon">←</span>
+                <span class="button__text">HKCERT CTF 2021 Postmortem (III): The Reverse Challenges</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="/posts/2021/2021-11-18-hkcert-ctf-1/">
+                <span class="button__text">HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 08 Apr 2021 08:00:00 +0800</lastBuildDate><atom:link href="/tags/angstromctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ångstromCTF 2021: Cache Money</title>
-      <link>/posts/2021-04-08-angstromctf-2021/</link>
+      <link>/posts/2021/2021-04-08-angstromctf-2021/</link>
       <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
       
-      <guid>/posts/2021-04-08-angstromctf-2021/</guid>
+      <guid>/posts/2021/2021-04-08-angstromctf-2021/</guid>
       <description>I played ångstromCTF 2021 for @blackb6a to spend my Easter holiday. I solved most of the reverse and cryptography challenges alone. In particular, Cache Money is one of the harder crypto challenges that I spent more than one day dealing with. It is very rewarding, and eventually four teams ended up solving it.
 Challenge Summary This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 and 256-bit keys. The encryptor is equipped with caches and we are given a service to encrypt (or decrypt) our messages.</description>
     </item>

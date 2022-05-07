@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 28 Feb 2021 19:35:00 +0800</lastBuildDate><atom:link href="/tags/aero-ctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Aero CTF 2021 Writeup</title>
-      <link>/posts/2021-02-28-aeroctf/</link>
+      <link>/posts/2021/2021-02-28-aeroctf/</link>
       <pubDate>Sun, 28 Feb 2021 19:35:00 +0800</pubDate>
       
-      <guid>/posts/2021-02-28-aeroctf/</guid>
+      <guid>/posts/2021/2021-02-28-aeroctf/</guid>
       <description>This time I am playing alone for @blackb6a and had all the crypto challenges solved (and nothing else). I found the crypto challenges in many of the CTFs this year are worth-trying, and these are no exceptions. I ended up at the 9th place. By the way, @SuperGuesser is the first to solve for all of the crypto challenges. Can we nerf @RBTree_ and @rkm0959?
 Additionally, phoenix had seven solves and while horcrux and boggart had two.</description>
     </item>

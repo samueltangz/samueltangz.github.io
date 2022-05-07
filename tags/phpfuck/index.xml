@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 10 Aug 2021 23:59:59 +0800</lastBuildDate><atom:link href="/tags/phpfuck/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>UIUCTF 2021: phpfuck</title>
-      <link>/posts/2021-08-10-uiuctf-phpfuck/</link>
+      <link>/posts/2021/2021-08-10-uiuctf-phpfuck/</link>
       <pubDate>Tue, 10 Aug 2021 23:59:59 +0800</pubDate>
       
-      <guid>/posts/2021-08-10-uiuctf-phpfuck/</guid>
+      <guid>/posts/2021/2021-08-10-uiuctf-phpfuck/</guid>
       <description>Credit. I stole the banner image from the background image of UIUCTF. I like the picture and their unique themes for these two CTFs&amp;hellip;  This is another time @blackb6a unites and plays UIUCTF together. It was my fourth time playing UIUCTF, and I still found the challenges fun. Although the crypto challenges are relatively easy, I had a lot of fun solving phpfuck with @02E774.
 Challenge Summary // Flag is inside .</description>
     </item>
