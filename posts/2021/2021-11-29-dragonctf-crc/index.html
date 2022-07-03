@@ -202,7 +202,7 @@ crc <span style="color:#f92672">=</span> crc64(inp)
     print(<span style="color:#e6db74">&#39;Nope!&#39;</span>)</code></pre></div>
 <h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<p>The crypto challenges in Dragon CTF are often easy to understand but turns out hard to solve. The <a href="/posts/2020-11-23-dragonctf/#bit-flip-crypto-155324343-points">Bit Flip trio</a> last year is one of them. During the contest, we thought that we could easily write an algorithm solving the harder problem. Turns out we did not solve the harder challenge in time.</p>
+<p>The crypto challenges in Dragon CTF are often easy to understand but turns out hard to solve. The <a href="/posts/2020/2020-11-23-dragonctf/#bit-flip-crypto-155324343-points">Bit Flip trio</a> last year is one of them. During the contest, we thought that we could easily write an algorithm solving the harder problem. Turns out we did not solve the harder challenge in time.</p>
 
 <h3 id="part-i-pay-to-win-with-an-mathcalo2n2-algorithm">Part I: Pay to win with an $\mathcal{O}(2^{n/2})$ algorithm<a href="#part-i-pay-to-win-with-an-mathcalo2n2-algorithm" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -370,7 +370,7 @@ DrgnS{0x5d9f900f6564617b}</code>
 </div>
 
 
-<p>With a similar idea adopted in <a href="/posts/2021-11-18-hkcert-ctf-2/#solving-linear-equations"><em>Tenet: The Plagarism</em></a> in HKCERT CTF 2021, I converted the 16 unknowns $k_0, k_1, ..., k_{15} \in \mathbb{Z}_{16}$ to 256 unknowns $x_{0,0}, x_{0,1}, ..., x_{0,15}, x_{1,0}, ..., x_{15,15} \in \{0, 1\}$. We can see that the below equation</p>
+<p>With a similar idea adopted in <a href="/posts/2021/2021-11-18-hkcert-ctf-2/#solving-linear-equations"><em>Tenet: The Plagarism</em></a> in HKCERT CTF 2021, I converted the 16 unknowns $k_0, k_1, ..., k_{15} \in \mathbb{Z}_{16}$ to 256 unknowns $x_{0,0}, x_{0,1}, ..., x_{0,15}, x_{1,0}, ..., x_{15,15} \in \{0, 1\}$. We can see that the below equation</p>
 
 <p><span  class="math">\[k_0 \oplus 16 k_1 \oplus ... \oplus 16^{15} k_{15} = \text{CRC}(m_0) \oplus \text{CRC}(\Delta m_{0, k_0}) \oplus \text{CRC}(\Delta m_{1, k_1}) \oplus ... \oplus \text{CRC}(\Delta m_{15, k_{15}})\]</span></p>
 

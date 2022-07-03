@@ -222,7 +222,7 @@ Challenge Summary We are given a chance to ask the agencies for oracles. The cha
 
 <p>However, would it be possible that the functions inside the <code>try</code> block to overwrite the <code>response</code>? In this case, it will actually return something other than <code>I won't answer</code>? Well, <code>response</code> isn't even used as a variable in the <a href="https://github.com/asmcrypto/asmcrypto.js/">asmCrypto.js</a>, not to mention if it is being misused. This is not the way.</p>
 
-<p>This part did not struggle me a lot. I linked this challenge with <a href="http://localhost:1313/posts/2021-01-18-firebird-internal-ctf/#obvious-transfer-crypto">Obvious Transfer</a> (a challenge that I made) at an early time because there are some common factors. When I look at the source code for asmCrypto.js, I am able to found the place that I could recover $n$. Let's read the code together!</p>
+<p>This part did not struggle me a lot. I linked this challenge with <a href="/posts/2021/2021-01-18-firebird-internal-ctf/#obvious-transfer-crypto">Obvious Transfer</a> (a challenge that I made) at an early time because there are some common factors. When I look at the source code for asmCrypto.js, I am able to found the place that I could recover $n$. Let's read the code together!</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Excerpted from https://github.com/asmcrypto/asmcrypto.js/blob/v2.3.2/src/rsa/pkcs1.ts
 </span><span style="color:#75715e"></span>
 <span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RSA_OAEP</span> {

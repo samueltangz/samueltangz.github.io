@@ -221,7 +221,7 @@ s_2 r_4 x_{2,0} & + s_2 r_4 A x_{2,1} + ... + s_2 r_4 A^{15} x_{2,15} \\
 & = z_2 r_4 - z_4 r_2.\\
 \end{aligned}\]</span></p>
 
-<p>From above, $0 \leq x_{i, j} &lt; 256$ and $y \in \mathbb{Z}$. We then can use LLL to solve for $x_{i, j}$'s - hence recovering $k_i$'s and thus $d$. I have mentioned a way to solve those problems in LLL in <a href="/posts/2021-02-28-aeroctf/#part-ii-retrieving-eis-via-lll"><em>horcrux</em> in AeroCTF 2021</a> and please read that if you are interested. We have the flag after all: <code>CTF{But_in_real_life_devs_would_never_use_such_a_buggy_RNG_right?}</code>.</p>
+<p>From above, $0 \leq x_{i, j} &lt; 256$ and $y \in \mathbb{Z}$. We then can use LLL to solve for $x_{i, j}$'s - hence recovering $k_i$'s and thus $d$. I have mentioned a way to solve those problems in LLL in <a href="/posts/2021/2021-02-28-aeroctf/#part-ii-retrieving-eis-via-lll"><em>horcrux</em> in AeroCTF 2021</a> and please read that if you are interested. We have the flag after all: <code>CTF{But_in_real_life_devs_would_never_use_such_a_buggy_RNG_right?}</code>.</p>
 
 <p>Regarding to the flag, that is definitely a <em>no</em> and I recalled <a href="https://github.com/ethereum/EIPs/issues/1756">ERC-1756</a> for Ethereum (which is luckily not standardized).</p>
 
