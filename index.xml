@@ -546,8 +546,7 @@ Cousin is a crypto guy in Black Bauhinia who is researching for his master of ph
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/crypto-in-ctf/2022-q3/</guid>
-      <description>Starting from this quarter, I will simply refer to the source code (which I think better explains the challenge) if they have an official repository.
-   CTF Challenge Name Solves (Difficulty)     Google CTF 2022 Cycling 🔥 50/382 (⭐⭐)   Google CTF 2022 Electric Mayhem CLS 70/382 (⭐⭐)   Google CTF 2022 Maybe Someday 35/382 (⭐⭐)   Google CTF 2022 Enigma 9/382 (⭐⭐⭐)   Google CTF 2022 Custom Protocol 🔥 5/382 (⭐⭐⭐)   Google CTF 2022 Electric Mayhem PQC 🔥 3/382 (⭐⭐⭐⭐)    Google CTF 2022 Cycling 🔥  Solves: 50/382 Difficulty: ⭐⭐ Tags: rsa  Official Repository</description>
+      <description>CTF Challenge Name Solves (Difficulty)     Google CTF 2022 Cycling 🔥 50/382 (⭐⭐)   Google CTF 2022 Electric Mayhem CLS 70/382 (⭐⭐)   Google CTF 2022 Maybe Someday 35/382 (⭐⭐)   Google CTF 2022 Enigma 9/382 (⭐⭐⭐)   Google CTF 2022 Custom Protocol 🔥 5/382 (⭐⭐⭐)   Google CTF 2022 Electric Mayhem PQC 🔥 3/382 (⭐⭐⭐⭐)    Google CTF 2022 Cycling 🔥  Solves: 50/382 Difficulty: ⭐⭐ Tags: rsa Source: Official Repository  We are given a RSA public key $(n, e)$ and $c_0$, the ciphertext of $m_0$ (the flag).</description>
     </item>
     
     <item>

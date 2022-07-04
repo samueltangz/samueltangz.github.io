@@ -6,8 +6,7 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Starting from this quarter, I will simply refer to the source code (which I think better explains the challenge) if they have an official repository.
-   CTF Challenge Name Solves (Difficulty)     Google CTF 2022 Cycling 🔥 50/382 (⭐⭐)   Google CTF 2022 Electric Mayhem CLS 70/382 (⭐⭐)   Google CTF 2022 Maybe Someday 35/382 (⭐⭐)   Google CTF 2022 Enigma 9/382 (⭐⭐⭐)   Google CTF 2022 Custom Protocol 🔥 5/382 (⭐⭐⭐)   Google CTF 2022 Electric Mayhem PQC 🔥 3/382 (⭐⭐⭐⭐)    Google CTF 2022 Cycling 🔥  Solves: 50/382 Difficulty: ⭐⭐ Tags: rsa  Official Repository" />
+<meta name="description" content="CTF Challenge Name Solves (Difficulty)     Google CTF 2022 Cycling 🔥 50/382 (⭐⭐)   Google CTF 2022 Electric Mayhem CLS 70/382 (⭐⭐)   Google CTF 2022 Maybe Someday 35/382 (⭐⭐)   Google CTF 2022 Enigma 9/382 (⭐⭐⭐)   Google CTF 2022 Custom Protocol 🔥 5/382 (⭐⭐⭐)   Google CTF 2022 Electric Mayhem PQC 🔥 3/382 (⭐⭐⭐⭐)    Google CTF 2022 Cycling 🔥  Solves: 50/382 Difficulty: ⭐⭐ Tags: rsa Source: Official Repository  We are given a RSA public key $(n, e)$ and $c_0$, the ciphertext of $m_0$ (the flag)." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="/crypto-in-ctf/2022-q3/" />
@@ -42,8 +41,7 @@
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Crypto in CTF: Q3 2022">
-<meta property="og:description" content="Starting from this quarter, I will simply refer to the source code (which I think better explains the challenge) if they have an official repository.
-   CTF Challenge Name Solves (Difficulty)     Google CTF 2022 Cycling 🔥 50/382 (⭐⭐)   Google CTF 2022 Electric Mayhem CLS 70/382 (⭐⭐)   Google CTF 2022 Maybe Someday 35/382 (⭐⭐)   Google CTF 2022 Enigma 9/382 (⭐⭐⭐)   Google CTF 2022 Custom Protocol 🔥 5/382 (⭐⭐⭐)   Google CTF 2022 Electric Mayhem PQC 🔥 3/382 (⭐⭐⭐⭐)    Google CTF 2022 Cycling 🔥  Solves: 50/382 Difficulty: ⭐⭐ Tags: rsa  Official Repository" />
+<meta property="og:description" content="CTF Challenge Name Solves (Difficulty)     Google CTF 2022 Cycling 🔥 50/382 (⭐⭐)   Google CTF 2022 Electric Mayhem CLS 70/382 (⭐⭐)   Google CTF 2022 Maybe Someday 35/382 (⭐⭐)   Google CTF 2022 Enigma 9/382 (⭐⭐⭐)   Google CTF 2022 Custom Protocol 🔥 5/382 (⭐⭐⭐)   Google CTF 2022 Electric Mayhem PQC 🔥 3/382 (⭐⭐⭐⭐)    Google CTF 2022 Cycling 🔥  Solves: 50/382 Difficulty: ⭐⭐ Tags: rsa Source: Official Repository  We are given a RSA public key $(n, e)$ and $c_0$, the ciphertext of $m_0$ (the flag)." />
 <meta property="og:url" content="/crypto-in-ctf/2022-q3/" />
 <meta property="og:site_name" content="Mystify" />
 
@@ -155,8 +153,7 @@
   
 
   <div class="post-content js-toc-content"><div>
-        <p>Starting from this quarter, I will simply refer to the source code (which I think better explains the challenge) if they have an official repository.</p>
-<table>
+        <table>
 <thead>
 <tr>
 <th>CTF</th>
@@ -203,43 +200,56 @@
 <li>Solves: 50/382</li>
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>rsa</code></li>
+<li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-cycling">Official Repository</a></li>
 </ul>
-<p><a href="https://github.com/google/google-ctf/tree/master/2022/quals/crypto-cycling">Official Repository</a></p>
+<p>We are given a RSA public key $(n, e)$ and $c_0$, the ciphertext of $m_0$ (the flag). If we denote $(m, c)$ be a message-ciphertext pair, then $c = \text{Enc}(m) := m^e\ \text{mod}\ n$. Given also</p>
+<p>$$\text{Enc}^{2^{1025} - 3}(c) := \underbrace{\text{Enc}(\text{Enc}(&hellip;\text{Enc}}_{\text{Enc applied}\ 2^{1025}-3\ \text{times}}(c))) = m.$$</p>
+<p>The objective is to recover $m_0$.</p>
 <h3 id="electric-mayhem-cls">Electric Mayhem CLS<a href="#electric-mayhem-cls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 70/382</li>
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>aes</code>, <code>power analysis</code></li>
+<li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-electric-mayhem-cls">Official Repository</a></li>
 </ul>
-<p><a href="https://github.com/google/google-ctf/tree/master/2022/quals/crypto-electric-mayhem-cls">Official Repository</a></p>
 <h3 id="maybe-someday">Maybe Someday<a href="#maybe-someday" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 35/382</li>
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>paillier</code></li>
+<li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-maybe-someday">Official Repository</a></li>
 </ul>
-<p><a href="https://github.com/google/google-ctf/tree/master/2022/quals/crypto-maybe-someday">Official Repository</a></p>
+<p>We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</p>
+<ol>
+<li>The server generates a random $s$, which of two bytes long.</li>
+<li>The server $m_0 := \text{SHA512}(s)$.</li>
+<li>The server encrypts a PKCSv1.5-padded $m_0$ with the public key $(n, g)$ and sends its ciphertext $c_0$ to the player.</li>
+<li>The player sends $c_1, c_2, &hellip;, c_{20}$ to the server.</li>
+<li>The server checks and tells the player if each of the corresponding $m_i$&rsquo;s is PKCSv1.5-compliant.</li>
+<li>The player sends $\hat{m_0}$ to the server. If $\hat{m_0} = m_0$, the player wins this round.</li>
+</ol>
+<p>The objective for the player is to win 16 rounds of $\mathcal{C}$ for the flag.</p>
 <h3 id="enigma">Enigma<a href="#enigma" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 9/382</li>
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>enigma</code></li>
+<li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-enigma">Official Repository</a></li>
 </ul>
-<p><a href="https://github.com/google/google-ctf/tree/master/2022/quals/crypto-enigma">Official Repository</a></p>
 <h3 id="custom-protocol-">Custom Protocol 🔥<a href="#custom-protocol-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 5/382</li>
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>rsa</code>, <code>faulty signature</code></li>
+<li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-custom-protocol">Official Repository</a></li>
 </ul>
-<p><a href="https://github.com/google/google-ctf/tree/master/2022/quals/crypto-custom-protocol">Official Repository</a></p>
 <h3 id="electric-mayhem-pqc-">Electric Mayhem PQC 🔥<a href="#electric-mayhem-pqc-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 3/382</li>
 <li>Difficulty: ⭐⭐⭐⭐</li>
 <li>Tags: <code>kyber512</code>, <code>power analysis</code></li>
+<li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-electric-mayhem-pqc">Official Repository</a></li>
 </ul>
-<p><a href="https://github.com/google/google-ctf/tree/master/2022/quals/crypto-electric-mayhem-pqc">Official Repository</a></p>
 
       </div></div>
 
