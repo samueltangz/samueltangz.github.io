@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Google CTF 2022: Maybe Someday :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.
+Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:" />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2022/2022-07-20-google-ctf-maybe-someday/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Google CTF 2022: Maybe Someday">
+<meta property="og:description" content="This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge." />
+<meta property="og:url" content="/posts/2022/2022-07-20-google-ctf-maybe-someday/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2022-07-20-googlectf/banner.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-07-20 20:09:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2022/2022-07-20-google-ctf-maybe-someday/">Google CTF 2022: Maybe Someday</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-07-20 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/google-ctf/">google-ctf</a>&nbsp;
+    
+    #<a href="/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/paillier/">paillier</a>&nbsp;
+    
+  </span>
+  
+
+  
+    <img src="/images/2022-07-20-googlectf/banner.png" class="post-cover center" alt="Google CTF 2022: Maybe Someday" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>This is the third year I had a writeup on Google CTF (see my writeup in <a href="/posts/2020/2020-08-25-google-ctf-oracle/">2020</a> and <a href="/posts/2021/2021-07-24-google-ctf/">2021</a>). Yet this time it is <em>the</em> official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</p>
+<ol>
+<li>The server generates a random $s$, which of two bytes long.</li>
+<li>The server $m_0 := \text{SHA512}(s)$.</li>
+<li>The server encrypts a PKCSv1.5-padded $m_0$ with the public key $(n, g)$ and sends its ciphertext $c_0$ to the player.</li>
+<li>The player sends $c_1, c_2, &hellip;, c_{20}$ to the server.</li>
+<li>The server checks and tells the player if each of the corresponding $m_i$&rsquo;s is PKCSv1.5-compliant.</li>
+<li>The player sends $\hat{m_0}$ to the server. If $\hat{m_0} = m_0$, the player wins this round.</li>
+</ol>
+<p>The objective for the player is to win 16 rounds of $\mathcal{C}$ for the flag.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  📖 <strong>Alternative Writeups.</strong> My writeup is known to be unnecessarily lengthy. Instead, you may be interested to read the writeups compiled by our players: <a href="https://furutsuki.hatenablog.com/entry/2022/07/04/104524">Writeup</a> by <em>@theoremoon</em>, <a href="https://blog.y011d4.com/20220704-google-ctf-writeup">writeup</a> by <em>@y011d4</em>, <a href="https://project-euphoria.dev/problems/google-ctf-2022-maybe-someday/">writeup</a> by <em>@Xornet_Euphoria</em>, <a href="https://jsur.in/posts/2022-07-05-google-ctf-2022-maybe-someday-writeup">writeup</a> by <em>@josep68_</em>, <a href="https://willwam.me/posts/2022-07-05-googlectf-maybesomeday">writeup</a> by <em>@willwam845</em>.
+</div>
+
+<h3 id="background-homomorphic-property-of-paillier-cryptosystem">Background: Homomorphic property of Paillier cryptosystem<a href="#background-homomorphic-property-of-paillier-cryptosystem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>A ciphertext $c := \mathcal{E}(m)$ is defined by</p>
+<p>$$c := g^m \cdot r^n\ \text{mod}\ n^2,$$</p>
+<p>for a random number $r \in [0, n)$.</p>
+<ol>
+<li>$\mathcal{E}(m_1 + m_2) = \mathcal{E}(m_1) \cdot \mathcal{E}(m_2)$</li>
+<li>$\mathcal{E}(m_1 \cdot m_2) = \mathcal{E}(m_1)^{m_2} = \mathcal{E}(m_2)^{m_1}$</li>
+</ol>
+<p>Their proofs are pretty straight forward:</p>
+<ol>
+<li>$\mathcal{E}(m_1) \cdot \mathcal{E}(m_2) = (g^{m_1} \cdot {r_1}^n) \cdot (g^{m_2} \cdot {r_2}^n) = g^{m_1 + m_2} \cdot (r_1 \cdot r_2)^n = \mathcal{E}(m_1 + m_2)$, and</li>
+<li>$\mathcal{E}(m_1)^{m_2} = (g^{m_1} \cdot {r_1}^n)^{m_2} = g^{m_1 \cdot m_2} \cdot ({r_1}^{m_2})^n = \mathcal{E}(m_1 \cdot m_2)$.</li>
+</ol>
+<h3 id="what-kind-of-queries-do-we-have">What kind of queries do we have?<a href="#what-kind-of-queries-do-we-have" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In this section, we will discuss some &ldquo;padding oracles&rdquo; for Paillier cryptosystem. Suppose that we know the length of the message and denote it by $l$. Denote also the message $m_0$ (composed only of ASCII hexadecimal characters $\mathcal{H} = \{\texttt{0}, \texttt{1}, &hellip;, \texttt{f}\}$) by</p>
+<p>$$m_0 := \texttt{s}_1\ \texttt{s}_2\ \dots \texttt{s}_l,$$</p>
+<p>where $\texttt{s}_1, \texttt{s}_2, &hellip;, \texttt{s}_l \in \mathcal{H}$ represent the $l$ bytes of the message. Finally, denote the padded message $\tilde{m}_0$ by</p>
+<p>$$\tilde{m}_0 := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{00}\ \texttt{s}_1\ \texttt{s}_2\ \dots \texttt{s}_l,$$</p>
+<p>with $\texttt{p}_1, \texttt{p}_2, &hellip;, \texttt{p}_k \in \{1, 2, &hellip;, 255\}$; and $c_0$ be a ciphertext of $\tilde{m}_0$.</p>
+<div class="alert warning">
+  <strong>Note.</strong> Not all of the below oracles are useful for this challenge.
+</div>
+
+<h4 id="query-1a-check-if-texttts_1-leq-a-a-in-mathcalh">Query 1a: Check if $\texttt{s}_1 \leq a$ ($a \in \mathcal{H}$)<a href="#query-1a-check-if-texttts_1-leq-a-a-in-mathcalh" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert success">
+  <strong>Approach.</strong> Send $\hat{c} := c_0 \cdot \mathcal{E}({256}^l - a \cdot {256}^{l-1})$. The corresponding message $\hat{m}$ has a valid padding <em>if and only if</em> $\texttt{s}_1 &lt; a$.
+</div>
+
+<p>The message $\hat{m}$ would be $\hat{m} := \tilde{m}_0 + (256^l - a \cdot {256}^{l-1})$, i.e.,</p>
+<p>$$\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \htmlStyle{color: yellow;}{\texttt{01}}\ \htmlStyle{color: yellow;}{(\texttt{s}_1-a)}\ \texttt{s}_2\ \dots \ \texttt{s}_l.$$</p>
+<p>The characters in yellow are the modified ones. There are three cases ($\texttt{**}$ below represents a non-null byte; 😀 and 😡 mean that $\hat{m}$ has a valid and an invalid padding respectively):</p>
+<ol>
+<li><strong>[😡]</strong> $\texttt{s}_1 &gt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{01}\ \texttt{**} \ \texttt{s}_2\ \dots \ \texttt{s}_l$.</li>
+<li><strong>[😀]</strong> $\texttt{s}_1 = a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{01}\ \texttt{00} \ \texttt{s}_2\ \dots \ \texttt{s}_l$.</li>
+<li><strong>[😀]</strong> $\texttt{s}_1 &lt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{00}\ \texttt{**} \ \texttt{s}_2\ \dots \ \texttt{s}_l$.</li>
+</ol>
+<h4 id="query-1b-with-known-texttts_i-1-check-if-texttts_i-leq-a">Query 1b: With known $\texttt{s}_{i-1}$, check if $\texttt{s}_i \leq a$<a href="#query-1b-with-known-texttts_i-1-check-if-texttts_i-leq-a" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert success">
+  <strong>Approach.</strong> Send $\hat{c} := c_0 \cdot \mathcal{E}({256}^l - (\texttt{s}_i - 1) \cdot {256}^{l-(i-1)} - a \cdot {256}^{l-i})$. The corresponding message $\hat{m}$ has a valid padding <em>if and only if</em> $\texttt{s}_i &lt; a$.
+</div>
+
+<p>The message $\hat{m}$ would be $\hat{m} := \tilde{m}_0 + [{256}^l -(\texttt{s}_i - 1) \cdot {256}^{l-(i-1)} - a \cdot {256}^{l-i}]$, i.e.,</p>
+<p>$$\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \htmlStyle{color: yellow;}{\texttt{01}} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-2} \ \htmlStyle{color: yellow;}{\texttt{01}} \ \htmlStyle{color: yellow;}{(\texttt{s}_i-a)} \ \texttt{s}_{i+1} \dots \ \texttt{s}_l.$$</p>
+<p>There are three cases:</p>
+<ol>
+<li><strong>[😡]</strong> $\texttt{s}_i &gt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{01} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-2} \ \texttt{01} \ \texttt{**} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
+<li><strong>[😀]</strong> $\texttt{s}_i = a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{01} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-2} \ \texttt{01} \ \texttt{00} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
+<li><strong>[😀]</strong> $\texttt{s}_i &lt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{01} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-2} \ \texttt{00} \ \texttt{**} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
+</ol>
+<h4 id="query-2a-check-if-s_i--a">Query 2a: Check if $s_i = a$<a href="#query-2a-check-if-s_i--a" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert success">
+  <strong>Approach.</strong> Send $\hat{c} := c_0 \cdot \mathcal{E}(2 \cdot {256}^l - a \cdot {256}^{l-i})$. The corresponding message $\hat{m}$ has a valid padding <em>if and only if</em> $\texttt{s}_i = a$.
+</div>
+
+<p>The message $\hat{m}$ would be $\hat{m} := \tilde{m}_0 + [2 \cdot {256}^l - a \cdot {256}^{l-i}]$, i.e.,</p>
+<p>$$\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots \ \texttt{p}_k\ \htmlStyle{color: yellow;}{\texttt{02}} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-1} \ \htmlStyle{color: yellow;}{(\texttt{s}_i-a)} \ \texttt{s}_{i+1} \dots \ \texttt{s}_l.$$</p>
+<p>There are three cases:</p>
+<ol>
+<li><strong>[😡]</strong> $\texttt{s}_i &gt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots \ \texttt{p}_k\ \texttt{02} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-1} \ \texttt{**} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
+<li><strong>[😀]</strong> $\texttt{s}_i = a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots \ \texttt{p}_k\ \texttt{02} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-1} \ \texttt{00} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
+<li><strong>[😡]</strong> $\texttt{s}_i &lt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots \ \texttt{p}_k\ \texttt{02} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{**} \ \texttt{**} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
+</ol>
+<h4 id="query-2b-check-if-s_i_1--a_1-or-s_i_2--a_2-or--or-s_i_k--a_k-">Query 2b: Check if $s_{i_1} = a_1$ or $s_{i_2} = a_2$ or &hellip; or $s_{i_k} = a_k$ [*]<a href="#query-2b-check-if-s_i_1--a_1-or-s_i_2--a_2-or--or-s_i_k--a_k-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert warning">
+  <strong>[*]</strong> Terms and conditions apply. Here $i_1 &lt; i_2 &lt; &hellip; &lt; i_k$ and $i_r - i_{r-1} &gt; 1$. The second condition (i.e., $i_r - i_{r-1} &gt; 1$) is used to avoid handling carry.
+</div>
+
+<p>This is an extension of query 2a. We can send</p>
+<p>$$\hat{c} := c_0 \cdot \mathcal{E}\left(2 \cdot {256}^l - \sum_{j=1}^k a_j \cdot {256}^{l-i_j}\right),$$</p>
+<p>which corresponds to the message</p>
+<p>$$\begin{aligned}
+\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots \ \texttt{p}_k\ \htmlStyle{color: yellow;}{\texttt{02}} \ &amp; \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i_1-1} \ \htmlStyle{color: yellow;}{(\texttt{s}_{i_1}-a_1)} \ \texttt{s}_{i_1+1} \ \dots \\
+&amp; \texttt{s}_{i_2-1} \ \htmlStyle{color: yellow;}{(\texttt{s}_{i_2}-a_2)} \ \texttt{s}_{i_2+1} \ \dots \ \texttt{s}_{i_k-1} \ \htmlStyle{color: yellow;}{(\texttt{s}_{i_k}-a_k)} \ \texttt{s}_{i_k+1} \ \dots \ \texttt{s}_l.
+\end{aligned}$$</p>
+<p>If any of $s_{i_j} = a_j$, then the byte $s_{i_j} - a_j$ would be zero. This yields a zero byte in $\hat{m}$ and thus it has a valid padding. Otherwise $\hat{m}$ is not PKCSv1.5-compliant.</p>
+<h3 id="binary-search">&ldquo;Binary search&rdquo;<a href="#binary-search" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since $m_0$ has 16 bits of entropy, it is expected to recover it with 16 queries using binary search. To achieve this, we would like to generate queries such that the probabilities of returning 😀 and 😡 are close. Using <em>query 2b</em> and if we assume the 128 hex characters are <em>independent</em> and <em>uniform</em>, the change of getting a 😀 would be $(15/16)^k$ (thus the change getting a 😡 would be $1 - (15/16)^k$). When $k = 11$, the probabilities are respectively 49.17% and 50.83%, which is very close.</p>
+<p>Although it seems that we have an &ldquo;binary search&rdquo; approach which ideally removes at least 49.17% of the candidates in each query, we actually don&rsquo;t. The queries are not independent to each other.</p>
+<p>Fortunately it is not that bad. I can easily generate a set of 20 queries with a success rate of 96.90%. This ends up having 60.46% gaining the flag.</p>
+<h3 id="exploit-script">Exploit script<a href="#exploit-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> tqdm
+<span style="color:#f92672">import</span> hashlib
+<span style="color:#f92672">import</span> itertools
+<span style="color:#f92672">import</span> random
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">recvint</span>(r, n<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>):
+    r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>n<span style="color:#e6db74">}</span><span style="color:#e6db74"> = &#39;</span><span style="color:#f92672">.</span>encode())
+    <span style="color:#66d9ef">return</span> int(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+ 
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_ids</span>(k):
+    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+        ids <span style="color:#f92672">=</span> sorted(random<span style="color:#f92672">.</span>choices(range(<span style="color:#ae81ff">128</span>), k<span style="color:#f92672">=</span>k))
+        <span style="color:#66d9ef">if</span> any([ids[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> ids[i] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(k<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)]): <span style="color:#66d9ef">continue</span>
+        <span style="color:#66d9ef">return</span> ids
+ 
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">precompute</span>(n, g):
+    random<span style="color:#f92672">.</span>seed(<span style="color:#ae81ff">73</span>)
+ 
+    k <span style="color:#f92672">=</span> <span style="color:#ae81ff">11</span> <span style="color:#75715e"># number of terms</span>
+ 
+    queries <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">20</span>):
+        <span style="color:#75715e"># The query we are going to ask is</span>
+        <span style="color:#75715e">#   is &#34;x[ids[0]] == vs[0] OR ... OR x[ids[k-1]] = vs[k-1]&#34;?</span>
+        query <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">128</span>)]
+        ids <span style="color:#f92672">=</span> generate_ids(k)
+        vs  <span style="color:#f92672">=</span> [random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">15</span>) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(k)]
+        <span style="color:#66d9ef">for</span> j, v <span style="color:#f92672">in</span> zip(ids, vs):
+            query[j] <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;0123456789abcdef&#39;</span>[v]
+        queries<span style="color:#f92672">.</span>append(query)
+ 
+    delta_cs <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> query <span style="color:#f92672">in</span> queries:
+        m1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">256</span><span style="color:#f92672">**</span><span style="color:#ae81ff">128</span> <span style="color:#f92672">-</span> sum([q <span style="color:#f92672">*</span> <span style="color:#ae81ff">256</span><span style="color:#f92672">**</span>(<span style="color:#ae81ff">127</span><span style="color:#f92672">-</span>i) <span style="color:#66d9ef">for</span> i, q <span style="color:#f92672">in</span> enumerate(query)])
+        c1 <span style="color:#f92672">=</span> pow(g, m1, n<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>)
+        delta_cs<span style="color:#f92672">.</span>append(c1)
+ 
+    response_map <span style="color:#f92672">=</span> {}
+    <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> tqdm(itertools<span style="color:#f92672">.</span>product(range(<span style="color:#ae81ff">256</span>), repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>), total<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span><span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>):
+        x <span style="color:#f92672">=</span> bytes(x)
+        y <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha512(x)<span style="color:#f92672">.</span>hexdigest()<span style="color:#f92672">.</span>encode()
+ 
+        res <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> query <span style="color:#f92672">in</span> queries:
+            res<span style="color:#f92672">.</span>append(any([query[i] <span style="color:#f92672">==</span> y[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">128</span>)]))
+ 
+        response_map[str(res)] <span style="color:#f92672">=</span> y
+    
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Number of groups detected: </span><span style="color:#e6db74">{</span>len(response_map)<span style="color:#e6db74">}</span><span style="color:#e6db74"> (the probability of &#39;</span>
+          <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;computing the answer would be </span><span style="color:#e6db74">{</span>len(response_map)<span style="color:#f92672">/</span><span style="color:#ae81ff">65536</span><span style="color:#f92672">*</span><span style="color:#ae81ff">100</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%).&#39;</span>)
+ 
+    <span style="color:#66d9ef">return</span> response_map, delta_cs
+ 
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">forge</span>(c0, delta_cs, n):
+    <span style="color:#66d9ef">return</span> [c0<span style="color:#f92672">*</span>c1 <span style="color:#f92672">%</span> n<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> c1 <span style="color:#f92672">in</span> delta_cs]
+ 
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">solve</span>(response_map, res):
+    <span style="color:#66d9ef">return</span> response_map[str(res)]
+ 
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;maybe-someday.2022.ctfcompetition.com&#39;</span>, <span style="color:#ae81ff">1337</span>)
+    
+    r<span style="color:#f92672">.</span>recvline()
+ 
+    n <span style="color:#f92672">=</span> recvint(r, <span style="color:#e6db74">&#39;n&#39;</span>)
+    g <span style="color:#f92672">=</span> recvint(r, <span style="color:#e6db74">&#39;g&#39;</span>)
+
+    _p <span style="color:#f92672">=</span> log<span style="color:#f92672">.</span>progress(<span style="color:#e6db74">&#39;Precomputing...&#39;</span>)
+    response_map, delta_cs <span style="color:#f92672">=</span> precompute(n, g)
+    _p<span style="color:#f92672">.</span>success()
+ 
+    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> tqdm(range(<span style="color:#ae81ff">16</span>)):
+        c0 <span style="color:#f92672">=</span> recvint(r, <span style="color:#e6db74">&#39;c0&#39;</span>)
+ 
+        cs <span style="color:#f92672">=</span> forge(c0, delta_cs, n)
+        <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> cs:
+            r<span style="color:#f92672">.</span>sendline(str(c)<span style="color:#f92672">.</span>encode())
+        res <span style="color:#f92672">=</span> [r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode()<span style="color:#f92672">.</span>strip() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;😀&#39;</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> cs]
+        answer <span style="color:#f92672">=</span> solve(response_map, res)
+        r<span style="color:#f92672">.</span>sendline(answer)
+ 
+        <span style="color:#66d9ef">assert</span> r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode()<span style="color:#f92672">.</span>strip() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;💡&#39;</span>
+ 
+    r<span style="color:#f92672">.</span>interactive()
+    <span style="color:#75715e"># CTF{p4dd1n9_or4cl3_w1th_h0mom0rph1c_pr0p3r7y_c0m6in3d_in7o_a_w31rd_m47h_puzz1e}</span>
+ 
+ 
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+        <span style="color:#66d9ef">try</span>:
+            main()
+            <span style="color:#66d9ef">break</span>
+        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyboardInterrupt</span>:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">KeyboardInterrupt</span>
+        <span style="color:#66d9ef">except</span>:
+            <span style="color:#66d9ef">pass</span>
+</code></pre></div><h2 id="retrospective">Retrospective<a href="#retrospective" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="developing-the-challenge">Developing the Challenge<a href="#developing-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>My initial intention is to create an insanely hard crypto challenge which can keep players pulling their hair out during the CTF&hellip; Well, as you can tell, I failed. Maybe I will also walk-through how I came up with the challenge.</p>
+<p>Remember that there is a commented snippet inside <code>chall.py</code>?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># # The secret has 16 bits of entropy.</span>
+<span style="color:#75715e"># # Hence 16 oracle calls should be sufficient, isn&#39;t it?</span>
+<span style="color:#75715e"># for _ in range(16):</span>
+<span style="color:#75715e">#     c = int(input())</span>
+<span style="color:#75715e">#     try:</span>
+<span style="color:#75715e">#         p.decrypt(c)</span>
+<span style="color:#75715e">#         print(&#39;😀&#39;)</span>
+<span style="color:#75715e">#     except:</span>
+<span style="color:#75715e">#         print(&#39;😡&#39;)</span>
+</code></pre></div><p>Well, that is actually the first edition of the challenge. In the beginning, the goal was to recovering the secret (composed of 128 hex characters) and we are given 512 oracle calls. Turns out binary search would work. I would rate it a ⭐ in terms of difficulty.</p>
+<p>It got me thinking - what if we change the problem into a non-interactive one? Can we reduce it to 512 oracle calls because there are 512 bits of unknown?</p>
+<h4 id="approach-1-testing-character-by-character">Approach 1: Testing character-by-character<a href="#approach-1-testing-character-by-character" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>It is pretty obvious that we can solve the challenge with $128 \times 16 = 2048$ oracle calls. For $i = 1, 2, &hellip;, 128$, we will ask the below 16 queries:</p>
+<ul>
+<li>Is $\texttt{s}_i = \texttt{0}$?</li>
+<li>Is $\texttt{s}_i = \texttt{1}$?</li>
+<li>&hellip;</li>
+<li>Is $\texttt{s}_i = \texttt{f}$?</li>
+</ul>
+<p>One can slightly optimize to $128 \times 15 = 1920$ oracle calls because $\texttt{s}_i = \texttt{f}$ if</p>
+<p>$$\texttt{s}_i \neq \texttt{0} \quad \text{and} \quad \texttt{s}_i \neq \texttt{1} \quad \text{and} \quad \dots \quad \text{and} \quad \texttt{s}_i \neq \texttt{e}.$$</p>
+<h4 id="approach-2-group-in-pairs">Approach 2: &ldquo;Group in pairs&rdquo;<a href="#approach-2-group-in-pairs" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>We can reduce the number of oracle calls to $64 \times 24 = 1536$ by grouping the unknowns in pairs. For $i = 1, 2, &hellip;, 64$:</p>
+<ul>
+<li>Is $\texttt{s}_{2i-1} = \texttt{0}$ or $\texttt{s}_{2i} = \texttt{0}$?</li>
+<li>Is $\texttt{s}_{2i-1} = \texttt{1}$ or $\texttt{s}_{2i} = \texttt{1}$?</li>
+<li>&hellip;</li>
+<li>Is $\texttt{s}_{2i-1} = \texttt{f}$ or $\texttt{s}_{2i} = \texttt{f}$?</li>
+<li>Is $\texttt{s}_{2i-1} = \texttt{0}$ or $\texttt{s}_{2i} = \texttt{1}$?</li>
+<li>Is $\texttt{s}_{2i-1} = \texttt{2}$ or $\texttt{s}_{2i} = \texttt{3}$?</li>
+<li>&hellip;</li>
+<li>Is $\texttt{s}_{2i-1} = \texttt{e}$ or $\texttt{s}_{2i} = \texttt{f}$?</li>
+</ul>
+<p>The first 16 queries is to find the characters used (i.e., $\{\texttt{s}_{2i-1}, \texttt{s}_{2i}\}$), and the remaining eight is to identify which is which.</p>
+<p>I wanted to improve the approach by grouping in 4 (or larger), but I am not smart enough to find a better solution&hellip;</p>
+<h4 id="approach-3-random-queries-those-almost-cuts-the-set-in-half">Approach 3: Random queries those almost cuts the set in half<a href="#approach-3-random-queries-those-almost-cuts-the-set-in-half" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>As discussed <a href="#binary-search">above</a>, the query</p>
+<p>$$\texttt{s}_{i_1} = a_1 \quad \text{or} \quad \texttt{s}_{i_2} = a_2 \quad \text{or} \quad &hellip; \quad \text{or} \quad \texttt{s}_{i_{11}} = a_{11}$$</p>
+<p>returns true (resp. false) at a chance 49.17% (resp. 50.83%). We can theoretically find a set of $\approx 512$ queries to recover the secret. Turns out it is both hard to generate the queries and validate if we can uniquely recover the secret.</p>
+<div class="alert info">
+  <strong>A side note.</strong> Hope I left an interesting enough math puzzle for everyone to research with. I am pretty curious if the original edition of the challenge can be tackled effectively (in around $\approx 512$ queries).
+</div>
+
+<h3 id="finally-why-maybe-someday">Finally, why &ldquo;Maybe Someday&rdquo;?<a href="#finally-why-maybe-someday" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/YGqdlqGz8Ks" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2022/2022-03-02-tsjctf-2/">
+                <span class="button__text">TSJ CTF 2022 (II): Signature</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Google CTF 2022: Maybe Someday
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>
