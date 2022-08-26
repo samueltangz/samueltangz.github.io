@@ -176,7 +176,7 @@ I will record the exact steps I solved the challenge. However, I will update the
 
 <p>I will record the exact steps I solved the challenge. However, I will update the bounds and prove the whole thing so that it <em>looked</em> more rigorous. The full code will be attached at the end of the blog post, too.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>The sizes of $r$ and $s$ are wrong!</strong> The organizers have reiterated that $r$ and $s$ should be 128 and 32 bits long. I was too late to notice the announcement and solved the harder version (i.e., the one with larger parameters). The nerfed one can be factorized by brute-forcing $s$, which is not fun.
 </div>
 
@@ -187,7 +187,7 @@ I will record the exact steps I solved the challenge. However, I will update the
 
 <h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <p>We will denote $\hat{r_k}$ be an estimate of $r$ and $\Delta r_k := r - \hat{r_k}$. As an example, we will use the below parameters freshly generated from the challenge script:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">r <span style="color:#f92672">=</span> <span style="color:#ae81ff">113998029782126404385159208354017152656462126437187882248430209727665881104644</span>
 s <span style="color:#f92672">=</span> <span style="color:#ae81ff">11008047941767198067</span>
@@ -216,7 +216,7 @@ s <span style="color:#f92672">=</span> <span style="color:#ae81ff">1100804794176
 
 <hr>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Current progress for the example.</strong> $\Delta r_1 = -1834674656961199677 \approx -2^{61}$.
 </div>
 
@@ -301,14 +301,14 @@ s <span style="color:#f92672">=</span> <span style="color:#ae81ff">1100804794176
 
 <p>The above quantity would be approximately 216 bits long if $\Delta r$ is 38 bits long. This is significantly smaller than $\hat{r}$. That said, we could exhaust $k \in [0, 2^{25})$ and define $\hat{r_2} := \hat{r_1} - 2^{39} k$. There exists a $k$ such that $\Delta r_2 \in [-2^{38}, 2^{38})$.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Current progress for the example.</strong> $\Delta r_2 = -131959783875 \approx -2^{37}$.
 </div>
 
 
 <h3 id="part-iii-reducing-the-error-of-r-to-13-bits">Part III: Reducing the error of $r$ to 13 bits<a href="#part-iii-reducing-the-error-of-r-to-13-bits" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>Mystiz' postmortem.</strong> This part is my motivation to compile the entire blog post. While I am writing the blog post, I thought of some different ways (to be verified!) which might look better.
 </div>
 
@@ -327,7 +327,7 @@ s <span style="color:#f92672">=</span> <span style="color:#ae81ff">1100804794176
 
 <p>We can see that the curve is somehow convex. In particular, the minimum is reached (128 bits) when $\left| \Delta r \right| &lt; 2^{13}$. I used <em>ternary search</em>, an algorithm to find a minimum in a convex function (resp. a maximum in a concave function), to find a smaller $\Delta r$.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Current progress for the example.</strong> $\Delta r_3 = 6426 \approx 2^{13}$.
 </div>
 
@@ -336,7 +336,7 @@ s <span style="color:#f92672">=</span> <span style="color:#ae81ff">1100804794176
 
 <p>Since $r \in [\hat{r_3} - 2^{13}, \hat{r_3} + 2^{13}]$, we can exhaust them. Since $n\ \text{mod}\ r = s^2$, for each $\hat{r_4}$ compute $s := \sqrt{n\ \text{mod}\ \hat{r_4}}$. We can simply skip it if $s$ is not integral. We can check $n = (\hat{r_4}^5 + s)(\hat{r_4} + s)$ and this is the factorization if that holds.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Current progress for the example.</strong> $\Delta r_4 = 0$. 🎉
 </div>
 

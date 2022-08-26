@@ -213,7 +213,7 @@ In the first blog post, we will be going through four easier crypto challenges: 
 
 <p>With $s$, we can easily recover the message $m$ from ciphertext $c$ by $m = c / s$.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Note.</strong> It is infeasible for real life key exchange algorithms to compute the shared key from the public keys. After all, this cipher is just a joke (the author of the cryptosystem doesn&rsquo;t think so).
 </div>
 
@@ -262,7 +262,7 @@ cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</sp
 
 <p>where $c^\text{(CBC)}_0 = c^\text{(CFB)}_0 = \text{IV}$.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Notation.</strong> $\text{Enc}^{k}$ is $\text{Enc}$ applied $k$ times. For example $\text{Enc}^2(x) = \text{Enc}(\text{Enc}(x))$.
 </div>
 
@@ -283,7 +283,7 @@ cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</sp
 
 <p>for $k = 1, 2, ..., 5$. After all, we can compute $\hat{m_k} := c^\text{(CBC)}_k \oplus c^\text{(OFB)}_k$ for $k = 1, 2, ..., 5$ to recover the flag.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Another approach?</strong> The use of CBC mode can be replaced by CFB mode.
 </div>
 
@@ -390,7 +390,7 @@ H <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x74686573652
 
 <p>We can recover a small multiple of $n_1, n_2, ..., n_{16384}$ from the transcript. Let $c_2$ and $c_3$ be the outputs of <code>SEND 2</code> and <code>SEND 3</code>. We could recover a small multiple of $n$ by $\gcd(2^{65537} - c_2, 3^{65537} - c_3)$.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Why?</strong> Since $2^{65537} \equiv c_2\ (\text{mod}\ n)$ and $3^{65537} \equiv c_3\ (\text{mod}\ n)$, $2^{65537} - c_2$ and $3^{65537} - c_3$ are multiples of $n$. Taking gcd of two numbers would result in $kn$ for some $k \geq 1$ (where $k$ should be pretty small).
 </div>
 

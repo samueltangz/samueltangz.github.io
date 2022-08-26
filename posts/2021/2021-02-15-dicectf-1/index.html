@@ -289,7 +289,7 @@ v_{10} &\equiv \left[a^9u + c(a^8 + ... + a + 1)\right]^{17}
 
 <p>Suppose that we have a set of polynomials $p_1(x), p_2(x), ..., p_s(x)$ over $\mathbb{F}^k$. Let's assume that $\alpha_1, \alpha_2, ...$ are the common roots of $p_i(x) = 0$, i.e., $p_i(\alpha_k) = 0$ for all $i = 1, 2, ..., s$.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   In our case, $p_i: {\mathbb{Z}_n}^3 \rightarrow \mathbb{Z}_n$ is $p_i(x, y, z) := \left[x^iz + y(x^{i-1} + &hellip; + x + 1)\right]^{17} - v_i$. Also, $(a, c, u)$ is a common root of $p_i(x, y, z) = 0$ for all $i = 1, 2, &hellip;, 10$.
 </div>
 
@@ -318,7 +318,7 @@ I <span style="color:#f92672">=</span> ideal([
 
 B <span style="color:#f92672">=</span> I<span style="color:#f92672">.</span>groebner_basis()
 <span style="color:#75715e"># [ u^17 + 639...272, a + 166...006, c + 275...023*u ]</span></code></pre></div>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Note:</strong> I am able to obtain the same basis with the same amount of time, given only four vectors instead of ten.
 </div>
 

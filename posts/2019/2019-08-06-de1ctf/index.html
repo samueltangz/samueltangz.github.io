@@ -202,7 +202,7 @@ The solution scripts will be committed to my Github repository sooner or later, 
 
 <h2 id="obscured-crypto-500points">Obscured (Crypto, 500 points)<a href="#obscured-crypto-500points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Note:</strong> In this challenge, $+$ means $\oplus$, the exclusive OR operator.
 </div>
 
@@ -251,7 +251,7 @@ Z_{i+1} &= W_i + \text{S}(Z_i)
 \end{aligned}\end{cases}\dots\dots(3).
 \]</span></p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <p>Not every transformation can be made in such a simpler way. $W, X, Y, Z$ are carefully picked. My approach was to observe how $A_i + C_i$ will iterate:</p>
 <ul>
 <li>$A_{i+1} + C_{i+1} = B_i + C_i + D_i + S_i$,</li>
@@ -287,7 +287,7 @@ We call $(W_{-1}, X_{-1}, Y_{-1}, Z_{-1})$ the <em>transformed plaintext</em> an
 
 <p>We have $(t_6, t_7, t_8, t_9) = (W_5, X_5, Y_5, Z_5)$ being the transformed ciphertext. This means that we could encrypt $(t_0, t_1, t_2, t_3)$ into $(t_6, t_7, t_8, t_9)$ in the transformed space.</p>
 
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>Meaning.</strong> If we are given the ciphertext $\overline{A_6}, \overline{B_6}, \overline{C_6}, \overline{D_6}$, we could obtain $\overline{W_5}, \overline{X_5}, \overline{Y_5}, \overline{Z_5}$. The goal is to compute $\overline{W_{-1}}, \overline{X_{-1}}, \overline{Y_{-1}}, \overline{Z_{-1}}$, that could be transformed inversely to the plaintext.
 </div>
 
@@ -297,7 +297,7 @@ We call $(W_{-1}, X_{-1}, Y_{-1}, Z_{-1})$ the <em>transformed plaintext</em> an
 
 <p>To achieve this, we must realize that the current blocker is the black-box function $\text{S}$. We could not find $\text{S}(x)$ for an arbitrarily given $x$ <em>easily</em>... Or could we?</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   Recall on how $t_i$ is defined&hellip; and that the plaintext $(t_0, t_1, t_2, t_3)$ would be encrypted into the ciphertext $(t_6, t_7, t_8, t_9)$.
 In this section, we assume that we are <strong>in control of the plaintext</strong> and <strong>have knowledge on the ciphertext</strong>.
 </div>
@@ -308,7 +308,7 @@ In this section, we assume that we are <strong>in control of the plaintext</stro
 
 <p>The fourth equation is particular interesting: $\text{S}(u_6) = u_7$. Since $u_6$ and $u_7$ is known, we knew a pair of $(x, y)$ with $S(x) = y$. Unfortunately we couldn't control what $x$ is. Yet, we can make use of this to make this happen.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <p><strong>A bit of thinking.</strong> We need to guess $v_0, v_1, v_2, v_3$ for the second substitution smartly. Is it possible to exploit the fact $\text{S}(u_6) = u_7$ as much as possible?</p>
 <p>For example, as $v_4 = v_0 + \text{S}(v_3)$, we could make $v_0 = u_7$ and $v_3 = u_6$, thus $v_4 = 0$.</p>
 <p>But then $v_5 = v_1 + \text{S}(v_4)$. It would be better if $v_4 = u_6$. Let&rsquo;s make $v_0 = u_6 + u_7$ instead of $v_0 = u_7$. We then have $v_5 = v_1 + \text{S}(v_4) = v_1 + \text{S}(u_6) = v_1 + u_7$. What&rsquo;s the use?</p>
@@ -322,7 +322,7 @@ In this section, we assume that we are <strong>in control of the plaintext</stro
 
 <h2 id="mini-purepsilon-crypto-869points">Mini Pur&epsilon; (Crypto, 869 points)<a href="#mini-purepsilon-crypto-869points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Note:</strong> $+$ is once again the exclusive OR operator as we are discussing under $\text{GF}(2^{24})$.
 </div>
 
@@ -344,7 +344,7 @@ R_{i+1} &= L_i + (K_i + R_i)^3.
 
 <h3 id="solution-in-a-simpler-setting">Solution in a Simpler Setting<a href="#solution-in-a-simpler-setting" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   I guess it will be too cumbersome to explain it in a 6-round setting, so let me explain my solution in a 3-round setting instead.
 </div>
 
@@ -366,7 +366,7 @@ x_3 &= x_1 + (K_1 + x_2)^3 \\
 
 <p>(╯‵□′)╯︵┴─┴</p>
 
-<div class="alert danger">
+<div class="alert danger" style="margin-bottom: 12px;">
   <strong>Question:</strong> Wait, no! You are wrong! $(x + y)^3$ should be $x^3 + 3x^2y + 3xy^2 + 3y^3$!
 You are correct&hellip; but we are talking on $\text{GF}(2^{24})$, where $3 = 1+1+1 = 1$.
 </div>

@@ -189,7 +189,7 @@ Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, a
 </ol>
 <p>The objective for the player is to win 16 rounds of $\mathcal{C}$ for the flag.</p>
 <h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   📖 <strong>Alternative Writeups.</strong> My writeup is known to be unnecessarily lengthy. Instead, you may be interested to read the writeups compiled by our players: <a href="https://furutsuki.hatenablog.com/entry/2022/07/04/104524">Writeup</a> by <em>@theoremoon</em>, <a href="https://blog.y011d4.com/20220704-google-ctf-writeup">writeup</a> by <em>@y011d4</em>, <a href="https://project-euphoria.dev/problems/google-ctf-2022-maybe-someday/">writeup</a> by <em>@Xornet_Euphoria</em>, <a href="https://jsur.in/posts/2022-07-05-google-ctf-2022-maybe-someday-writeup">writeup</a> by <em>@josep68_</em>, <a href="https://willwam.me/posts/2022-07-05-googlectf-maybesomeday">writeup</a> by <em>@willwam845</em>.
 </div>
 
@@ -212,12 +212,12 @@ Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, a
 <p>where $\texttt{s}_1, \texttt{s}_2, &hellip;, \texttt{s}_l \in \mathcal{H}$ represent the $l$ bytes of the message. Finally, denote the padded message $\tilde{m}_0$ by</p>
 <p>$$\tilde{m}_0 := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{00}\ \texttt{s}_1\ \texttt{s}_2\ \dots \texttt{s}_l,$$</p>
 <p>with $\texttt{p}_1, \texttt{p}_2, &hellip;, \texttt{p}_k \in \{1, 2, &hellip;, 255\}$; and $c_0$ be a ciphertext of $\tilde{m}_0$.</p>
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Note.</strong> Not all of the below oracles are useful for this challenge.
 </div>
 
 <h4 id="query-1a-check-if-texttts_1-leq-a-a-in-mathcalh">Query 1a: Check if $\texttt{s}_1 \leq a$ ($a \in \mathcal{H}$)<a href="#query-1a-check-if-texttts_1-leq-a-a-in-mathcalh" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>Approach.</strong> Send $\hat{c} := c_0 \cdot \mathcal{E}({256}^l - a \cdot {256}^{l-1})$. The corresponding message $\hat{m}$ has a valid padding <em>if and only if</em> $\texttt{s}_1 &lt; a$.
 </div>
 
@@ -230,7 +230,7 @@ Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, a
 <li><strong>[😀]</strong> $\texttt{s}_1 &lt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{00}\ \texttt{**} \ \texttt{s}_2\ \dots \ \texttt{s}_l$.</li>
 </ol>
 <h4 id="query-1b-with-known-texttts_i-1-check-if-texttts_i-leq-a">Query 1b: With known $\texttt{s}_{i-1}$, check if $\texttt{s}_i \leq a$<a href="#query-1b-with-known-texttts_i-1-check-if-texttts_i-leq-a" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>Approach.</strong> Send $\hat{c} := c_0 \cdot \mathcal{E}({256}^l - (\texttt{s}_i - 1) \cdot {256}^{l-(i-1)} - a \cdot {256}^{l-i})$. The corresponding message $\hat{m}$ has a valid padding <em>if and only if</em> $\texttt{s}_i &lt; a$.
 </div>
 
@@ -243,7 +243,7 @@ Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, a
 <li><strong>[😀]</strong> $\texttt{s}_i &lt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots\ \texttt{p}_k\ \texttt{01} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{s}_{i-2} \ \texttt{00} \ \texttt{**} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
 </ol>
 <h4 id="query-2a-check-if-s_i--a">Query 2a: Check if $s_i = a$<a href="#query-2a-check-if-s_i--a" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>Approach.</strong> Send $\hat{c} := c_0 \cdot \mathcal{E}(2 \cdot {256}^l - a \cdot {256}^{l-i})$. The corresponding message $\hat{m}$ has a valid padding <em>if and only if</em> $\texttt{s}_i = a$.
 </div>
 
@@ -256,7 +256,7 @@ Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, a
 <li><strong>[😡]</strong> $\texttt{s}_i &lt; a$: $\hat{m} := \texttt{00}\ \texttt{02}\ \texttt{p}_1\ \texttt{p}_2\ \dots \ \texttt{p}_k\ \texttt{02} \ \texttt{s}_1 \ \texttt{s}_2 \ \dots \ \texttt{**} \ \texttt{**} \ \texttt{s}_{i+1} \ \dots \ \texttt{s}_l$.</li>
 </ol>
 <h4 id="query-2b-check-if-s_i_1--a_1-or-s_i_2--a_2-or--or-s_i_k--a_k-">Query 2b: Check if $s_{i_1} = a_1$ or $s_{i_2} = a_2$ or &hellip; or $s_{i_k} = a_k$ [*]<a href="#query-2b-check-if-s_i_1--a_1-or-s_i_2--a_2-or--or-s_i_k--a_k-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>[*]</strong> Terms and conditions apply. Here $i_1 &lt; i_2 &lt; &hellip; &lt; i_k$ and $i_r - i_{r-1} &gt; 1$. The second condition (i.e., $i_r - i_{r-1} &gt; 1$) is used to avoid handling carry.
 </div>
 
@@ -413,7 +413,7 @@ Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, a
 <p>As discussed <a href="#binary-search">above</a>, the query</p>
 <p>$$\texttt{s}_{i_1} = a_1 \quad \text{or} \quad \texttt{s}_{i_2} = a_2 \quad \text{or} \quad &hellip; \quad \text{or} \quad \texttt{s}_{i_{11}} = a_{11}$$</p>
 <p>returns true (resp. false) at a chance 49.17% (resp. 50.83%). We can theoretically find a set of $\approx 512$ queries to recover the secret. Turns out it is both hard to generate the queries and validate if we can uniquely recover the secret.</p>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>A side note.</strong> Hope I left an interesting enough math puzzle for everyone to research with. I am pretty curious if the original edition of the challenge can be tackled effectively (in around $\approx 512$ queries).
 </div>
 

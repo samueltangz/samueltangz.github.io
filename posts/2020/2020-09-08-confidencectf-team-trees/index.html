@@ -283,7 +283,7 @@ jmp  short loc_40082F   /* rcx = 3*d0 + 2*c0 + 4, rdx = c0              */</code
    17 | c8b5922a9f156985 | 1ee81bca563d1439
    18 | c8b5922a9f156985 | b053401f9467e747
    19 | b053401f9467e747 | c8b5922a9f156985</code></pre></div>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   💡 <strong>Imagination:</strong> You have opened a process with <code>gdb</code> that has a breakpoint at the beginning of the function. You are given a set of something (<em>defined in <code>sub_40090D</code></em>) and checks if it has a given attribute (<em>defined in <code>sub_4009C4</code></em>). If so, you call <code>ni</code> to move to the next step. Finally, you print the registers, extract <code>edx</code> and <code>ecx</code>, and print them as the flag.
 </div>
 

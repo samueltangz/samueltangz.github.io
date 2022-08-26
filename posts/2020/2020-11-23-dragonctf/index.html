@@ -173,7 +173,7 @@ There are three challenges writeup in this post:
   
 
   <div class="post-content js-toc-content"><div>
-        <div class="alert warning">
+        <div class="alert warning" style="margin-bottom: 12px;">
   Written from the perspective of <em>Mystiz</em>. <em>babykok</em> writeup by <em>GeoffreyY</em>.
 </div>
 
@@ -234,7 +234,7 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 
 <p><em>Bit Flip 1</em> was solved in about 45 minutes. Basically we are able to recover $v$ from the number of <code>rng.getbits(512)</code> calls. Since I am sure that there will be writeups on this part available online, I am skipping this part.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   I am just going to admit that I am lazy.
 </div>
 
@@ -266,7 +266,7 @@ key <span style="color:#f92672">=</span> long_to_bytes(dh_shared_key, <span styl
 
 <p><em>Bit Flip 2</em> was solved in about 12 hours. I was mind-blown when I know <em>da wae</em>. Since the DH key could never be 513 bits long anymore, we can no longer exploit in the way as described in <em>Bit Flip 3</em>.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Wait.</strong> This made me <em>very</em> puzzled: How do we find the shared key (or $g^{ab}\ (\text{mod}\ p)$) if Bob is not telling us anything?
 </div>
 
@@ -451,7 +451,7 @@ print(h<span style="color:#f92672">.</span>hex())
 
 <p>I'd like to thank my teammate <a href="https://twitter.com/02E774" target="_blank" rel="nofollow">@02E774</a> for finding this powerful coq tactic <code>intuition</code>, and <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> for showing us his coq and how to use it.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   This would&rsquo;ve taken a lot longer if we didn&rsquo;t watch him livestreaming playing around with his coq.
 His coq is very very nah that&rsquo;s it I&rsquo;m done with the jokes.
 </div>

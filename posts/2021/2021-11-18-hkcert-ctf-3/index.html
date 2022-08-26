@@ -463,7 +463,7 @@ _db538ba7c5acf45d[label=&amp;#34;_db538b...&amp;#34;,style=&amp;#34;dashed,round
 
 
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   There were two players asking me to increase the recursion limit. Of course I did not update that because this is part of the challenge.
 </div>
 
@@ -810,7 +810,7 @@ node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
 <p>is minimized. Moreover, $5 \leq n \leq 46$, $-2^{45} \leq a_1, a_2, ..., a_n \leq 2^{45}$ and $-2^{50} \leq b \leq 2^{50}$.</p>
 </blockquote>
 
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>Intuitive meaning.</strong> We need to pick some numbers from $a_1, a_2, &hellip;, a_n$ such that the sum is closest to $b$.
 </div>
 
@@ -829,7 +829,7 @@ node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
 <li>Return $u$.</li>
 </ol>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <p><strong>What does the algorithm do?</strong> In short, we are rewriting the expression $[\dagger]$ into two quantities:</p>
 <p>$$a_1 x_1 + a_2 x_2 + &hellip; + a_m x_m, \qquad - a_{m+1} x_{m+1} - a_{m+2} x_{m+2} + &hellip; - a_n x_n + b.$$</p>
 <p>The goal is to find $x_1, x_2, &hellip;, x_m$ (for the left) and $x_{m+1}, x_{m+2}, &hellip;, x_n$ (for the right) such that the difference between the quantities is the smallest.</p>

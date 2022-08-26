@@ -508,7 +508,7 @@ right [ c_k | b_i ] -&gt; [ b_j | ] again
 
 <p>It looks like $b\in B$ would consume an entire row of $c$'s while it moves to the left. That makes me thinking: is it equivalent to a system of linear equations?</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Why?</strong> I don&rsquo;t know&hellip; I think there must be a relationship between $b$ and $c$. Otherwise, we will be unable to find an efficient algorithm to solve for the flag.
 </div>
 
@@ -595,7 +595,7 @@ This is not the case for operations under modulo 64. There are non-trivial solut
 
 <p>Eliminating the possibility being modulo 64 operated, we are assuming that the linear system is taken under $\text{GF}(2^6)$.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>What if $\text{GF}(2^6)$ doesn&rsquo;t check out as well?</strong> Well&hellip; that means my instinct is incorrect. This whole part is then redundant and meaningless.
 </div>
 
@@ -603,7 +603,7 @@ This is not the case for operations under modulo 64. There are non-trivial solut
 
 <p>Note that $g$ is a generator element for $\text{GF}(2^6)\setminus{0}$ and can be any element from the set. We can write $\text{GF}(2^6) = {0, 1, g, g^2, ..., g^{62}}$.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>How?</strong> We can assume that $a_p = 1$, $a_q = g$ and $x_r = 1$. This would allow us to find every single element of $A, B, C$ and $X$. We can find a correct solution by brute-forcing $p, q, r$ (there are less than $2^{18}$ combinations), and more importantly, there are multiple (a lot of) correct answers.
 </div>
 

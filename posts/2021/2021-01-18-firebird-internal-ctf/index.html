@@ -296,7 +296,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🤯 
 
 <p><span  class="math">\[p_1 := 1 - \frac{n}{2^{2048}}.\]</span></p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   🔬 <strong>Experiment.</strong> I have generated 100 RSA keys and $n \approx 0.721144\times 2^{2048}$.
 </div>
 
@@ -309,7 +309,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🤯 
 
 <h4 id="distinguishing-something-from-random">Distinguishing something from random<a href="#distinguishing-something-from-random" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<div class="alert danger">
+<div class="alert danger" style="margin-bottom: 12px;">
   As you may suspect, we cannot distinguish ciphertext encrypted with RSA-OAEP from random. This question is actually <em>not</em> solvable - that&rsquo;s all.
 </div>
 
@@ -324,7 +324,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🤯 
 
 <p>In average, it takes 660µs and 50µs when $c_0 = 0$ and $c_0 = 1$, respectively. We can call 📦 1000 times to overcome network latency and it will be significantly slower if $c_0 = 0$. This way we do not need to crack and recover the states from MT19937.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   After the CTF, I have a short chat with <em>ciphr</em> on Discord. Turns out the network latency is more fluctuated than expected owing to geographical location. Luckily I am hosting a challenge for a local university, which expects there is someone in the team who live close to the server. This may not be the case in global CTFs and I should be awared of this.
 </div>
 
@@ -451,7 +451,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🤯 
 
 <p>For example, segment tree<sup class="footnote-ref" id="fnref:segment-tree"><a class="footnote" href="#fn:segment-tree">3</a></sup> can do both in $\mathcal{O}(\log n)$. I would prefer Fenwick tree<sup class="footnote-ref" id="fnref:fenwick-tree"><a class="footnote" href="#fn:fenwick-tree">4</a></sup> (as known as binary indexed tree) because it is the easiest to implement, while maintaining the time complexities for both operations to be $\mathcal{O}(\log n)$. Implementing a Fenwick tree isn't difficult - try it if you didn't!</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   Turns out most teams are storing the deltas and computing the partial sum on demand. It takes $\mathcal{O}(1)$ to perform $\text{Update}(l, r, x)$ and $\mathcal{O}(n)$ for $\text{Query}(l, r)$ - which is decent in our case.
 </div>
 
@@ -596,7 +596,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🤯 
 
 <h4 id="a-story-behind">A story behind<a href="#a-story-behind" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   This part is totally meaningless if you want to learn something.
 </div>
 

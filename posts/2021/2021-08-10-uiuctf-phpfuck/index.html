@@ -172,7 +172,7 @@ Challenge Summary // Flag is inside ." />
   
 
   <div class="post-content js-toc-content"><div>
-        <div class="alert info">
+        <div class="alert info" style="margin-bottom: 12px;">
   <strong>Credit.</strong> I stole the banner image from the background image of UIUCTF. I like the picture and their unique themes for these two CTFs&hellip;
 </div>
 
@@ -184,7 +184,7 @@ Challenge Summary // Flag is inside ." />
 </span><span style="color:#75715e"></span>($x<span style="color:#f92672">=</span><span style="color:#a6e22e">str_replace</span>(<span style="color:#e6db74">&#34;`&#34;</span>,<span style="color:#e6db74">&#34;&#34;</span>,<span style="color:#a6e22e">strval</span>($_REQUEST[<span style="color:#e6db74">&#34;x&#34;</span>])))<span style="color:#f92672">&amp;&amp;</span><span style="color:#a6e22e">strlen</span>(<span style="color:#a6e22e">count_chars</span>($x,<span style="color:#ae81ff">3</span>))<span style="color:#f92672">&lt;=</span><span style="color:#ae81ff">5</span><span style="color:#f92672">?</span><span style="color:#66d9ef">print</span>(<span style="color:#66d9ef">eval</span>(<span style="color:#e6db74">&#34;return </span><span style="color:#e6db74">$x</span><span style="color:#e6db74">;&#34;</span>))<span style="color:#f92672">:</span><span style="color:#a6e22e">show_source</span>(<span style="color:#66d9ef">__FILE__</span>)<span style="color:#f92672">&amp;&amp;</span><span style="color:#a6e22e">phpinfo</span>();</code></pre></div>
 <p>We are given a PHP webpage (running on PHP 7.4.3) that evaluates a payload by us. However, the payload should consists of at most five distinct characters.</p>
 
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>What is the deliverable?</strong> I am now able to write PHP codes solely with the character set <code>(^.9)</code>.
 </div>
 
@@ -201,7 +201,7 @@ Challenge Summary // Flag is inside ." />
 
 <p><em>Ozetta</em> said that we can form a character set with five letters from <code>(^.9)</code> and an additional character. We gotta decide what the character is.</p>
 
-<div class="alert danger">
+<div class="alert danger" style="margin-bottom: 12px;">
   <strong>No Way&hellip;</strong> If you are counting carefully, you should be able to notice that <code>(^.9)</code> is already five-letter long. I did not notice that until I crafted a payload.
 </div>
 
@@ -232,7 +232,7 @@ Challenge Summary // Flag is inside ." />
 
 <h3 id="part-ii-building-blocks-for-arbitrary-command">Part II: Building blocks for arbitrary command<a href="#part-ii-building-blocks-for-arbitrary-command" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   All of the trick comes from <em>Ozetta</em>. He is an absolute legend. If you are already a lengndary like <em>Ozetta</em>, you can just skip to the third part.
 </div>
 

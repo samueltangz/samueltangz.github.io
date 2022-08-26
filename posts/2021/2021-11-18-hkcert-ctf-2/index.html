@@ -212,7 +212,7 @@ Mystiz, who claimed himself not well-known reusing challenges, decided to free-r
 
 <h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Tenet vs FreeRider.</strong> The intended solution of Tenet is <em>meet-in-the-middle</em>. However, this is not the case in this challenge because it would take $2^{68}$ AES-CTR calls. This is infeasible under time constraints.
 </div>
 
@@ -251,14 +251,14 @@ m_{j_{256}} \oplus c_{j_{256}} &=& x_0 b_{0, j_{256}} & \oplus & x_1 b_{1, j_{25
 
 <p>We have 256 linear equations and 256 unknowns. This is similar to what we learnt in the secondary school, except that there are much more equations and unknowns. Also, the $+$ operation is replaced by $\oplus$.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>If you are still puzzled&hellip;</strong> I suggest you watch the video series about the relation between the <em>Lights Out</em> puzzle and linear algebra by <em>mathapptician</em> for more insights. Links: <a href="https://www.youtube.com/watch?v=oCHCD_-nhg4">[Part I]</a>, <a href="https://www.youtube.com/watch?v=Ulrq07M7W-k">[Part II]</a>, <a href="https://www.youtube.com/watch?v=Lyb75E4bHdU">[Part III]</a>.
 </div>
 
 
 <h4 id="every-bit-matters">Every bit matters<a href="#every-bit-matters" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Note.</strong> We will use $+$ in place of $\oplus$ in this section. To be accurate, we will compute everything in modulo 2.
 </div>
 
@@ -388,7 +388,7 @@ x0 <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>sol
 
 <h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Prerequisite.</strong> This challenge requires a good understanding of AES internals. It is strongly suggested to watch <a href="https://www.youtube.com/watch?v=gP4PqVGudtg">AppliedGo&rsquo;s illustration</a> to begin.
 </div>
 
@@ -421,7 +421,7 @@ S \cdot \text{Dec}_k(c) &= c + T_k \\
 \text{Dec}_k(c) &= S^{-1}(c + T_k)\qquad\qquad \blacksquare
 \end{aligned}\]</span></p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Why isn&rsquo;t the right hand side of step two $c - T_k$?</strong> We are operating under the field $\text{GF}(2^{128})$, where $+$ is actually the XOR operation. That said, $+$ behaves the same as $-$. This would also imply that $a + a = 0$ for every $a \in \text{GF}(2^{128})$.
 </div>
 
@@ -458,7 +458,7 @@ key[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">8</span>] <
 
 <p><code>MixColumns</code> is the primary source of diffusion in AES. If <code>MixColumns</code> is dropped in AES, one byte of message would correspond to one byte of the ciphertext.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>What is diffusion?</strong> Diffusion is a property that one bit of message would affect multiple bits of the ciphertext.
 </div>
 
@@ -602,7 +602,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</spa
 
 <p>We can control $\sigma$ and the salt $s_1s_2s_3s_4$. A major difference between this challenge and its predecessor, <em>Sign in Please</em>, is the existence of a pepper byte. We are allowed to trigger 40 more calls. It seems that recovering a random pepper byte would be a big challenge, which is true.</p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Is there an writeup for <em>Sign in Please</em>?</strong> You can refer to <a href="https://hackmd.io/@amyriad/hkcert-signin">writeup</a> compiled by the winning team of the tertiary division in HKCERT CTF 2020.
 </div>
 
@@ -636,7 +636,7 @@ h_2' &= \mathcal{H}(h_1', \underbrace{r'}_{65} \underbrace{\text{00 00 ... 00}}_
 <li>we found a hash collision for SHA-256 (which is <em>far</em> more unlikely)</li>
 </ol>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>What if we found a hash collision for SHA-256?</strong> <del>Please contact me privately and send me the colliding pairs.</del> Congrats! You have just broken SHA-256 and would be famous!
 </div>
 
@@ -654,7 +654,7 @@ h_2' &= \mathcal{H}(h_1', \underbrace{r'}_{65} \underbrace{\text{00 00 ... 00}}_
 
 <p><span  class="math">\[v_k := \mathcal{H}(h, \underbrace{j}_{65} \underbrace{\text{00 00 ... 00}}_{66,\ ...,\ 126} \underbrace{\text{02}}_{127} \underbrace{\text{08}}_{128})\]</span></p>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Why 64%? And what shall we do if this doesn&rsquo;t happen?</strong> The probability for recovering a pepper is $1 - (1 - 16/256)^{16} \approx 64\%$. If it did not happen, you can simply reconnect and retry the entire process.
 </div>
 

@@ -402,7 +402,7 @@
 <li>Tags: <code>aes</code>, <code>power analysis</code></li>
 <li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-electric-mayhem-cls">Official Repository</a></li>
 </ul>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
 </div>
 
@@ -430,7 +430,7 @@
 <li>Tags: <code>enigma</code></li>
 <li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-enigma">Official Repository</a></li>
 </ul>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
 </div>
 
@@ -441,7 +441,7 @@
 <li>Tags: <code>rsa</code>, <code>faulty signature</code></li>
 <li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-custom-protocol">Official Repository</a></li>
 </ul>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
 </div>
 
@@ -452,7 +452,7 @@
 <li>Tags: <code>kyber512</code>, <code>power analysis</code></li>
 <li>Source: <a href="https://github.com/google/google-ctf/tree/master/2022/crypto-electric-mayhem-pqc">Official Repository</a></li>
 </ul>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
 </div>
 
@@ -607,7 +607,7 @@ c_2 &amp;= e^{m_2}\ \text{mod}\ n
 <li>Tags: <code>elgamal</code>, <code>fault attack</code></li>
 <li>Author: <a href="https://twitter.com/refactoreal" target="_blank" rel="nofollow">@refactoreal</a>, <a href="https://twitter.com/y3noor" target="_blank" rel="nofollow">@y3noor</a></li>
 </ul>
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Note.</strong> This challenge is known having an unintended solution. That said, the number of solves may not reflect the actual difficulty.
 </div>
 
@@ -648,7 +648,7 @@ Qy = 400318997929211178980655332518284307371175652959089080115156520541977149672
 <li>Tags: <code>rsa</code>, <code>math</code></li>
 <li>Author: <a href="https://twitter.com/refactoreal" target="_blank" rel="nofollow">@refactoreal</a>, <a href="https://twitter.com/y3noor" target="_blank" rel="nofollow">@y3noor</a></li>
 </ul>
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Note.</strong> This challenge is known having an unintended solution. That said, the number of solves may not reflect the actual difficulty.
 </div>
 
@@ -680,7 +680,7 @@ Qy = 400318997929211178980655332518284307371175652959089080115156520541977149672
 <li>Tags: <code>rsa</code>, <code>fault attack</code></li>
 <li>Author: <a href="https://twitter.com/refactoreal" target="_blank" rel="nofollow">@refactoreal</a>, <a href="https://twitter.com/y3noor" target="_blank" rel="nofollow">@y3noor</a></li>
 </ul>
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Note.</strong> This challenge is known having an unintended solution. That said, the number of solves may not reflect the actual difficulty.
 </div>
 
@@ -697,7 +697,7 @@ Qy = 400318997929211178980655332518284307371175652959089080115156520541977149672
 <li>Tags: <code>block cipher</code>, <code>custom cipher</code></li>
 <li>Author: <a href="https://twitter.com/refactoreal" target="_blank" rel="nofollow">@refactoreal</a>, <a href="https://twitter.com/y3noor" target="_blank" rel="nofollow">@y3noor</a></li>
 </ul>
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Note.</strong> This challenge is known having an unintended solution. That said, the number of solves may not reflect the actual difficulty.
 </div>
 
@@ -707,8 +707,8 @@ Qy = 400318997929211178980655332518284307371175652959089080115156520541977149672
 
 
   <div class="collapsable-code">
-    <input id="136247589" type="checkbox" checked />
-    <label for="136247589">
+    <input id="198425376" type="checkbox" checked />
+    <label for="198425376">
       <span class="collapsable-code__language">python</span>
       <span class="collapsable-code__title">Persian cat cipher</span>
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -1070,6 +1070,7 @@ C_2 &amp;= \text{HashBase}\left(h(R)^u \cdot Y \cdot h(R)^v\right) \oplus \text{
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>rsa</code></li>
 <li>Author: zhengdw</li>
+<li>Source: <a href="https://github.com/sigpwny/UIUCTF-2022-Public/tree/main/crypto/asr">Official Repository</a></li>
 </ul>
 <p>We are given $e, d$ (the public and private exponents of RSA) and the encrypted flag. It is known the largest prime factor for $p-1$ and $q-1$ is less than $2^{64}$ ($p$ and $q$ are the prime factors of the public modulus $n$). The goal is to recover the flag.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">e <span style="color:#f92672">=</span> <span style="color:#ae81ff">65537</span>
@@ -1081,30 +1082,35 @@ ct <span style="color:#f92672">=</span> <span style="color:#ae81ff">212118183964
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>secret-sharing</code></li>
 <li>Author: Spamakin</li>
+<li>Source: <a href="https://github.com/sigpwny/UIUCTF-2022-Public/tree/main/crypto/wringing_rings">Official Repository</a></li>
 </ul>
-<div class="alert info">
-  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
-</div>
-
+<p>When connected to the server, a secret $s \in [1, 500000]$ is generated. Let $\text{f}$ be a polynomial such that</p>
+<p>$$\text{f}(x) := a_9 x^9 + a_8 x^8 + &hellip; + a_1 x + s,$$</p>
+<p>where $a_1, a_2, &hellip;, a_9 \in [1, 100000]$ are randomly generated. We are given nine of these ten values: $(1, \text{f}(1))$, $(2, \text{f}(2))$, &hellip;, $(10, \text{f}(10))$. The objective is to find $s$.</p>
 <h3 id="elliptic-clock-crypto">Elliptic Clock Crypto<a href="#elliptic-clock-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 27/395</li>
 <li>Difficulty: ⭐⭐</li>
-<li>Tags: tbc</li>
+<li>Tags: <code>dlog</code></li>
 <li>Author: Husnain</li>
+<li>Source: <a href="https://github.com/sigpwny/UIUCTF-2022-Public/tree/main/crypto/elliptic_clock_crypto">Official Repository</a></li>
 </ul>
-<div class="alert info">
-  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
-</div>
-
-<h3 id="mom-can-we-have-aes">mom can we have AES<a href="#mom-can-we-have-aes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Define $\oplus$ operation over $\mathbb{Z}_p$ by:</p>
+<p>$$(x_1, y_1) \oplus (x_2, y_2) := (x_1y_2 + y_1x_2, y_1y_2 - x_1x_2).$$</p>
+<p>Let $0 \leq a, b &lt; 2^{256}$ be respectively Alice&rsquo;s and Bob&rsquo;s secret key. Let also $A = a \cdot G$, $B = b \cdot G$ ($k \cdot G = G + G + &hellip; + G$, a sum of $k$ $G$&rsquo;s). We are given $p, A, B$ and $G$. The objective is to find $S := ab \cdot G$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">p <span style="color:#f92672">=</span> <span style="color:#ae81ff">62471552838526783778491264313097878073079117790686615043492079411583156507853</span>
+G <span style="color:#f92672">=</span> (<span style="color:#ae81ff">34510208759284660042264570994647050969649037508662054358547659196695638877343</span>, <span style="color:#ae81ff">4603880836195915415499609181813839155074976164846557299963454168096659979337</span>)
+A <span style="color:#f92672">=</span> (<span style="color:#ae81ff">929134947869102207395031929764558470992898835457519444223855594752208888786</span>,<span style="color:#ae81ff">6062966687214232450679564356947266828438789510002221469043877962705671155351</span>)
+B <span style="color:#f92672">=</span> (<span style="color:#ae81ff">49232075403052702050387790782794967611571247026847692455242150234019745608330</span>,<span style="color:#ae81ff">46585435492967888378295263037933777203199027198295712697342810710712585850566</span>)
+</code></pre></div><h3 id="mom-can-we-have-aes">mom can we have AES<a href="#mom-can-we-have-aes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 22/395</li>
 <li>Difficulty: ⭐⭐</li>
-<li>Tags: tbc</li>
+<li>Tags: <code>man-in-the-middle</code></li>
 <li>Author: Random Object No.79</li>
+<li>Source: <a href="https://github.com/sigpwny/UIUCTF-2022-Public/tree/main/crypto/mom_can_we_have_aes">Official Repository</a></li>
 </ul>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
 </div>
 
@@ -1112,19 +1118,28 @@ ct <span style="color:#f92672">=</span> <span style="color:#ae81ff">212118183964
 <ul>
 <li>Solves: 21/395</li>
 <li>Difficulty: ⭐⭐</li>
-<li>Tags: tbc</li>
+<li>Tags: <code>dlog</code></li>
 <li>Author: zhengdw, Spamakin</li>
+<li>Source: <a href="https://github.com/sigpwny/UIUCTF-2022-Public/tree/main/crypto/that_crete_log">Official Repository</a></li>
 </ul>
-<div class="alert info">
-  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+<p><div class="alert warning" style="margin-bottom: 12px;">
+  <strong>Note.</strong> In this challenge, the prime check runs the Miller-Rabin test with bases $b = 2, 3, 5, 7, 11, 13, 17, 19, 31337$.
 </div>
 
+When connected to the server, a message $m := \text{flag} \oplus \text{token}$ is defined and $\text{token}$ is given. Repeat the below procedures five times:</p>
+<ol>
+<li>We send $q_1, q_2, &hellip;$ to the server. $q_i$&rsquo;s needs to be <em>primes</em> with $\text{max}(q_i) \geq 2^{512}$. The product, $p = q_1 \cdot q_2 \cdot &hellip;$ needs to be a prime and $2^{512} \leq p \leq 2^{1024}$. Note that the prime $p$ computed should not be used in a previous round.</li>
+<li>The server generates a random $0 \leq x &lt; p$ and sends it to us.</li>
+<li>The server computes $y = x^m\ \text{mod}\ p$ and sends it to us.</li>
+</ol>
+<p>The goal is to recover $\text{flag}$.</p>
 <h3 id="bro-key-n">Bro-key-n<a href="#bro-key-n" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 14/395</li>
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>rsa</code></li>
 <li>Author: Husnain</li>
+<li>Source: <a href="https://github.com/sigpwny/UIUCTF-2022-Public/tree/main/crypto/bro-key-n">Official Repository</a></li>
 </ul>
 <p>We are given a partially redacted private key file (in <code>.pem</code>). The objective is to recover the private key.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-----BEGIN RSA PRIVATE KEY-----
@@ -1185,6 +1200,7 @@ ______________________________________________________
 <li>Difficulty: ⭐</li>
 <li>Tags: <code>lcg</code></li>
 <li>Author: <a href="https://twitter.com/willwam845" target="_blank" rel="nofollow">@willwam845</a></li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/tadpole">Official Repository</a></li>
 </ul>
 <p>Let $p$ be a secret prime. We are given the LCG $x_{i+1} = a \cdot x_i + b\ \text{mod}\ p$ with $x_0 = 13337$. We are given $a, b, x_1$ and $x_2$. The objective is to recover $p$.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a <span style="color:#f92672">=</span> <span style="color:#ae81ff">7904681699700731398014734140051852539595806699214201704996640156917030632322659247608208994194840235514587046537148300460058962186080655943804500265088604049870276334033409850015651340974377752209566343260236095126079946537115705967909011471361527517536608234561184232228641232031445095605905800675590040729</span>
@@ -1197,6 +1213,7 @@ x2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">655479808227
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>lcg</code></li>
 <li>Author: <a href="https://twitter.com/willwam845" target="_blank" rel="nofollow">@willwam845</a></li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/luckyguess">Official Repository</a></li>
 </ul>
 <p>Let $p = 2^{521} - 1$ and $0 \leq a, b \leq 2^{521} - 1$ be two given numbers. Define the LCG by</p>
 <p>$$x_{i+1} = a \cdot x_i + b\ \text{mod}\ p.$$</p>
@@ -1207,6 +1224,7 @@ x2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">655479808227
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>math</code>, <code>lcg</code></li>
 <li>Author: <a href="https://twitter.com/willwam845" target="_blank" rel="nofollow">@willwam845</a></li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/exchanged">Official Repository</a></li>
 </ul>
 <p>We are given LCG parameters $p, a, b$ and the seed $x_0$. We are also given $M = x_m, N = x_n$ where $0 \leq m, n &lt; p$. The goal is to find $x_{m+n}$.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">p <span style="color:#f92672">=</span> <span style="color:#ae81ff">142031099029600410074857132245225995042133907174773113428619183542435280521982827908693709967174895346639746117298434598064909317599742674575275028013832939859778024440938714958561951083471842387497181706195805000375824824688304388119038321175358608957437054475286727321806430701729130544065757189542110211847</span>
@@ -1221,6 +1239,7 @@ N <span style="color:#f92672">=</span> <span style="color:#ae81ff">1321783200371
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>rsa</code></li>
 <li>Author: quintec</li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/hidE">Official Repository</a></li>
 </ul>
 <p>When connected to the server, a RSA modulus $n$ is generated. The seed for Python&rsquo;s <code>random</code> package is set to be <code>int(time.time())</code>. We are given $n$ and two methods (we can use these methods as much as we would), which encrypts either the flag, or a user-supplied message using the first $e$ generated by <code>random.randint(1, n)</code> which is coprime with $\varphi(n)$, and sends to the player.</p>
 <p>The objective is to recover the flag.</p>
@@ -1230,6 +1249,7 @@ N <span style="color:#f92672">=</span> <span style="color:#ae81ff">1321783200371
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>okamoto-uchiyama</code></li>
 <li>Author: qoprime</li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/generous">Official Repository</a></li>
 </ul>
 <p>The below defines the <a href="https://link.springer.com/content/pdf/10.1007/BFb0054135.pdf">Okamoto-Uchiyama cryptosystem</a>.</p>
 <p>Let $p$ and $q$ be two primes and $n = p^2q$. Define $2 \leq g &lt; n$ and $h = g^n\ \text{mod}\ n$. The public and private keys are given by $(n, g, h)$ and $(g, p, q)$ respectively.</p>
@@ -1251,6 +1271,7 @@ N <span style="color:#f92672">=</span> <span style="color:#ae81ff">1321783200371
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>lcg</code></li>
 <li>Author: <a href="https://twitter.com/willwam845" target="_blank" rel="nofollow">@willwam845</a></li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/leapfrog">Official Repository</a></li>
 </ul>
 <p>We are given the $i$-th output from an unknown LCG (neither $a, b$ nor $p$ are given), with $i = 0, 5, 8, 31, 44, 68, 74, 84, 93, 100, 104, 123$. The goal is to recover $a, b$ and $p$.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x_0   <span style="color:#f92672">=</span> <span style="color:#ae81ff">26242498579536691811055981149948736081413123636643477706015419836101346754443</span>
@@ -1272,6 +1293,7 @@ x_139 <span style="color:#f92672">=</span> <span style="color:#ae81ff">145892460
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>ecc</code></li>
 <li>Author: qoprime</li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/corruptedcurves">Official Repository</a></li>
 </ul>
 <p>Denote $x_0$ be a secret (the flag).</p>
 <p>When connected to the server, a 512-bit prime $p$ and $0 \leq a, b &lt; 2^{384}$ are generated such that there exists $y_0$ such that ${y_0}^2 \equiv {x_0}^3 + a \cdot x_0 + b\ (\text{mod}\ p)$.</p>
@@ -1289,8 +1311,9 @@ x_139 <span style="color:#f92672">=</span> <span style="color:#ae81ff">145892460
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>ecc</code></li>
 <li>Author: qoprime</li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/threetreasures">Official Repository</a></li>
 </ul>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Note:</strong> the flag has the format with <code>corctf{...}</code>.
 </div>
 
@@ -1306,8 +1329,9 @@ G      <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3115938
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>ecc</code></li>
 <li>Author: qoprime</li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/corruptedcurvesplus">Official Repository</a></li>
 </ul>
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Note.</strong> This challenge is similar to <em>corrupted-curves</em>, except that the upper limit of $\text{count}$ is changed, and it no longer accepts user-supplied $x_1$.
 </div>
 
@@ -1327,6 +1351,7 @@ G      <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3115938
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>lfsr</code></li>
 <li>Author: <a href="https://twitter.com/willwam845" target="_blank" rel="nofollow">@willwam845</a></li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/rlfsr">Official Repository</a></li>
 </ul>
 <p>Let $R$ be a known 128-bit LFSR. We are given $15104 = 128 \times 118$ output bits, in a way that the first 128 bits are shuffled, the subsequent 128 bits are shuffled, etc. The goal is to recover the initial values of the LFSR.</p>
 <h3 id="d3s-">D3S 🔥<a href="#d3s-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -1335,9 +1360,9 @@ G      <span style="color:#f92672">=</span> (<span style="color:#ae81ff">3115938
 <li>Difficulty: ⭐⭐⭐⭐</li>
 <li>Tags: <code>des</code></li>
 <li>Author: pot</li>
+<li>Source: <a href="https://github.com/Crusaders-of-Rust/corCTF-2022-public-challenge-archive/tree/master/crypto/D3S">Official Repository</a></li>
 </ul>
 <p>We are given a Feistel cipher implementation, where the message space, ciphertext space, key space are all 54 trits (i.e., $\mathcal{M} = \mathcal{C} = \mathcal{K} = \mathbb{Z}_3^{54}$). We are given $3^9$ message-ciphertext pairs and the objective is to recover the key.</p>
-<p>TODO</p>
 
       </div></div>
 

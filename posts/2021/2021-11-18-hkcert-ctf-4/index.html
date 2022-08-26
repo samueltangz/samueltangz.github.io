@@ -328,7 +328,7 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 </span></code></pre></div>
 <h3 id="motivation">Motivation<a href="#motivation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert danger">
+<div class="alert danger" style="margin-bottom: 12px;">
   <strong>😱 Mystiz even writes a pwn challenge?????</strong> I know, I know. This is strange.
 </div>
 
@@ -458,7 +458,7 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 
 <p>The PHP code is so simple that it is trivially not vulnerable. The weakness comes from <code>Dockerfile</code>, where a backdoored PHP version is used. When we search the commit hash <code>c730aa26bd52829a49f2ad284b181b7e82a68d7d</code>, we can easily find pages mentioning the incident. Black Bauhinia have even shared the news on <a href="https://www.facebook.com/blackb6a/posts/225639876011690">their Facebook page</a>. Well, they made a mistake: The header should be <code>User-Agentt</code> (instead of <code>User-Agent</code>).</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Are you self-promoting?</strong> Yes! This is yet another shameless self-promotion of our Facebook page. Go like and share.
 </div>
 
@@ -598,21 +598,21 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 
 <p>There is a better way. Let's introduce a major weakness.</p>
 
-<div class="alert danger">
+<div class="alert danger" style="margin-bottom: 12px;">
   <strong>Weakness.</strong> The server only checks if the base64-encoded $\text{Enc}(a)$ has a length of 88. The characters outside the base64 charset will be dropped. With that said, we can send ciphertexts those are shorter than 64.
 </div>
 
 
 <p>To utilize the weakness, we can pass 88 <code>~</code>'s and it would decode into <code>b''</code>. Also, <code>number_encryptor.decrypt(b'') == 0</code>. That said, we can construct $\text{Enc}(0)$ without using the oracle. This is a <em>dirty zero</em> because it is not the $\text{Enc}(0)$ created by the oracle, which is needed in later parts of the game. Well, we can simply obtain $\text{Enc}(0)$ using <code>AND [88 ~'s] [88 ~'s]</code>. It is then evident to construct $\text{Enc}(1)$: <code>POW [ZERO] [ZERO]</code>. Now we can construct both in two oracle calls.</p>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>Confession of an ex-math guy.</strong> I know $0^0$ is mathematically undefined. However they said $0^0 = 1$ in Python&hellip; Let&rsquo;s stick to that.
 </div>
 
 
 <h4 id="constructing-textenc2">Constructing $\text{Enc}(2)$<a href="#constructing-textenc2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<div class="alert warning">
+<div class="alert warning" style="margin-bottom: 12px;">
   <strong>A sidenote.</strong> I can only construct $\text{Enc}(4)$ while I was testing the challenge. I shared the problem to <em>harrier</em> and he could construct two probabilistically. Good that I don&rsquo;t need to make it easier to accommodate my level.
 </div>
 
@@ -650,7 +650,7 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 <li><code>AND [2^256-2^129+4] [2^128-2]</code> (returns $\text{Enc}(4)$)</li>
 </ol>
 
-<div class="alert success">
+<div class="alert success" style="margin-bottom: 12px;">
   <strong>Congratulations! 🎉</strong> You have survived the hardest part of the challenge. The remaining parts would be straight forward.
 </div>
 
@@ -669,7 +669,7 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 </ul></li>
 </ol>
 
-<div class="alert info">
+<div class="alert info" style="margin-bottom: 12px;">
   <strong>Why does the algorithm work?</strong> It is based on the below theorem: Suppose that $p$ is a 512-bit prime and $n \in [0, 2^{512})$ is even. Then $n\ \text{mod}\ p$ is odd if and only if $n \leq p$.
 </div>
 
