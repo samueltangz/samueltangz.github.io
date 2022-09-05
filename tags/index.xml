@@ -6,11 +6,11 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 Sep 2022 11:45:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Sep 2022 22:00:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>balsn-ctf</title>
       <link>/tags/balsn-ctf/</link>
-      <pubDate>Mon, 05 Sep 2022 11:45:00 +0800</pubDate>
+      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
       <guid>/tags/balsn-ctf/</guid>
       <description></description>
@@ -19,7 +19,7 @@
     <item>
       <title>crypto</title>
       <link>/tags/crypto/</link>
-      <pubDate>Mon, 05 Sep 2022 11:45:00 +0800</pubDate>
+      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
       <guid>/tags/crypto/</guid>
       <description></description>
@@ -28,16 +28,25 @@
     <item>
       <title>ctf</title>
       <link>/tags/ctf/</link>
-      <pubDate>Mon, 05 Sep 2022 11:45:00 +0800</pubDate>
+      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
       <guid>/tags/ctf/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>lfsr</title>
+      <link>/tags/lfsr/</link>
+      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
+      
+      <guid>/tags/lfsr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>lll</title>
       <link>/tags/lll/</link>
-      <pubDate>Mon, 05 Sep 2022 11:45:00 +0800</pubDate>
+      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
       <guid>/tags/lll/</guid>
       <description></description>
@@ -508,15 +517,6 @@
       <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
       
       <guid>/tags/interpolation-attack/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>lfsr</title>
-      <link>/tags/lfsr/</link>
-      <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
-      
-      <guid>/tags/lfsr/</guid>
       <description></description>
     </item>
     

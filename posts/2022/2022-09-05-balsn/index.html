@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
   
-    <title>BalsnCTF 2022 (I): vss :: Mystify</title>
+    <title>BalsnCTF 2022 Writeup :: Mystify</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge.
-This challenge reminds me the yet another PRNG challenge from pbctf 2021 (challenge description, writeup written by @maple3142 and @rkm0959), but with a setting which looked harder. I was pretty surprised that LLL worked, too.
-Challenge Summary When connected to the server, two 512-bit numbers $x, y$ will be generated." />
+<meta name="description" content="Credits. Thumbnail credit goes to Quasar! 🎉  vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge. This challenge reminds me the yet another PRNG challenge from pbctf 2021 (challenge description, writeup written by @maple3142 and @rkm0959), but with a setting which looked harder. I was pretty surprised that LLL worked, too.
+lfsr is another crypto challenge in BalsnCTF with 6 solvers." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="/posts/2022/2022-09-05-balsn-vss/" />
+<link rel="canonical" href="/posts/2022/2022-09-05-balsn/" />
 
 
 
@@ -42,20 +41,20 @@ Challenge Summary When connected to the server, two 512-bit numbers $x, y$ will 
 
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="BalsnCTF 2022 (I): vss">
-<meta property="og:description" content="vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge.
+<meta property="og:title" content="BalsnCTF 2022 Writeup">
+<meta property="og:description" content="vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge. This challenge reminds me the yet another PRNG challenge from pbctf 2021, but with a setting which looked harder. I was pretty surprised that LLL worked, too.
 
-This challenge reminds me the yet another PRNG challenge from pbctf 2021, but with a setting which looked harder. I was pretty surprised that LLL worked, too." />
-<meta property="og:url" content="/posts/2022/2022-09-05-balsn-vss/" />
+lfsr is another crypto challenge in BalsnCTF with 6 solves. In the challenge, the output bits are computed nonlinearly from the LFSR states. Given that I knew almost nothing about LFSR, I just came up with the attack by myself… Well, I am not quite a paper guy and I couldn’t read." />
+<meta property="og:url" content="/posts/2022/2022-09-05-balsn/" />
 <meta property="og:site_name" content="Mystify" />
 
-  <meta property="og:image" content="/">
+  <meta property="og:image" content="/images/2022-09-05-balsn/lll-nightmare.png">
 
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
 
 
-  <meta property="article:published_time" content="2022-09-05 11:45:00 &#43;0800 &#43;0800" />
+  <meta property="article:published_time" content="2022-09-05 22:00:00 &#43;0800 &#43;0800" />
 
 
 
@@ -146,7 +145,7 @@ This challenge reminds me the yet another PRNG challenge from pbctf 2021, but wi
     
 <div class="post">
   <h1 class="post-title">
-    <a href="/posts/2022/2022-09-05-balsn-vss/">BalsnCTF 2022 (I): vss</a></h1>
+    <a href="/posts/2022/2022-09-05-balsn/">BalsnCTF 2022 Writeup</a></h1>
   <div class="post-meta">
     
       <span class="post-date">
@@ -167,17 +166,26 @@ This challenge reminds me the yet another PRNG challenge from pbctf 2021, but wi
     
     #<a href="/tags/crypto/">crypto</a>&nbsp;
     
+    #<a href="/tags/lfsr/">lfsr</a>&nbsp;
+    
     #<a href="/tags/lll/">lll</a>&nbsp;
     
   </span>
   
 
   
+    <img src="/images/2022-09-05-balsn/lll-nightmare.png" class="post-cover center" alt="BalsnCTF 2022 Writeup" />
+  
 
   <div class="post-content js-toc-content"><div>
-        <p><em>vss</em> is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge.</p>
-<p>This challenge reminds me the <em>yet another PRNG</em> challenge from <em>pbctf 2021</em> (<a href="http://localhost:1313/crypto-in-ctf/2021-q4/#yet-another-prng-">challenge description</a>, writeup written by <a href="https://blog.maple3142.net/2021/10/11/pbctf-2021-writeups/#yet-another-prng">@maple3142</a> and <a href="https://rkm0959.tistory.com/242">@rkm0959</a>), but with a setting which looked harder. I was pretty surprised that LLL worked, too.</p>
-<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+        <div class="alert info" style="margin-bottom: 12px;">
+  <strong>Credits.</strong> Thumbnail credit goes to <em>Quasar</em>! 🎉
+</div>
+
+<p><em>vss</em> is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge. This challenge reminds me the <em>yet another PRNG</em> challenge from <em>pbctf 2021</em> (<a href="/crypto-in-ctf/2021-q4/#yet-another-prng-">challenge description</a>, writeup written by <a href="https://blog.maple3142.net/2021/10/11/pbctf-2021-writeups/#yet-another-prng">@maple3142</a> and <a href="https://rkm0959.tistory.com/242">@rkm0959</a>), but with a setting which looked harder. I was pretty surprised that LLL worked, too.</p>
+<p><em>lfsr</em> is another crypto challenge in BalsnCTF with 6 solvers. In the challenge, the output bits are computed nonlinearly from the LFSR states. Given that I knew almost nothing about LFSR, I just came up with the attack by myself&hellip; Well, I am not quite a paper guy and I couldn&rsquo;t read.</p>
+<h2 id="vss">vss<a href="#vss" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>When connected to the server, two 512-bit numbers $x, y$ will be generated. We are allowed to get up to around 180 sets of $(a_i, b_i, c_i, p_i, g_i, v_i, q_i)$ such that:</p>
 <ol>
 <li>$u_i = (a_i + b_ix + c_iy)\ \text{mod}\ p_i$, and</li>
@@ -188,15 +196,15 @@ This challenge reminds me the yet another PRNG challenge from pbctf 2021, but wi
   <strong>Why 180 sets of data?</strong> Although not explicitly mentioned in the challenge, there is a 30-second timeout for the remote connection. You can only get around 180 sets of $(a_i, b_i, c_i, p_i, g_i, v_i, q_i)$ within the timeout.
 </div>
 
-<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <div class="alert success" style="margin-bottom: 12px;">
   <strong>TL;DR.</strong> My approach, like 95% of the crypto challenges I solved, uses LLL.
 </div>
 
-<h3 id="part-i-discrete-log-for-the-win">Part I: Discrete log for the win?<a href="#part-i-discrete-log-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-discrete-log-for-the-win">Part I: Discrete log for the win?<a href="#part-i-discrete-log-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <p>After understanding the challenge statement, I immediately think that we can generate until $q_i-1$ is smooth. In that way, we can easily recover $u_i$ from $v_i, g_i$ and $q_i$ using Pohlig-Hellman algorithm. Unfortunately, generating such primes is hard. I generated around 20K sets and none of the $q_i-1$ is $2^{24}$-smooth (i.e., all the prime factors are not greater than $2^{24}$).</p>
 <p>With that said, finding one such $q_i$ is difficult. What makes the situation worse is that we actually need two such $q_i$&rsquo;s to recover $x$ and $y$.</p>
-<h3 id="part-ii-taking-a-step-backwards">Part II: Taking a step backwards<a href="#part-ii-taking-a-step-backwards" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-ii-taking-a-step-backwards">Part II: Taking a step backwards<a href="#part-ii-taking-a-step-backwards" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <p>We are forced to give up recovering a full $u_i$ because discrete log is difficult. Good that we can still recover part of it. Assume that we know</p>
 <p>$$q-1 = {r_1}^{k_1} {r_2}^{k_2} &hellip; {r_m}^{k_m} s$$</p>
 <p>with $r_1, r_2, &hellip;, r_m$ are small primes (for instance, they are all smaller than $2^{24}$). Denote $\gamma = {r_1}^{k_1} {r_2}^{k_2} &hellip; {r_m}^{k_m}$ and we can recover $v := u\ \text{mod}\ \gamma$ using Pohlig-Hellman. Let&rsquo;s formulate what we have for now. We have multiple tuples $(a_i, b_i, c_i, v_i, p_i, \gamma_i)$ such that</p>
@@ -227,6 +235,82 @@ c_1       &amp; b_2       &amp; \dots  &amp; c_{40}          &amp;   &amp;   &am
 &amp; \qquad = \left[\begin{array}{ccc|cccc|cccc}1 &amp; x &amp; y &amp; l_1 &amp; l_2 &amp; \dots &amp; l_{40} &amp; t_1 &amp; t_2 &amp; \dots &amp; t_{40} \end{array}\right] \cdot A
 \end{aligned}$$</p>
 <p>$\mathbf{v}$ can be found applying LLL if we set appropriate weights. LLL for the win! We can recover $x$ and $y$ and thus the flag: <code>BALSN{commitments_leak_too_much_QwQ}</code>.</p>
+<h2 id="lfsr">lfsr<a href="#lfsr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info" style="margin-bottom: 12px;">
+  <strong>Note.</strong> In the challenge, the operations are done in $\text{GF}(2)$. That said, $+$ is actually the $\oplus$ (XOR) operation and $\times$ is the AND operation.
+</div>
+
+<p>Let $\mathcal{L}$ be a LFSR with key $(s_0, s_1, &hellip;, s_{127})$, and for $i \geq 0$,</p>
+<p>$$s_{i+128} = s_{i} + s_{i+1} + s_{i+2} + s_{i+7}.$$</p>
+<p>Let the output bits $y_0, y_1, &hellip;$ defined by</p>
+<p>$$\begin{aligned}
+y_i &amp;= s_i + s_{i+16} + s_{i+32} + s_{i+120} + s_i s_{i+8} + s_i s_{i+32} + s_{i+8} s_{i+64} + s_{i+16} s_{i+32} \\
+&amp;\qquad + s_i s_{i+8} s_{i+64} + s_{i+16} s_{i+32} s_{i+64} + s_i s_{i+8} s_{i+16} s_{i+64} s_{i+120} + s_{i+8} s_{i+16} s_{i+32} s_{i+64} s_{i+120}.
+\end{aligned}$$</p>
+<p>We are given the first 8192 bits of the output (i.e., $y_0, y_1, &hellip;, y_{8191}$). The goal is to recover the key (i.e., $s_0, s_1, &hellip;, s_{127}$).</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-why-multiple-of-eight">Part I: Why multiple of eight?<a href="#part-i-why-multiple-of-eight" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let $y_i := b(s_i, s_{i+8}, s_{i+16}, s_{i+32}, s_{i+120})$ for simplicity.</p>
+<p>We can see that, for instance, $y_0$, depends on $s_0, s_8, s_{16}, s_{32}, s_{64}$ and $s_{120}$. The indexes of the states are all multiples of eight. Furthermore, this happens on $y_{8i}$ every every integer $i$:</p>
+<p>$$\begin{aligned}
+y_{8i} &amp;= b(s_{8i}, s_{8(i+1)}, s_{8(i+2)}, s_{8(i+4)}, s_{8(i+15)}).
+\end{aligned}$$</p>
+<p>We have $y_0, y_8, &hellip;, y_{8 \times 1023}$. Combining above, we have 1024 equations with 1039 unknowns (the unknowns being $s_0, s_8, &hellip;, s_{8 \times 1038}$). Therefore, it is expected to get around $2^{15}$ possible sets of $s_0, s_8, &hellip;, s_{8304}$ from $y_0, y_8, &hellip;, y_{8184}$.</p>
+<p>Similarly, we can use $y_1, y_9, &hellip;, y_{8185}$ to recover $s_1, s_9, &hellip;, s_{8305}$, use $y_2, y_{10}, &hellip;, y_{8186}$ to recover $s_2, s_{10}, &hellip;, s_{8306}$ and so on.</p>
+<div class="alert danger" style="margin-bottom: 12px;">
+  <strong>$2^{15}$ is not an accurate estimate!</strong> In average, there are far more than $2^{15}$ such $s_i$&rsquo;s from those $y_i$&rsquo;s when the number of terms increases. Fortunately the number of $s_i$&rsquo;s does not affect a lot on the solution.
+</div>
+
+<p>Now back to the topic. How do we get $s_0, s_8, &hellip;, s_{8(l-1)}$ from $y_0, y_8, &hellip;, y_{8(l-16)}$? We can perform a search (breadth-first search here):</p>
+<ol>
+<li>Initialize the solution list $\mathcal{S}$ with the $2^{15}$ elements: $(0, 0, 0, &hellip;, 0)$, $(0, 0, 0, &hellip;, 1)$, &hellip;, and $(1, 1, 1, &hellip;, 1)$.</li>
+<li>Let $\mathbf{s}$ be the first element in the list.<br>
+If $\mathbf{s}$ has $l$ entries, return $\mathcal{S}$.</li>
+<li>Remove $\mathbf{s} = (\tilde s_0, \tilde s_8, &hellip;, \tilde s_{8(k+14)})$ from $\mathcal{S}$.<br>
+For each $\tilde s_{8(k+15)} \in \{0, 1\}$, if $y_{8k} = b(\tilde s_{8k}, \tilde s_{8(k+1)}, \tilde s_{8(k+2)}, \tilde s_{8(k+4)}, \tilde s_{8(k+15)})$, append $(\tilde s_0, \tilde s_8, &hellip;, \tilde s_{8(k+14)}, \tilde s_{8(k+15)})$ to $\mathcal{S}$.</li>
+<li>Go back to step 2.</li>
+</ol>
+<p>We know $(s_0, s_8, &hellip;, s_{8(l-1)}) \in \mathcal{S}$ because all the below equations hold:</p>
+<p>$$\left\{\begin{aligned}
+y_0 &amp;= b(s_0, s_8, s_{16}, s_{32}, s_{120}) \\
+y_8 &amp;= b(s_8, s_{16}, s_{24}, s_{40}, s_{128}) \\
+&amp; \qquad \vdots \\
+y_{8(l-16)} &amp;= b(s_{8(l-16)}, s_{8(l-15)}, s_{8(l-14)}, s_{8(l-12)}, s_{8(l-1)}).
+\end{aligned}\right.$$</p>
+<div class="alert info" style="margin-bottom: 12px;">
+  <strong>Regarding the notation.</strong> I use $\tilde s_i$&rsquo;s instead of $s_i$&rsquo;s because they are not necessary the correct ones.
+</div>
+
+<h4 id="part-ii-how-to-get-the-key-from-undecillions-of-s_is">Part II: How to get the key from undecillions of $s_i$&rsquo;s?<a href="#part-ii-how-to-get-the-key-from-undecillions-of-s_is" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert warning" style="margin-bottom: 12px;">
+  <strong>Why undecillions?</strong> Suppose that we have $2^{15}$ sets of $s_0, s_8, &hellip;$, $2^{15}$ sets of $s_1, s_9, &hellip;$ and so on. There are $2^{15 \times 8} \approx 10^{36}$ sets of $s_0, s_1, s_2, &hellip;$ in total.
+</div>
+
+<p>Let&rsquo;s use the above algorithm to find these four sets of numbers:</p>
+<ol>
+<li>$(\tilde s_0, \tilde s_8, &hellip;, \tilde s_{504}, \tilde s_{512}, &hellip;, \tilde s_{632}) \in \mathcal{S}_0$ (80 terms),</li>
+<li>$(\tilde s_1, \tilde s_9, &hellip;, \tilde s_{505}) \in \mathcal{S}_1$ (64 terms),</li>
+<li>$(\tilde s_2, \tilde s_{10}, &hellip;, \tilde s_{506}) \in \mathcal{S}_2$ (64 terms), and</li>
+<li>$(\tilde s_7, \tilde s_{15}, &hellip;, \tilde s_{511}) \in \mathcal{S}_7$ (64 terms).</li>
+</ol>
+<div class="alert success" style="margin-bottom: 12px;">
+  <strong>8192 bits? I don&rsquo;t need that.</strong> The challenge can be solved 513 consecutive bits, ideally, with my approach.
+</div>
+
+<p>Recall the state transition: $s_{i+128} = s_i + s_{i+1} + s_{i+2} + s_{i+7}$ for all integer $i \geq 0$. Let&rsquo;s define a set $\mathcal{T}_0$ (transformed from $\mathcal{S}_0$) by:</p>
+<p>$$\mathcal{T}_0 = \{(\tilde s_0 + \tilde s_{128}, \tilde s_8 + \tilde s_{136}, &hellip;, \tilde s_{504} + \tilde s_{632}) \in \{0, 1\}^{64} \ | \ (\tilde s_0, \tilde s_8, &hellip;, \tilde s_{632} \in \mathcal{S}_0)\}$$</p>
+<p>We can see that</p>
+<p>$$\left\{\begin{aligned}
+&amp; \mathbf{t}_0 := (s_0 + s_{128}, s_8 + s_{136}, &hellip;, s_{504} + s_{632}) \in \mathcal{T}_0 \\
+&amp; \mathbf{s}_1 := (s_1, s_9, &hellip;, s_{505}) \in \mathcal{S}_1 \\
+&amp; \mathbf{s}_2 := (s_2, s_{10}, &hellip;, s_{506}) \in \mathcal{S}_2 \\
+&amp; \mathbf{s}_7 := (s_7, s_{15}, &hellip;, s_{511}) \in \mathcal{S}_7,
+\end{aligned}\right.$$</p>
+<p>and eventually $\mathbf{t}_0 + \mathbf{s}_1 + \mathbf{s}_2 + \mathbf{s}_7 = (0, 0, &hellip;, 0)$.</p>
+<p>We can precompute every $\tilde \mathbf{t}_{0,i} + \tilde \mathbf{s}_{1,j} \in \{0, 1\}^{64}$, where $\tilde \mathbf{t}_{0,i} \in \mathcal{T}_0$ and $\tilde \mathbf{s}_{1,j} \in \mathcal{S}_1$, and store all of them in the set $\mathcal{L}$. After that, we can check if there exists $i, j$ such that</p>
+<p>$$\tilde \mathbf{t}_{0,i} + \tilde \mathbf{s}_{1,j} = \tilde \mathbf{s}_{2,k} + \tilde \mathbf{s}_{7,l},$$</p>
+<p>for all $\tilde \mathbf{s}_{2,k} \in \mathcal{S}_2$ and $\tilde \mathbf{s}_{7,l} \in \mathcal{S}_7$. If that is the case (which is very rare!), we can try to recover $s_0, s_1, &hellip;, s_{127}$ and see if it generates the same output bits as given. After the key is recovered, then we can recover the flag: <code>BALSN{almost_linear_too_easy}</code>.</p>
 
       </div></div>
 
@@ -259,7 +343,7 @@ c_1       &amp; b_2       &amp; \dots  &amp; c_{40}          &amp;   &amp;   &am
 
 <aside class="toc-container">
   <a href="#" style="text-decoration: none; font-weight: 700;">
-    BalsnCTF 2022 (I): vss
+    BalsnCTF 2022 Writeup
   </a>
   <div class="js-toc"></div>
 </aside>
