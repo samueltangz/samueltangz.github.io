@@ -2,13 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/tags/challenge-writing/</loc>
-    <lastmod>2022-07-20T20:09:00+08:00</lastmod>
+    <loc>/tags/balsn-ctf/</loc>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
+  </url><url>
+    <loc>/posts/2022/2022-09-05-balsn-vss/</loc>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
   </url><url>
     <loc>/tags/crypto/</loc>
-    <lastmod>2022-07-20T20:09:00+08:00</lastmod>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
   </url><url>
     <loc>/tags/ctf/</loc>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
+  </url><url>
+    <loc>/tags/lll/</loc>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
+  </url><url>
+    <loc>/</loc>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
+  </url><url>
+    <loc>/posts/</loc>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2022-09-05T11:45:00+08:00</lastmod>
+  </url><url>
+    <loc>/tags/challenge-writing/</loc>
     <lastmod>2022-07-20T20:09:00+08:00</lastmod>
   </url><url>
     <loc>/posts/2022/2022-07-20-google-ctf-maybe-someday/</loc>
@@ -17,16 +35,7 @@
     <loc>/tags/google-ctf/</loc>
     <lastmod>2022-07-20T20:09:00+08:00</lastmod>
   </url><url>
-    <loc>/</loc>
-    <lastmod>2022-07-20T20:09:00+08:00</lastmod>
-  </url><url>
     <loc>/tags/paillier/</loc>
-    <lastmod>2022-07-20T20:09:00+08:00</lastmod>
-  </url><url>
-    <loc>/posts/</loc>
-    <lastmod>2022-07-20T20:09:00+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2022-07-20T20:09:00+08:00</lastmod>
   </url><url>
     <loc>/tags/ecdsa/</loc>
@@ -62,9 +71,6 @@
     <loc>/posts/2022/2022-02-08-dicectf-commitment/</loc>
     <lastmod>2022-02-08T04:30:00+08:00</lastmod>
   </url><url>
-    <loc>/tags/lll/</loc>
-    <lastmod>2022-02-08T04:30:00+08:00</lastmod>
-  </url><url>
     <loc>/tags/rsa/</loc>
     <lastmod>2022-02-08T04:30:00+08:00</lastmod>
   </url><url>
@@ -87,9 +93,6 @@
     <lastmod>2021-11-29T23:30:00+08:00</lastmod>
   </url><url>
     <loc>/posts/2021/2021-11-27-balsn-dlog/</loc>
-    <lastmod>2021-11-27T15:55:00+08:00</lastmod>
-  </url><url>
-    <loc>/tags/balsn-ctf/</loc>
     <lastmod>2021-11-27T15:55:00+08:00</lastmod>
   </url><url>
     <loc>/tags/statistics/</loc>

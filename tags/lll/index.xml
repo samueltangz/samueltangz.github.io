@@ -6,7 +6,18 @@
     <description>Recent content in lll on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Feb 2022 04:30:00 +0800</lastBuildDate><atom:link href="/tags/lll/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Sep 2022 11:45:00 +0800</lastBuildDate><atom:link href="/tags/lll/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BalsnCTF 2022 (I): vss</title>
+      <link>/posts/2022/2022-09-05-balsn-vss/</link>
+      <pubDate>Mon, 05 Sep 2022 11:45:00 +0800</pubDate>
+      
+      <guid>/posts/2022/2022-09-05-balsn-vss/</guid>
+      <description>vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge.
+This challenge reminds me the yet another PRNG challenge from pbctf 2021 (challenge description, writeup written by @maple3142 and @rkm0959), but with a setting which looked harder. I was pretty surprised that LLL worked, too.
+Challenge Summary When connected to the server, two 512-bit numbers $x, y$ will be generated.</description>
+    </item>
+    
     <item>
       <title>DiceCTF 2022 (I): commitment-issues</title>
       <link>/posts/2022/2022-02-08-dicectf-commitment/</link>

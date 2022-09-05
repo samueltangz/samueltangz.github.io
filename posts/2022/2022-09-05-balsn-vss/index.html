@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>BalsnCTF 2022 (I): vss :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge.
+This challenge reminds me the yet another PRNG challenge from pbctf 2021 (challenge description, writeup written by @maple3142 and @rkm0959), but with a setting which looked harder. I was pretty surprised that LLL worked, too.
+Challenge Summary When connected to the server, two 512-bit numbers $x, y$ will be generated." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2022/2022-09-05-balsn-vss/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="BalsnCTF 2022 (I): vss">
+<meta property="og:description" content="vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge.
+
+This challenge reminds me the yet another PRNG challenge from pbctf 2021, but with a setting which looked harder. I was pretty surprised that LLL worked, too." />
+<meta property="og:url" content="/posts/2022/2022-09-05-balsn-vss/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-09-05 11:45:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2022/2022-09-05-balsn-vss/">BalsnCTF 2022 (I): vss</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-09-05 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/balsn-ctf/">balsn-ctf</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/lll/">lll</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p><em>vss</em> is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge.</p>
+<p>This challenge reminds me the <em>yet another PRNG</em> challenge from <em>pbctf 2021</em> (<a href="http://localhost:1313/crypto-in-ctf/2021-q4/#yet-another-prng-">challenge description</a>, writeup written by <a href="https://blog.maple3142.net/2021/10/11/pbctf-2021-writeups/#yet-another-prng">@maple3142</a> and <a href="https://rkm0959.tistory.com/242">@rkm0959</a>), but with a setting which looked harder. I was pretty surprised that LLL worked, too.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>When connected to the server, two 512-bit numbers $x, y$ will be generated. We are allowed to get up to around 180 sets of $(a_i, b_i, c_i, p_i, g_i, v_i, q_i)$ such that:</p>
+<ol>
+<li>$u_i = (a_i + b_ix + c_iy)\ \text{mod}\ p_i$, and</li>
+<li>$v_i = g_i^{u_i}\ \text{mod}\ q_i$.</li>
+</ol>
+<p>The goal is to recover $x$ and $y$.</p>
+<div class="alert warning" style="margin-bottom: 12px;">
+  <strong>Why 180 sets of data?</strong> Although not explicitly mentioned in the challenge, there is a 30-second timeout for the remote connection. You can only get around 180 sets of $(a_i, b_i, c_i, p_i, g_i, v_i, q_i)$ within the timeout.
+</div>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert success" style="margin-bottom: 12px;">
+  <strong>TL;DR.</strong> My approach, like 95% of the crypto challenges I solved, uses LLL.
+</div>
+
+<h3 id="part-i-discrete-log-for-the-win">Part I: Discrete log for the win?<a href="#part-i-discrete-log-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>After understanding the challenge statement, I immediately think that we can generate until $q_i-1$ is smooth. In that way, we can easily recover $u_i$ from $v_i, g_i$ and $q_i$ using Pohlig-Hellman algorithm. Unfortunately, generating such primes is hard. I generated around 20K sets and none of the $q_i-1$ is $2^{24}$-smooth (i.e., all the prime factors are not greater than $2^{24}$).</p>
+<p>With that said, finding one such $q_i$ is difficult. What makes the situation worse is that we actually need two such $q_i$&rsquo;s to recover $x$ and $y$.</p>
+<h3 id="part-ii-taking-a-step-backwards">Part II: Taking a step backwards<a href="#part-ii-taking-a-step-backwards" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are forced to give up recovering a full $u_i$ because discrete log is difficult. Good that we can still recover part of it. Assume that we know</p>
+<p>$$q-1 = {r_1}^{k_1} {r_2}^{k_2} &hellip; {r_m}^{k_m} s$$</p>
+<p>with $r_1, r_2, &hellip;, r_m$ are small primes (for instance, they are all smaller than $2^{24}$). Denote $\gamma = {r_1}^{k_1} {r_2}^{k_2} &hellip; {r_m}^{k_m}$ and we can recover $v := u\ \text{mod}\ \gamma$ using Pohlig-Hellman. Let&rsquo;s formulate what we have for now. We have multiple tuples $(a_i, b_i, c_i, v_i, p_i, \gamma_i)$ such that</p>
+<p>$$v_i = a_i + b_i{\color{red}x} + c_i{\color{red}y}\ \text{mod}\ p_i\ \text{mod}\ \gamma_i.$$</p>
+<p>If we intend not writing the whole thing using modulo, we will introduce two more unknown, integral variables $(s_i, t_i)$:</p>
+<p>$$v_i = a_i + b_i{\color{red}x} + c_i{\color{red}y} - p_i{\color{red}s_i} - \gamma_i{\color{red}t_i},$$</p>
+<p>with $0 \leq t_i &lt; p_i / \gamma_i$. If we look at the modular congruence modulo $p_i$, then we have</p>
+<p>$$a_i - v_i + b_i{\color{red}x} + c_i{\color{red}y} - \gamma_i{\color{red}t_i} \equiv 0 \ (\text{mod}\ p_i).$$</p>
+<p>Suppose that we have 40 sets of $(a_i, b_i, c_i, v_i, p_i, \gamma_i)$ such that $\gamma_i &gt; 2^{32}$. Assuming each congruence carries 512 bits of information, then we have $512 \times 40 = 20480$ bits of information. We also have $512 \times 2 + 480 \times 40 = 20224$ bits of unknown because $x, y$ is of 512 bits and each of the $t_i$&rsquo;s is of 480 bits long. Since we have more information than the unknown, we can apply LLL to solve the system - below is the lattice:</p>
+<p>$$A = \left[\begin{array}{cccc|ccc|cccc}
+a_1 - v_1 &amp; a_2 - v_2 &amp; \dots  &amp; a_{40} - v_{40} &amp; 1 &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+b_1       &amp; b_2       &amp; \dots  &amp; b_{40}          &amp;   &amp; 1 &amp;   &amp;   &amp;   &amp;        &amp;   \\
+c_1       &amp; b_2       &amp; \dots  &amp; c_{40}          &amp;   &amp;   &amp; 1 &amp;   &amp;   &amp;        &amp;   \\
+\hline
+-r_1      &amp;           &amp;        &amp;                 &amp;   &amp;   &amp;   &amp; 1 &amp;   &amp;        &amp;   \\
+&amp; -r_2      &amp;        &amp;                 &amp;   &amp;   &amp;   &amp;   &amp; 1 &amp;        &amp;   \\
+&amp;           &amp; \ddots &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp; \ddots &amp;   \\
+&amp;           &amp;        &amp; -r_{40}         &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp; 1 \\
+\hline
+-p_1      &amp;           &amp;        &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+&amp; -p_2      &amp;        &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+&amp;           &amp; \ddots &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+&amp;           &amp;        &amp; -p_{40}         &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;
+\end{array}\right].$$</p>
+<p>The lattice spans the vector $\mathbf{v} = \left[\begin{array}{cccc|ccc|c}0 &amp; 0 &amp; \dots &amp; 0 &amp; 1 &amp; x &amp; y &amp; l_1 &amp; l_2 &amp; \dots &amp; l_{40} \end{array}\right]$ because</p>
+<p>$$\begin{aligned}
+&amp; \left[\begin{array}{cccc|ccc|cccc}0 &amp; 0 &amp; \dots &amp; 0 &amp; 1 &amp; x &amp; y &amp; l_1 &amp; l_2 &amp; \dots &amp; l_{40} \end{array}\right] \\
+&amp; \qquad = \left[\begin{array}{ccc|cccc|cccc}1 &amp; x &amp; y &amp; l_1 &amp; l_2 &amp; \dots &amp; l_{40} &amp; t_1 &amp; t_2 &amp; \dots &amp; t_{40} \end{array}\right] \cdot A
+\end{aligned}$$</p>
+<p>$\mathbf{v}$ can be found applying LLL if we set appropriate weights. LLL for the win! We can recover $x$ and $y$ and thus the flag: <code>BALSN{commitments_leak_too_much_QwQ}</code>.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2022/2022-07-20-google-ctf-maybe-someday/">
+                <span class="button__text">Google CTF 2022: Maybe Someday</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    BalsnCTF 2022 (I): vss
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>
