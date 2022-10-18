@@ -170,6 +170,10 @@ Challenge Summary Suppose that $d$ is the private key for ECDSA (over curve secp
   
 
   
+  <h6 class="post-subtitle">Breaking 256-bit ECDSA with $k = z \oplus d$ with only six signatures.</h6>
+  
+
+  
 
   <div class="post-content js-toc-content"><div>
         <p><em>Signature</em> is a crypto challenge from TSJ CTF 2022, which ended up having two solves. From this challenge, we can see how ECDSA private keys can be recovered by having a (weak) deterministic ephemeral key, $k$.</p>
@@ -188,7 +192,7 @@ Challenge Summary Suppose that $d$ is the private key for ECDSA (over curve secp
 
 <p><span  class="math">\[k \cdot s \equiv z + r \cdot d\ (\text{mod}\ n) \qquad [\dagger]\]</span></p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <p><strong>Where does the equation comes from?</strong> When signing a digest $z$, we have</p>
 <p>$$s = k^{-1} (z + r \cdot d)\ (\text{mod}\ n).$$</p>
 <p>Therefore, we can obtain $[\dagger]$ by rearranging the terms.</p>

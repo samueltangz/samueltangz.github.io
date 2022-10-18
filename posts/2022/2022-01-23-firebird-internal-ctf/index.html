@@ -171,10 +171,12 @@ What are the stars? They are the difficulties I estimated when comparing to glob
 
   
 
+  
+
   <div class="post-content js-toc-content"><div>
         <p>This is the time that Firebird Internal CTF happens. I made three crypto challenges this year - <em>Lack of Entropy</em> (⭐), <em>Authenticator</em> (⭐⭐) and <em>Collider</em> (⭐⭐). I will discuss the solution for all of them in the blog post.</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>What are the stars?</strong> They are the difficulties I estimated when comparing to global CTFs (where I documented them <a href="/crypto-in-ctf">here</a> since Q3 last year).
 </div>
 
@@ -248,7 +250,7 @@ response_client <span style="color:#f92672">=</span> blake3(password <span style
 
 <h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>First thing first.</strong> There are only $62^6 \approx 2^{35.725}$ possible passwords. Unless you are very rich, you just cannot exhaust it in ten seconds.
 </div>
 
@@ -259,7 +261,7 @@ response_client <span style="color:#f92672">=</span> blake3(password <span style
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">response_server <span style="color:#f92672">==</span> blake3(password <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;HANDSHAKE_FROM_SERVER&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;CHALLENGE_CLIENT&#34;</span>)</code></pre></div>
 <p>You can proceed the authentication. Done! Easy?</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Where are the numbers from?</strong> My laptop could compute 1M BLAKE3 hashes per second. I will just adapt the figure to the remaining of the section.
 </div>
 
@@ -346,7 +348,7 @@ response_client <span style="color:#f92672">=</span> blake3(password <span style
 
 <p>By the way, although we have recovered $g$ and $p$, we will not use $g$.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>A Follow-up Question:</strong> Knowing that we do not need $g$ to solve the challenge. Is it possible to recover $p$ with three calls of $\mathcal{O}$?
 </div>
 

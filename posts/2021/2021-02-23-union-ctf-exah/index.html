@@ -172,6 +172,8 @@
 
   
 
+  
+
   <div class="post-content js-toc-content"><div>
         <p>I was playing <em>Union CTF</em> with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> last week. Since this CTF is prepared by <em>cr0wn</em> where <em>Jack</em> and <em>hyperreality</em> were in (they made <a href="cryptohack.org">CryptoHack</a>), I am convinced that the CTF will be fun. Turns out I wasn't disappointed at all. I will be writing three or four posts on the challenges, and the first of the series covers on <em>exah</em>, the reversing challenge I spent most of my time (yet not solving it).</p>
 
@@ -231,7 +233,7 @@ w.join(<span style="color:#e6db74">&#34;&#34;</span>)); } }).fields; } <span sty
 
 <h3 id="part-i-jumping-into-the-rabbit-hole">Part I: Jumping into the rabbit hole<a href="#part-i-jumping-into-the-rabbit-hole" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   🧠 <strong>I seriously underestimated the challenge.</strong> I have suffered enough from <em>mrii</em> and decided to look into another one. This challenge looked pretty simple when I first look at it. Well, both challenges are written by <em>Aurel300</em> and I should have aware of this.
 </div>
 
@@ -453,7 +455,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;flag 
 }</code></pre></div>
 <p>From checking the length of its string representation, we can say that <code>Std.string</code> has already triggered <code>() -&gt; &quot;cdjholca&quot;</code>. Looking further, I found the method that serializes objects - <code>haxe.Serializer.run</code>.</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Why serialization?</strong> Although it may seemed out of context, serializing the object was giving me insights on why <code>cdjholca</code> is called.
 </div>
 
@@ -620,7 +622,7 @@ u <span style="color:#f92672">^=</span> B.parseString(K[i]) <span style="color:#
 
 <p>Well, let's cut the crap. The correct value would be 1763, and it is equal to the number of characters before the macro. Now everything is clear. We are going to find $u_0, u_1, ..., u_6$ those are increasing. I have written a <a href="https://gist.github.com/samueltangz/285d3e32a9e7cc86c23ef39a8c4e3ff1">solve script</a> that recovers the flag: <code>union{h4shC0ll1zion_m4ke5_HAXE_sad}</code>. Flag is <em>CORRECT</em>! 🎉</p>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>Warning.</strong> The solve script is highly unannotated and very likely unreadable.
 </div>
 

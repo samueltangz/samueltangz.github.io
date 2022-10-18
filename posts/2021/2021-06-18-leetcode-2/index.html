@@ -168,6 +168,8 @@ gantt dateFormat YYYY-MM-DD HH:mm axisFormat %H:%M section Problem A A :2021-06-
 
   
 
+  
+
   <div class="post-content js-toc-content"><div>
         <p>The problems today are <em>Construct the Lexicographically Largest Valid Sequence</em><sup class="footnote-ref" id="fnref:a"><a class="footnote" href="#fn:a">1</a></sup>, <em>Make Sum Divisible by P</em><sup class="footnote-ref" id="fnref:b"><a class="footnote" href="#fn:b">2</a></sup>, <em>Find the Winner of an Array Game</em><sup class="footnote-ref" id="fnref:c"><a class="footnote" href="#fn:c">3</a></sup>, <em>Valid Permutations for DI Sequence</em><sup class="footnote-ref" id="fnref:d"><a class="footnote" href="#fn:d">4</a></sup> and <em>Closest Subsequence Sum</em><sup class="footnote-ref" id="fnref:e"><a class="footnote" href="#fn:e">5</a></sup>.</p>
 
@@ -203,7 +205,7 @@ gantt
 
 <h3 id="commentary">Commentary<a href="#commentary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Idea.</strong> Put the largest unfilled number on the leftmost entry that is empty - if it is impossible, backtrack and remove the previously inserted number.
 </div>
 
@@ -476,7 +478,7 @@ gantt
   </div>
 </div>    
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>This looks unsound!</strong> The time complexity is $\mathcal{O}(n!)$. Although $1 \leq n \leq 20$, $n!$ is still very big. I am not convinced that a solution is always found early on.
 </div>
 
@@ -519,7 +521,7 @@ left_partial_sums  <span style="color:#f92672">=</span> [<span style="color:#ae8
 right_partial_sums <span style="color:#f92672">=</span> [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">0</span>] <span style="color:#75715e"># before modulo: [-10, -7, -6, -2,  0]</span></code></pre></div>
 <p>What are the partial sums for? Let's make a claim:</p>
 
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <strong>Claim.</strong> If $a_{m+1}, a_{m+2}, &hellip;, a_{m+k}$ are removed so that the sum of the remaining entries is divisible by $p$, then $L_m = R_{m+k}$.
 </div>
 
@@ -589,7 +591,7 @@ right_partial_sums <span style="color:#f92672">=</span> [<span style="color:#ae8
 
 <h2 id="c-find-the-winner-of-an-array-game">C. Find the Winner of an Array Game<a href="#c-find-the-winner-of-an-array-game" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Idea.</strong> It is a simple simulation question&hellip; It is equivalent by removing the loser instead of moving it to the end of the array. Note that the losers won&rsquo;t win again because the numbers of the winners should be increasing.
 </div>
 
@@ -603,7 +605,7 @@ right_partial_sums <span style="color:#f92672">=</span> [<span style="color:#ae8
 
 <h2 id="d-valid-permutations-for-di-sequence">D. Valid Permutations for DI Sequence<a href="#d-valid-permutations-for-di-sequence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Idea.</strong> Use dynamic programming where <code>dp[i][j]</code> is the number of permutations such that <code>a[i]</code> is the <code>j</code>-th largest amongst <code>a[0]</code>, <code>a[1]</code>, &hellip;, <code>a[i]</code>.
 </div>
 
@@ -620,7 +622,7 @@ right_partial_sums <span style="color:#f92672">=</span> [<span style="color:#ae8
 
 <h2 id="e-closest-subsequence-sum">E. Closest Subsequence Sum<a href="#e-closest-subsequence-sum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Idea.</strong> This is a pretty standard meet-in-the-middle challenge that decreases the number of checks for brute-force from $2^{40}$ to $2^{21}$.
 </div>
 

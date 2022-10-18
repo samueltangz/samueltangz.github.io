@@ -176,6 +176,8 @@ This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 a
   
 
   
+
+  
     <img src="/images/2021-04-08-angstromctf/cache-money.png" class="post-cover center" alt="ångstromCTF 2021: Cache Money" />
   
 
@@ -262,7 +264,7 @@ This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 a
 
 <p>It takes around 0.7 seconds to encrypt a random block of message under AES-256. A costy operation would be <code>MixColumns</code> - it is called 13 times and each contributes ~6% to the total encryption time (hence around 85% in total). Unfortunately, it is not feasible to read cached <code>MixColumns</code> for the timing attack. Here's why:</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Don&rsquo;t believe that 0.7s.</strong> The time is measured with there is verbose logging, and I/O definitely takes a considerable amount of time. It takes only 0.2s without logging (which is still pretty slow by the way).
 </div>
 
@@ -379,7 +381,7 @@ This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 a
 </span><span style="color:#75715e"></span>{<span style="color:#f92672">&#34;result&#34;</span>: <span style="color:#e6db74">&#34;4572726f72&#34;</span>, <span style="color:#f92672">&#34;time&#34;</span>: <span style="color:#ae81ff">40721</span>} <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">Response</span></code></pre></div>
 <h4 id="what-is-this-why-is-it-faster">What is this? Why is it faster?<a href="#what-is-this-why-is-it-faster" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   🤨 <strong>Confusion alert.</strong> I know it is getting more confusing. Please bear with me&hellip;
 </div>
 
@@ -432,21 +434,21 @@ roundkeys[<span style="color:#ae81ff">3</span>][<span style="color:#ae81ff">0</s
 
 <p>Unfortunately, we cannot generalize the idea to recover keys under AES-256 because there are more than 300 function calls for computing round keys. Hence, the cache for <code>Add(roundkeys[0][0], m[0][0])</code> and others have already expired prior than they are used. Only the round keys for the later rounds are cached. With that said, we can use $\mathcal{D}_0(c, 256)$ instead of $\mathcal{E}_0(m, 256)$ and recover the round keys generated near-end. Specifically they are <code>roundkeys[49] == a[0:4]</code>, <code>roundkeys[50] == a[4:8]</code> and <code>roundkeys[51] == a[8:12]</code>.</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Why?</strong> The proof is left as readers' exercise (I apologize being lazy and I have actually lose patient spending five hours compiling this writeup during CTF).
 </div>
 
 
 <p>Since we have <code>roundkeys[0]</code>, <code>roundkeys[1]</code>, ..., <code>roundkeys[5]</code>, we can retrieve <code>key[24:32]</code> using <em>Z3</em>. Eventually we found <code>key == b'fGsOY9Xb4Eq5vLdHzDGbJ4QvQqOCQcYm'</code> and could decrypt the flag: <code>actf{if_you_cache_my_drift}</code>. First 🩸!</p>
 
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   🔑 <strong>Solution script!</strong> The full solution script is available <a href="https://gist.github.com/samueltangz/cbba3f529d07396d1a196ebf7693599f#file-angstromctf-2021-cache-money-solve-py">here</a> (and <a href="https://gist.github.com/samueltangz/cbba3f529d07396d1a196ebf7693599f#file-angstromctf-2021-cache-money-solve-log">its output</a>). Hope this explains how my attack works.
 </div>
 
 
 <h3 id="part-v-attacks-without-timereading">Part V: Attacks without time-reading<a href="#part-v-attacks-without-timereading" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Note.</strong> This is not my idea. I found this pretty mind-blowing so I shamelessly document this as well. Kudos to <em>UnblvR</em>!
 </div>
 

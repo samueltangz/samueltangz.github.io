@@ -167,6 +167,8 @@ This is another QOO&#39;s challenge." />
   
 
   
+
+  
     <img src="/images/2021-05-06-defcon-2/scoreboard.png" class="post-cover center" alt="DEF CON CTF Quals 2021: Day 2" />
   
 
@@ -191,7 +193,7 @@ This is another QOO&#39;s challenge." />
 
 <p>OOO decided to release a crypto challenge shortly after I am asleep. While I am dreaming, <em>Poignant Pineapple</em> and <em>p_nack</em> managed to beat the game by luck and shared the complete transcript of the communication. They noticed that the problem is solvable by brute-forcing. Unfortunately, there is an implementation flaw on their solution script and they are unable to retrieve the flag at the moment.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>It may be fortunate for me.</strong> At least I had a chance to read the challenge before it is solved&hellip;
 </div>
 
@@ -208,7 +210,7 @@ This is another QOO&#39;s challenge." />
 
 <p>However, that is not the end. To make the challenge more interesting (or confusing), they tried to introduce a secret quantum coin which can be tossed and we will be automatically using the measured value as $P_1$. <em>Poignant Pineapple</em> has observed that the chances to win by tossing the coins (and do nothing else) is much higher - we are able to win once in about 10 games.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>What is preventing us from solving?</strong> At that time, I was convinced that the entropy of the key is exactly 30 bits. Instead of reading the challenge in detailed, I decide to fix the script they wrote for the flag to brute the 30-bit entropy. The entropy could be shorter (will be mentioned in <em>Part V</em>), thus the attack did not work.
 </div>
 
@@ -243,7 +245,7 @@ This is another QOO&#39;s challenge." />
 
 <h3 id="part-iii-a-twominute-review-on-quantum-mechanics">Part III: A two-minute review on quantum mechanics<a href="#part-iii-a-twominute-review-on-quantum-mechanics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Beginners only!</strong> For anyone who is not familiar with quantum mechanics, I am with you. <em>hoifanrd</em> taught me quantum mechanics during PlaidCTF 2021. Anyway, I&rsquo;ll only cover the details that are used in the challenge. I am not good at explaining stuffs, after all.
 </div>
 
@@ -447,7 +449,7 @@ dispatch 0 hash 131313131313 21 c;cat${IFS}flag${IFS}</code></pre></div>
 
 <h3 id="part-i-machine-learning-how">Part I: Machine learning, how?<a href="#part-i-machine-learning-how" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   Well&hellip; I was reluctant to read this challenge because it is also tagged with <em>machine learning</em>. During the process, I asked a lot of questions and <em>mdy</em> and <em>Paul</em> answered them patiently. Although we end up not solving this challenge, I learned.
 </div>
 
@@ -468,7 +470,7 @@ dispatch 0 hash 131313131313 21 c;cat${IFS}flag${IFS}</code></pre></div>
 
 <h3 id="part-ii-some-observations-and-attempts">Part II: Some observations and attempts<a href="#part-ii-some-observations-and-attempts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   These are some random ideas we came up while studying the challenge. They are not necessarily useful, and I am unsure if any of them work. Read it at your own risk as it may not help solving the challenge.
 </div>
 

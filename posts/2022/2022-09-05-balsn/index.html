@@ -174,11 +174,13 @@ lfsr is another crypto challenge in BalsnCTF with 6 solves. In the challenge, th
   
 
   
+
+  
     <img src="/images/2022-09-05-balsn/lll-nightmare.png" class="post-cover center" alt="BalsnCTF 2022 Writeup" />
   
 
   <div class="post-content js-toc-content"><div>
-        <div class="alert info" style="margin-bottom: 12px;">
+        <div class="alert info">
   <strong>Credits.</strong> Thumbnail credit goes to <em>Quasar</em>! 🎉
 </div>
 
@@ -192,12 +194,12 @@ lfsr is another crypto challenge in BalsnCTF with 6 solves. In the challenge, th
 <li>$v_i = g_i^{u_i}\ \text{mod}\ q_i$.</li>
 </ol>
 <p>The goal is to recover $x$ and $y$.</p>
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Why 180 sets of data?</strong> Although not explicitly mentioned in the challenge, there is a 30-second timeout for the remote connection. You can only get around 180 sets of $(a_i, b_i, c_i, p_i, g_i, v_i, q_i)$ within the timeout.
 </div>
 
 <h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <strong>TL;DR.</strong> My approach, like 95% of the crypto challenges I solved, uses LLL.
 </div>
 
@@ -237,7 +239,7 @@ c_1       &amp; b_2       &amp; \dots  &amp; c_{40}          &amp;   &amp;   &am
 <p>$\mathbf{v}$ can be found applying LLL if we set appropriate weights. LLL for the win! We can recover $x$ and $y$ and thus the flag: <code>BALSN{commitments_leak_too_much_QwQ}</code>.</p>
 <h2 id="lfsr">lfsr<a href="#lfsr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Note.</strong> In the challenge, the operations are done in $\text{GF}(2)$. That said, $+$ is actually the $\oplus$ (XOR) operation and $\times$ is the AND operation.
 </div>
 
@@ -258,7 +260,7 @@ y_{8i} &amp;= b(s_{8i}, s_{8(i+1)}, s_{8(i+2)}, s_{8(i+4)}, s_{8(i+15)}).
 \end{aligned}$$</p>
 <p>We have $y_0, y_8, &hellip;, y_{8 \times 1023}$. Combining above, we have 1024 equations with 1039 unknowns (the unknowns being $s_0, s_8, &hellip;, s_{8 \times 1038}$). Therefore, it is expected to get around $2^{15}$ possible sets of $s_0, s_8, &hellip;, s_{8304}$ from $y_0, y_8, &hellip;, y_{8184}$.</p>
 <p>Similarly, we can use $y_1, y_9, &hellip;, y_{8185}$ to recover $s_1, s_9, &hellip;, s_{8305}$, use $y_2, y_{10}, &hellip;, y_{8186}$ to recover $s_2, s_{10}, &hellip;, s_{8306}$ and so on.</p>
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>$2^{15}$ is not an accurate estimate!</strong> In average, there are far more than $2^{15}$ such $s_i$&rsquo;s from those $y_i$&rsquo;s when the number of terms increases. Fortunately the number of $s_i$&rsquo;s does not affect a lot on the solution.
 </div>
 
@@ -278,12 +280,12 @@ y_8 &amp;= b(s_8, s_{16}, s_{24}, s_{40}, s_{128}) \\
 &amp; \qquad \vdots \\
 y_{8(l-16)} &amp;= b(s_{8(l-16)}, s_{8(l-15)}, s_{8(l-14)}, s_{8(l-12)}, s_{8(l-1)}).
 \end{aligned}\right.$$</p>
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Regarding the notation.</strong> I use $\tilde s_i$&rsquo;s instead of $s_i$&rsquo;s because they are not necessary the correct ones.
 </div>
 
 <h4 id="part-ii-how-to-get-the-key-from-undecillions-of-s_is">Part II: How to get the key from undecillions of $s_i$&rsquo;s?<a href="#part-ii-how-to-get-the-key-from-undecillions-of-s_is" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Why undecillions?</strong> Suppose that we have $2^{15}$ sets of $s_0, s_8, &hellip;$, $2^{15}$ sets of $s_1, s_9, &hellip;$ and so on. There are $2^{15 \times 8} \approx 10^{36}$ sets of $s_0, s_1, s_2, &hellip;$ in total.
 </div>
 
@@ -294,7 +296,7 @@ y_{8(l-16)} &amp;= b(s_{8(l-16)}, s_{8(l-15)}, s_{8(l-14)}, s_{8(l-12)}, s_{8(l-
 <li>$(\tilde s_2, \tilde s_{10}, &hellip;, \tilde s_{506}) \in \mathcal{S}_2$ (64 terms), and</li>
 <li>$(\tilde s_7, \tilde s_{15}, &hellip;, \tilde s_{511}) \in \mathcal{S}_7$ (64 terms).</li>
 </ol>
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <strong>8192 bits? I don&rsquo;t need that.</strong> The challenge can be solved 513 consecutive bits, ideally, with my approach.
 </div>
 
@@ -322,6 +324,13 @@ y_{8(l-16)} &amp;= b(s_{8(l-16)}, s_{8(l-15)}, s_{8(l-14)}, s_{8(l-12)}, s_{8(l-
         <hr />
     </div>
     <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/2022/2022-10-19-h4ck1ng-g00gl3/">
+                <span class="button__icon">←</span>
+                <span class="button__text">H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</span>
+            </a>
+        </span>
         
         
         <span class="button next">

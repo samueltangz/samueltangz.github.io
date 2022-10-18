@@ -174,13 +174,15 @@ I will first cover on a crypto challenge called commitment-issues, which had 16 
   
 
   
+
+  
     <img src="/images/2022-02-08-dicectf/banner.png" class="post-cover center" alt="DiceCTF 2022 (I): commitment-issues" />
   
 
   <div class="post-content js-toc-content"><div>
         <p>DiceCTF is an annual CTF competition prepared by <a href="https://twitter.com/dicegangctf" target="_blank" rel="nofollow">@dicegangctf</a>. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Deja vu?</strong> I said similar things <a href="/posts/2021/2021-02-15-dicectf-1/">last year</a>. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.
 </div>
 
@@ -242,7 +244,7 @@ s^6 &\equiv s \cdot \left[5 c_1 \cdot s^4 - 10 {c_1}^2 \cdot s^3 + 10 {c_1}^3 \c
 
 <p>for some constants $A_1, B_1, C_1, D_1$ and $E_1$ (can be computed with the matrix approach). Unfortunately, the equation has $200 + 4 \cdot 2048 = 8392$ bits of unknown while had only 2048 bits of information.</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>How do we deduce that $200 + 4 \cdot 2048$?</strong> Each of $s, s^2, s^3$ and $s^4$ is a 2048-bit unknown and $m$ has 200 bits of unknown (it matches the regex <code>dice\{.{25}\}</code>).
 </div>
 

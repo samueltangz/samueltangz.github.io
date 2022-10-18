@@ -168,6 +168,8 @@ Additionally, phoenix had seven solves and while horcrux and boggart had two." /
   
 
   
+
+  
     <img src="/images/2021-02-28-aeroctf/scoreboard.png" class="post-cover center" alt="Aero CTF 2021 Writeup" />
   
 
@@ -200,7 +202,7 @@ Additionally, phoenix had seven solves and while horcrux and boggart had two." /
 
 <h4 id="part-i-working-on-the-math-part">Part I: Working on the math part<a href="#part-i-working-on-the-math-part" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Note.</strong> The operations are done over $\text{GF}(p)$. I won&rsquo;t mention mod <em>p</em> for simplicity.
 </div>
 
@@ -217,7 +219,7 @@ Additionally, phoenix had seven solves and while horcrux and boggart had two." /
 
 <p>To begin, let's define $e_1 = x_P - \tilde{x}_P$, $e_2 = y_P - \tilde{y}_P$, $e_3 = x_Q - \tilde{x}_Q$ and $e_4 = y_Q - \tilde{y}_Q$.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Why using $e_i$&rsquo;s but not $\varepsilon_i$&rsquo;s those we defined?</strong> We would not use $\varepsilon_i$&rsquo;s since they involve <em>xor</em> operations. We don&rsquo;t know how to do it on elliptic curves.
 </div>
 
@@ -233,7 +235,7 @@ Additionally, phoenix had seven solves and while horcrux and boggart had two." /
 & = \left[y_G^2 - (\tilde{y}_P + e_4)^2 - x_G^3 + (\tilde{x}_Q + e_3)^3\right]\left[x_G - (\tilde{x}_P + e_1)\right].
 \end{aligned}\]</span></p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>What was my motivation?</strong> I tried to minimize the <em>entropy</em> by eliminating the 3000-bit unknowns, i.e., $a, b, x_P, y_P, x_Q$ and $y_Q$. I am either removing them by combining equations, or reducing the entropy by replacing them with smaller ones.
 </div>
 
@@ -403,7 +405,7 @@ B <span style="color:#f92672">=</span> B <span style="color:#f92672">/</span> T
 <p>Author: keltecc (Discord)</p>
 </blockquote>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Note:</strong> This time, we are working on $\text{GF}(2^{256})$. $+$ is equivalent to XOR now.
 </div>
 
@@ -503,7 +505,7 @@ B <span style="color:#f92672">=</span> B <span style="color:#f92672">/</span> T
 
 <p>What is this $F$? Ideally, I would like to maintain a set $F$ such that every $(p, q) \in F$ satisfies $pq \equiv 1\ (\text{mod}\ 2^s)$ (for a given $s$), while $p$ and $q$ having the set bits $\sigma$ had.</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Why $s_j \geq 20$?</strong> The set bits for $\sigma$ may not be set in $\text{NextPrime}(\sigma\ | \Delta p)$ because of carrying. In this case, I assumed that the carrying did not go too far.
 </div>
 
@@ -533,7 +535,7 @@ B <span style="color:#f92672">=</span> B <span style="color:#f92672">/</span> T
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">n = 40740327153595270257184780086389953086261120133330698714430641164791044793765728073225136444807495004396268705143115221155717342774153766221474052678956440685995627998728286518422095251317829948639280532042852083900018149268443333895256994879066082385467247811575697036554762935124165948190148187259065768291
 p = 6599104293714145478554177176803578568990396482282918390864510364381920295952993884789163942979610791954293100727323403846729255137773392428824686146334083
 q = 6173614681677589793159076464182384333359578951775387735487730852029780858970587865352547693301144847551051384110518957280217521699817523617984210590793377</code></pre></div>
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>An afterthought.</strong> My algorithm is pretty slow, and it could be sped up by computing $q_2$ from $p_2$ (instead of iterating them) on <em>update</em> and <em>finalize</em>. The complexity for each set update would be $\mathcal{O}(2^{s_{i+1} - s_i})$ instead of $\mathcal{O}(4^{s_{i+1} - s_i})$.
 </div>
 
@@ -577,7 +579,7 @@ q = 6173614681677589793159076464182384333359578951775387735487730852029780858970
 
 <p>Since we are given a message-ciphertext pair $(m_1, c_1)$, I used a <em>meet-in-the-middle</em> approach to find the $e_i$'s. Since each round of the encryption is independent, I can encrypt $m_1$ with $e_1, e_2, ..., e_{10}$ for middletexts. On the other hand, I will decrypt $c_1$ with the private exponents derived from $e_{16}, e_{15}, ..., e_{11}$ for middletexts, too. If they are equal, then $(e_1, e_2, ..., e_{16})$ is the chain of public exponents I want. To speed up, I am working under modulo $p$ instead of modulo $n$. Not only the modulus is smaller, the private exponents are also smaller.</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Why 10+6 but not 8+8 for MITM?</strong> The decryption is considerably slower (owing to large $d$&rsquo;s) and I think we should be encrypting more.
 </div>
 

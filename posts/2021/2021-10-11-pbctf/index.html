@@ -173,11 +173,13 @@ I was originally going to discuss all of the crypto challenges, but I found it i
   
 
   
+
+  
     <img src="/images/2021-10-11-pbctf/intended.png" class="post-cover center" alt="pbctf 2021: Seed Me &amp; Yet Another RSA" />
   
 
   <div class="post-content js-toc-content"><div>
-        <div class="alert warning" style="margin-bottom: 12px;">
+        <div class="alert warning">
   <strong>What&rsquo;s the thumbnail?</strong> I sent it to <em>rbtree</em> after I sent him my solution on <em>Yet Another PRNG</em> and he responded &ldquo;oh this works?&rdquo;.
 </div>
 
@@ -267,7 +269,7 @@ t_n &= a t_{n-1} + b = a (a t_{n-2} + b) + b = a^2 t_{n-2} + b(a + 1) = ... \\
 
 <p>We can see that $t_n$ has an affine relation to $t_0$ and let us denote $t_n := a_n t_0 + b_n$ with $a_n = a^n$ and $b_n = b(a^{n-1} + a^{n-2} + ... + 1)$. It implied that we are actually solving a set of linear inequalities, under modulo $2^{48}$ however.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Now we are stuck.</strong> When in doubt, go lattice.
 </div>
 
@@ -382,7 +384,7 @@ a_{2048} & a_{4096} & ... & a_{32768} & 0 \\
 
 <p>and of course it did not work (will be explained in the next part). Well, <a href="https://twitter.com/RBTree_" target="_blank" rel="nofollow">@RBTree_</a> would definitely not going to make such a straight forward challenge. Thus, I decided to study the group operation. This is the most regretable decision I have ever made in my life.</p>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>So what is the group?</strong> I don&rsquo;t know. We spent a lot of time studying it. <a href="https://twitter.com/rkm0959/status/1447358025908379649"><em>rkm0959</em> tweeted</a> that it is defined on $\mathbb{F}_n[x]/(x^3 - 2)$.
 </div>
 
@@ -417,7 +419,7 @@ a_{2048} & a_{4096} & ... & a_{32768} & 0 \\
 
 <p>Since Wiener's attack did not work, it is natural to try Boneh-Durfee afterwards.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>It is natural to try&hellip;</strong> Well it is not. At least I did not attempt to use Boneh-Durfee but instead went into a rabbit hole.
 </div>
 

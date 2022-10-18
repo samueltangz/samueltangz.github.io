@@ -168,6 +168,8 @@ There are some objectives that I want to achieve:
 
   
 
+  
+
   <div class="post-content js-toc-content"><div>
         <p>Recently I am motivated to solve some algorithmic problems. I will be picking five challenges from <em>LeetCode</em> everyday, including three medium and two hard challenges. I expect that I will be spending two hours per day on solving those challenges.</p>
 
@@ -218,7 +220,7 @@ gantt
 
 <p>For simplicity, I assume that $d$ is even in this section. Of course we need to handle the case when $d$ is odd...</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Claim.</strong> Traverse the tree twice to obtain the longest path of length $d$. The nodes with distance $d/2$ (from one-end of the longest path) form a minimum height tree (MHT).
 </div>
 
@@ -300,14 +302,14 @@ gantt
     </div>
   </div>    
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Claim 2.</strong> Suppose that nodes $u$ and $v$ forms a longest path with length $d$. Then all nodes $w$ such that $\text{dist}(u, w) = \text{dist}(v, w) = d/2$ are the root nodes for MHTs.
 </div>
 
 
 <p>I should be checking both ends of the longest path. For the tree above, a longest path would be <code>0 -- 1 -- 2 -- 3 -- 4</code>. Then node $k$ is a root node for minimum height tree if and only if $\text{dist}(0, k) = \text{dist}(4, k) = 4/2$.</p>
 
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <strong>After-thought.</strong> There is a simpler approach: Mark all the leaf nodes as $d = 0$ and do BFS. The nodes mark with the largest distance are the root nodes for the MHTs.
 </div>
 
@@ -333,7 +335,7 @@ gantt
 
 <h3 id="commentary-1">Commentary<a href="#commentary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>This looks unsound!</strong> Although I have an intuition that divide-and-conquer works, I am not fully convinced on why the below approach worked.
 </div>
 
@@ -371,7 +373,7 @@ gantt
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">n+1  1  n+2  2  n+3  3  ...  2n  n</code></pre></div>
 <p>Although it looked more or less same, the minimum difference between consecutive entries is $n$ (it was $n-1$). This actually tells us that we are able to find a solution even if there are $n$ identical entries.</p>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>This looks unsound!</strong> How can we guaranteed that there are no solutions when there are $n+1$ identical entries?
 </div>
 
@@ -397,7 +399,7 @@ gantt
 
 <h2 id="d-checking-existence-of-edge-length-limited-paths">D. Checking Existence of Edge Length Limited Paths<a href="#d-checking-existence-of-edge-length-limited-paths" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Idea.</strong> Sort and answer the queries by ascending <em>limits</em>. Merge the disjoint sets in between.
 </div>
 

@@ -6,20 +6,29 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 Sep 2022 22:00:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>balsn-ctf</title>
-      <link>/tags/balsn-ctf/</link>
-      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
+      <title>bleichenbacher</title>
+      <link>/tags/bleichenbacher/</link>
+      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/tags/balsn-ctf/</guid>
+      <guid>/tags/bleichenbacher/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>challenge-writing</title>
+      <link>/tags/challenge-writing/</link>
+      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
+      
+      <guid>/tags/challenge-writing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>crypto</title>
       <link>/tags/crypto/</link>
-      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
+      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
       <guid>/tags/crypto/</guid>
       <description></description>
@@ -28,9 +37,36 @@
     <item>
       <title>ctf</title>
       <link>/tags/ctf/</link>
-      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
+      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
       <guid>/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>google-ctf</title>
+      <link>/tags/google-ctf/</link>
+      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
+      
+      <guid>/tags/google-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rsa</title>
+      <link>/tags/rsa/</link>
+      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
+      
+      <guid>/tags/rsa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>balsn-ctf</title>
+      <link>/tags/balsn-ctf/</link>
+      <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
+      
+      <guid>/tags/balsn-ctf/</guid>
       <description></description>
     </item>
     
@@ -49,24 +85,6 @@
       <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
       <guid>/tags/lll/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>challenge-writing</title>
-      <link>/tags/challenge-writing/</link>
-      <pubDate>Wed, 20 Jul 2022 20:09:00 +0800</pubDate>
-      
-      <guid>/tags/challenge-writing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>google-ctf</title>
-      <link>/tags/google-ctf/</link>
-      <pubDate>Wed, 20 Jul 2022 20:09:00 +0800</pubDate>
-      
-      <guid>/tags/google-ctf/</guid>
       <description></description>
     </item>
     
@@ -130,15 +148,6 @@
       <pubDate>Tue, 08 Feb 2022 04:30:00 +0800</pubDate>
       
       <guid>/tags/dicectf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rsa</title>
-      <link>/tags/rsa/</link>
-      <pubDate>Tue, 08 Feb 2022 04:30:00 +0800</pubDate>
-      
-      <guid>/tags/rsa/</guid>
       <description></description>
     </item>
     

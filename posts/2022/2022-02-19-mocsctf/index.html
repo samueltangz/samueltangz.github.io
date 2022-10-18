@@ -170,6 +170,8 @@ These are the summary of the challenges:
 
   
 
+  
+
   <div class="post-content js-toc-content"><div>
         <p><a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> helped preparing some challenges for MOCSCTF, a 8.5-hour long CTF in Macau. This time I wrote nine challenges and <a href="https://twitter.com/hoifanrd" target="_blank" rel="nofollow">@hoifanrd</a> made one of them (3-AES). This blog post covers the intended solution for all of them.</p>
 
@@ -329,7 +331,7 @@ t = 7967501076725747803058232903884621217031867311480596291389476854702834454579
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">MOCSCTF{st0p_l34k1ng_3x7r4_5tuffs_ab0u7_y0ur_r5a_k3y}</code></pre></div>
 <p>&nbsp;</p>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <p><strong>Postmortem.</strong> <em>sahuang</em> from team <em>Project SEKAI</em> has an alternate solution, which is pretty elegant:</p>
 <p>Since $e \cdot d \equiv 1\ (\text{mod}\ \phi(n))$, we also have $e \cdot d \equiv 1\ (\text{mod}\ (p-1))$ which lead to</p>
 <p>$$e \cdot (sp + t) \equiv 1\ (\text{mod}\ (p-1)) \Longrightarrow e \cdot (s + t) \equiv 1\ (\text{mod}\ (p-1)).$$</p>
@@ -495,7 +497,7 @@ m4 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">MOCSCTF{wh4t_i5_th3_u53_0f_5uch_c0111si0ns_w1th_d1ff3ren7_k3y5}</code></pre></div>
 <h2 id="rc4-crypto">RC4 (Crypto)<a href="#rc4-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Disambiguation.</strong> Please do not be confused with the <a href="/posts/2021/2021-01-18-firebird-internal-ctf/#rc4-misc">RC4 challenge</a> I made for Firebird Internal CTF in 2021.
 </div>
 
@@ -783,7 +785,7 @@ iv  <span style="color:#f92672">=</span> md5(os<span style="color:#f92672">.</sp
 
 <p>The objective is to recover the flag.</p>
 
-<div class="alert danger" style="margin-bottom: 12px;">
+<div class="alert danger">
   <strong>Incorrect cipher definition!</strong> This is not the cipher we are going to analyse. We will explain why and state the actual cipher to-be studied later.
 </div>
 

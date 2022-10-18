@@ -170,13 +170,15 @@ Warmup edition only. If you are interested to learn the harder edition that invo
   
 
   
+
+  
     <img src="/images/2021-11-29-dragonctf/map.png" class="post-cover center" alt="Dragon CTF 2021: CRC Recursive Challenge (Warmup)" />
   
 
   <div class="post-content js-toc-content"><div>
         <p><a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> played Dragon CTF 2021 last weekend and I spent most of the time solving the CRC duo. They are very fun but unfortunately that we were close enough while unable to get the second flag.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Warmup edition only.</strong> If you are interested to learn the harder edition that involves a 128-bit CRC, you may want to look at <a href="https://affine.group/writeup/2021-11-DragonCTF-CRC-recursive-hard">hellman&rsquo;s writeup</a>. I would only cover a solution of the easier edition with some unsuccessful attempts of the harder one.
 </div>
 
@@ -208,7 +210,7 @@ crc <span style="color:#f92672">=</span> crc64(inp)
 
 <p>To start with, I will include the affine property of CRC. That is the most important property that I used to attack the challenge.</p>
 
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <p><strong>CRC&rsquo;s affine property.</strong> For any messages $m_1, m_2, m_3$,</p>
 <p>$$\text{CRC}(m_1 \oplus m_2 \oplus m_3) = \text{CRC}(m_1) \oplus \text{CRC}(m_2) \oplus \text{CRC}(m_3).$$</p>
 
@@ -323,7 +325,7 @@ dm[<span style="color:#ae81ff">15</span>][<span style="color:#ae81ff">15</span>]
 
 <p>To speed up the whole process, we used multithreading during the lookup phase. If we have $t$ threads, then the expected running time is $3 \cdot (16^{u-8} + 16^{v-8}/t)$ hours. Running a $7 + 9$ with 16 threads would take around 3 hours. Regrettably it is not a good idea to freeze <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a>'s laptop for a couple hours.</p>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Why not multithreading for precompute as well?</strong> Map insert is not <em>thread-safe</em> and some entries may not be successfully inserted to the map.
 </div>
 
@@ -365,7 +367,7 @@ DrgnS{0x5d9f900f6564617b}</code>
 
 <h3 id="part-ii-when-in-doubt-use-lll-and-led-to-more-doubts">Part II: When in doubt use LLL (and led to more doubts)<a href="#part-ii-when-in-doubt-use-lll-and-led-to-more-doubts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Ideas only.</strong> We will be discussing unsuccessful attempts to tickle the harder challenge from this part onwards.
 </div>
 
@@ -400,7 +402,7 @@ O & 2 \cdot I_{64}
 
 <h3 id="part-iii-an-approach-with-time-complexity-mathcalo2n4">Part III: An approach with time complexity $\mathcal{O}(2^{n/4})$<a href="#part-iii-an-approach-with-time-complexity-mathcalo2n4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <strong>TL;DR.</strong> We will discuss a solution that works on a modest computer&hellip; Only for the CRC64 challenge though.
 </div>
 
@@ -499,7 +501,7 @@ dm[<span style="color:#ae81ff">15</span>][ <span style="color:#ae81ff">5</span>]
 
 
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <strong>Just optimize it.</strong> After the contest, we learned that the author&rsquo;s solution is to solve $2^{32}$ linear systems (with optimized C++ implementation and smaller matrices though). So I am not that far from the flag&hellip;
 </div>
 

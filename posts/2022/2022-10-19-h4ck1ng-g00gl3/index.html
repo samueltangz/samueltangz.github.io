@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HACKING GOOGLE is a documentary of Google&amp;rsquo;s cybersecurity teams and H4CK1NG G00GL3 is it&amp;rsquo;s CTF counterpart. Project Zero Adventure is a cryptography challenge I wrote.
+In the game, the players control the Security Princess to dodge the obstacles and catch the bugs (a variant of Google Chrome&amp;rsquo;s dinosaur game). After that, the server will sign messages consisting of the players&#39; name and the score via the /sign API. The players will then submit it to the /highscore API." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/2022/2022-10-19-h4ck1ng-g00gl3/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/mystiz.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure">
+<meta property="og:description" content="HACKING GOOGLE is a documentary of Google’s cybersecurity teams and H4CK1NG G00GL3 is it’s CTF counterpart. Project Zero Adventure is a cryptography challenge I wrote.
+
+In the game, the players control the Security Princess to dodge the obstacles and catch the bugs (a variant of Google Chrome’s dinosaur game). After that, the server will sign messages consisting of the players&#39; name and the score via the `/sign` API. The players will then submit it to the `/highscore` API. If the score submitted to the highscore API is negative, they will be given the flag.
+
+However, there is one catch: The server is only willing to sign the results with non-negative scores." />
+<meta property="og:url" content="/posts/2022/2022-10-19-h4ck1ng-g00gl3/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="/images/2022-10-19-h4ck1ng-g00gl3/pzero-adventures.gif">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-10-19 00:02:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/2022/2022-10-19-h4ck1ng-g00gl3/">H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-10-19 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="/tags/google-ctf/">google-ctf</a>&nbsp;
+    
+    #<a href="/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="/tags/rsa/">rsa</a>&nbsp;
+    
+    #<a href="/tags/bleichenbacher/">bleichenbacher</a>&nbsp;
+    
+  </span>
+  
+
+  
+  <h6 class="post-subtitle">Bleichenbacher strikes back again (and again).</h6>
+  
+
+  
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pzero-adventures.gif" class="post-cover center" alt="H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p><a href="https://www.youtube.com/watch?v=5nEyjYn9_LI&amp;list=PL590L5WQmH8dsxxz7ooJAgmijwOz0lh2H">HACKING GOOGLE</a> is a documentary of Google&rsquo;s cybersecurity teams and <a href="https://h4ck1ng.google/">H4CK1NG G00GL3</a> is it&rsquo;s CTF counterpart. <em>Project Zero Adventure</em> is a cryptography challenge I wrote.</p>
+<p>In the game, the players control the <a href="https://twitter.com/laparisa">Security Princess</a> to dodge the obstacles and catch the bugs (a variant of Google Chrome&rsquo;s dinosaur game). After that, the server will sign messages consisting of the players' name and the score via the <code>/sign</code> API. The players will then submit it to the <code>/highscore</code> API. If the score submitted to the highscore API is negative, they will be given the flag.</p>
+<p>However, there is one catch: The server is only willing to sign the results with non-negative scores.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>It is given that the server signs messages using a RSA key with a 2048-bit public modulus $n$ and $e = 3$. The messages are signed with PKCS#1 v1.5. The <code>verify</code> method below is how a signature <code>s</code>, correspond to the message <code>m</code>, is being verified. The goal is to forge a signature for messages indicating that the player has a negative score (one example of the message being <code>[&quot;pzero-adventures&quot;, &quot;MYZ&quot;, -1]</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">VerifyingKey</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, n, e, bits<span style="color:#f92672">=</span><span style="color:#ae81ff">2048</span>):
+        self<span style="color:#f92672">.</span>n <span style="color:#f92672">=</span> n
+        self<span style="color:#f92672">.</span>e <span style="color:#f92672">=</span> e
+
+        self<span style="color:#f92672">.</span>bits <span style="color:#f92672">=</span> bits
+
+    <span style="color:#75715e"># https://datatracker.ietf.org/doc/html/rfc2313#section-10.2</span>
+    <span style="color:#75715e"># Note: The only hash algorithm we accept is SHA256.</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verify</span>(self, m, s):
+        <span style="color:#66d9ef">if</span> len(s) <span style="color:#f92672">!=</span> self<span style="color:#f92672">.</span>bits<span style="color:#f92672">//</span><span style="color:#ae81ff">8</span>:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;incorrect signature length&#39;</span>)
+        s <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(s, <span style="color:#e6db74">&#39;big&#39;</span>)
+
+        k <span style="color:#f92672">=</span> pow(s, self<span style="color:#f92672">.</span>e, self<span style="color:#f92672">.</span>n)
+        k <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>to_bytes(k, self<span style="color:#f92672">.</span>bits<span style="color:#f92672">//</span><span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#39;big&#39;</span>)
+        <span style="color:#66d9ef">if</span> k[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0x00</span>:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;incorrect prefix&#39;</span>)
+        <span style="color:#66d9ef">if</span> k[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0x01</span>:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;incorrect prefix&#39;</span>)
+        
+        padding, digest_info <span style="color:#f92672">=</span> k[<span style="color:#ae81ff">2</span>:]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>, <span style="color:#ae81ff">1</span>)
+
+        <span style="color:#66d9ef">if</span> len(padding) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;invalid padding length&#39;</span>)
+        <span style="color:#66d9ef">if</span> padding <span style="color:#f92672">!=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\xff</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>len(padding):
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;invalid padding content&#39;</span>)
+
+        sequence <span style="color:#f92672">=</span> DerSequence()
+        sequence<span style="color:#f92672">.</span>decode(digest_info)
+        _digest_algorithm_identifier, _digest <span style="color:#f92672">=</span> sequence
+
+        sequence <span style="color:#f92672">=</span> DerSequence()
+        sequence<span style="color:#f92672">.</span>decode(_digest_algorithm_identifier)
+        _digest_algorithm_identifier <span style="color:#f92672">=</span> sequence[<span style="color:#ae81ff">0</span>]
+
+        object_id <span style="color:#f92672">=</span> DerObjectId()
+        object_id<span style="color:#f92672">.</span>decode(_digest_algorithm_identifier)
+        digest_algorithm_identifier <span style="color:#f92672">=</span> object_id<span style="color:#f92672">.</span>value
+        <span style="color:#66d9ef">if</span> digest_algorithm_identifier <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;2.16.840.1.101.3.4.2.1&#39;</span>:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;invalid digest algorithm identifier&#39;</span>)
+
+        _null <span style="color:#f92672">=</span> sequence[<span style="color:#ae81ff">1</span>]
+        null <span style="color:#f92672">=</span> DerNull()
+        null<span style="color:#f92672">.</span>decode(_null)
+
+        octet_string <span style="color:#f92672">=</span> DerOctetString()
+        octet_string<span style="color:#f92672">.</span>decode(_digest)
+        digest <span style="color:#f92672">=</span> octet_string<span style="color:#f92672">.</span>payload
+
+        <span style="color:#66d9ef">if</span> hashlib<span style="color:#f92672">.</span>sha256(m)<span style="color:#f92672">.</span>digest() <span style="color:#f92672">!=</span> digest:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;mismatch digest&#39;</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</code></pre></div><h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  📖 <strong>Alternative Writeups (which are usually better).</strong> Of course you would like to read the solutions from our players and our fellow Googlers! <a href="https://github.com/44670/writeups/blob/main/2022-h4ck1ng.google/main.md">Writeup</a> by <em>@44670</em>, <a href="https://github.com/Dvd848/CTFs/blob/master/2022_H4CK1NG_G00GL3/e05c02.md">writeup</a> by <em>@Dvd848</em> and <a href="https://dguerri.github.io/random-tech-stuff/H4CK1NG%20G00GL3%20Main%20challenges%20write-up/#challenge-02-5">writeup</a> by <em>@dguerri</em>.
+</div>
+
+<div class="alert warning">
+  ⏩ <strong>Fast forward?</strong> If you are interested <em>only</em> in the solution, you can start reading from <a href="#part-iii-and-it-constantly-strikes-back">part III</a>. I will begin with a literature review.
+</div>
+
+<h3 id="part-i-how-pkcs1-v15-signature-scheme-works">Part I: How PKCS#1 v1.5 signature scheme works?<a href="#part-i-how-pkcs1-v15-signature-scheme-works" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is well-known that RSA sign messages by &ldquo;decrypting&rdquo; them. Assuming that the RSA key is of 256 bytes, the PKCS#1 v1.5 payload to be signed is given below:</p>
+
+  <figure class="center" >
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-1.png"   />
+    
+  </figure>
+
+
+<p>Suppose that <code>DATA</code> is of length $l$. According to <a href="https://datatracker.ietf.org/doc/html/rfc2313#section-8.1">RFC 2313</a>, <code>PADDING</code> consists of $253 - l$ bytes which are all <code>0xFF</code>. Also, the data are encoded using <em>Distinguished Encoding Rules (DER)</em>. Below is an example of DER-encoded data indicating that:</p>
+<ul>
+<li>the hash algorithm being SHA-256, and</li>
+<li>the digest being <code>0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└─┬ 30 31                                  Sequence type (length 0x31)
+  ├─┬ 30 0d                                Sequence type (length 0x0D)
+  │ ├─┬ 06 09                              Object identifier type (length 0x09)
+  │ │ └── 608648016503040201               Object identifier content (decoded
+  │ │                                        2.16.840.1.101.3.4.2.1, SHA-256&#39;s OID)
+  │ └── 05 00                              Null type (length 0x00)
+  └─┬ 04 20                                Octet string type (length 0x20)
+    └── 0424974c68530290458c8d58674e2637   Octet string content
+        f65abc127057957d7b3acbd24c208f93
+</code></pre></div><p>Let $m$ denote the PKCS#1 v1.5 payload. Then the signature is given by $s = m^d \ \text{mod}\ n$.</p>
+<h3 id="part-ii-bleichenbachers-signature-forgery-attack-in-2006">Part II: Bleichenbacher&rsquo;s signature forgery attack in 2006<a href="#part-ii-bleichenbachers-signature-forgery-attack-in-2006" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In 2006, Bleichenbacher shared on CRYPTO'06 (<a href="https://mailarchive.ietf.org/arch/msg/openpgp/5rnE9ZRN1AokBVj3VqblGlP63QE/">Hal Finney&rsquo;s summary</a>) a way to easily forge RSA signatures when $e$ is small and the verify function is poorly implemented.</p>
+<p>Suppose that the signature is validated by unpadding, retrieving <code>ALGORITHM</code> and <code>DIGEST</code> from <code>DATA</code> and discarding remaining bytes. This is an ideal message:</p>
+
+  <figure class="center" >
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-1.png"   />
+    
+  </figure>
+
+
+<p>However, as long as the <code>ALGORITHM</code> and <code>DIGEST</code> are correct, messages in the below format are considered valid as well:</p>
+
+  <figure class="center" >
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-2.png"   />
+    
+  </figure>
+
+
+<p>Yes &ndash; this is not properly validated. This is disastrous, why?</p>
+<p>Let $e = 3$ and suppose we want to forge a signature for a message with its SHA-256 digest being <code>0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93</code>.</p>
+<p>Equivalently, we want to find $s$ with $s^3 \equiv m\ (\text{mod}\ n)$. Hereby $m$ begins with $m_0$ (which is 61 bytes long) below, i.e., $m = {256}^{195} m_0 + x$ for some &ldquo;garbage&rdquo; $x \in [0, {256}^{195})$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">m0 = 0x00 01 ffffffffffffffff 30 31 30 3d 06 09 608648016503040201 50 00 04 20 0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93
+             [PADDING       ] [DATA                                                                                                           ]
+                                    [ALGORITHM                         ] [DIGEST                                                              ]
+</code></pre></div><p>It is difficult to work on modulo arithmetic, so let&rsquo;s lift the modulo away and look for $s$ such that $s^3 = m = {256}^{165} m_0 + x$. It is easy to find a $s$ such that</p>
+<p>$${256}^{165} m_0 \leq s^3 &lt; {256}^{165} (m_0 + 1).$$</p>
+<p>In short, any of the integer between $\sqrt[3]{{256}^{165} m_0}$ and $\sqrt[3]{{265}^{165} (m_0 + 1)}$ would fit &ndash; and that is basically Bleichenbacher&rsquo;s attack in 2006.</p>
+<h3 id="part-iii-and-it-constantly-strikes-back">Part III: &hellip;and it constantly strikes back<a href="#part-iii-and-it-constantly-strikes-back" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is still hard to validate PKCS#1 v1.5 signatures properly after a decade.</p>
+<p>In 2016, <em>Filippo Valsorda</em> (<a href="https://twitter.com/filosottile" target="_blank" rel="nofollow">@filosottile</a>) wrote a <a href="https://words.filippo.io/bleichenbacher-06-signature-forgery-in-python-rsa/">blog post</a> on a flaw on such message being validated. In short, it is the <code>PADDING</code> which is not properly validated. You can read the source code of the vulnerable function <a href="https://github.com/sybrenstuvel/python-rsa/blob/version-3.2/rsa/pkcs1.py#L279">here</a>.</p>
+
+  <figure class="center" >
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-3.png"   />
+    
+  </figure>
+
+
+<p>This is not the end. In 2019, Sze Yiu Chau shared on Black Hat USA that the PKCS#1 v1.5 signatures are <em>still</em> not validated correctly (<a href="https://www.youtube.com/watch?v=2xspZfXI_nY">video</a> and <a href="https://i.blackhat.com/USA-19/Wednesday/us-19-Chau-A-Decade-After-Bleichenbacher-06-RSA-Signature-Forgery-Still-Works-wp.pdf">white paper</a> here). This yields six CVEs to their research team from various TLS and IPSec libraries.</p>
+<p>It is slightly different from BB'06. Instead of stuffing garbage as the suffix, we are putting random bytes in the middle. Mathematically, we are looking for $x$ with</p>
+<p>$$s^3 = m = 256^{l_1} \cdot \text{prefix} + 256^{l_2} \cdot x + \text{suffix}$$</p>
+<p>for a given $\text{prefix}$, $\text{suffix}$, $l_1$ and $l_2$.</p>
+<p>This is harder than stuffing garbage at the very end, because we have to solve the below inequalities and congruences at the same time:</p>
+<ul>
+<li>$256^{l_1} \cdot \text{prefix} \leq s^3 &lt; 256^{l_1} \cdot (\text{prefix} + 1)$, and</li>
+<li>$s^3 \equiv \text{suffix}\ (\text{mod}\ 256^{l_2}).$</li>
+</ul>
+<p>Fortunately this is solvable when $l_1 - l_2$ is large (we can stuff more garbage in between) and $e$ is small. Let&rsquo;s leave this as an exercise to the readers.</p>
+<h3 id="part-iv-again-in-h4ck1ng-g00gl3">Part IV: &hellip;again in H4CK1NG G00GL3<a href="#part-iv-again-in-h4ck1ng-g00gl3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now back to the challenge. The <code>verify</code> function at the very beginning seems to be implemented correctly. But there is one problem in the following snippet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">VerifyingKey</span>:
+    <span style="color:#75715e"># ...SKIPPED...</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verify</span>(self, m, s):
+        <span style="color:#75715e"># ...SKIPPED...</span>
+
+        sequence <span style="color:#f92672">=</span> DerSequence()
+        sequence<span style="color:#f92672">.</span>decode(_digest_algorithm_identifier)
+        _digest_algorithm_identifier <span style="color:#f92672">=</span> sequence[<span style="color:#ae81ff">0</span>]
+
+        object_id <span style="color:#f92672">=</span> DerObjectId()
+        object_id<span style="color:#f92672">.</span>decode(_digest_algorithm_identifier)
+        digest_algorithm_identifier <span style="color:#f92672">=</span> object_id<span style="color:#f92672">.</span>value
+        <span style="color:#66d9ef">if</span> digest_algorithm_identifier <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;2.16.840.1.101.3.4.2.1&#39;</span>:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;invalid digest algorithm identifier&#39;</span>)
+
+        _null <span style="color:#f92672">=</span> sequence[<span style="color:#ae81ff">1</span>]
+        null <span style="color:#f92672">=</span> DerNull()
+        null<span style="color:#f92672">.</span>decode(_null)
+
+        octet_string <span style="color:#f92672">=</span> DerOctetString()
+        octet_string<span style="color:#f92672">.</span>decode(_digest)
+        digest <span style="color:#f92672">=</span> octet_string<span style="color:#f92672">.</span>payload
+
+        <span style="color:#66d9ef">if</span> hashlib<span style="color:#f92672">.</span>sha256(m)<span style="color:#f92672">.</span>digest() <span style="color:#f92672">!=</span> digest:
+            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#39;mismatch digest&#39;</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</code></pre></div><p>In the snippet, it checks if</p>
+<ul>
+<li>the first item in the sequence is an <em>object identifier</em> being SHA-256&rsquo;s OID, and</li>
+<li>the second item in the sequence (i.e., the parameter) is a <em>null</em> object.</li>
+</ul>
+
+  <figure class="center" >
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-4.png"   />
+    
+  </figure>
+
+
+<p>Unfortunately, the method did not check if the sequence has <em>exactly</em> two items. An adversary can insert garbage and pretend that being the third item in the sequence. We then can reduce this to the math problem mentioned in part III.</p>
+
+  <figure class="center" >
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-5.png"   />
+    
+  </figure>
+
+
+<h3 id="part-v-and-again-unexpectedly">Part V: &hellip;and again, unexpectedly<a href="#part-v-and-again-unexpectedly" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  🤯 <strong>Unintended solution?</strong> I was carefully enough to make one mistake, but I was <em>not</em> carefully enough to make <em>only</em> one mistake. This part is dedicated to <em>@WMPPwocky</em>, who found an unintended solution and I was super surprised.
+</div>
+
+<p>Finally, let&rsquo;s patch the vulnerability. It is intuitive to check if the sequence of <code>ALGORITHM</code> has exactly two items:</p>
+<pre tabindex="0"><code class="language-diff-python&nbsp;diff-highlight" data-lang="diff-python&nbsp;diff-highlight">class VerifyingKey:
+    # ...SKIPPED...
+
+    def verify(self, m, s):
+        # ...SKIPPED...
+
+        sequence = DerSequence()
+        sequence.decode(digest_info)
+        _digest_algorithm_identifier, _digest = sequence
+
+        sequence = DerSequence()
+        sequence.decode(_digest_algorithm_identifier)
+
++       if len(sequence) != 2:
++           raise Exception('invalid sequence length')
+
+        _digest_algorithm_identifier = sequence[0]
+
+        object_id = DerObjectId()
+        object_id.decode(_digest_algorithm_identifier)
+        digest_algorithm_identifier = object_id.value
+        if digest_algorithm_identifier != '2.16.840.1.101.3.4.2.1':
+            raise Exception('invalid digest algorithm identifier')
+
+        _null = sequence[1]
+        null = DerNull()
+        null.decode(_null)
+
+        octet_string = DerOctetString()
+        octet_string.decode(_digest)
+        digest = octet_string.payload
+
+        if hashlib.sha256(m).digest() != digest:
+            raise Exception('mismatch digest')
+        return True
+</code></pre><p>Is it sufficient? Surprisingly no. <a href="https://twitter.com/XMPPwocky" target="_blank" rel="nofollow">@XMPPwocky</a> found a problem when decoding for <code>DerNull</code> &ndash; the latest version of pycryptodome (v3.15.0) does not raise an exception if it contains a non-empty payload!</p>
+<p>Normally, a <code>DerNull</code> object consists of two bytes: <code>05 00</code>. However, the below bytes are considered valid a <code>DerNull</code> object:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">05 27 64696420796f75206c6f6f6b20757020666f7220746865206861736820696e207061727420493f
+</code></pre></div><p>We can experiment this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> Crypto.Util.asn1 <span style="color:#f92672">import</span> DerNull
+
+_null <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;05 27 64696420796f75206c6f6f6b20757020666f7220746865206861736820696e207061727420493f&#39;</span>)
+null <span style="color:#f92672">=</span> DerNull()
+null<span style="color:#f92672">.</span>decode(_null) <span style="color:#75715e"># This does not raise an exception!</span>
+</code></pre></div><p>With that said, we can actually stuff garbage in the parameter field. Once again it became the math puzzle in part III.</p>
+
+  <figure class="center" >
+    <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-6.png"   />
+    
+  </figure>
+
+
+<p>I tried my best to verify everything except the intended issue while implementing. The unintended solution is definitely a lesson for me. 🤩 <strong>VERY NICE CATCH!</strong> 🎉</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/2022/2022-09-05-balsn/">
+                <span class="button__text">BalsnCTF 2022 Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

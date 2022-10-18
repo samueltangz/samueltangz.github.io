@@ -173,11 +173,13 @@ Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, nam
   
 
   
+
+  
     <img src="/images/2022-03-01-tsjctf/tsjctf.jpg" class="post-cover center" alt="TSJ CTF 2022 (I): Cipher Switching Service" />
   
 
   <div class="post-content js-toc-content"><div>
-        <div class="alert warning" style="margin-bottom: 12px;">
+        <div class="alert warning">
   <strong>Credits.</strong> I stole the banner image from TSJ CTF. Thanks!
 </div>
 
@@ -188,7 +190,7 @@ Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, nam
 
 <p>Anyway, I will compile writeups for (at least) three challenges for <em>TSJ CTF</em>, namely <em>Cipher Switching Service</em>, <em>Signature</em> and <em>Genie</em>. I will go through <em>Cipher Switching Service</em> as the first part of the series.</p>
 
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <strong>Fun fact.</strong> I have recently moved to Taiwan and today is a public holiday (the peace memorial day) there. That said, I could spend more time playing today and win a CTF made in Taiwan. What a coincidence.
 </div>
 
@@ -213,7 +215,7 @@ Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, nam
 
 <h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
-<div class="alert warning" style="margin-bottom: 12px;">
+<div class="alert warning">
   <strong>Unintended solution alert!</strong> The <a href="https://github.com/maple3142/My-CTF-Challenges/tree/master/TSJ%20CTF%202022/Top%20Secret">intended solution</a> uses Legendre symbol. I will only cover the solution that could recover the flag in two oracle calls that I found in the contest.
 </div>
 
@@ -259,7 +261,7 @@ Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, nam
 </ul></li>
 </ul>
 
-<div class="alert info" style="margin-bottom: 12px;">
+<div class="alert info">
   <p><strong>Note.</strong> It is necessary to mention $\text{mod}\ p$ (resp. $\text{mod}\ n$) when converting RSA to ElGamal (resp. vice versa). For example, when $n &lt; m &lt; p$, the below is wrong:</p>
 <p>$$\text{Enc}_\text{ElGamal}(m) \xrightarrow{\text{ElGamal to RSA}} \text{Enc}_\text{RSA}(m)$$</p>
 <p>As the message space for RSA is $\mathcal{M} := [0, n)$ and since $m \not\in \mathcal{M}$, modulo $m$ will be taken.</p>
@@ -269,7 +271,7 @@ Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, nam
 
 <p>Now we are trying to obtain $\text{Enc}_\text{RSA}(am + b)$ for some constants $a$ and $b$ ($a, b \neq 0$). If we are able to get that, then we are not far from recovering $m$ directly.</p>
 
-<div class="alert success" style="margin-bottom: 12px;">
+<div class="alert success">
   <p><strong>Why?</strong> Obviously, if $c_0$ is the RSA ciphertext of $m_0$, then $x - m_0$ is a factor of $x^e - c_0$ (under modulo $n$). We want to find another polynomial $\text{g}(x)$ under modulo $n$ such that it is divisible by $x - m_0$.</p>
 <p>As long as $x^e - c_0$ and $\text{g}(x)$ does not share other common factors than $x - m_0$, we can compute $x - m_0$ from $\text{GCD}(x^e - c_0, \text{g}(x))$. We can then recover $m_0$.</p>
 

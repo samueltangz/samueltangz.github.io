@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 Sep 2022 22:00:00 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</title>
+      <link>/posts/2022/2022-10-19-h4ck1ng-g00gl3/</link>
+      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
+      
+      <guid>/posts/2022/2022-10-19-h4ck1ng-g00gl3/</guid>
+      <description>HACKING GOOGLE is a documentary of Google&amp;rsquo;s cybersecurity teams and H4CK1NG G00GL3 is it&amp;rsquo;s CTF counterpart. Project Zero Adventure is a cryptography challenge I wrote.
+In the game, the players control the Security Princess to dodge the obstacles and catch the bugs (a variant of Google Chrome&amp;rsquo;s dinosaur game). After that, the server will sign messages consisting of the players&#39; name and the score via the /sign API. The players will then submit it to the /highscore API.</description>
+    </item>
+    
     <item>
       <title>BalsnCTF 2022 Writeup</title>
       <link>/posts/2022/2022-09-05-balsn/</link>
