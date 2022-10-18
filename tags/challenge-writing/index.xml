@@ -2,37 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>challenge-writing on Mystify</title>
-    <link>/tags/challenge-writing/</link>
+    <link>https://mystiz.hk/tags/challenge-writing/</link>
     <description>Recent content in challenge-writing on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="/tags/challenge-writing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/challenge-writing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</title>
-      <link>/posts/2022/2022-10-19-h4ck1ng-g00gl3/</link>
+      <link>https://mystiz.hk/posts/2022/2022-10-19-h4ck1ng-g00gl3/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-10-19-h4ck1ng-g00gl3/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-10-19-h4ck1ng-g00gl3/</guid>
       <description>HACKING GOOGLE is a documentary of Google&amp;rsquo;s cybersecurity teams and H4CK1NG G00GL3 is it&amp;rsquo;s CTF counterpart. Project Zero Adventure is a cryptography challenge I wrote.
 In the game, the players control the Security Princess to dodge the obstacles and catch the bugs (a variant of Google Chrome&amp;rsquo;s dinosaur game). After that, the server will sign messages consisting of the players&#39; name and the score via the /sign API. The players will then submit it to the /highscore API.</description>
     </item>
     
     <item>
       <title>Google CTF 2022: Maybe Someday</title>
-      <link>/posts/2022/2022-07-20-google-ctf-maybe-someday/</link>
+      <link>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</link>
       <pubDate>Wed, 20 Jul 2022 20:09:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
       <description>This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.
 Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</description>
     </item>
     
     <item>
       <title>MOCSCTF 2022 Postmortem</title>
-      <link>/posts/2022/2022-02-19-mocsctf/</link>
+      <link>https://mystiz.hk/posts/2022/2022-02-19-mocsctf/</link>
       <pubDate>Sat, 19 Feb 2022 17:50:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-02-19-mocsctf/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-02-19-mocsctf/</guid>
       <description>@blackb6a helped preparing some challenges for MOCSCTF, a 8.5-hour long CTF in Macau. This time I wrote nine challenges and @hoifanrd made one of them (3-AES). This blog post covers the intended solution for all of them.
 These are the summary of the challenges:
    Challenge Name Category Solves     RSA Trio Crypto 2/43   Slightly Informative Crypto 2/43   NP-SHA256 Crypto 1/43   HMAC-SHA256 Crypto 2/43   RC4 Crypto 0/43   HashTable Misc 3/43   Wordle Crypto, Misc 0/43   3-AES Crypto, Misc 0/43   Elementary Reverse 0/43   Redactor Reverse 1/43    RSA Trio (Crypto) Challenge Summary When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated.</description>
@@ -40,20 +40,20 @@ These are the summary of the challenges:
     
     <item>
       <title>Firebird Internal CTF 2022 Writeup</title>
-      <link>/posts/2022/2022-01-23-firebird-internal-ctf/</link>
+      <link>https://mystiz.hk/posts/2022/2022-01-23-firebird-internal-ctf/</link>
       <pubDate>Sun, 23 Jan 2022 22:07:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-01-23-firebird-internal-ctf/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-01-23-firebird-internal-ctf/</guid>
       <description>This is the time that Firebird Internal CTF happens. I made three crypto challenges this year - Lack of Entropy (⭐), Authenticator (⭐⭐) and Collider (⭐⭐). I will discuss the solution for all of them in the blog post.
 What are the stars? They are the difficulties I estimated when comparing to global CTFs (where I documented them here since Q3 last year).  Lack of Entropy (Crypto) Three (out of six) teams solved this during the CTF.</description>
     </item>
     
     <item>
       <title>HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</title>
-      <link>/posts/2021/2021-11-18-hkcert-ctf-4/</link>
+      <link>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-4/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
       
-      <guid>/posts/2021/2021-11-18-hkcert-ctf-4/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-4/</guid>
       <description>We will cover the remaining challenges I wrote in this part: Flag Checker™, The Wilderness and Potion of Ciphermath.
 幫緊你！幫緊你！ / Flag Checker™ (Pwn) Challenge Summary  幫緊你 幫緊你
 當無力 堅持集氣幫你
@@ -68,10 +68,10 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
     
     <item>
       <title>HKCERT CTF 2021 Postmortem (III): The Reverse Challenges</title>
-      <link>/posts/2021/2021-11-18-hkcert-ctf-3/</link>
+      <link>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-3/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:02 +0800</pubDate>
       
-      <guid>/posts/2021/2021-11-18-hkcert-ctf-3/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-3/</guid>
       <description>As the third part of the series, three reversing challenges will be included: The Hardest Path, A Junior Mathematician and Let&#39;s Chill.
 最難行的路 / The Hardest Path (Reverse) Challenge Summary  寧願不揀最易的路 行極還未到
 寧願你最後未傾慕 但信念安好
@@ -85,10 +85,10 @@ nc HOST PORT We are given two Python files excerpted below:</description>
     
     <item>
       <title>HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges</title>
-      <link>/posts/2021/2021-11-18-hkcert-ctf-2/</link>
+      <link>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-2/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:01 +0800</pubDate>
       
-      <guid>/posts/2021/2021-11-18-hkcert-ctf-2/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-2/</guid>
       <description>In this part, three harder crypto challenges will be covered: Tenet: The Plagarism, Sratslla SEA and Sign in Please, Again.
 FreeRider / Tenet: The Plagarism (Crypto) Challenge Summary  平日我又講 對住你講
 email要check deadline要追
@@ -100,38 +100,38 @@ Mystiz, who claimed himself not well-known reusing challenges, decided to free-r
     
     <item>
       <title>HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</title>
-      <link>/posts/2021/2021-11-18-hkcert-ctf-1/</link>
+      <link>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-1/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:00 +0800</pubDate>
       
-      <guid>/posts/2021/2021-11-18-hkcert-ctf-1/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-1/</guid>
       <description>Black Bauhinia coorganized HKCERT CTF 2021 and helped 95% of the technical stuffs, including challenge setting, platform development, infrastructure and etc. I will be writing a series of blog posts talking about the contest, and the first four would be the writeups of the challenges those I wrote.
 In the first blog post, we will be going through four easier crypto challenges: A Joke Cipher, Cipher Mode Picker, Key Backup Service 1 and Key Backup Service 2.</description>
     </item>
     
     <item>
       <title>HKCERT CTF 2020 Postmortem</title>
-      <link>/posts/2021/2021-03-28-hkcert-ctf/</link>
+      <link>https://mystiz.hk/posts/2021/2021-03-28-hkcert-ctf/</link>
       <pubDate>Sun, 28 Mar 2021 17:54:00 +0800</pubDate>
       
-      <guid>/posts/2021/2021-03-28-hkcert-ctf/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-03-28-hkcert-ctf/</guid>
       <description>On August 2020, @blackb6a was invited to co-organize HKCERT CTF 2020 (which is held on November 2020) as one of the challenge authors. This is a CTF for secondary and tertiary students in Hong Kong. Although I had experience preparing CTFs earlier, this is actually the first CTF officially prepared by Black Bauhinia. I have written four challenges for this CTF - Sanity Check II (Web), LF2 (Reverse), Sign In Please (Crypto) and Calm Down (Crypto).</description>
     </item>
     
     <item>
       <title>hoifanrd&#39;s osu! Challenge</title>
-      <link>/posts/2021/2021-01-29-hoifanrds-osu-challenge/</link>
+      <link>https://mystiz.hk/posts/2021/2021-01-29-hoifanrds-osu-challenge/</link>
       <pubDate>Fri, 29 Jan 2021 21:05:00 +0800</pubDate>
       
-      <guid>/posts/2021/2021-01-29-hoifanrds-osu-challenge/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-01-29-hoifanrds-osu-challenge/</guid>
       <description>There are a lot of moments which I telepathed and synced with the challenge author. If it doesn&amp;rsquo;t make sense to you, just bear with it.  This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge.</description>
     </item>
     
     <item>
       <title>Firebird Internal CTF 2021 Writeup</title>
-      <link>/posts/2021/2021-01-18-firebird-internal-ctf/</link>
+      <link>https://mystiz.hk/posts/2021/2021-01-18-firebird-internal-ctf/</link>
       <pubDate>Mon, 18 Jan 2021 22:00:00 +0800</pubDate>
       
-      <guid>/posts/2021/2021-01-18-firebird-internal-ctf/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-01-18-firebird-internal-ctf/</guid>
       <description>I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post.
 Oofbleck (Crypto) One (out of six) team have solved this during the CTF period.
 Challenge Summary  Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and Zerologon in CFB8.</description>
@@ -139,10 +139,10 @@ Challenge Summary  Some of the block cipher modes of operation are pretty vulner
     
     <item>
       <title>Firebird Intro CTF: Rotten Secured Algorithm</title>
-      <link>/posts/2020/2020-09-21-firebird-intro-ctf-rsa/</link>
+      <link>https://mystiz.hk/posts/2020/2020-09-21-firebird-intro-ctf-rsa/</link>
       <pubDate>Mon, 21 Sep 2020 16:15:00 +0800</pubDate>
       
-      <guid>/posts/2020/2020-09-21-firebird-intro-ctf-rsa/</guid>
+      <guid>https://mystiz.hk/posts/2020/2020-09-21-firebird-intro-ctf-rsa/</guid>
       <description>Rotten Secured Algorithm is the only challenge that I have written for Firebird Intro CTF. Two people (out of 166) ended up solving the challenge.
 There is a Python script attached in the challenge, as well as the output file. Let&#39;s see what&#39;s going on in the Python:
 # Challenge written on Aug 26, 2020 by Mystiz. from Crypto.PublicKey import RSA import random import time from datetime import datetime from secret import flag t = int(time.</description>

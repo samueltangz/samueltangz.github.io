@@ -2,47 +2,47 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>google-ctf on Mystify</title>
-    <link>/tags/google-ctf/</link>
+    <link>https://mystiz.hk/tags/google-ctf/</link>
     <description>Recent content in google-ctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="/tags/google-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/google-ctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</title>
-      <link>/posts/2022/2022-10-19-h4ck1ng-g00gl3/</link>
+      <link>https://mystiz.hk/posts/2022/2022-10-19-h4ck1ng-g00gl3/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-10-19-h4ck1ng-g00gl3/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-10-19-h4ck1ng-g00gl3/</guid>
       <description>HACKING GOOGLE is a documentary of Google&amp;rsquo;s cybersecurity teams and H4CK1NG G00GL3 is it&amp;rsquo;s CTF counterpart. Project Zero Adventure is a cryptography challenge I wrote.
 In the game, the players control the Security Princess to dodge the obstacles and catch the bugs (a variant of Google Chrome&amp;rsquo;s dinosaur game). After that, the server will sign messages consisting of the players&#39; name and the score via the /sign API. The players will then submit it to the /highscore API.</description>
     </item>
     
     <item>
       <title>Google CTF 2022: Maybe Someday</title>
-      <link>/posts/2022/2022-07-20-google-ctf-maybe-someday/</link>
+      <link>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</link>
       <pubDate>Wed, 20 Jul 2022 20:09:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
       <description>This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.
 Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</description>
     </item>
     
     <item>
       <title>Google CTF 2021 Quals Writeup</title>
-      <link>/posts/2021/2021-07-24-google-ctf/</link>
+      <link>https://mystiz.hk/posts/2021/2021-07-24-google-ctf/</link>
       <pubDate>Sat, 24 Jul 2021 14:42:00 +0800</pubDate>
       
-      <guid>/posts/2021/2021-07-24-google-ctf/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-07-24-google-ctf/</guid>
       <description>This is me playing another Google CTF with @blackb6a, ending up on the 25th place. I aced the crypto challenges and solved some challenges with my teammates. I have a strong feeling that Black Bauhinia grown a lot between the two Google CTFs and I am often backed by my teammates this time. Anyway, I will be covering all of the crypto challenges in this blog post.
 H1 Challenge Summary  Crypto is not real hacking, they say.</description>
     </item>
     
     <item>
       <title>Google CTF 2020: Oracle</title>
-      <link>/posts/2020/2020-08-25-google-ctf-oracle/</link>
+      <link>https://mystiz.hk/posts/2020/2020-08-25-google-ctf-oracle/</link>
       <pubDate>Tue, 25 Aug 2020 16:15:00 +0800</pubDate>
       
-      <guid>/posts/2020/2020-08-25-google-ctf-oracle/</guid>
+      <guid>https://mystiz.hk/posts/2020/2020-08-25-google-ctf-oracle/</guid>
       <description>I was teamed-up with @blackb6a on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.
 In particular, Oracle is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be very computation intensive, just because I would like to make everything clear.</description>
     </item>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>boneh-durfee on Mystify</title>
-    <link>/tags/boneh-durfee/</link>
+    <link>https://mystiz.hk/tags/boneh-durfee/</link>
     <description>Recent content in boneh-durfee on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 Oct 2021 20:26:00 +0800</lastBuildDate><atom:link href="/tags/boneh-durfee/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 11 Oct 2021 20:26:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/boneh-durfee/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>pbctf 2021: Seed Me &amp; Yet Another RSA</title>
-      <link>/posts/2021/2021-10-11-pbctf/</link>
+      <link>https://mystiz.hk/posts/2021/2021-10-11-pbctf/</link>
       <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
       
-      <guid>/posts/2021/2021-10-11-pbctf/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-10-11-pbctf/</guid>
       <description>What&amp;rsquo;s the thumbnail? I sent it to rbtree after I sent him my solution on Yet Another PRNG and he responded &amp;ldquo;oh this works?&amp;rdquo;.  I am playing as a part of @blackb6a this time for perfect blue&#39;s annual pbctf. This time there are six crypto challenges and I first blooded 🩸 half of them. I solved five of them, and collaborated with TWY (who made 99% of the process) for Seed Me.</description>
     </item>
     

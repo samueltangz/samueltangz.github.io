@@ -2,530 +2,530 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Mystify</title>
-    <link>/tags/</link>
+    <link>https://mystiz.hk/tags/</link>
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>bleichenbacher</title>
-      <link>/tags/bleichenbacher/</link>
+      <link>https://mystiz.hk/tags/bleichenbacher/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/tags/bleichenbacher/</guid>
+      <guid>https://mystiz.hk/tags/bleichenbacher/</guid>
       <description></description>
     </item>
     
     <item>
       <title>challenge-writing</title>
-      <link>/tags/challenge-writing/</link>
+      <link>https://mystiz.hk/tags/challenge-writing/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/tags/challenge-writing/</guid>
+      <guid>https://mystiz.hk/tags/challenge-writing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>crypto</title>
-      <link>/tags/crypto/</link>
+      <link>https://mystiz.hk/tags/crypto/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/tags/crypto/</guid>
+      <guid>https://mystiz.hk/tags/crypto/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ctf</title>
-      <link>/tags/ctf/</link>
+      <link>https://mystiz.hk/tags/ctf/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/tags/ctf/</guid>
+      <guid>https://mystiz.hk/tags/ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>google-ctf</title>
-      <link>/tags/google-ctf/</link>
+      <link>https://mystiz.hk/tags/google-ctf/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/tags/google-ctf/</guid>
+      <guid>https://mystiz.hk/tags/google-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rsa</title>
-      <link>/tags/rsa/</link>
+      <link>https://mystiz.hk/tags/rsa/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>/tags/rsa/</guid>
+      <guid>https://mystiz.hk/tags/rsa/</guid>
       <description></description>
     </item>
     
     <item>
       <title>balsn-ctf</title>
-      <link>/tags/balsn-ctf/</link>
+      <link>https://mystiz.hk/tags/balsn-ctf/</link>
       <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
-      <guid>/tags/balsn-ctf/</guid>
+      <guid>https://mystiz.hk/tags/balsn-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>lfsr</title>
-      <link>/tags/lfsr/</link>
+      <link>https://mystiz.hk/tags/lfsr/</link>
       <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
-      <guid>/tags/lfsr/</guid>
+      <guid>https://mystiz.hk/tags/lfsr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>lll</title>
-      <link>/tags/lll/</link>
+      <link>https://mystiz.hk/tags/lll/</link>
       <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
-      <guid>/tags/lll/</guid>
+      <guid>https://mystiz.hk/tags/lll/</guid>
       <description></description>
     </item>
     
     <item>
       <title>paillier</title>
-      <link>/tags/paillier/</link>
+      <link>https://mystiz.hk/tags/paillier/</link>
       <pubDate>Wed, 20 Jul 2022 20:09:00 +0800</pubDate>
       
-      <guid>/tags/paillier/</guid>
+      <guid>https://mystiz.hk/tags/paillier/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ecdsa</title>
-      <link>/tags/ecdsa/</link>
+      <link>https://mystiz.hk/tags/ecdsa/</link>
       <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
       
-      <guid>/tags/ecdsa/</guid>
+      <guid>https://mystiz.hk/tags/ecdsa/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tsj-ctf</title>
-      <link>/tags/tsj-ctf/</link>
+      <link>https://mystiz.hk/tags/tsj-ctf/</link>
       <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
       
-      <guid>/tags/tsj-ctf/</guid>
+      <guid>https://mystiz.hk/tags/tsj-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>mocsctf</title>
-      <link>/tags/mocsctf/</link>
+      <link>https://mystiz.hk/tags/mocsctf/</link>
       <pubDate>Sat, 19 Feb 2022 17:50:00 +0800</pubDate>
       
-      <guid>/tags/mocsctf/</guid>
+      <guid>https://mystiz.hk/tags/mocsctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>intigriti-challenge</title>
-      <link>/tags/intigriti-challenge/</link>
+      <link>https://mystiz.hk/tags/intigriti-challenge/</link>
       <pubDate>Mon, 14 Feb 2022 10:00:00 +0800</pubDate>
       
-      <guid>/tags/intigriti-challenge/</guid>
+      <guid>https://mystiz.hk/tags/intigriti-challenge/</guid>
       <description></description>
     </item>
     
     <item>
       <title>xss</title>
-      <link>/tags/xss/</link>
+      <link>https://mystiz.hk/tags/xss/</link>
       <pubDate>Mon, 14 Feb 2022 10:00:00 +0800</pubDate>
       
-      <guid>/tags/xss/</guid>
+      <guid>https://mystiz.hk/tags/xss/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dicectf</title>
-      <link>/tags/dicectf/</link>
+      <link>https://mystiz.hk/tags/dicectf/</link>
       <pubDate>Tue, 08 Feb 2022 04:30:00 +0800</pubDate>
       
-      <guid>/tags/dicectf/</guid>
+      <guid>https://mystiz.hk/tags/dicectf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>firebird-training</title>
-      <link>/tags/firebird-training/</link>
+      <link>https://mystiz.hk/tags/firebird-training/</link>
       <pubDate>Sun, 23 Jan 2022 22:07:00 +0800</pubDate>
       
-      <guid>/tags/firebird-training/</guid>
+      <guid>https://mystiz.hk/tags/firebird-training/</guid>
       <description></description>
     </item>
     
     <item>
       <title>crc</title>
-      <link>/tags/crc/</link>
+      <link>https://mystiz.hk/tags/crc/</link>
       <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
       
-      <guid>/tags/crc/</guid>
+      <guid>https://mystiz.hk/tags/crc/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dragonctf</title>
-      <link>/tags/dragonctf/</link>
+      <link>https://mystiz.hk/tags/dragonctf/</link>
       <pubDate>Mon, 29 Nov 2021 23:30:00 +0800</pubDate>
       
-      <guid>/tags/dragonctf/</guid>
+      <guid>https://mystiz.hk/tags/dragonctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>statistics</title>
-      <link>/tags/statistics/</link>
+      <link>https://mystiz.hk/tags/statistics/</link>
       <pubDate>Sat, 27 Nov 2021 15:55:00 +0800</pubDate>
       
-      <guid>/tags/statistics/</guid>
+      <guid>https://mystiz.hk/tags/statistics/</guid>
       <description></description>
     </item>
     
     <item>
       <title>timing-attack</title>
-      <link>/tags/timing-attack/</link>
+      <link>https://mystiz.hk/tags/timing-attack/</link>
       <pubDate>Sat, 27 Nov 2021 15:55:00 +0800</pubDate>
       
-      <guid>/tags/timing-attack/</guid>
+      <guid>https://mystiz.hk/tags/timing-attack/</guid>
       <description></description>
     </item>
     
     <item>
       <title>algorithms</title>
-      <link>/tags/algorithms/</link>
+      <link>https://mystiz.hk/tags/algorithms/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
       
-      <guid>/tags/algorithms/</guid>
+      <guid>https://mystiz.hk/tags/algorithms/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hkcert-ctf</title>
-      <link>/tags/hkcert-ctf/</link>
+      <link>https://mystiz.hk/tags/hkcert-ctf/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
       
-      <guid>/tags/hkcert-ctf/</guid>
+      <guid>https://mystiz.hk/tags/hkcert-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pwn</title>
-      <link>/tags/pwn/</link>
+      <link>https://mystiz.hk/tags/pwn/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
       
-      <guid>/tags/pwn/</guid>
+      <guid>https://mystiz.hk/tags/pwn/</guid>
       <description></description>
     </item>
     
     <item>
       <title>web</title>
-      <link>/tags/web/</link>
+      <link>https://mystiz.hk/tags/web/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
       
-      <guid>/tags/web/</guid>
+      <guid>https://mystiz.hk/tags/web/</guid>
       <description></description>
     </item>
     
     <item>
       <title>reverse</title>
-      <link>/tags/reverse/</link>
+      <link>https://mystiz.hk/tags/reverse/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:02 +0800</pubDate>
       
-      <guid>/tags/reverse/</guid>
+      <guid>https://mystiz.hk/tags/reverse/</guid>
       <description></description>
     </item>
     
     <item>
       <title>bsides-ahmedabad</title>
-      <link>/tags/bsides-ahmedabad/</link>
+      <link>https://mystiz.hk/tags/bsides-ahmedabad/</link>
       <pubDate>Sun, 07 Nov 2021 11:02:00 +0800</pubDate>
       
-      <guid>/tags/bsides-ahmedabad/</guid>
+      <guid>https://mystiz.hk/tags/bsides-ahmedabad/</guid>
       <description></description>
     </item>
     
     <item>
       <title>asis-ctf</title>
-      <link>/tags/asis-ctf/</link>
+      <link>https://mystiz.hk/tags/asis-ctf/</link>
       <pubDate>Mon, 25 Oct 2021 23:35:00 +0800</pubDate>
       
-      <guid>/tags/asis-ctf/</guid>
+      <guid>https://mystiz.hk/tags/asis-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>factor</title>
-      <link>/tags/factor/</link>
+      <link>https://mystiz.hk/tags/factor/</link>
       <pubDate>Mon, 25 Oct 2021 23:35:00 +0800</pubDate>
       
-      <guid>/tags/factor/</guid>
+      <guid>https://mystiz.hk/tags/factor/</guid>
       <description></description>
     </item>
     
     <item>
       <title>boneh-durfee</title>
-      <link>/tags/boneh-durfee/</link>
+      <link>https://mystiz.hk/tags/boneh-durfee/</link>
       <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
       
-      <guid>/tags/boneh-durfee/</guid>
+      <guid>https://mystiz.hk/tags/boneh-durfee/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pbctf</title>
-      <link>/tags/pbctf/</link>
+      <link>https://mystiz.hk/tags/pbctf/</link>
       <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
       
-      <guid>/tags/pbctf/</guid>
+      <guid>https://mystiz.hk/tags/pbctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>phpfuck</title>
-      <link>/tags/phpfuck/</link>
+      <link>https://mystiz.hk/tags/phpfuck/</link>
       <pubDate>Tue, 10 Aug 2021 23:59:59 +0800</pubDate>
       
-      <guid>/tags/phpfuck/</guid>
+      <guid>https://mystiz.hk/tags/phpfuck/</guid>
       <description></description>
     </item>
     
     <item>
       <title>uiuctf</title>
-      <link>/tags/uiuctf/</link>
+      <link>https://mystiz.hk/tags/uiuctf/</link>
       <pubDate>Tue, 10 Aug 2021 23:59:59 +0800</pubDate>
       
-      <guid>/tags/uiuctf/</guid>
+      <guid>https://mystiz.hk/tags/uiuctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>leetcode</title>
-      <link>/tags/leetcode/</link>
+      <link>https://mystiz.hk/tags/leetcode/</link>
       <pubDate>Sat, 19 Jun 2021 12:50:00 +0800</pubDate>
       
-      <guid>/tags/leetcode/</guid>
+      <guid>https://mystiz.hk/tags/leetcode/</guid>
       <description></description>
     </item>
     
     <item>
       <title>defcon</title>
-      <link>/tags/defcon/</link>
+      <link>https://mystiz.hk/tags/defcon/</link>
       <pubDate>Thu, 06 May 2021 00:15:00 +0800</pubDate>
       
-      <guid>/tags/defcon/</guid>
+      <guid>https://mystiz.hk/tags/defcon/</guid>
       <description></description>
     </item>
     
     <item>
       <title>plaidctf</title>
-      <link>/tags/plaidctf/</link>
+      <link>https://mystiz.hk/tags/plaidctf/</link>
       <pubDate>Mon, 19 Apr 2021 12:07:00 +0800</pubDate>
       
-      <guid>/tags/plaidctf/</guid>
+      <guid>https://mystiz.hk/tags/plaidctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>aes</title>
-      <link>/tags/aes/</link>
+      <link>https://mystiz.hk/tags/aes/</link>
       <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
       
-      <guid>/tags/aes/</guid>
+      <guid>https://mystiz.hk/tags/aes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>angstromctf</title>
-      <link>/tags/angstromctf/</link>
+      <link>https://mystiz.hk/tags/angstromctf/</link>
       <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
       
-      <guid>/tags/angstromctf/</guid>
+      <guid>https://mystiz.hk/tags/angstromctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>binary-exploitation</title>
-      <link>/tags/binary-exploitation/</link>
+      <link>https://mystiz.hk/tags/binary-exploitation/</link>
       <pubDate>Thu, 01 Apr 2021 00:00:00 +0800</pubDate>
       
-      <guid>/tags/binary-exploitation/</guid>
+      <guid>https://mystiz.hk/tags/binary-exploitation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>aero-ctf</title>
-      <link>/tags/aero-ctf/</link>
+      <link>https://mystiz.hk/tags/aero-ctf/</link>
       <pubDate>Sun, 28 Feb 2021 19:35:00 +0800</pubDate>
       
-      <guid>/tags/aero-ctf/</guid>
+      <guid>https://mystiz.hk/tags/aero-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>git</title>
-      <link>/tags/git/</link>
+      <link>https://mystiz.hk/tags/git/</link>
       <pubDate>Sat, 27 Feb 2021 17:00:00 +0800</pubDate>
       
-      <guid>/tags/git/</guid>
+      <guid>https://mystiz.hk/tags/git/</guid>
       <description></description>
     </item>
     
     <item>
       <title>union-ctf</title>
-      <link>/tags/union-ctf/</link>
+      <link>https://mystiz.hk/tags/union-ctf/</link>
       <pubDate>Sat, 27 Feb 2021 17:00:00 +0800</pubDate>
       
-      <guid>/tags/union-ctf/</guid>
+      <guid>https://mystiz.hk/tags/union-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hash-tables</title>
-      <link>/tags/hash-tables/</link>
+      <link>https://mystiz.hk/tags/hash-tables/</link>
       <pubDate>Tue, 23 Feb 2021 00:45:00 +0800</pubDate>
       
-      <guid>/tags/hash-tables/</guid>
+      <guid>https://mystiz.hk/tags/hash-tables/</guid>
       <description></description>
     </item>
     
     <item>
       <title>haxe</title>
-      <link>/tags/haxe/</link>
+      <link>https://mystiz.hk/tags/haxe/</link>
       <pubDate>Tue, 23 Feb 2021 00:45:00 +0800</pubDate>
       
-      <guid>/tags/haxe/</guid>
+      <guid>https://mystiz.hk/tags/haxe/</guid>
       <description></description>
     </item>
     
     <item>
       <title>kurenaif</title>
-      <link>/tags/kurenaif/</link>
+      <link>https://mystiz.hk/tags/kurenaif/</link>
       <pubDate>Sat, 20 Feb 2021 23:00:00 +0800</pubDate>
       
-      <guid>/tags/kurenaif/</guid>
+      <guid>https://mystiz.hk/tags/kurenaif/</guid>
       <description></description>
     </item>
     
     <item>
       <title>grobner-basis</title>
-      <link>/tags/grobner-basis/</link>
+      <link>https://mystiz.hk/tags/grobner-basis/</link>
       <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
       
-      <guid>/tags/grobner-basis/</guid>
+      <guid>https://mystiz.hk/tags/grobner-basis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>half-gcd</title>
-      <link>/tags/half-gcd/</link>
+      <link>https://mystiz.hk/tags/half-gcd/</link>
       <pubDate>Mon, 15 Feb 2021 01:30:00 +0800</pubDate>
       
-      <guid>/tags/half-gcd/</guid>
+      <guid>https://mystiz.hk/tags/half-gcd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>justctf</title>
-      <link>/tags/justctf/</link>
+      <link>https://mystiz.hk/tags/justctf/</link>
       <pubDate>Mon, 01 Feb 2021 03:00:00 +0800</pubDate>
       
-      <guid>/tags/justctf/</guid>
+      <guid>https://mystiz.hk/tags/justctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>discrete-logarithm</title>
-      <link>/tags/discrete-logarithm/</link>
+      <link>https://mystiz.hk/tags/discrete-logarithm/</link>
       <pubDate>Sun, 03 Jan 2021 13:39:00 +0800</pubDate>
       
-      <guid>/tags/discrete-logarithm/</guid>
+      <guid>https://mystiz.hk/tags/discrete-logarithm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tetctf</title>
-      <link>/tags/tetctf/</link>
+      <link>https://mystiz.hk/tags/tetctf/</link>
       <pubDate>Sun, 03 Jan 2021 13:39:00 +0800</pubDate>
       
-      <guid>/tags/tetctf/</guid>
+      <guid>https://mystiz.hk/tags/tetctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hxpctf</title>
-      <link>/tags/hxpctf/</link>
+      <link>https://mystiz.hk/tags/hxpctf/</link>
       <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
       
-      <guid>/tags/hxpctf/</guid>
+      <guid>https://mystiz.hk/tags/hxpctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hyperelliptic-curves</title>
-      <link>/tags/hyperelliptic-curves/</link>
+      <link>https://mystiz.hk/tags/hyperelliptic-curves/</link>
       <pubDate>Sun, 20 Dec 2020 23:53:00 +0800</pubDate>
       
-      <guid>/tags/hyperelliptic-curves/</guid>
+      <guid>https://mystiz.hk/tags/hyperelliptic-curves/</guid>
       <description></description>
     </item>
     
     <item>
       <title>confidence-ctf</title>
-      <link>/tags/confidence-ctf/</link>
+      <link>https://mystiz.hk/tags/confidence-ctf/</link>
       <pubDate>Tue, 08 Sep 2020 18:30:00 +0800</pubDate>
       
-      <guid>/tags/confidence-ctf/</guid>
+      <guid>https://mystiz.hk/tags/confidence-ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>elliptic-curve</title>
-      <link>/tags/elliptic-curve/</link>
+      <link>https://mystiz.hk/tags/elliptic-curve/</link>
       <pubDate>Wed, 22 Jul 2020 18:55:00 +0800</pubDate>
       
-      <guid>/tags/elliptic-curve/</guid>
+      <guid>https://mystiz.hk/tags/elliptic-curve/</guid>
       <description></description>
     </item>
     
     <item>
       <title>parameter-recovery</title>
-      <link>/tags/parameter-recovery/</link>
+      <link>https://mystiz.hk/tags/parameter-recovery/</link>
       <pubDate>Wed, 22 Jul 2020 18:55:00 +0800</pubDate>
       
-      <guid>/tags/parameter-recovery/</guid>
+      <guid>https://mystiz.hk/tags/parameter-recovery/</guid>
       <description></description>
     </item>
     
     <item>
       <title>de1ctf</title>
-      <link>/tags/de1ctf/</link>
+      <link>https://mystiz.hk/tags/de1ctf/</link>
       <pubDate>Tue, 05 May 2020 20:36:00 +0800</pubDate>
       
-      <guid>/tags/de1ctf/</guid>
+      <guid>https://mystiz.hk/tags/de1ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>puzzlescript</title>
-      <link>/tags/puzzlescript/</link>
+      <link>https://mystiz.hk/tags/puzzlescript/</link>
       <pubDate>Tue, 21 Apr 2020 20:25:00 +0800</pubDate>
       
-      <guid>/tags/puzzlescript/</guid>
+      <guid>https://mystiz.hk/tags/puzzlescript/</guid>
       <description></description>
     </item>
     
     <item>
       <title>interpolation-attack</title>
-      <link>/tags/interpolation-attack/</link>
+      <link>https://mystiz.hk/tags/interpolation-attack/</link>
       <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
       
-      <guid>/tags/interpolation-attack/</guid>
+      <guid>https://mystiz.hk/tags/interpolation-attack/</guid>
       <description></description>
     </item>
     

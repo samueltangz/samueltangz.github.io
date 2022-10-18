@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>xss on Mystify</title>
-    <link>/tags/xss/</link>
+    <link>https://mystiz.hk/tags/xss/</link>
     <description>Recent content in xss on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Feb 2022 10:00:00 +0800</lastBuildDate><atom:link href="/tags/xss/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Feb 2022 10:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/xss/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Intigriti&#39;s XSS Challenge (February 2022)</title>
-      <link>/posts/2022/2022-02-14-intigriti-xss/</link>
+      <link>https://mystiz.hk/posts/2022/2022-02-14-intigriti-xss/</link>
       <pubDate>Mon, 14 Feb 2022 10:00:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-02-14-intigriti-xss/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-02-14-intigriti-xss/</guid>
       <description>This is another round of @intigriti&#39;s XSS challenge, and this time it is written by @aszx87410. I spent around four hours solving it.
 Challenge Summary We are given a form that allows us a create a character. We are allowed to
  choose a name (shorter than 24 characters), and inform if we have played the game.  We will be redirected to /challenge/xss.html?q=mystiz&amp;amp;first=yes (if you are mystiz who is not a first-timer to the game).</description>
@@ -20,10 +20,10 @@ Challenge Summary We are given a form that allows us a create a character. We ar
     
     <item>
       <title>Intigriti&#39;s XSS Challenge (January 2022)</title>
-      <link>/posts/2022/2022-01-17-intigriti-xss/</link>
+      <link>https://mystiz.hk/posts/2022/2022-01-17-intigriti-xss/</link>
       <pubDate>Mon, 17 Jan 2022 23:00:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-01-17-intigriti-xss/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-01-17-intigriti-xss/</guid>
       <description>@intigriti has a XSS challenge every month. The challenge is not hard this time and I am able to solve it in an hour or two. The best thing I learned is to recover source code using the source map file.
 Challenge Summary We are given a super secure HTML viewer - we can craft a HTML document and parse it. For example, we can send the below content and press the &amp;quot;Parse&amp;quot; button:</description>
     </item>

@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>lfsr on Mystify</title>
-    <link>/tags/lfsr/</link>
+    <link>https://mystiz.hk/tags/lfsr/</link>
     <description>Recent content in lfsr on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 Sep 2022 22:00:00 +0800</lastBuildDate><atom:link href="/tags/lfsr/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Sep 2022 22:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/lfsr/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>BalsnCTF 2022 Writeup</title>
-      <link>/posts/2022/2022-09-05-balsn/</link>
+      <link>https://mystiz.hk/posts/2022/2022-09-05-balsn/</link>
       <pubDate>Mon, 05 Sep 2022 22:00:00 +0800</pubDate>
       
-      <guid>/posts/2022/2022-09-05-balsn/</guid>
+      <guid>https://mystiz.hk/posts/2022/2022-09-05-balsn/</guid>
       <description>Credits. Thumbnail credit goes to Quasar! 🎉  vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge. This challenge reminds me the yet another PRNG challenge from pbctf 2021 (challenge description, writeup written by @maple3142 and @rkm0959), but with a setting which looked harder. I was pretty surprised that LLL worked, too.
 lfsr is another crypto challenge in BalsnCTF with 6 solvers.</description>
     </item>
     
     <item>
       <title>De1CTF 2019 Writeup</title>
-      <link>/posts/2019/2019-08-06-de1ctf/</link>
+      <link>https://mystiz.hk/posts/2019/2019-08-06-de1ctf/</link>
       <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
       
-      <guid>/posts/2019/2019-08-06-de1ctf/</guid>
+      <guid>https://mystiz.hk/posts/2019/2019-08-06-de1ctf/</guid>
       <description>It has been a very long time that I&#39;ve compiled a writeup. This time I have played on my own as @blackb6a. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup too math-intensive.
 The solution scripts will be committed to my Github repository sooner or later, after I&#39;ve managed to prettify them.
 Babylfsr (Crypto, 338 points) This is an easy challenge.</description>

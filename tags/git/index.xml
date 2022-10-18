@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>git on Mystify</title>
-    <link>/tags/git/</link>
+    <link>https://mystiz.hk/tags/git/</link>
     <description>Recent content in git on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Feb 2021 17:00:00 +0800</lastBuildDate><atom:link href="/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Feb 2021 17:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/git/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Union CTF 2021 (II): committee</title>
-      <link>/posts/2021/2021-02-27-union-ctf-committee/</link>
+      <link>https://mystiz.hk/posts/2021/2021-02-27-union-ctf-committee/</link>
       <pubDate>Sat, 27 Feb 2021 17:00:00 +0800</pubDate>
       
-      <guid>/posts/2021/2021-02-27-union-ctf-committee/</guid>
+      <guid>https://mystiz.hk/posts/2021/2021-02-27-union-ctf-committee/</guid>
       <description>Challenge Summary  A committee was formed last year to decide the highly-sensitive contents of the flag for this challenge. Our informant managed to leak some data, but he was arrested within weeks of the committee&#39;s operation. All we have are the logs of the committee&#39;s meetings.
 Note: file fixed, please redownload
 Author: Aurel300

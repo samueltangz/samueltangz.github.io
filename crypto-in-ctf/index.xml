@@ -2,61 +2,61 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Crypto in CTF on Mystify</title>
-    <link>/crypto-in-ctf/</link>
+    <link>https://mystiz.hk/crypto-in-ctf/</link>
     <description>Recent content in Crypto in CTF on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="/crypto-in-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://mystiz.hk/crypto-in-ctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Crypto in CTF: Q1 2022</title>
-      <link>/crypto-in-ctf/2022-q1/</link>
+      <link>https://mystiz.hk/crypto-in-ctf/2022-q1/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/crypto-in-ctf/2022-q1/</guid>
+      <guid>https://mystiz.hk/crypto-in-ctf/2022-q1/</guid>
       <description>CTF Challenge Name Solves (Difficulty)     TetCTF 2022 shares 🔥 29/602 (⭐⭐⭐)   TetCTF 2022 shares_v2 🔥 15/602 (⭐⭐⭐)   TetCTF 2022 fault 🔥 14/602 (⭐⭐⭐)   TetCTF 2022 algebra 🔥 14/602 (⭐⭐⭐)   DiceCTF 2022 baby-rsa 162/1127 (⭐)   DiceCTF 2022 rejected 44/1127 (⭐⭐)   DiceCTF 2022 correlated 17/1127 (⭐⭐)   DiceCTF 2022 commitment-issues 🔥 16/1127 (⭐⭐⭐)   DiceCTF 2022 pow-pow 🔥 13/1127 (⭐⭐⭐)   DiceCTF 2022 learning without errors 6/1127 (❓)   DiceCTF 2022 shibari 1/1127 (❓)   DiceCTF 2022 psych 1/1127 (❓)   TSJ CTF 2022 babyRSA 13/428 (⭐⭐)   TSJ CTF 2022 Top Secret 9/428 (⭐⭐⭐)   TSJ CTF 2022 Cipher Switching Service 🔥 4/428 (⭐⭐⭐)   TSJ CTF 2022 Signature 🔥 2/428 (⭐⭐⭐)   TSJ CTF 2022 RNG++ 21/428 (⭐⭐)   TSJ CTF 2022 RNG+++ 2/428 (⭐⭐⭐⭐)   CODEGATE 2022 PrimeGenerator 🔥 10/141 (⭐⭐⭐)   CODEGATE 2022 Dark Arts 🔥 2/141 (⭐⭐⭐⭐)   CODEGATE 2022 Happy S-Box 🔥 1/141 (⭐⭐⭐⭐)   zer0pts CTF 2022 Anti-Fermat 125/632 (⭐)   zer0pts CTF 2022 CurveCrypto 36/632 (⭐⭐)   zer0pts CTF 2022 EDDH 24/632 (⭐⭐)   zer0pts CTF 2022 OK 🔥 9/632 (⭐⭐⭐)   zer0pts CTF 2022 Karen 🔥 8/632 (⭐⭐⭐⭐)    TetCTF 2022 shares 🔥  Solves: 29/602 Difficulty: ⭐⭐⭐ Tags: secret sharing Author: @_ndh___  Define a secret sharing scheme $\text{SecretSharing}(s, n, t)$.</description>
     </item>
     
     <item>
       <title>Crypto in CTF: Q2 2022</title>
-      <link>/crypto-in-ctf/2022-q2/</link>
+      <link>https://mystiz.hk/crypto-in-ctf/2022-q2/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/crypto-in-ctf/2022-q2/</guid>
+      <guid>https://mystiz.hk/crypto-in-ctf/2022-q2/</guid>
       <description>CTF Challenge Name Solves (Difficulty)     Midnight Sun Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥 35/346 (⭐⭐)   Midnight Sun Quals 2022 BabyZK 🔥 19/346 (⭐⭐)   Midnight Sun Quals 2022 kompot_512 🔥 15/346 (⭐⭐⭐)   Midnight Sun Quals 2022 WeedSolomon 420 3/346 (❓)   PlaidCTF 2022 pressure 18/431 (⭐⭐)   PlaidCTF 2022 choreography 14/431 (⭐⭐)   ångstromCTF 2022 log log log 104/1319 (⭐)   ångstromCTF 2022 Strike-Slip Fault 50/1319 (⭐⭐)   ångstromCTF 2022 Prophet 45/1319 (⭐⭐)   ångstromCTF 2022 RSA-AES 🔥 36/1319 (⭐⭐)    Midnight Sun CTF Quals 2022 Pelle&amp;rsquo;s Rotor-Supported Arithmetic 🔥  Solves: 35/346 Difficulty: ⭐⭐ Tags: rsa Author: @carllondahl  Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus.</description>
     </item>
     
     <item>
       <title>Crypto in CTF: Q3 2021</title>
-      <link>/crypto-in-ctf/2021-q3/</link>
+      <link>https://mystiz.hk/crypto-in-ctf/2021-q3/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/crypto-in-ctf/2021-q3/</guid>
+      <guid>https://mystiz.hk/crypto-in-ctf/2021-q3/</guid>
       <description>CTF Challenge Name Solves (Difficulty)     Pwn2Win CTF 2021 Oh, Anna Julia 49/720 (⭐)   Pwn2Win CTF 2021 t00 rare 🔥 13/720 (⭐⭐)   Pwn2Win CTF 2021 cladorhizidae 12/720 (⭐⭐)   Pwn2Win CTF 2021 A2S 🔥 10/720 (⭐⭐⭐⭐)   Pwn2Win CTF 2021 Kangurei 3/720 (⭐⭐⭐)   Zh3r0 CTF 2021 alice_bob_dave 91/509 (⭐)   Zh3r0 CTF 2021 chaos 50/509 (⭐⭐)   Zh3r0 CTF 2021 Twist and Shout 29/509 (⭐)   Zh3r0 CTF 2021 Real Mersenne 15/509 (⭐⭐)   Zh3r0 CTF 2021 import numpy as MT 13/509 (⭐⭐)   0CTF 2021 Quals zer0lfsr- 🔥 35/464 (⭐⭐⭐)   0CTF 2021 Quals zer0lfsr+ 2/464 (⭐⭐⭐⭐⭐)   0CTF 2021 Quals zer0lfsr++ 1/464 (⭐⭐⭐⭐⭐)   0CTF 2021 Quals cloudpass 3/464 (⭐⭐)   redpwnCTF 2021 baby 827/1418 (-)   redpwnCTF 2021 blecc 146/1418 (⭐)   redpwnCTF 2021 yahtzee 103/1418 (⭐)   redpwnCTF 2021 scrambled-elgs 70/1418 (⭐)   redpwnCTF 2021 Keeper of the Flag 42/1418 (⭐⭐)   redpwnCTF 2021 retrosign 26/1418 (⭐⭐⭐)   Google CTF 2021 Quals H1 23/379 (⭐⭐)   Google CTF 2021 Quals pythia 🔥 65/379 (⭐⭐⭐)   Google CTF 2021 Quals story 32/379 (⭐⭐)   Google CTF 2021 Quals tiramisu 28/379 (⭐⭐⭐)   Google CTF 2021 Quals tonality 30/379 (⭐⭐)   ImaginaryCTF 2021 Rock Solid Algorithm 149/1018 (⭐)   ImaginaryCTF 2021 Lines 128/1018 (⭐)   ImaginaryCTF 2021 Flip Flops 160/1018 (⭐)   ImaginaryCTF 2021 New Technology 50/1018 (⭐)   ImaginaryCTF 2021 Roll it back 58/1018 (⭐)   ImaginaryCTF 2021 Primetime 41/1018 (⭐⭐)   ImaginaryCTF 2021 ZKPoD 19/1018 (⭐⭐)   Crypto CTF 2021 Robert 19/444 (⭐⭐)   Crypto CTF 2021 Rohald 21/444 (⭐⭐)   Crypto CTF 2021 Ecchimera 🔥 11/444 (⭐⭐⭐)   Crypto CTF 2021 My Sieve 1/444 (❓)   Crypto CTF 2021 Hyper Normal 69/444 (⭐)   Crypto CTF 2021 KeyBase 118/444 (⭐)   Crypto CTF 2021 Triplet 50/444 (⭐)   Crypto CTF 2021 DoRSA 🔥 2/444 (⭐⭐⭐⭐)   Crypto CTF 2021 Hamul 56/444 (⭐)   Crypto CTF 2021 Double Miff 16/444 (⭐⭐⭐)   Crypto CTF 2021 Elegant Curve 16/444 (⭐⭐)   Crypto CTF 2021 Improved 37/444 (⭐⭐)   Crypto CTF 2021 Polish 1/444 (⭐⭐⭐)   Crypto CTF 2021 Ferman 31/444 (⭐)   Crypto CTF 2021 Trunc 7/444 (⭐⭐)   Crypto CTF 2021 Frozen 29/444 (⭐⭐)   Crypto CTF 2021 Wolf 33/444 (⭐)   Crypto CTF 2021 Salt and Pepper 69/444 (⭐)   Crypto CTF 2021 Tiny ECC 16/444 (⭐⭐)   Crypto CTF 2021 Lower 0/444 (⭐⭐⭐⭐)   Crypto CTF 2021 LINDA 23/444 (⭐⭐)   Crypto CTF 2021 RSAphantine 29/444 (⭐⭐)   Crypto CTF 2021 Onlude 48/444 (⭐)   Crypto CTF 2021 Tuti 71/444 (⭐)   Crypto CTF 2021 Maid 36/444 (⭐⭐)   UIUCTF 2021 dhke_adventure 64/658 (⭐)   UIUCTF 2021 pow_erful 16/658 (⭐⭐)   RaRCTF 2021 sRSA 220/845 (-)   RaRCTF 2021 unrandompad 89/845 (⭐)   RaRCTF 2021 Shamir&#39;s Stingy Sharing 85/845 (⭐)   RaRCTF 2021 babycrypt 108/845 (⭐)   RaRCTF 2021 rotoRSA 29/845 (⭐⭐)   RaRCTF 2021 PsychECC 39/845 (⭐⭐)   RaRCTF 2021 snore 17/845 (⭐⭐)   RaRCTF 2021 randompad 24/845 (⭐⭐)   RaRCTF 2021 A3S 4/845 (⭐⭐⭐)   RaRCTF 2021 mini-A3S 1/845 (⭐⭐⭐⭐)   corCTF 2021 4096 219/904 (-)   corCTF 2021 dividing_secrets 121/904 (⭐)   corCTF 2021 supercomputer 85/904 (⭐)   corCTF 2021 babyrsa 50/904 (⭐)   corCTF 2021 babypad 35/904 (⭐)   corCTF 2021 babyrand 29/904 (⭐⭐)   corCTF 2021 LCG_k 25/904 (⭐⭐)   corCTF 2021 bank 25/904 (⭐⭐)   corCTF 2021 mystery_stream 10/904 (⭐⭐⭐)   corCTF 2021 fried_rice 🔥 6/904 (⭐⭐⭐)   corCTF 2021 leave_it_to_chance 🔥 5/904 (⭐⭐⭐)   CakeCTF 2021 discrete log 55/157 (-)   CakeCTF 2021 improvisation 34/157 (-)   CakeCTF 2021 Together as one 21/157 (⭐⭐)   CakeCTF 2021 Matrix Cipher 14/157 (⭐⭐)   CakeCTF 2021 Party Ticket 🔥 12/157 (⭐⭐⭐)   FwordCTF 2021 Leaky Blinders 121/429 (-)   FwordCTF 2021 Boombastic 55/429 (⭐)   FwordCTF 2021 Invincible 29/429 (⭐⭐)   FwordCTF 2021 Login 11/429 (⭐⭐)   FwordCTF 2021 Transfer 🔥 6/429 (⭐⭐⭐)   FwordCTF 2021 Procyon 🔥 4/429 (⭐⭐⭐)   ALLES!</description>
     </item>
     
     <item>
       <title>Crypto in CTF: Q3 2022</title>
-      <link>/crypto-in-ctf/2022-q3/</link>
+      <link>https://mystiz.hk/crypto-in-ctf/2022-q3/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/crypto-in-ctf/2022-q3/</guid>
+      <guid>https://mystiz.hk/crypto-in-ctf/2022-q3/</guid>
       <description>CTF Challenge Name Solves (Difficulty)     Google CTF 2022 Cycling 🔥 50/382 (⭐⭐)   Google CTF 2022 Electric Mayhem CLS 70/382 (⭐⭐)   Google CTF 2022 Maybe Someday 35/382 (⭐⭐⭐)   Google CTF 2022 Enigma 9/382 (⭐⭐⭐)   Google CTF 2022 Custom Protocol 🔥 5/382 (⭐⭐⭐)   Google CTF 2022 Electric Mayhem PQC 🔥 3/382 (⭐⭐⭐⭐)   Crypto CTF 2022 Aniely 76/421 (⭐)   Crypto CTF 2022 Watery soup 🔥 15/421 (⭐⭐⭐)   Crypto CTF 2022 Oak land 35/421 (⭐⭐)   Crypto CTF 2022 polyRSA 145/421 (⭐)   Crypto CTF 2022 313 Loyal 17/421 (⭐⭐)   Crypto CTF 2022 Cantilever 60/421 (⭐⭐)   Crypto CTF 2022 Side step 28/421 (⭐⭐)   Crypto CTF 2022 Faonsa 21/421 (⭐⭐)   Crypto CTF 2022 Resign 35/421 (-)   Crypto CTF 2022 DBB 43/421 (⭐⭐)   Crypto CTF 2022 Soda 🔥 17/421 (⭐⭐⭐)   Crypto CTF 2022 Sparse 38/421 (⭐⭐)   Crypto CTF 2022 Fiercest 29/421 (⭐⭐)   Crypto CTF 2022 Persian cat 13/421 (⭐)   Crypto CTF 2022 Keydream 42/421 (⭐⭐)   Crypto CTF 2022 NLCS 🔥 5/421 (⭐⭐⭐)   Crypto CTF 2022 Shaim 15/421 (⭐⭐)   Crypto CTF 2022 Lagima 24/421 (⭐)   Crypto CTF 2022 Starter ECC 43/421 (⭐)   Crypto CTF 2022 Versace 15/421 (⭐⭐)   Crypto CTF 2022 GSDP 24/421 (⭐⭐)   UIUCTF 2022 asr 56/395 (⭐⭐)   UIUCTF 2022 Wringing Rings 44/395 (⭐⭐)   UIUCTF 2022 Elliptic Clock Crypto 27/395 (⭐⭐)   UIUCTF 2022 mom can we have AES 22/395 (⭐⭐)   UIUCTF 2022 That-crete Log 21/395 (⭐⭐)   UIUCTF 2022 Bro-key-n 14/395 (⭐⭐)   corCTF 2022 tadpole 262/978 (⭐)   corCTF 2022 luckyguess 150/978 (⭐⭐)   corCTF 2022 exchanged 94/978 (⭐⭐)   corCTF 2022 hidE 88/978 (⭐⭐)   corCTF 2022 generous 49/978 (⭐⭐)   corCTF 2022 leapfrog 36/978 (⭐⭐)   corCTF 2022 corrupted-curves 20/978 (⭐⭐⭐)   corCTF 2022 threetreasures 19/978 (⭐⭐⭐)   corCTF 2022 corrupted-curves+ 🔥 15/978 (⭐⭐⭐)   corCTF 2022 rlfsr 14/978 (⭐⭐⭐)   corCTF 2022 D3S 🔥 1/978 (⭐⭐⭐⭐)   MapleCTF 2022 brsaby 166/618 (⭐)   MapleCTF 2022 jwt 79/618 (⭐⭐)   MapleCTF 2022 Spiral-baby 57/618 (⭐⭐)   MapleCTF 2022 qotp-real 27/618 (⭐⭐)   MapleCTF 2022 e000p 18/618 (⭐⭐)   MapleCTF 2022 Spiral 🔥 9/618 (⭐⭐⭐)   MapleCTF 2022 clipper chip 2/618 (❓)   BalsnCTF 2022 Yet another RSA with hint 38/584 (⭐⭐)   BalsnCTF 2022 vss 🔥 9/584 (⭐⭐⭐)   BalsnCTF 2022 lfsr 🔥 6/584 (⭐⭐⭐)   DownUnderCTF 2022 baby arx 279/1407 (⭐)   DownUnderCTF 2022 oracle for block cipher 102/1407 (⭐⭐)   DownUnderCTF 2022 cheap ring theory 101/1407 (⭐)   DownUnderCTF 2022 rsa interval oracle i 79/1407 (⭐⭐)   DownUnderCTF 2022 rsa interval oracle ii 🔥 36/1407 (⭐⭐)   DownUnderCTF 2022 rsa interval oracle iii 23/1407 (⭐⭐)   DownUnderCTF 2022 rsa interval oracle iv 🔥 5/1407 (⭐⭐⭐)   DownUnderCTF 2022 time locked 18/1407 (⭐⭐)   DownUnderCTF 2022 faulty arx 🔥 11/1407 (⭐⭐⭐)   DownUnderCTF 2022 1337crypt v3 🔥 2/1407 (⭐⭐⭐)   DownUnderCTF 2022 kyber± 1/1407 (⭐⭐⭐⭐)    Google CTF 2022 Cycling 🔥  Solves: 50/382 Difficulty: ⭐⭐ Tags: rsa Source: Official Repository  We are given a RSA public key $(n, e)$ and $c_0$, the ciphertext of $m_0$ (the flag).</description>
     </item>
     
     <item>
       <title>Crypto in CTF: Q4 2021</title>
-      <link>/crypto-in-ctf/2021-q4/</link>
+      <link>https://mystiz.hk/crypto-in-ctf/2021-q4/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/crypto-in-ctf/2021-q4/</guid>
+      <guid>https://mystiz.hk/crypto-in-ctf/2021-q4/</guid>
       <description>CTF Challenge Name Solves (Difficulty)     TSG CTF 2021 Beginner&#39;s Crypto 2021 126/775 (⭐)   TSG CTF 2021 Minimalist&#39;s Private 49/775 (⭐⭐)   TSG CTF 2021 Baba is Flag 34/775 (⭐⭐)   TSG CTF 2021 Flag is Win 10/775 (⭐⭐⭐)   TSG CTF 2021 This is DSA 9/775 (⭐⭐)   TastelessCTF 2021 crybaby 🔥 14/162 (⭐⭐⭐)   pbctf 2021 Alkaloid Stream 132/210 (⭐⭐)   pbctf 2021 Steroid Stream 38/210 (⭐⭐)   pbctf 2021 GoodHash 🔥 30/210 (⭐⭐⭐)   pbctf 2021 Seed Me 🔥 24/210 (⭐⭐⭐)   pbctf 2021 Yet Another PRNG 🔥 14/210 (⭐⭐⭐)   pbctf 2021 Yet Another RSA 🔥 12/210 (⭐⭐⭐)   Hack.</description>
     </item>
     
     <item>
       <title>Crypto in CTF: Q4 2022</title>
-      <link>/crypto-in-ctf/2022-q4/</link>
+      <link>https://mystiz.hk/crypto-in-ctf/2022-q4/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/crypto-in-ctf/2022-q4/</guid>
+      <guid>https://mystiz.hk/crypto-in-ctf/2022-q4/</guid>
       <description>   CTF Challenge Name Solves (Difficulty)    </description>
     </item>
     
