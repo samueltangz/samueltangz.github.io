@@ -29,6 +29,17 @@
     </item>
     
     <item>
+      <title>HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges</title>
+      <link>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-1/</link>
+      <pubDate>Sat, 24 Dec 2022 16:46:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-1/</guid>
+      <description>This is the third year Black Bauhinia coorganizes HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.
+Similar to the last year, I have a series of three blog posts walking through the challenges that I wrote. We will discuss the four easier crypto challenges: Flawed ElGamal, Catch-22, Rogue Secret Assistant and Base64 encryption.
+This is an index of the challenges I wrote for HKCERT CTF 2022.</description>
+    </item>
+    
+    <item>
       <title>HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</title>
       <link>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-4/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
