@@ -6,7 +6,28 @@
     <description>Recent content in hkcert-ctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 18 Nov 2021 16:05:03 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/hkcert-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 24 Dec 2022 16:46:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/hkcert-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2022 Postmortem (III): The Remaining Challenges</title>
+      <link>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/</link>
+      <pubDate>Sat, 24 Dec 2022 16:46:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/</guid>
+      <description>In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: Numbers go brrr and Minecraft geoguessr.
+​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse) Challenge Summary  This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?
+ There is a nc service, and we will be given some numbers upon connecting.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges</title>
+      <link>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-2/</link>
+      <pubDate>Sat, 24 Dec 2022 16:46:01 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-2/</guid>
+      <description>✨ Regarding the thumbnail. This my Discord avatar combined with Komi from the anime Komi can&amp;rsquo;t communicate, where the challenge Mystiz can&amp;rsquo;t code referred. Made by @byronwai.  We will continue walking through the remaining crypto challenges I wrote for HKCERT CTF 2022: Mystiz can&#39;t code, Slow keystream and King of Rock, Paper, Scissors.
+亞洲協會香港中心 / Mystiz can&#39;t code (Crypto) Challenge Summary  Mystiz can&#39;t code! He wanted to implement Advanced Encryption Standard (AES) in batch but he couldn&#39;t do it correctly.</description>
+    </item>
+    
     <item>
       <title>HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</title>
       <link>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-4/</link>

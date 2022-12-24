@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>HKCERT CTF 2022 Postmortem (III): The Remaining Challenges :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: Numbers go brrr and Minecraft geoguessr.
+​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse) Challenge Summary  This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?
+ There is a nc service, and we will be given some numbers upon connecting." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://mystiz.hk/images/2022-12-24-hkcert-ctf/minecraft-geoguessr.png" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HKCERT CTF 2022 Postmortem (III): The Remaining Challenges">
+<meta property="og:description" content="In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: Numbers go brrr and Minecraft geoguessr." />
+<meta property="og:url" content="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="https://mystiz.hk/images/2022-12-24-hkcert-ctf/minecraft-geoguessr.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-12-24 16:46:02 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/">HKCERT CTF 2022 Postmortem (III): The Remaining Challenges</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-12-24 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/hkcert-ctf/">hkcert-ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/reverse/">reverse</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/minecraft/">minecraft</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+    <img src="https://mystiz.hk/images/2022-12-24-hkcert-ctf/minecraft-geoguessr.png" class="post-cover center" alt="HKCERT CTF 2022 Postmortem (III): The Remaining Challenges" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: <em>Numbers go brrr</em> and <em>Minecraft geoguessr</em>.</p>
+
+<h2 id="觀塘海濱音樂噴泉--numbers-go-brrr-reverse">​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse)<a href="#觀塘海濱音樂噴泉--numbers-go-brrr-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?</p>
+</blockquote>
+
+<p>There is a <code>nc</code> service, and we will be given some numbers upon connecting. We are asked to send something each time the 🥺 emoji appeared. From the description, we will be given the flag after sending correct responses for 100 times.</p>
+
+
+
+
+<div class="code-toolbar">
+<pre class='language-bash command-line' data-output='2-4,6-10' data-user='mystiz' data-host='foci'>
+<code class="language-bash">nc HOST PORT
+🔧 1 37 37 97
+🥺 33
+😡
+nc HOST PORT
+🔧 1 85 85 97
+🥺 85
+🔧 2 2 26 97
+🥺 24
+😡</code>
+</pre>
+</div>
+
+<p>On top of that, there is an attachment called <code>solve.py</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<span style="color:#f92672">from</span> z3 <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<span style="color:#f92672">from</span> operator <span style="color:#f92672">import</span> add, mul
+<span style="color:#f92672">from</span> functools <span style="color:#f92672">import</span> reduce
+<span style="color:#f92672">from</span> rich.progress <span style="color:#f92672">import</span> track
+<span style="color:#f92672">import</span> itertools
+
+<span style="color:#75715e"># TODO: change this to the remote service</span>
+r <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./chall&#39;</span>)
+
+<span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> track(range(<span style="color:#ae81ff">100</span>)):
+    r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#39;🔧 &#39;</span><span style="color:#f92672">.</span>encode())
+
+    m, s, p, q <span style="color:#f92672">=</span> map(int, r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode()<span style="color:#f92672">.</span>split())
+
+    _s <span style="color:#f92672">=</span> Solver()
+    xs <span style="color:#f92672">=</span> [Int(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;x_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(m)]
+
+    subss <span style="color:#f92672">=</span> [Int(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;ss_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(m)]
+    subps <span style="color:#f92672">=</span> [Int(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;ps_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(m)]
+
+    <span style="color:#75715e"># The base conditions</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, m):
+        _s<span style="color:#f92672">.</span>add(xs[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;=</span> xs[i])
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, m):
+        _s<span style="color:#f92672">.</span>add(Not(xs[i] <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>))
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, m):
+        _s<span style="color:#f92672">.</span>add(xs[i] <span style="color:#f92672">&lt;</span> q)
+    <span style="color:#66d9ef">for</span> i, j <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>product(range(<span style="color:#ae81ff">0</span>, m), repeat<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>):
+        _s<span style="color:#f92672">.</span>add(Implies(i <span style="color:#f92672">!=</span> j, xs[i] <span style="color:#f92672">!=</span> xs[j]))
+
+    <span style="color:#75715e"># The &#34;s&#34; and &#34;p&#34; requirements</span>
+    _s<span style="color:#f92672">.</span>add(subss[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> xs[<span style="color:#ae81ff">0</span>])
+    _s<span style="color:#f92672">.</span>add(subps[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> xs[<span style="color:#ae81ff">0</span>])
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(m<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>):
+        _s<span style="color:#f92672">.</span>add(subss[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> subss[i] <span style="color:#f92672">+</span> (i<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">*</span>xs[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>])
+        _s<span style="color:#f92672">.</span>add(subps[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> subps[i] <span style="color:#f92672">*</span> (i<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">*</span>xs[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>])
+    _s<span style="color:#f92672">.</span>add(subss[m<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">%</span> q <span style="color:#f92672">==</span> s)
+    _s<span style="color:#f92672">.</span>add(subps[m<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">%</span> q <span style="color:#f92672">==</span> p)
+
+    <span style="color:#66d9ef">assert</span> _s<span style="color:#f92672">.</span>check() <span style="color:#f92672">==</span> sat
+    md <span style="color:#f92672">=</span> _s<span style="color:#f92672">.</span>model()
+    x0s <span style="color:#f92672">=</span> [md<span style="color:#f92672">.</span>evaluate(xs[i]) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(m)]
+    r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#39;🥺 &#39;</span><span style="color:#f92672">.</span>encode(), <span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">.</span>join(map(str, x0s))<span style="color:#f92672">.</span>encode())
+
+print(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>decode())</code></pre></div>
+<div class="alert danger">
+  <strong>🤯 Wait what, <code>solve.py</code>?</strong> Hear me out&hellip; This is not a mistake.
+</div>
+
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert success">
+  💬 <strong>Presentation?</strong> Some of you may prefer to read slides rather than words. If that&rsquo;s the case, please refer to the <a href="/images/2022-12-24-hkcert-ctf/20221128-hkcert-ctf-writeup-2.pdf">slides</a> I used for <em>CUHK Open Innovation Lab&rsquo;s sharing</em> dated November 28, 2022.
+</div>
+
+
+<h4 id="part-i-an-unintended-solution">Part I: An unintended solution<a href="#part-i-an-unintended-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>To solve the challenge, we can just run <code>solve.py</code> and it is done. Just kidding, it is impossible to solve the challenge in this way. Let's read the solve script and see what is going on.</p>
+
+<h4 id="part-ii-understanding-the-solve-script">Part II: Understanding the solve script<a href="#part-ii-understanding-the-solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>There are 100 rounds in total. In each round, we will receive four numbers $m, s, p, q$ from the server and we need to find $(x_1, x_2, ..., x_m)$ satisfying the base conditions:</p>
+
+<ol>
+<li>$x_1 \leq x_2 \leq ... \leq x_m$,</li>
+<li>$0 &lt; x_i &lt; q$ for $i = 1, 2, ..., m$, and</li>
+<li>For any $i \neq j$, $x_i \neq x_j$.</li>
+</ol>
+
+<p>In addition, the $m$-tuple needs to satisfy the &quot;s&quot; and &quot;p&quot; requirements (short for <em>sum</em> and <em>product</em>, respectively):</p>
+
+<ol>
+<li>$x_1 + 2 x_2 + ... + m x_m \equiv s \ (\text{mod}\ q)$, and</li>
+<li>$x_1 \cdot 2 x_2 \cdot ... \cdot m x_m \ \equiv p \ (\text{mod}\ q)$.</li>
+</ol>
+
+<p>That is it! We can deduce the actual problem statement from the solution script, and we can simplify the base condition:</p>
+
+<p><span  class="math">\[0 < x_1 < x_2 < ... < x_m < q.\]</span></p>
+
+<p>We can also simplify the product requirement:</p>
+
+<p><span  class="math">\[x_1 \cdot x_2 \cdot ... \cdot x_m \equiv p' \quad (\text{mod}\ q),\]</span></p>
+
+<p>where $p' \equiv p \cdot (1 \cdot 2 \cdot ... \cdot m)^{-1}\ \text{mod}\ q$.</p>
+
+<h4 id="part-iii-reducing-an-undetermined-system">Part III: Reducing an undetermined system<a href="#part-iii-reducing-an-undetermined-system" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>If we consider only the <em>sum</em> and <em>product</em> requirements, there are $m$ unknowns and two equations. If $m &gt; 2$, then the system is underdetermined:</p>
+
+<p><span  class="math">\[\begin{cases}
+x_1 + 2 x_2 + ... + m x_m & \equiv s \quad (\text{mod}\ q) \\
+x_1 \cdot x_2 \cdot ... \cdot x_m& \equiv p' \quad (\text{mod}\ q)
+\end{cases}\]</span></p>
+
+<div class="alert success">
+  🎯 <strong>Objective.</strong> In this section, we will reduce the challenge from $m &gt; 2$ to $m = 2$, which its solution will be discussed in the next part. For $m = 1$, it is obvious that the system is solvable if and only if $s = p$, with solution being $x_0 = s$.
+</div>
+
+
+<p>This is actually easy. We can just assume that $x_1 = 1, x_2 = 2, ..., x_{m-2} = m-2$. What is remaining in the equations are:</p>
+
+<p><span  class="math">\[\begin{cases}
+1 + 2 \cdot 2 + ... + (m-2) \cdot (m-2) + (m-1) x_{m-1} + m x_m & \equiv s \quad (\text{mod}\ q) \\
+1 \cdot 2 \cdot ... \cdot (m-2) \cdot x_{m-1} \cdot x_m & \equiv p' \quad (\text{mod}\ q)
+\end{cases},\]</span></p>
+
+<p>which is equivalent to</p>
+
+<p><span  class="math">\[\begin{cases}
+(m-1) x_{m-1} + m x_m & \equiv s' \quad (\text{mod}\ q) \\
+x_{m-1} \cdot x_m & \equiv p'' \quad (\text{mod}\ q)
+\end{cases}.\]</span></p>
+
+<p>Here $s' = s - [1 + 2^2 + ... + (m-2)^2]\ (\text{mod}\ q)$ and $p'' = p' \cdot [1 \cdot 2 \cdot ... \cdot (m-2)]^{-1} \ (\text{mod}\ q)$.</p>
+
+<p>Now we have a different objective: Find $m-2 &lt; x_{m-1} &lt; x_m &lt; q$ such that the above system holds. Although the range of values are a little bit stricter, it is still easy to find a solution set.</p>
+
+<h4 id="part-iv-solving-a-system-of-two-equations-modulo-prime-q">Part IV: Solving a system of two equations, modulo prime $q$<a href="#part-iv-solving-a-system-of-two-equations-modulo-prime-q" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>From the two equations, we can just rewrite the sum condition:</p>
+
+<p><span  class="math">\[(m-1) \cdot x_{m-1} \equiv s - m \cdot x_m \quad (\text{mod}\ q).\]</span></p>
+
+<p>Substituting the above to the product condition, we have</p>
+
+<p><span  class="math">\[\begin{aligned}
+& (s - m \cdot x_m) \cdot x_m \equiv (m-1) \cdot p'' \quad (\text{mod}\ q) \\
+& \Longrightarrow m \cdot {x_m}^{2} - s \cdot x_m + (m-1) \cdot p'' \equiv 0 \quad (\text{mod}\ q),
+\end{aligned}\]</span></p>
+
+<p>which is a quadratic congruence in $x_m$. To solve the equation, we will first reduce it into the form $u^2 \equiv b \ (\text{mod}\ q)$.</p>
+
+<p>This is simple. We are essentially completing the square in modulo $q$:</p>
+
+<p><span  class="math">\[\begin{aligned}
+& m \cdot {x_m}^{2} - s \cdot x_m + (m-1) \cdot p'' \equiv 0 \quad (\text{mod}\ q) \\
+& \Longrightarrow {x_m}^{2} - (s \sdot m^{-1}) \cdot x_m + (m-1) \cdot m^{-1} \cdot p'' \equiv 0 \quad (\text{mod}\ q) \\
+& \Longrightarrow {x_m}^{2} - 2 \cdot [s \sdot (2m)^{-1}] \cdot x_m + (m-1) \cdot m^{-1} \cdot p'' \equiv 0 \quad (\text{mod}\ q) \\
+& \Longrightarrow {x_m}^{2} - 2 \cdot [s \sdot (2m)^{-1}] \cdot x_m + [s \sdot (2m)^{-1}]^2 \equiv [s \sdot (2m)^{-1}]^2 - (m-1) \cdot m^{-1} \cdot p'' \quad (\text{mod}\ q) \\
+& \Longrightarrow [x_m - s \cdot (2m)^{-1}]^2 \equiv [s \sdot (2m)^{-1}]^2 - (m-1) \cdot m^{-1} \cdot p'' \quad (\text{mod}\ q)
+\end{aligned}\]</span></p>
+
+<p>With $u = x_m - s \cdot (2m)^{-1}$ and $b = [s \sdot (2m)^{-1}]^2 - (m-1) \cdot m^{-1} \cdot p''$, we have the equation $u^2 \equiv b \ (\text{mod}\ q)$. To find the values of $u$, we can apply the <a href="https://en.wikipedia.org/wiki/Tonelli%E2%80%93Shanks_algorithm">Tonelli-Shanks algorithm</a>. After that, we can compute $x_m$ from $u + s \cdot (2m)^{-1}$ and obtain $x_{m-1}$ easily.</p>
+
+<p>It is not uncommon that either no solutions exists, or $m-2 &lt; x_{m-1} &lt; x_m &lt; q$ does not hold. In these cases, we can use another set of values for $(x_1, x_2, ..., x_{m-3}, x_{m-2})$ such that $x_{m-2}$ is small enough. After that, we can find $x_{m-1}$ and $x_m$ with the above approach and stop when we have $x_{m-2} &lt; x_{m-1} &lt; x_m &lt; q$.</p>
+
+<p>With that implemented, we can finally pass the 100 rounds. We will eventually get the flag: <code>hkcert22{z3_i5_4n_sw1s5_4rmy_kn1f3_bu7_1t_i5_n0t_alw4y5_f4s7}</code>.</p>
+
+<h2 id="cga-香港電競館--minecraft-geoguessr-misc">CGA 香港電競館 / Minecraft Geoguessr (Misc)<a href="#cga-香港電競館--minecraft-geoguessr-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>Do you know Rainbolt? If you send him a photo, he could immediately tell you where it was taken in.</p>
+
+<p>Can you do the same in the Minecraft world?</p>
+
+<p>Note: If you are desperate, you can watch <a href="https://www.youtube.com/watch?v=2KXcQ18JyMs">Rainbolt's most insane geoguessr moments</a>, or <a href="https://www.youtube.com/watch?v=Ekcseve-mOg&amp;list=PLhixgUqwRTjwvBI-hmbZ2rpkAl4lutnJG">LiveOverflow's video series on Minecraft Hacking</a>.</p>
+
+<p>By the way, the map is generated with Minecraft 1.17.1. With that said, you may be unable to look for the better caves.</p>
+</blockquote>
+
+<p>We are given a web service that receives 5-tuples $(x, y, z, \theta, \varphi)$ from players, where $x, y, z$ are the coordinates, and $\theta$ and $\varphi$ are respectively the yaw and pitch. We will receive a screenshot taken in the specified location. Also, $-20000 \leq x, z \leq 20000$, $0 \leq y \leq 256$, $-180 \leq \theta \leq 180$, $-90 \leq \varphi \leq 90$.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-service.png"   />
+    
+  </figure>
+
+
+
+<p>On the other hand, we are also given the below screenshot, where only the prefix of the flag <code>hkcert22{</code> is shown. The objective is to recover the flag.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr.png"   />
+    
+  </figure>
+
+
+
+<div class="alert success">
+  <strong>🤩 Where does the inspiration came from?</strong> This challenge is inspired from <a href="https://www.youtube.com/watch?v=gSxcDYCK_lY">&ldquo;They Cracked My Server!&quot;</a> by <em>@LiveOverflow</em> in the <em>Minecraft:HACKED</em> series.
+</div>
+
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert success">
+  💬 <strong>Presentation?</strong> Some of you may prefer to read slides rather than words. If that&rsquo;s the case, please refer to the <a href="/images/2022-12-24-hkcert-ctf/20221119-hkcert-ctf-writeup.pdf">slides</a> I used for <em>HKCERT&rsquo;s livestream</em> dated November 19, 2022.
+</div>
+
+
+<h4 id="part-i-doing-some-osints-with-the-screenshot">Part I: Doing some OSINTs with the screenshot<a href="#part-i-doing-some-osints-with-the-screenshot" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>The most attractive thing of the screenshot is definitely the prefix of the flag. But what else can we retrieve from it?</p>
+
+<p>Let's talk about Minecraft history. <a href="https://twitter.com/SimplySarc" target="_blank" rel="nofollow">@SimplySarc</a> uploaded <a href="https://www.youtube.com/watch?v=NIs_LU9KH5c">a video</a> in 2012 and showed that the rotation of lily pads is only dependent to its position. Also, snapshot 14w27b (for version 1.8) was released eight years ago. The below is an excerpt of the <a href="https://minecraft.fandom.com/wiki/Java_Edition_14w27b#General">patch notes</a>:</p>
+
+<blockquote>
+<p>The block state files now support an array of models allowing for random models. As a result of this, grass blocks, dirt, sand, red sand, stone, netherrack, bedrock, and TNT all have their top texture randomly rotated.</p>
+</blockquote>
+
+<p>When they say &quot;random&quot;, it is actually dependent on the position like the lily pads. With that said, we can collect information from the grass blocks' rotation to find its coordinates. Surprising, right?</p>
+
+<p>A legendary GeoGuessr player, <a href="https://twitter.com/georainbolt" target="_blank" rel="nofollow">@georainbolt</a>, once said <a href="https://www.youtube.com/watch?v=iOCR73U8t6E"><em>why touch grass when you can study grass</em></a>. We can actually do the same in the Minecraft world. Now look at a grass block. There are four rotations (rotated 0º, 90º, 180º and 270º).</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-grass-blocks.png"   />
+    
+      <figcaption class="right" >The four orientations of a grass block.</figcaption>
+    
+  </figure>
+
+
+
+<p>Well, I know this is probably the most difficult part -- labeling. Let's identify the orientations of some grass blocks in the screenshot:</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-with-rotations.png"   />
+    
+      <figcaption class="right" >The screenshot with some grass blocks labeled with rotations.</figcaption>
+    
+  </figure>
+
+
+
+<p>From above, I collected the rotations of 22 grass blocks.</p>
+
+<table style="text-align: center;">
+    <tr>
+        <td>(0, 0, 0)<br>➡️</td>
+        <td>(0, 0, 1)<br>⬅️</td>
+        <td>(-1, 0, 1)<br>⬆️</td>
+        <td>(1, 0, 2)<br>⬅️</td>
+        <td>(0, 0, 2)<br>⬅️</td>
+        <td>(-1, 0, 2)<br>⬆️</td>
+    </tr>
+    <tr>
+        <td>(0, 0, 3)<br>⬇️</td>
+        <td>(-1, 0, 3)<br>⬆️</td>
+        <td>(0, 0, 4)<br>⬆️</td>
+        <td>(-1, 0, 4)<br>⬅️</td>
+        <td>(-2, 0, 4)<br>➡️</td>
+        <td>(0, 0, 5)<br>⬇️</td>
+    </tr>
+    <tr>
+        <td>(-1, -1, 5)<br>⬅️</td>
+        <td>(1, -1, 6)<br>⬆️</td>
+        <td>(0, -1, 6)<br>⬇️</td>
+        <td>(-1, -1, 6)<br>⬇️</td>
+        <td>(2, -1, 7)<br>⬅️</td>
+        <td>(1, -1, 7)<br>➡️</td>
+    </tr>
+    <tr>
+        <td>(2, -1, 8)<br>➡️</td>
+        <td>(1, -2, 8)<br>⬇️</td>
+        <td>(0, -2, 8)<br>➡️</td>
+        <td>(1, -2, 9)<br>➡️</td>
+        <td colspan="2"></td>
+    </tr>
+</table>
+
+<p>It is very unlikely (with probability being $1/4^{22}$) for a patch of 22 blocks that has the same rotations. Thus, there should be only one matching coordinates if we scan through every block in $-20000 \leq x, z \leq 20000$ and $0 \leq y \leq 256$. Below is the pseudo-code that we are going to implement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">From above, we know (x0+0, y0+0, z0+0) is pointing rightwards and
+                    (x0+0, y0+0, z0+1) is pointing leftwards and ... and
+                    (x0+1, y0-2, z0+9) is pointing rightwards
+for some (x0, y0, z0).
+
+For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 20000:
+  If (x+0, y+0, z+0) is pointing rightwards and
+     (x+0, y+0, z+1) is pointing leftwards and ... and
+     (x+1, y-2, z+9) is pointing rightwards, then:
+    (x, y, z) is the coordinates we want!</code></pre></div>
+<p>A final problem is we don't know which direction the player is facing. Luckily, as there are only four possibilities, we can simply exhaust them all. By the way, some players are able to identity the player's orientation, so they can speed up their algorithm (at least) four times faster than our brute-forcing approach!</p>
+
+<h4 id="part-ii-reverse-engineering-minecraft">Part II: Reverse engineering Minecraft<a href="#part-ii-reverse-engineering-minecraft" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert info">
+  🤔 <strong>Is revese engineering necessary?</strong> No. We are not required to decompile and reverse engineer the source code of Minecraft to study the &ldquo;rotation&rdquo; of the blocks. There is a community of Minecraft working on reverse engineering (mostly on modding) and there are some resources discussing the rotation.
+</div>
+
+
+<p><em>hacker mann</em> uploaded <a href="https://www.youtube.com/watch?v=6__hO4cc1pA">a video</a> in 2019 discussing a way to recover the coordinates from block rotation. The below code is a simplified, yet accurate way to compute the texture rotation of a block. It is a combination of multiple functions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// An Java implementation of the `getRotation`
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">getRotation</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> z<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// Math#getSeed
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">long</span> l <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)(</span>x <span style="color:#f92672">*</span> 3129871<span style="color:#f92672">)</span> <span style="color:#f92672">^</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)</span>z <span style="color:#f92672">*</span> 116129781L <span style="color:#f92672">^</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)</span>y<span style="color:#f92672">;</span>
+    l <span style="color:#f92672">=</span> l <span style="color:#f92672">*</span> l <span style="color:#f92672">*</span> 42317861L <span style="color:#f92672">+</span> l <span style="color:#f92672">*</span> 11L<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">long</span> seed <span style="color:#f92672">=</span> l <span style="color:#f92672">&gt;&gt;</span> 16<span style="color:#f92672">;</span>
+
+    <span style="color:#75715e">// ModelBlockRenderer#tesselateWithAO
+</span><span style="color:#75715e"></span>    Random random <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Random<span style="color:#f92672">(</span>seed<span style="color:#f92672">);</span>
+
+    <span style="color:#75715e">// WeightedBakedModel#getQuads
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">abs</span><span style="color:#f92672">(</span>random<span style="color:#f92672">.</span><span style="color:#a6e22e">nextLong</span><span style="color:#f92672">())</span> <span style="color:#f92672">%</span> 4<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p>Hereby <code>Random</code> is an implementation from the JDK, which can be referenced from their <a href="https://github.com/AdoptOpenJDK/openjdk-jdk16/blob/master/src/java.base/share/classes/java/util/Random.java">source code</a>. To summarize, the random is a <em>linear congruential generator</em> (LCG), with the initial state, $s_0$, being</p>
+
+<p><span  class="math">\[s_0 := (\text{seed} \oplus \text{5DEECE66D}_{16}) \ \text{mod}\ 2^{48}.\]</span></p>
+
+<p>The subsequent states $s_1, s_2, ...$ are all 48 bits and deduced by the current state:</p>
+
+<p><span  class="math">\[s_{i+1} := (\text{5DEECE66D}_{16} \cdot s_i + \text{B}_{16}) \ \text{mod} \ 2^{48}.\]</span></p>
+
+<p>If the current state is $s_i$, then the output of <code>nextInt()</code> would be $y_i := \lfloor{ s_{i+1} / 2^{16} \rfloor}$. Simply put, it is the top 32 bits of the next state. Also, <code>nextLong()</code> is defined by the below code snippet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">nextLong</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">((</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)(</span>next<span style="color:#f92672">(</span>32<span style="color:#f92672">))</span> <span style="color:#f92672">&lt;&lt;</span> 32<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> next<span style="color:#f92672">(</span>32<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<h4 id="part-iii-preparing-programm-for-bruteforcing">Part III: Preparing programm for brute-forcing<a href="#part-iii-preparing-programm-for-bruteforcing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert danger">
+  👊 <strong>Is brute-force the only way to go?</strong> I am not sure. Please share with us if you have a solution without brute-forcing.
+</div>
+
+
+<p>From the above implementation, we know that the seed is derived from the coordinates of the block. This is my translation in <em>Golang</em> which optimized the algorithm a bit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getRotation</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">z</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int32</span> {
+	<span style="color:#75715e">/*
+</span><span style="color:#75715e">		long l = (long)(x * 3129871) ^ (long)z * 116129781L ^ (long)y;
+</span><span style="color:#75715e">		l = l * l * 42317861L + l * 11L;
+</span><span style="color:#75715e">		long seed = l &gt;&gt; 16;
+</span><span style="color:#75715e">	*/</span>
+	<span style="color:#a6e22e">x2</span> <span style="color:#f92672">:=</span> int(int32(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">3129871</span>))
+	<span style="color:#a6e22e">z2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">z</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">116129781</span>
+
+	<span style="color:#a6e22e">l</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">x2</span> ^ <span style="color:#a6e22e">y</span> ^ <span style="color:#a6e22e">z2</span>
+	<span style="color:#a6e22e">l</span> = <span style="color:#a6e22e">l</span> <span style="color:#f92672">*</span> (<span style="color:#a6e22e">l</span><span style="color:#f92672">*</span><span style="color:#ae81ff">42317861</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">11</span>) <span style="color:#75715e">// l = l*l*42317861 + l*11
+</span><span style="color:#75715e"></span>
+	<span style="color:#a6e22e">seed</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">l</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">16</span>
+
+	<span style="color:#75715e">/*
+</span><span style="color:#75715e">		Random random = new Random(seed);
+</span><span style="color:#75715e">	*/</span>
+	<span style="color:#a6e22e">seed</span> ^= <span style="color:#ae81ff">0x5DEECE66D</span>
+
+	<span style="color:#75715e">/*
+</span><span style="color:#75715e">		return Math.abs(random.nextLong()) % 4;
+</span><span style="color:#75715e">	*/</span>
+	<span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> int32((<span style="color:#a6e22e">seed</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0xBB20B4600A69</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x40942DE6BA</span>) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">16</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span> &lt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">v</span> = <span style="color:#f92672">-</span><span style="color:#a6e22e">v</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">3</span>
+}</code></pre></div>
+<p>Well, I did't compare the running times of the implementations in Golang and Java... They may be similar. I use Golang simply because I rarely code in Java anyway.</p>
+
+<p>After that, what is missing is just a routine that exhaust the whole search space, and include the block rotation we found from the screenshot. We can decrase the running time with multithreading, too.</p>
+
+<p>I implemented my own solution using Golang. With 8 threads and search space being $-20000 \leq x, z \leq 20000$ and $64 \leq y &lt; 100$, it only takes 6 minutes to run.</p>
+
+<p>The coordinates we found is $(16551, 67, 4170)$. We can now ask our intern to teleport nearby for the whole flag: <code>hkcert22{s33d_cr34kin9_1s_r3ver53_4nd_cryp70_com61ned}</code>.</p>
+
+<div class="alert success">
+  🛠️ <strong>Alternate tools.</strong> <a href="https://github.com/19MisterX98/TextureRotations">19MisterX98/TextureRotations</a> is a repository (in Java) that does the same thing. You can use the code to recover the coordinates.
+</div>
+
+
+<h4 id="part-iv-reducing-the-search-time">Part IV: Reducing the search time<a href="#part-iv-reducing-the-search-time" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>There are two notable ways to reduce the search time, provided by the contestants <a href="https://twitter.com/HotDawggyy" target="_blank" rel="nofollow">@HotDawggyy</a> and <em>Gameboy612</em>. We can recover the coordinates in less than ten seconds with either of the two improvements implemented. This is really remarkable!</p>
+
+<h5 id="hey-look-at-the-clouds">Hey, look at the clouds!<a href="#hey-look-at-the-clouds" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p><a href="https://twitter.com/HotDawggyy" target="_blank" rel="nofollow">@HotDawggyy</a> looked at the cloud and found that the $z$-coordinate should be roughly 4180 when taken modulo 6144. Assuming that the absolute error is 64 blocks, i.e., $4180-64 &lt; z\ \text{mod}\ 6144 &lt; 4180+64$. This reduced the search space by 98.0%.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-improvement-hotdawggy.png"   />
+    
+      <figcaption class="right" >OSINT using clouds? That's better than Rainbolt!</figcaption>
+    
+  </figure>
+
+
+
+<h5 id="look-at-the-water-too">Look at the water, too!<a href="#look-at-the-water-too" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>On the other hand, <em>Gameboy612</em> reduced the search space by determining the sea level. If we assume that the pool of water is at the sea level (i.e., $y = 62$), we can just fix the $y$-coordinate to one single value. This reduces the search space by 97.2%.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-improvement-gameboy612.png"   />
+    
+      <figcaption class="right" >OSINT using clouds? That's better than Rainbolt!</figcaption>
+    
+  </figure>
+
+
+
+<p>Finally, it is impressing that <em>Gameboy612</em> is a secondary school student and their team got the first blood 🩸 of this challenge. Congratulations!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-2/">
+                <span class="button__text">HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    HKCERT CTF 2022 Postmortem (III): The Remaining Challenges
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

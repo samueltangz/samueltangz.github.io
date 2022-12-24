@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="✨ Regarding the thumbnail. This my Discord avatar combined with Komi from the anime Komi can&amp;rsquo;t communicate, where the challenge Mystiz can&amp;rsquo;t code referred. Made by @byronwai.  We will continue walking through the remaining crypto challenges I wrote for HKCERT CTF 2022: Mystiz can&#39;t code, Slow keystream and King of Rock, Paper, Scissors.
+亞洲協會香港中心 / Mystiz can&#39;t code (Crypto) Challenge Summary  Mystiz can&#39;t code! He wanted to implement Advanced Encryption Standard (AES) in batch but he couldn&#39;t do it correctly." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-2/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://mystiz.hk/images/2022-12-24-hkcert-ctf/mystiz-cant-code.png" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges">
+<meta property="og:description" content="We will continue walking through the remaining crypto challenges I wrote for HKCERT CTF 2022: Mystiz can&#39;t code, Slow keystream and King of Rock, Paper, Scissors." />
+<meta property="og:url" content="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-2/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="https://mystiz.hk/images/2022-12-24-hkcert-ctf/mystiz-cant-code.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-12-24 16:46:01 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-2/">HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-12-24 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/hkcert-ctf/">hkcert-ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+    <img src="https://mystiz.hk/images/2022-12-24-hkcert-ctf/mystiz-cant-code.png" class="post-cover center" alt="HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <div class="alert success">
+  ✨ <strong>Regarding the thumbnail.</strong> This my Discord avatar combined with Komi from the anime <em>Komi can&rsquo;t communicate</em>, where the challenge <em>Mystiz can&rsquo;t code</em> referred. Made by <em>@byronwai</em>.
+</div>
+
+
+<p>We will continue walking through the remaining crypto challenges I wrote for HKCERT CTF 2022: <em>Mystiz can't code</em>, <em>Slow keystream</em> and <em>King of Rock, Paper, Scissors</em>.</p>
+
+<h2 id="亞洲協會香港中心--mystiz-cant-code-crypto">亞洲協會香港中心 / Mystiz can't code (Crypto)<a href="#亞洲協會香港中心--mystiz-cant-code-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>Mystiz can't code! He wanted to implement Advanced Encryption Standard (AES) in batch but he couldn't do it correctly.</p>
+
+<p>Anyway, he decided to give up and uploads what he has for now. Since this is implemented based on AES, it should be almost as secure as AES as well?</p>
+</blockquote>
+
+<p>We are given a <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/mystiz-cant-code/public/aes.bat">batch script</a> which <em>attempts</em> to implement AES. We are also given two ciphertexts encrypted with the same key (and one of the plaintexts is given).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Microsoft Windows [Version 10.0.19044.2006]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] 68656c6c6f20776f726c6421
+2740f489df8449453fd87f075a648e94
+
+C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
+9a3538b25faf70f2654e7816df540acedb753d319f76311d95a4ad5e797fff3e13f7dcbde563baf8f7ac62580196b5ca911789fedade0fd6fb40642413d521992311f9bc01d127db4bbcf257ee5deb8fcd49b23aadd12f52fa7829e7e281373f</code></pre></div>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<div class="alert info">
+  😒 <strong>Objection!</strong> I can actually code. I actually built a wrote a working AES then to break it in the way I wanted.
+</div>
+
+
+<h4 id="part-i-background-story">Part I: Background story<a href="#part-i-background-story" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>I am a newbie to batch scripts. The only batch scripts I wrote was to shutdown a machine. Back in the days <em>MSN</em> still exists (an application in the stone age, huh?), I used to rename those batch scripts into files, changed their icons and sent them to my friends. It was pretty satisfacting when you see they became offline as soon as they receive the files.</p>
+
+<p>Well, after uncountably many years, I am asked to write batch scripts for my work to maintain Windows machines. I was stuck into an issue for a few hours... and it was pretty amusing. Anyway, I thought that is worth making it into a CTF challenge.</p>
+
+<h4 id="part-ii-understanding-the-cipher">Part II: Understanding the cipher<a href="#part-ii-understanding-the-cipher" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Denote the flawed AES by $\text{AES}^\dagger$. When we compare the batch script with the below figure showing the implementation, it seems that everything matches.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/mystiz-cant-code-1.png"   />
+    
+      <figcaption class="right" >A brief flow for the correct AES implementation.</figcaption>
+    
+  </figure>
+
+
+
+<p>For instance, the <code>EncryptBlock</code> and the <code>AddRoundKey</code> functions below looked legit (except that the <code>state</code> is a global variable).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-batch" data-lang="batch">:EncryptBlock
+    <span style="color:#66d9ef">set</span> block_id=%1
+
+    <span style="color:#66d9ef">call</span> :LoadState %block_id%
+
+    <span style="color:#66d9ef">set</span> round_key=0
+    <span style="color:#66d9ef">call</span> :AddRoundKey %round_key%
+
+    <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/l</span> <span style="color:#ae81ff">%%</span>r <span style="color:#66d9ef">in</span> (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">9</span>) <span style="color:#66d9ef">do</span> (
+        <span style="color:#66d9ef">set</span> round_key=<span style="color:#ae81ff">%%</span>r
+        <span style="color:#66d9ef">call</span> :SubBytes
+        <span style="color:#66d9ef">call</span> :ShiftRows
+        <span style="color:#66d9ef">call</span> :MixColumns
+        <span style="color:#66d9ef">call</span> :AddRoundKey %round_key%
+    )
+
+    <span style="color:#66d9ef">set</span> round_key=10
+    <span style="color:#66d9ef">call</span> :SubBytes
+    <span style="color:#66d9ef">call</span> :ShiftRows
+    <span style="color:#66d9ef">call</span> :AddRoundKey %round_key%
+    
+    <span style="color:#66d9ef">call</span> :SaveState %block_id%
+<span style="color:#66d9ef">exit</span> /b 0</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-batch" data-lang="batch">:AddRoundKey
+    <span style="color:#66d9ef">set</span> round_id=%1
+    <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/l</span> <span style="color:#ae81ff">%%</span>i <span style="color:#66d9ef">in</span> (<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">15</span>) <span style="color:#66d9ef">do</span> (
+        <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">/a</span> j<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span><span style="color:#f92672">*%</span>round_id%+%<span style="color:#f92672">%</span>i
+        <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">/a</span> STATE[<span style="color:#f92672">%%</span>i]<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;STATE[</span><span style="color:#ae81ff">%%</span><span style="color:#e6db74">i]^KEY[</span>%j%<span style="color:#e6db74">]&#34;</span>
+    )
+<span style="color:#66d9ef">exit</span> /b 0</code></pre></div>
+<p>If you are convinced, then unfortunately you fell into the same pitfall as I did. In reality, there is a bizarre behaviour that I couldn't understand while writing the challenge. In short, both <code>EncryptBlock</code> and <code>AddRoundKey</code> are flawed so that $\text{AES}^\dagger$ is not working as intended. The below figure shows how the messages are encrypted using $\text{AES}^\dagger$. $n$ in the figure is the number of blocks the script has encrypted.</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/mystiz-cant-code-2.png"   />
+    
+      <figcaption class="right" >The actual encryption flow for given batch file.</figcaption>
+    
+  </figure>
+
+
+
+<p>We can see from above that only two bytes from the subkeys are used when encrypting a block, which are $k_{33}$ from the 0-th and the $n$-th round keys. The other parts are performed in the same way that AES does. Up to here, we can already write a script to exhaust the $2^{16}$ subkey candidates for each block.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">hkcert22{pr09r4mm1ng_in_b47ch_1s_s0_d1fficul7_4nd_why_d03s_th1n9s_1n_br4ck3t_run5_in_p4ral13l}</code></pre></div>
+<h4 id="part-iii-batch-why">Part III: Batch, why?<a href="#part-iii-batch-why" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert danger">
+  🧠 <strong>RIP brain cells.</strong> I am unable to figure out all the details&hellip; It didn&rsquo;t work as expected. Please let me know if you know what&rsquo;s going on.
+</div>
+
+
+<p>In this section, we will study the causes of the problem. In short, the commands in the parentheses are executed simultaneously<sup class="footnote-ref" id="fnref:so"><a class="footnote" href="#fn:so">1</a></sup>.</p>
+
+<p>For batch scripts, all functions variables are global unless we specify <code>SETLOCAL</code> in the function. Let's consider how the first block is encrypted. It calls <code>LoadState</code> at the very beginning, which eventually sets $j \leftarrow 15$. Since $j$ is global, its value will be shared. After that, <code>AddRoundKey</code>, which is defined below, is called with the argument <code>round_id = 0</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-batch" data-lang="batch">:AddRoundKey
+    <span style="color:#66d9ef">set</span> round_id=%1
+    <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/l</span> <span style="color:#ae81ff">%%</span>i <span style="color:#66d9ef">in</span> (<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">15</span>) <span style="color:#66d9ef">do</span> (
+        <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">/a</span> j<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span><span style="color:#f92672">*%</span>round_id%+%<span style="color:#f92672">%</span>i
+        <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">/a</span> STATE[<span style="color:#f92672">%%</span>i]<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;STATE[</span><span style="color:#ae81ff">%%</span><span style="color:#e6db74">i]^KEY[</span>%j%<span style="color:#e6db74">]&#34;</span>
+    )
+<span style="color:#66d9ef">exit</span> /b 0</code></pre></div>
+<p>Since the commands are executed simultaneously, $j$ was unable to update timely when it is used to update the state. The value of $j$ in the line that sets the value of <code>STATE[i]</code> is fixed for all $i = 0, 1, ..., 15$. Therefore, instead of xoring the message with the round key, every byte of the message is xored with <code>KEY[15]</code> (i.e., $k_{33}$ from the 0-th round key).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-batch" data-lang="batch">:EncryptBlock
+    <span style="color:#66d9ef">set</span> block_id=%1
+
+    <span style="color:#66d9ef">call</span> :LoadState %block_id%
+
+    <span style="color:#66d9ef">set</span> round_key=0
+    <span style="color:#66d9ef">call</span> :AddRoundKey %round_key%
+
+    <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/l</span> <span style="color:#ae81ff">%%</span>r <span style="color:#66d9ef">in</span> (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">9</span>) <span style="color:#66d9ef">do</span> (
+        <span style="color:#66d9ef">set</span> round_key=<span style="color:#ae81ff">%%</span>r
+        <span style="color:#66d9ef">call</span> :SubBytes
+        <span style="color:#66d9ef">call</span> :ShiftRows
+        <span style="color:#66d9ef">call</span> :MixColumns
+        <span style="color:#66d9ef">call</span> :AddRoundKey %round_key%
+    )
+
+    <span style="color:#66d9ef">set</span> round_key=10
+    <span style="color:#66d9ef">call</span> :SubBytes
+    <span style="color:#66d9ef">call</span> :ShiftRows
+    <span style="color:#66d9ef">call</span> :AddRoundKey %round_key%
+    
+    <span style="color:#66d9ef">call</span> :SaveState %block_id%
+<span style="color:#66d9ef">exit</span> /b 0</code></pre></div>
+<p>Let's have a look at the <code>EncryptBlock</code> function. The parameter for the <code>AddRoundKey</code> function, <code>%round_key%</code>, is actually zero for all the rounds. This sets $j \leftarrow 15$ when <code>AddRoundKey</code> is called, which will be used in the final <code>AddRoundKey</code> call. With that said, when $n = 0$, only <code>KEY[15]</code> will be used for encryption.</p>
+
+<p>On the other hand for $n &gt; 0$, <code>LoadState</code> sets $j \leftarrow 16n+15$. This $j$ will only be used on the first <code>AddRoundKey</code> (and the subsequent $j$s for <code>AddRoundKey</code> are 15), which implies that <code>KEY[16*n+15]</code> (i.e., $k_{33}$ of the $n$-th round key) will be used for the first <code>AddRoundKey</code> and $k_{33}$ of the 0-th round key.</p>
+
+<h2 id="澳洲牛奶公司--slow-keystream-crypto">澳洲牛奶公司 / Slow keystream (Crypto)<a href="#澳洲牛奶公司--slow-keystream-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>Want a challenge in Hong Kong?</p>
+
+<p>Enter the Australia Dairy Company and execute the 379-byte flag generator written in Golang. I bet you will be expelled from the restaurant before the second character of the flag appears.</p>
+</blockquote>
+
+<p>We are given a binary written in Golang (with source code given below), and <code>flag.enc</code>. The objective is to recover the input.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;math/rand&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Seed</span>(<span style="color:#ae81ff">1337</span>)
+
+	<span style="color:#a6e22e">flag</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ReadFile</span>(<span style="color:#e6db74">&#34;flag.enc&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;cannot open flag.enc&#34;</span>)
+		<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
+	}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> uint64(<span style="color:#ae81ff">0</span>), <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; len(<span style="color:#a6e22e">flag</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Uint64</span>()
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">==</span> uint64(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">&lt;&lt;</span><span style="color:#a6e22e">j</span> {
+			<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> byte(<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Uint64</span>())
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Print</span>(string(<span style="color:#a6e22e">flag</span>[<span style="color:#a6e22e">j</span>] ^ <span style="color:#a6e22e">x</span>))
+			<span style="color:#a6e22e">j</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+		}
+	}
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>()
+}</code></pre></div>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="part-i-what-is-in-golangs-prng">Part I: What is in Golang's PRNG?<a href="#part-i-what-is-in-golangs-prng" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>In this challenge, the characters of the encrypted flag is XORed with the outputs from <code>rand.Uint64</code>. With that said, we have to look deeper into the internals of the PRNG. We can start with <a href="https://pkg.go.dev/math/rand@go1.19#Uint64">the documentation</a> - with that, we can read the source code and see where the actual code is. Tracing in the <a href="https://cs.opensource.google/go/go/+/refs/tags/go1.19:src/math/rand/">codebase</a>, eventually we end up at its implementation (snippeted below):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// https://cs.opensource.google/go/go/+/refs/tags/go1.19:src/math/rand/rng.go
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// Copyright 2009 The Go Authors. All rights reserved.
+</span><span style="color:#75715e">// Use of this source code is governed by a BSD-style
+</span><span style="color:#75715e">// license that can be found in the LICENSE file.
+</span><span style="color:#75715e"></span>
+<span style="color:#f92672">package</span> <span style="color:#a6e22e">rand</span>
+
+<span style="color:#75715e">/*
+</span><span style="color:#75715e"> * Uniform distribution
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * algorithm by
+</span><span style="color:#75715e"> * DP Mitchell and JA Reeds
+</span><span style="color:#75715e"> */</span>
+
+<span style="color:#66d9ef">const</span> (
+	<span style="color:#a6e22e">rngLen</span>   = <span style="color:#ae81ff">607</span>
+	<span style="color:#a6e22e">rngTap</span>   = <span style="color:#ae81ff">273</span>
+	<span style="color:#a6e22e">rngMax</span>   = <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">63</span>
+	<span style="color:#a6e22e">rngMask</span>  = <span style="color:#a6e22e">rngMax</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+	<span style="color:#a6e22e">int32max</span> = (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">31</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+)
+
+<span style="color:#66d9ef">var</span> (
+	<span style="color:#75715e">// rngCooked used for seeding. See gen_cooked.go for details.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">rngCooked</span> [<span style="color:#a6e22e">rngLen</span>]<span style="color:#66d9ef">int64</span> = [<span style="color:#f92672">...</span>]<span style="color:#66d9ef">int64</span>{
+		<span style="color:#f92672">-</span><span style="color:#ae81ff">4181792142133755926</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">4576982950128230565</span>, <span style="color:#ae81ff">1395769623340756751</span>, <span style="color:#ae81ff">5333664234075297259</span>,
+		<span style="color:#75715e">// ...600 numbers snipped...
+</span><span style="color:#75715e"></span>		<span style="color:#ae81ff">8382142935188824023</span>, <span style="color:#ae81ff">9103922860780351547</span>, <span style="color:#ae81ff">4152330101494654406</span>,
+	}
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">rngSource</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">tap</span>  <span style="color:#66d9ef">int</span>           <span style="color:#75715e">// index into vec
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">feed</span> <span style="color:#66d9ef">int</span>           <span style="color:#75715e">// index into vec
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">vec</span>  [<span style="color:#a6e22e">rngLen</span>]<span style="color:#66d9ef">int64</span> <span style="color:#75715e">// current feedback register
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#75715e">// seed rng x[n+1] = 48271 * x[n] mod (2**31 - 1)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">seedrand</span>(<span style="color:#a6e22e">x</span> <span style="color:#66d9ef">int32</span>) <span style="color:#66d9ef">int32</span> {
+	<span style="color:#66d9ef">const</span> (
+		<span style="color:#a6e22e">A</span> = <span style="color:#ae81ff">48271</span>
+		<span style="color:#a6e22e">Q</span> = <span style="color:#ae81ff">44488</span>
+		<span style="color:#a6e22e">R</span> = <span style="color:#ae81ff">3399</span>
+	)
+
+	<span style="color:#a6e22e">hi</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">Q</span>
+	<span style="color:#a6e22e">lo</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">%</span> <span style="color:#a6e22e">Q</span>
+	<span style="color:#a6e22e">x</span> = <span style="color:#a6e22e">A</span><span style="color:#f92672">*</span><span style="color:#a6e22e">lo</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">R</span><span style="color:#f92672">*</span><span style="color:#a6e22e">hi</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> &lt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">x</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">int32max</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">x</span>
+}
+
+<span style="color:#75715e">// Seed uses the provided seed value to initialize the generator to a deterministic state.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rng</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">rngSource</span>) <span style="color:#a6e22e">Seed</span>(<span style="color:#a6e22e">seed</span> <span style="color:#66d9ef">int64</span>) {
+	<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">tap</span> = <span style="color:#ae81ff">0</span>
+	<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">feed</span> = <span style="color:#a6e22e">rngLen</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">rngTap</span>
+
+	<span style="color:#a6e22e">seed</span> = <span style="color:#a6e22e">seed</span> <span style="color:#f92672">%</span> <span style="color:#a6e22e">int32max</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">seed</span> &lt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">seed</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">int32max</span>
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">seed</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">seed</span> = <span style="color:#ae81ff">89482311</span>
+	}
+
+	<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> int32(<span style="color:#a6e22e">seed</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">20</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">rngLen</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">x</span> = <span style="color:#a6e22e">seedrand</span>(<span style="color:#a6e22e">x</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> {
+			<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">u</span> <span style="color:#66d9ef">int64</span>
+			<span style="color:#a6e22e">u</span> = int64(<span style="color:#a6e22e">x</span>) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">40</span>
+			<span style="color:#a6e22e">x</span> = <span style="color:#a6e22e">seedrand</span>(<span style="color:#a6e22e">x</span>)
+			<span style="color:#a6e22e">u</span> ^= int64(<span style="color:#a6e22e">x</span>) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">20</span>
+			<span style="color:#a6e22e">x</span> = <span style="color:#a6e22e">seedrand</span>(<span style="color:#a6e22e">x</span>)
+			<span style="color:#a6e22e">u</span> ^= int64(<span style="color:#a6e22e">x</span>)
+			<span style="color:#a6e22e">u</span> ^= <span style="color:#a6e22e">rngCooked</span>[<span style="color:#a6e22e">i</span>]
+			<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">vec</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">u</span>
+		}
+	}
+}
+
+<span style="color:#75715e">// Uint64 returns a non-negative pseudo-random 64-bit integer as an uint64.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">rng</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">rngSource</span>) <span style="color:#a6e22e">Uint64</span>() <span style="color:#66d9ef">uint64</span> {
+	<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">tap</span><span style="color:#f92672">--</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">tap</span> &lt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">tap</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rngLen</span>
+	}
+
+	<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">feed</span><span style="color:#f92672">--</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">feed</span> &lt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">feed</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">rngLen</span>
+	}
+
+	<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">vec</span>[<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">feed</span>] <span style="color:#f92672">+</span> <span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">vec</span>[<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">tap</span>]
+	<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">vec</span>[<span style="color:#a6e22e">rng</span>.<span style="color:#a6e22e">feed</span>] = <span style="color:#a6e22e">x</span>
+	<span style="color:#66d9ef">return</span> uint64(<span style="color:#a6e22e">x</span>)
+}</code></pre></div>
+<h4 id="part-ii-fibonnnnacccci-and-its-matrix-representation">Part II: Fibonnnnacccci and its matrix representation<a href="#part-ii-fibonnnnacccci-and-its-matrix-representation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert info">
+  <strong>Note.</strong> The operations below are taken modulo $2^{64}$.
+</div>
+
+
+<p>We can see that <code>rng.vec</code> is an array of 607 64-bit numbers. When <code>Uint64</code> is called, two numbers from the array is retrieved, summed and returned. The sum will be stored into the array for future calls. Let $v^{(n)} := (v_0^{(n)}, v_1^{(n)}, ..., v_{606}^{(n)})$ be the vector after $n$ <code>Uint64</code> calls. Then the first two $v^{(n)}$s being:</p>
+
+<p><span  class="math">\[v^{(1)}_k := \begin{cases}
+v^{(0)}_{333} + v^{(0)}_{606} & \text{if}\ k = 333 \\
+v^{(0)}_k & \text{otherwise}
+\end{cases}, \qquad
+v^{(2)}_k := \begin{cases}
+v^{(1)}_{332} + v^{(1)}_{605} & \text{if}\ k = 332 \\
+v^{(1)}_k & \text{otherwise}
+\end{cases}, ...\]</span></p>
+
+<p>It is obvious that <code>Uint64</code> changes only one entry a time. Let's define</p>
+
+<p><span  class="math">\[(a_0, a_1, ..., a_{606}) := (v^{(0)}_{333}, v^{(0)}_{332}, ..., v^{(0)}_{0}, v^{(0)}_{606}, v^{(0)}_{605}, ..., v^{(0)}_{334}).\]</span></p>
+
+<p>Furthermore, let also $a_{607}, a_{608}, ...$ be the only changing entry in each round, i.e., $a_{607} := v^{(1)}_{333}$, $a_{608} := v^{(2)}_{332}$ and so on. Therefore $a_{607} = a_0 + a_{334}, a_{608} = a_1 + a_{335}, ...$.</p>
+
+<p>This is simply a <a href="https://en.wikipedia.org/wiki/Lagged_Fibonacci_generator">lagged Fibonacci generator</a>. We can represent it as a matrix multiplication, which will be useful when we compute the values efficiently:</p>
+
+<p><span  class="math">\[\begin{bmatrix}a_{k+1} \\ a_{k+2} \\ a_{k+3} \\ \vdots \\ a_{k+335} \\ \vdots \\ a_{k+606} \\ a_{k+607} \end{bmatrix} = 
+\left[\begin{array}{c|ccccccc}
+0      && 1 && 0 && ... &&         && ... && 0 && 0 \\ 
+0      && 0 && 1 && ... &&         && ... && 0 && 0 \\ 
+\      &&   &&   &&     &&         &&     &&   &&   \\
+\vdots &&   &&   &&     && \ddots  &&     &&   &&   \\
+\      &&   &&   &&     &&         &&     &&   &&   \\
+0      && 0 && 0 && ... &&         && ... && 0 && 1 \\
+\hline
+1      && 0 && 0 && ...  && 1      && ...  && 0 && 0
+\end{array}\right]
+\begin{bmatrix}a_k \\ a_{k+1} \\ a_{k+2} \\ \vdots \\ a_{k+334} \\ \vdots \\ a_{k+605} \\ a_{k+606} \end{bmatrix}\ (\text{mod}\ 2^{64}).\]</span></p>
+
+<p>If we let $T$ be the huge square matrix, then for all $n \in \mathbb{Z}_{\geq 0}$, we have</p>
+
+<p><span  class="math">\[\begin{bmatrix}a_{n} \\ a_{n+1} \\ \vdots \\ a_{n+606}\end{bmatrix} = T \begin{bmatrix}a_{n-1} \\ a_{n} \\ \vdots \\ a_{n+605}\end{bmatrix} = T^2 \begin{bmatrix}a_{n-2} \\ a_{n-1} \\ \vdots \\ a_{n+604}\end{bmatrix} = ... = T^n \begin{bmatrix}a_0 \\ a_1 \\ \vdots \\ a_{606} \end{bmatrix}(\text{mod}\ 2^{64}).\]</span></p>
+
+<h4 id="part-iii-the-final-steps">Part III: The final steps<a href="#part-iii-the-final-steps" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>Finally, let's revisit <code>flag.go</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Seed</span>(<span style="color:#ae81ff">1337</span>)
+
+	<span style="color:#a6e22e">flag</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ReadFile</span>(<span style="color:#e6db74">&#34;flag.enc&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;cannot open flag.enc&#34;</span>)
+		<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
+	}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> uint64(<span style="color:#ae81ff">0</span>), <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; len(<span style="color:#a6e22e">flag</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Uint64</span>()
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">==</span> uint64(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">&lt;&lt;</span><span style="color:#a6e22e">j</span> {
+			<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> byte(<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Uint64</span>())
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Print</span>(string(<span style="color:#a6e22e">flag</span>[<span style="color:#a6e22e">j</span>] ^ <span style="color:#a6e22e">x</span>))
+			<span style="color:#a6e22e">j</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+		}
+	}
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>()
+}</code></pre></div>
+<p>Let $n$ be the length of the flag. The below flow explains which <code>rand.Uint64()</code> are used after the random is seeded:</p>
+
+<ol>
+<li>Generate two unused <code>rand.Uint64()</code> and set $k \leftarrow 0$.</li>
+<li>Generate a <code>rand.Uint64()</code> to decrypt the $k$-th byte from <code>flag.enc</code>.</li>
+<li>Generate $2^{k+1}$ unused <code>rand.Uint64()</code>.</li>
+<li>If $k &lt; n-1$, set $k \leftarrow k + 1$ and jump to step 2. Otherwise we are done.</li>
+</ol>
+
+<p>Equivalently, this is the draft of the solve script:</p>
+
+<ol>
+<li>Initialize $M$ be the $607 \times 607$ matrix, set $\bold{a} \leftarrow (a_0, a_1, ..., a_{607})$ and $k \leftarrow 0$.</li>
+<li>Set $\bold{a} \leftarrow M^2 \cdot \bold{a}$.</li>
+<li>Set $\bold{a} \leftarrow T \cdot \bold{a}$.</li>
+<li>Decrypt the $k$-th character of the flag from the last entry of $\bold{a}$.</li>
+<li>Set $\bold{a} \leftarrow S \cdot \bold{a}$ and $S \leftarrow S^2$.</li>
+<li>If $k &lt; n-1$, set $k \leftarrow k + 1$ and jump to step 3. Otherwise we are done.</li>
+</ol>
+
+<p>In particular, step 5 is used for &quot;fast forwarding&quot;. If $S = T^m$, then $\bold{a} \leftarrow S \cdot \bold{a}$ is a way to skip $m$ steps at a time. Also, $S \leftarrow S^2$ sets $S$ to $T^{2m}$, which makes subsequent calls to skip $2m$ steps.</p>
+
+<h3 id="solve-script">Solve script<a href="#solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">RNGCOOKED <span style="color:#f92672">=</span> [
+    <span style="color:#f92672">-</span><span style="color:#ae81ff">4181792142133755926</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">4576982950128230565</span>, <span style="color:#ae81ff">1395769623340756751</span>, <span style="color:#ae81ff">5333664234075297259</span>,
+    <span style="color:#75715e"># ...Snipped. Please copy directly from Golang&#39;s source code </span>
+    <span style="color:#ae81ff">8382142935188824023</span>, <span style="color:#ae81ff">9103922860780351547</span>, <span style="color:#ae81ff">4152330101494654406</span>
+]
+RNGLEN <span style="color:#f92672">=</span> <span style="color:#ae81ff">607</span>
+RNGTAP <span style="color:#f92672">=</span> <span style="color:#ae81ff">273</span>
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GoRng</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, seed):
+        self<span style="color:#f92672">.</span>tap <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        self<span style="color:#f92672">.</span>feed <span style="color:#f92672">=</span> RNGLEN <span style="color:#f92672">-</span> RNGTAP
+
+        self<span style="color:#f92672">.</span>vec <span style="color:#f92672">=</span> vector(Zmod(<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">8</span>), [<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(RNGLEN)])
+
+        seed <span style="color:#f92672">%=</span> (<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">31</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">if</span> seed <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">89482311</span>
+
+        x <span style="color:#f92672">=</span> seed
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#f92672">-</span><span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">0</span>):
+            x <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>__seedrand(x)
+
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(RNGLEN):
+            x <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>__seedrand(x)
+            u <span style="color:#f92672">=</span> x<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">40</span>
+            x <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>__seedrand(x)
+            u <span style="color:#f92672">^^=</span> x<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">20</span>
+            x <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>__seedrand(x)
+            u <span style="color:#f92672">^^=</span> x
+            u <span style="color:#f92672">^^=</span> RNGCOOKED[i]
+            self<span style="color:#f92672">.</span>vec[i] <span style="color:#f92672">=</span> u
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__seedrand</span>(self, x):
+        A, Q, R <span style="color:#f92672">=</span> <span style="color:#ae81ff">48271</span>, <span style="color:#ae81ff">44488</span>, <span style="color:#ae81ff">3399</span>
+        hi <span style="color:#f92672">=</span> x <span style="color:#f92672">//</span> Q
+        lo <span style="color:#f92672">=</span> x <span style="color:#f92672">%</span> Q
+        x <span style="color:#f92672">=</span> A<span style="color:#f92672">*</span>lo <span style="color:#f92672">-</span> R<span style="color:#f92672">*</span>hi
+        <span style="color:#66d9ef">return</span> x <span style="color:#f92672">%</span> ((<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">31</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+
+
+rng <span style="color:#f92672">=</span> GoRng(<span style="color:#ae81ff">1337</span>)
+
+T <span style="color:#f92672">=</span> Matrix(Zmod(<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">8</span>), <span style="color:#ae81ff">607</span>, <span style="color:#ae81ff">607</span>)
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">606</span>):
+    T[i, i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+T[<span style="color:#ae81ff">606</span>, <span style="color:#ae81ff">0</span>]     <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+T[<span style="color:#ae81ff">606</span>, <span style="color:#ae81ff">334</span>]   <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+
+S <span style="color:#f92672">=</span> T
+
+a <span style="color:#f92672">=</span> vector(Zmod(<span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">8</span>), list(rng<span style="color:#f92672">.</span>vec[<span style="color:#ae81ff">333</span>::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]) <span style="color:#f92672">+</span> list(rng<span style="color:#f92672">.</span>vec[:<span style="color:#ae81ff">333</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]))
+
+<span style="color:#75715e"># Skip the first two randoms</span>
+a <span style="color:#f92672">=</span> T<span style="color:#f92672">^</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> a
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;flag.enc&#39;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f: flag <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+output <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> i, f <span style="color:#f92672">in</span> enumerate(flag):
+    a <span style="color:#f92672">=</span> T<span style="color:#f92672">*</span>a
+    output<span style="color:#f92672">.</span>append(int(a[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]) <span style="color:#f92672">^^</span> f)
+    a <span style="color:#f92672">=</span> S<span style="color:#f92672">*</span>a
+    S <span style="color:#f92672">=</span> S<span style="color:#f92672">*</span>S
+    print(bytes(output))</code></pre></div>
+<div class="alert success">
+  💭 <strong>Why modulo $256$ instead of $2^{64}$?</strong> I was using modulo $2^{64}$ all the time during testing, but <em>@CrazyManArmy</em> showed me that we can use $256$ because $256$ is a factor of $2^{64}$, and we only care the lower 8 bits from <code>rand.Uint64</code>. This decreases the running time of the solve script from 1.5 hours to&hellip; 3 seconds.
+</div>
+
+
+<h2 id="海帆道--king-of-rock-paper-scissors-crypto">海帆道 / King of Rock, Paper, Scissors (Crypto)<a href="#海帆道--king-of-rock-paper-scissors-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>Let's play rock paper scissors securely. Since we are using a commitment scheme, none of us can cheat!</p>
+</blockquote>
+
+<p>In this challenge, all messages are transmitted via <em>protocol buffers (protobuf)</em>. Messages related to the protocol are given below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-protobuf" data-lang="protobuf"><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">ServerRoundInitMessage</span> {<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">bytes</span> nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// server&#39;s nonce
+</span><span style="color:#75715e"></span>}<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">ClientRoundInitMessage</span> {<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">bytes</span> hash <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;  <span style="color:#75715e">// MD5 digest of ClientMoveMessage
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">bytes</span> nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>; <span style="color:#75715e">// client&#39;s nonce
+</span><span style="color:#75715e"></span>}<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">ServerMoveMessage</span> {<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  Move move <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">ClientMoveMessage</span> {<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">bytes</span> nonce_server <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">bytes</span> nonce_client <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  Move move <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">ServerRoundFinalMessage</span> {<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  Player winner <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>};</code></pre></div>
+<p>Define a commitment scheme $\mathcal{C}$ between two parties (the server and the client) to play rock paper scissor, define the protocol below:</p>
+
+<ol>
+<li>The server generates a nonce sends the <code>ServerRoundInitMessage</code> to the client.</li>
+<li>The client
+
+<ul>
+<li>determines an move (rock, scissors or stone),</li>
+<li>generates a nonce,</li>
+<li>constructs a <code>ClientMoveMessage</code> and computes its MD5 digest,</li>
+<li>constructs a <code>ClientRoundInitMessage</code>, and</li>
+<li>sends the <code>ClientRoundInitMessage</code> to the server.</li>
+</ul></li>
+<li>The server determines a move and sends the <code>ServerMoveMessage</code> to the client.</li>
+<li>The client sends the <code>ClientMoveMessage</code> to the server.</li>
+<li>The server sends the <code>ServerRoundFinalMessage</code> to the client on who's the winner.</li>
+</ol>
+
+<p>A game consists of 128 rounds. The objective is to win more than 95% of the rounds and lose none of them.</p>
+
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<h4 id="part-i-a-short-demo-on-the-protocol">Part I: A short demo on the protocol<a href="#part-i-a-short-demo-on-the-protocol" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert info">
+  📝 <strong>Note.</strong> For simplicity, I will use JSON instead of protobuf encoding to show how the protocol works. I used the latter for the challenge because it is easier to exploit&hellip; We will talk about that later.
+</div>
+
+
+<h5 id="step-1-serverroundinitmessage-server--client">Step 1: <code>ServerRoundInitMessage</code> (Server → Client)<a href="#step-1-serverroundinitmessage-server--client" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>Initially, the server generates a nonce <code>15f0...5273</code>, constructs and sends the below <code>ServerRoundInitMessage</code> to the client.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#75715e">// ServerRoundInitMessage
+</span><span style="color:#75715e"></span>{<span style="color:#f92672">&#34;nonce&#34;</span>: <span style="color:#e6db74">&#34;15f0...5273&#34;</span>}</code></pre></div>
+<h5 id="step-2-clientroundinitmessage-client--server">Step 2: <code>ClientRoundInitMessage</code> (Client → Server)<a href="#step-2-clientroundinitmessage-client--server" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>The client wants to play <em>scissors</em> this time. It generates a nonce <code>d7b5...1ff1</code>. The client constructs a <code>ClientMoveMessage</code> message and its MD5 digest is <code>03e0...a148</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#75715e">// ClientMoveMessage
+</span><span style="color:#75715e"></span>{<span style="color:#f92672">&#34;nonce_server&#34;</span>: <span style="color:#e6db74">&#34;15f0...5273&#34;</span>, <span style="color:#f92672">&#34;nonce_client&#34;</span>: <span style="color:#e6db74">&#34;d7b5...1ff1&#34;</span>, <span style="color:#f92672">&#34;move&#34;</span>: <span style="color:#e6db74">&#34;scissors&#34;</span>}</code></pre></div>
+<p>Afterwards, the client constructs <code>ClientRoundInitMessage</code> with the client's nonce and the hash, and sends it to the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#75715e">// ClientRoundInitMessage
+</span><span style="color:#75715e"></span>{<span style="color:#f92672">&#34;hash&#34;</span>: <span style="color:#e6db74">&#34;03e0...a148&#34;</span>, <span style="color:#f92672">&#34;nonce&#34;</span>: <span style="color:#e6db74">&#34;d7b5...1ff1&#34;</span>}</code></pre></div>
+<h5 id="step-3-servermovemessage-server--client">Step 3: <code>ServerMoveMessage</code> (Server → Client)<a href="#step-3-servermovemessage-server--client" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>At this stage, the server does not know what the client's move is. The server wants to play <em>rock</em>. It constructs the <code>ServerMoveMessage</code> and sends it to the player:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#75715e">// ServerMoveMessage
+</span><span style="color:#75715e"></span>{<span style="color:#f92672">&#34;move&#34;</span>: <span style="color:#e6db74">&#34;rock&#34;</span>}</code></pre></div>
+<h5 id="step-4-clientmovemessage-client--server">Step 4: <code>ClientMoveMessage</code> (Client → Server)<a href="#step-4-clientmovemessage-client--server" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>The client reveals the commitment by sending the <code>ClientMoveMessage</code> to the server (which is already constructed in step 2).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#75715e">// ClientMoveMessage
+</span><span style="color:#75715e"></span>{<span style="color:#f92672">&#34;nonce_server&#34;</span>: <span style="color:#e6db74">&#34;15f0...5273&#34;</span>, <span style="color:#f92672">&#34;nonce_client&#34;</span>: <span style="color:#e6db74">&#34;d7b5...1ff1&#34;</span>, <span style="color:#f92672">&#34;move&#34;</span>: <span style="color:#e6db74">&#34;scissors&#34;</span>}</code></pre></div>
+<h5 id="step-5-serverroundfinalmessage-server--client">Step 5: <code>ServerRoundFinalMessage</code> (Server → Client)<a href="#step-5-serverroundfinalmessage-server--client" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>The server can verify the validity of <code>ClientMoveMessage</code>, by checking whether</p>
+
+<ol>
+<li><strong>[client nonce]</strong> its client nonce equals the nonce in <code>ClientRoundInitMessage</code>,</li>
+<li><strong>[server nonce]</strong> its server nonce equals the nonce in <code>ServerRoundInitMessage</code>, and</li>
+<li><strong>[digest]</strong> its MD5 digest equals the hash specified in <code>ClientRoundInitMessage</code>.</li>
+</ol>
+
+<div class="alert info">
+  🎯 <strong>Motivation.</strong> The validations above can detect a forged move. The client can understand from <code>ServerMoveMessage</code> that they are losing. However, if they change the move, the <code>ClientMoveMessage</code> and its digest will be updated as well. In that case, (3) is no longer valid.
+</div>
+
+
+<p>Since everything checks out, the message is valid. The server finally knows that the client played <em>scissors</em>. Since the server plays <em>rock</em>, it wins the round. The server also sends a <code>ServerRoundFinalMessage</code> announcing their win:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#75715e">// ServerRoundFinalMessage
+</span><span style="color:#75715e"></span>{<span style="color:#f92672">&#34;winner&#34;</span>: <span style="color:#e6db74">&#34;server&#34;</span>}</code></pre></div>
+<h4 id="part-ii-attacks-related-to-md5">Part II: Attacks related to MD5<a href="#part-ii-attacks-related-to-md5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert danger">
+  🤏 <strong>TL;DR. Can I skip?</strong> If you know <em>Unicoll</em> and know what it could do, yes.
+</div>
+
+
+<p>MD5 is insecure. It is very easy to find a MD5 collision in 2022. <a href="https://github.com/corkami/collisions">corkami/collisions</a> is a repository explaining all sorts of hash collisions. There are various attacks, <a href="https://www.win.tue.nl/hashclash/">FastColl</a>, <a href="https://github.com/corkami/collisions/blob/master/unicoll.md">UniColl</a> and <a href="https://github.com/cr-marcstevens/hashclash">HashClash</a>, and each of them has a different running speed and capability.</p>
+
+<p>In short, we can forge a move without changing the MD5 digest. An idea would be to inject some &quot;junk&quot; fields that no one cared. They are not used to validate anything while affecting the hashed outcome.</p>
+
+<p>To achieve this, we will use <em>UniColl</em>. Given a payload $p$ of length $64n+4k$ (for some small $k$'s), it will generate a pair of outputs $m_1$ and $m_2$ such that</p>
+
+<ol>
+<li>The lengths of $m_1$ and $m_2$ are $64n+128$ bytes,</li>
+<li>$\text{MD5}(m_1) = \text{MD5}(m_2)$,</li>
+<li>$m_1$ begins with $p$, and</li>
+<li>Only two bytes of $m_1$ and $m_2$ are different, which are the $(64n+10)$-th byte and the $(64n+74)$-th byte (one-indexed). Also, $m_1[64n+10] - m_2[64n+10] = 1$ and $m_1[64n+74] - m_2[64n+74] = -1$.</li>
+</ol>
+
+<p>This is an example of a MD5 collision that <em>UniColl</em> finds. Suppose I want to find a pair of colliding messages starting with <code>hello world.</code> (and the other starts with <code>hello wormd!</code>, which is also 12 bytes long). We will use <a href="https://github.com/cr-marcstevens/hashclash">HashClash</a> as a demo.</p>
+
+
+
+
+<div class="code-toolbar">
+<pre class='language-bash command-line' data-output='4-14,16-24,26-34,36-37' data-user='mystiz' data-host='foci'>
+<code class="language-bash"># Inside hashclash/scripts/demo
+echo -n &#34;hello world.&#34; &gt; prefix.txt
+../poc_no.sh prefix.txt
+MD5 differential path toolbox
+Copyright (C) 2009 Marc Stevens
+http://homepages.cwi.nl/~stevens/
+(trimmed)
+Found collision!
+468115c46b73eac261b6d9f5284b68e3  collision1.bin
+468115c46b73eac261b6d9f5284b68e3  collision2.bin
+31dda9646624a15c6078582c9af60cf597949a18  collision1.bin
+87fbd7c43d1ed226d13a478f0b89f55a744864d9  collision2.bin
+4 -rw-rw-r-- 1 mystiz mystiz 128 Dec 18 14:48 collision1.bin
+4 -rw-rw-r-- 1 mystiz mystiz 128 Dec 18 14:48 collision2.bin
+hd collision1.bin            
+00000000  68 65 6c 6c 6f 20 77 6f  72 6c 64 2e 12 d9 a6 74  |hello world....t|
+00000010  d7 a8 55 aa c5 66 63 f8  58 98 89 71 e8 b2 49 52  |..U..fc.X..q..IR|
+00000020  f9 e0 de f1 a0 62 e4 0d  ba a9 57 b1 96 ed 91 eb  |.....b....W.....|
+00000030  1c b7 69 1d 36 89 e7 1a  a2 41 a4 fd 7f bb 98 1f  |..i.6....A......|
+00000040  f7 72 24 73 6b 78 6b 20  14 db d0 a2 36 66 2a bc  |.r$skxk ....6f*.|
+00000050  36 fe cb 1e 32 1b 35 5b  b7 ce d7 1b 0f e5 3f 98  |6...2.5[......?.|
+00000060  1b 8b ed ab 73 14 fb f7  57 d2 2d ed c9 45 8a 1c  |....s...W.-..E..|
+00000070  2c f0 ab 4e fb 47 96 81  75 4c 25 34 ad ec 01 db  |,..N.G..uL%4....|
+00000080
+hd collision2.bin
+00000000  68 65 6c 6c 6f 20 77 6f  72 6d 64 2e 12 d9 a6 74  |hello wormd....t|
+00000010  d7 a8 55 aa c5 66 63 f8  58 98 89 71 e8 b2 49 52  |..U..fc.X..q..IR|
+00000020  f9 e0 de f1 a0 62 e4 0d  ba a9 57 b1 96 ed 91 eb  |.....b....W.....|
+00000030  1c b7 69 1d 36 89 e7 1a  a2 41 a4 fd 7f bb 98 1f  |..i.6....A......|
+00000040  f7 72 24 73 6b 78 6b 20  14 da d0 a2 36 66 2a bc  |.r$skxk ....6f*.|
+00000050  36 fe cb 1e 32 1b 35 5b  b7 ce d7 1b 0f e5 3f 98  |6...2.5[......?.|
+00000060  1b 8b ed ab 73 14 fb f7  57 d2 2d ed c9 45 8a 1c  |....s...W.-..E..|
+00000070  2c f0 ab 4e fb 47 96 81  75 4c 25 34 ad ec 01 db  |,..N.G..uL%4....|
+00000080
+md5sum collision*.bin
+468115c46b73eac261b6d9f5284b68e3  collision1.bin
+468115c46b73eac261b6d9f5284b68e3  collision2.bin</code>
+</pre>
+</div>
+
+<div class="alert warning">
+  🐌 <strong>Is it slow?</strong> No. The above script took only three minutes on my laptop.
+</div>
+
+
+<p>We can see the properties we mentioned - $m_1$ and $m_2$ have the same digest, and $m_1$ and $m_2$ differs by two bytes. Before we solve the challenge with <em>UniColl</em>, let's look at the <em>protobuf</em> message format.</p>
+
+<h4 id="part-iii-walkthrough-on-protobuf-message-format">Part III: Walk-through on protobuf message format<a href="#part-iii-walkthrough-on-protobuf-message-format" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert danger">
+  🤏 <strong>TL;DR. Can I skip again?</strong> If you know how protobuf works&hellip; probably.
+</div>
+
+
+<p>A protobuf message consists of a series of records, which is composed of three items: the field number, the wire type and the content. Let's look at the wire type first.</p>
+
+<div class="alert info">
+  📖 <strong>Documentation?</strong> The <a href="https://developers.google.com/protocol-buffers/docs/encoding">developer guide</a> pretty much covers everything. Please refer to the guide for more details.
+</div>
+
+
+<h5 id="the-wire-types">The wire types<a href="#the-wire-types" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>We will only mention two wire types: <code>VARINT</code> and <code>LEN</code> because they are the only types those are used in <code>ClientMoveMessage</code>. It is probably not what you expect -- we used <code>bytes</code> and <code>Move</code> (which is a enum) instead of those types!</p>
+
+<p>In reality, <code>VARINT</code> is a wire type that is used when transmitting the data types <code>int32</code>, <code>int64</code>, <code>enum</code> and so on. It uses a $k$-byte buffer to represent an unsigned integer not longer than $7k$-bit long. An one-byte <code>VARINT</code> can express up to $127$, and a two-byte <code>VARINT</code> can express up to $16383 = 2^{14} - 1$. Also, the most significant bit from each byte is considered to be the &quot;continuation bit&quot;, which determines whether the subsequent byte belongs to the <code>VARINT</code>.</p>
+
+<p>Below is an example of a <code>VARINT</code> of three bytes long (represented as binary):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">[byte 1] [byte 2] [byte 3]
+11000000 10100000 00010000
+*(   64) *(   32)  (   16)</code></pre></div>
+<p>We can see that the MSB of the first two bytes are <code>1</code> and the MSB of the last byte is <code>0</code>. This happens on every <code>VARINT</code>: All MSBs are <code>1</code> except the last byte. After that, we will interpret the integer from its base 128 expression:</p>
+
+<p><span  class="math">\[64 \cdot 128^0 + 32 \cdot 128^1 + 16 \cdot 128^2 = 266304.\]</span></p>
+
+<p>Now two exercises.</p>
+
+<div class="alert info">
+  <p>🧮 <strong>Exercise 1.</strong> Which of the following is/are valid <code>VARINT</code>s?</p>
+<ol>
+<li><code>11001001 10010001 11111111 10000110 01001101</code></li>
+<li><code>10101101 00101110 11010110 10100100 10000100</code></li>
+<li><code>11110111 11010001 11000011 10000101 11101100</code></li>
+<li><code>01011000 00011110 01011100 00001010 00001111</code></li>
+<li><code>10001011 11101011 11110010 01111001 00110010</code></li>
+</ol>
+
+</div>
+
+
+<div class="alert info">
+  🧮 <strong>Exercise 2.</strong> What does the value of the <code>VARINT</code> <code>10111001 00001010</code>?
+</div>
+
+
+<p>For exercise 1, only the first entry is a valid <code>VARINT</code>. The answer for exercise 2 is $1337 = 0001010\ 0111001_2$.</p>
+
+<p>Now onto the wire type <code>LEN</code>. One data type it can handle is <code>bytes</code>. Its expression is straight forward -- it begins with a <code>VARINT</code> consisting of the length $l$, followed by $l$ bytes being the buffer. For example, the below <code>LEN</code> is equivalent to <code>hello</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">00000101 01101000 01100101 01101100 01101100 01101111
+********                                              -- an unsigned integer 5
+         ******** ******** ******** ******** ******** -- 5-byte buffer &#34;hello&#34; </code></pre></div>
+<p>There are two more types, <code>I64</code> and <code>I32</code>, which are self-explanatory and I will not cover them. Each of the four wire types is assigned with a type ID:</p>
+
+<table>
+    <tr><th>Type ID</th><td>0</td><td>1</td><td>2</td><td>4</td></tr>
+    <tr>
+        <th>Type Name</th>
+        <td><code>VARINT</code></td>
+        <td><code>I64</code></td>
+        <td><code>LEN</code></td>
+        <td><code>I32</code></td>
+    </tr>
+</table>
+
+<h5 id="formation-of-messages">Formation of messages<a href="#formation-of-messages" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+<p>Recall that a record is composed of a field number, a wire type and the content. We described the latter two since they are related. What about the field number?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-protobuf" data-lang="protobuf"><span style="color:#66d9ef">enum</span> Move {<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  ROCK <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  PAPER <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  SCISSORS <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">ClientMoveMessage</span> {<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">bytes</span> nonce_server <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">bytes</span> nonce_client <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  Move move <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>}</code></pre></div>
+<p>From the <code>ClientMoveMessage</code> above, the field numbers of <code>nonce_server</code>, <code>nonce_client</code> and <code>move</code> are 1, 2 and 3 respectively.</p>
+
+<p>Now we understand everything and can finally build a field. A field begins with a <code>VARINT</code> given by $8f+t$ ($f$ and $t$ are the field number and the wire type), followed by the content. The 7-byte field below represents <code>nonce_server</code> to <code>hello</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">0a 05 68 65 6c 6c 6f
+**                   -- an unsigned integer 10 = 8*1 + 2
+                          field number = 1 (nonce_server)
+                          wire type = 2 (LEN)
+   **                -- an unsigned integer 5 (the length)
+      ** ** ** ** ** -- 5-byte buffer &#34;hello&#34; </code></pre></div>
+<p>Finally, a message is just a concatenation of records. Let's use <code>ClientMoveMessage</code> as an example:</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-example-clientmovemessage.png"   />
+    
+  </figure>
+
+
+
+<p>The three red bytes $\text{0A}_{16} = 8 \cdot 1 + 2$, $\text{12}_{16} = 8 \cdot 2 + 2$ and $\text{18}_{16} = 8 \cdot 3 + 0$ respectively represent a <code>LEN</code> with field number 1 (<code>nonce_server</code>), a <code>LEN</code> with field number 2 (<code>nonce_client</code>) and a <code>VARINT</code> with field number 3 (<code>move</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">nonce_server: 1a0ab7c21d1c0200ffe48b8e0e37d369 (hex-encoded)
+nonce_client: 152b631ddef3cd401dc0b730739460a8 (hex-encoded)
+move: SCISSORS</code></pre></div>
+<p>There are quite some details that I did not cover yet. Since this subsection is overly long, I will talk about it when we need them.</p>
+
+<h4 id="part-iv-generating-the-first-pair-of-collision">Part IV: Generating the first pair of collision<a href="#part-iv-generating-the-first-pair-of-collision" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<div class="alert success">
+  🎉 <strong>Congratulations!</strong> We finally arrive to the important part. Congratulations for bearing all the background information in the previous sections.
+</div>
+
+
+<p>Now the goal is clear: For any <code>nonce_server</code>, find three <code>ClientMoveMessage</code>s such that their <code>nonce_client</code>s are all the same, their <code>move</code>s are all different and the MD5 digests are the same. Here is the first property on protobuf:</p>
+
+<div class="alert info">
+  💡 <strong>Property on protobuf (1).</strong> If the wire type does not match with the data type, then the record will be dropped.
+</div>
+
+
+<p>For instance, type wire type <code>I64</code> does not handle <code>enum</code>s. Thus the below record is omitted when parsing <code>ClientMoveMessage</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">19 01 0a 05 04 05 06 07 08
+**                         -- an unsigned integer 0x19 = 8*3 + 1
+                                field number = 3 (move)
+                                wire type = 1 (I64)
+   ** ** ** ** ** ** ** ** -- the 64-bit integer 0x0807060504050a01</code></pre></div>
+<p>Besides, if we change the first byte to <code>18</code>, it breaks down into two valid records:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">18 01 0a 05 04 05 06 07 08
+**                         -- an unsigned integer 0x18 = 8*3 + 0
+                                field number = 3 (move)
+                                wire type = 0 (VARINT)
+   **                      -- an unsigned integer 1
+      **                   -- an unsigned integer 0x0a = 8*1 + 2
+                                field number = 1 (nonce_server)
+                                wire type = 2 (LEN)
+         **                -- an unsigned integer 5 (the length)
+            ** ** ** ** ** -- 5-byte buffer &#34;04 05 06 07 08&#34;</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">nonce_server: 0405060708 (hex-encoded)
+move: PAPER</code></pre></div>
+<p>Let's make a pair of <code>ClientMoveMessage</code>s with the same MD5 digest and the moves being <code>ROCK</code> and <code>PAPER</code>, and will tackle <code>SCISSORS</code> later. Also, since <code>nonce_server</code> and <code>nonce_client</code> can be handled easily, we will not deal with them now.</p>
+
+<p>This is a 20-byte prefix I made for <em>Unicoll</em> and it is expected that the size of the outputs are 128 bytes long.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c</code></pre></div>
+<p>These are the outputs from <em>Unicoll</em>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
+45 c7 64 92 91 43 f4 6c 46 11 cd 78 ac 72 d5 49 7f dd ec 8b 6f 18 a7 9f 5e 55 1a 49 90 0b 29 6e
+23 8b 8e 23 06 62 2a 07 ec be 56 14 39 02 91 60 ce c6 60 be 16 35 74 a3 b5 78 11 21 3b e6 2d d8
+2a bb cc aa 9b 55 89 bc 43 a8 cc 5c 97 0f 92 25 f6 72 0b 99 0f 47 2e e0 71 15 4e 97 85 e0 23 86</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 19 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
+45 c7 64 92 91 43 f4 6c 46 11 cd 78 ac 72 d5 49 7f dd ec 8b 6f 18 a7 9f 5e 55 1a 49 90 0b 29 6e
+23 8b 8e 23 06 62 2a 07 ec bd 56 14 39 02 91 60 ce c6 60 be 16 35 74 a3 b5 78 11 21 3b e6 2d d8
+2a bb cc aa 9b 55 89 bc 43 a8 cc 5c 97 0f 92 25 f6 72 0b 99 0f 47 2e e0 71 15 4e 97 85 e0 23 86 </code></pre></div>
+<p>Both of the messages have MD5 digest <code>9c456db27e76b061617914bcb8d20f74</code>. Now let's introduce one more property before we illustrate them.</p>
+
+<div class="alert info">
+  💡 <strong>Property on protobuf (2).</strong> There is a default for every data type, which is used when the corresponding field is missing. For instance, it uses the zeroth item from the <code>enum</code> if the field is not specified.
+</div>
+
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-collision-1-1.png"   />
+    
+      <figcaption class="right" >The first message from Unicoll which plays paper.</figcaption>
+    
+  </figure>
+
+
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-collision-1-0.png"   />
+    
+      <figcaption class="right" >The second message from Unicoll which plays rock.</figcaption>
+    
+  </figure>
+
+
+
+<p>The first message composes of four records:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>                                       <span style="color:#75715e"># enum, equivalent to &#34;PAPER&#34;</span>
+nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>) <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;11 e1 00 ... e0 23 86&#39;</span>)  <span style="color:#75715e"># bytes</span></code></pre></div>
+<p>Since it is illegal to assign <code>move</code> as bytes (it is an enum), only the second and the third records will be kept. Therefore, only two fields are assigned.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">nonce_server: 0405060708 (hex-encoded)
+move: PAPER</code></pre></div>
+<p>Besides, the second message composes of three records but none of them are valid. Since no moves are assigned, it uses the default value, <code>ROCK</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x08_07_06_05_04_05_0a_01</span>               <span style="color:#75715e"># fixed64</span>
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;11 e1 00 ... e0 23 86&#39;</span>)  <span style="color:#75715e"># bytes</span></code></pre></div>
+<h4 id="part-v-lets-collide-with-scissors-too">Part V: Let's collide with scissors, too<a href="#part-v-lets-collide-with-scissors-too" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>MD5 uses Merkle-Damgard scheme. In short, we can concatenate the same string after the collision pair, and their MD5 digests would still be the same. We can make use of this to generate multiple messages yielding the same digest. Let $m_1$, $m_2$, $m'_1$ and $m'_2$ be 128-byte messages such that:</p>
+
+<ol>
+<li>$\text{MD5}(m_1) = \text{MD5}(m_2)$ and</li>
+<li>$\text{MD5}(m_1\ ||\ m'_1) = \text{MD5}(m_1\ ||\ m'_2)$.</li>
+</ol>
+
+<p>Then the below equality holds:</p>
+
+<p><span  class="math">\[\text{MD5}(m_1\ ||\ m'_1) = \text{MD5}(m_1\ ||\ m'_2) = \text{MD5}(m_2\ ||\ m'_1) = \text{MD5}(m_2\ ||\ m'_2).\]</span></p>
+
+<p>What can be done? One more property on protobuf!</p>
+
+<div class="alert info">
+  💡 <strong>Property on protobuf (3).</strong> If there are multiple valid fields, only the <em>last</em> will be used.
+</div>
+
+
+<p>Essentially we can generate $m'_1$ and $m'_2$ which respectively &quot;overwrites the move with scissors&quot; and &quot;does nothing&quot;. This is actually the same as what we did previously: $m_1$ overwrote the move with paper and $m_2$ did nothing... and we have a 148-byte prefix for <em>Unicoll</em>!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
+45 c7 64 92 91 43 f4 6c 46 11 cd 78 ac 72 d5 49 7f dd ec 8b 6f 18 a7 9f 5e 55 1a 49 90 0b 29 6e
+23 8b 8e 23 06 62 2a 07 ec be 56 14 39 02 91 60 ce c6 60 be 16 35 74 a3 b5 78 11 21 3b e6 2d d8
+2a bb cc aa 9b 55 89 bc 43 a8 cc 5c 97 0f 92 25 f6 72 0b 99 0f 47 2e e0 71 15 4e 97 85 e0 23 86
+
+1a 07 00 00 00 00 00 00 00 18 02 0a 05 04 05 06 07 08 1a 6c</code></pre></div>
+<p>These is the collision pair generated, and both of the messages have the MD5 digest <code>d65c76e692c2b4c81b05a20928375fc3</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
+45 c7 64 92 91 43 f4 6c 46 11 cd 78 ac 72 d5 49 7f dd ec 8b 6f 18 a7 9f 5e 55 1a 49 90 0b 29 6e
+23 8b 8e 23 06 62 2a 07 ec be 56 14 39 02 91 60 ce c6 60 be 16 35 74 a3 b5 78 11 21 3b e6 2d d8
+2a bb cc aa 9b 55 89 bc 43 a8 cc 5c 97 0f 92 25 f6 72 0b 99 0f 47 2e e0 71 15 4e 97 85 e0 23 86
+
+1a 07 00 00 00 00 00 00 00 18 02 0a 05 04 05 06 07 08 1a 6c 37 41 76 c6 67 9c 61 22 b6 c0 7c e8
+47 80 c9 13 9b 01 66 db 88 46 2e 6a cc fe ea d5 5a 12 ff f1 4d a6 c4 9d ef c4 cb 40 62 b4 90 cf
+92 3f 36 ec 96 0f c9 54 43 00 e5 a9 3e 4d df f8 99 92 77 54 1a 27 64 00 79 f2 52 2c 48 39 6f b9
+a6 ef 7d c3 07 4d 40 c3 8b d5 73 42 37 3f 6d e1 b5 50 67 87 ed 32 cd 23 75 f5 15 05 51 75 51 70</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
+45 c7 64 92 91 43 f4 6c 46 11 cd 78 ac 72 d5 49 7f dd ec 8b 6f 18 a7 9f 5e 55 1a 49 90 0b 29 6e
+23 8b 8e 23 06 62 2a 07 ec be 56 14 39 02 91 60 ce c6 60 be 16 35 74 a3 b5 78 11 21 3b e6 2d d8
+2a bb cc aa 9b 55 89 bc 43 a8 cc 5c 97 0f 92 25 f6 72 0b 99 0f 47 2e e0 71 15 4e 97 85 e0 23 86
+
+1a 07 00 00 00 00 00 00 00 19 02 0a 05 04 05 06 07 08 1a 6c 37 41 76 c6 67 9c 61 22 b6 c0 7c e8
+47 80 c9 13 9b 01 66 db 88 46 2e 6a cc fe ea d5 5a 12 ff f1 4d a6 c4 9d ef c4 cb 40 62 b4 90 cf
+92 3f 36 ec 96 0f c9 54 43 ff e4 a9 3e 4d df f8 99 92 77 54 1a 27 64 00 79 f2 52 2c 48 39 6f b9
+a6 ef 7d c3 07 4d 40 c3 8b d5 73 42 37 3f 6d e1 b5 50 67 87 ed 32 cd 23 75 f5 15 05 51 75 51 70</code></pre></div>
+<p>And they are accordingly, when decoded,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>                                       <span style="color:#75715e"># enum, equivalent to &#34;PAPER&#34;</span>
+nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>) <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;11 e1 00 ... e0 23 86&#39;</span>)  <span style="color:#75715e"># bytes</span>
+
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>                                       <span style="color:#75715e"># enum, equivalent to &#34;SCISSORS&#34;</span>
+nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>) <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;37 41 76 ... 75 51 70&#39;</span>)  <span style="color:#75715e"># bytes</span>
+
+<span style="color:#75715e"># As a result:</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># SCISSORS</span>
+nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>)</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>                                       <span style="color:#75715e"># enum, equivalent to &#34;PAPER&#34;</span>
+nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>) <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;11 e1 00 ... e0 23 86&#39;</span>)  <span style="color:#75715e"># bytes</span>
+
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x08_07_06_05_04_05_0a_02</span>               <span style="color:#75715e"># fixed64</span>
+move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;37 41 76 ... 75 51 70&#39;</span>)  <span style="color:#75715e"># bytes</span>
+
+<span style="color:#75715e"># As a result:</span>
+move <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#75715e"># PAPER</span>
+nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>)</code></pre></div>
+<h4 id="part-vi-the-final-messages">Part VI: The final messages<a href="#part-vi-the-final-messages" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+<p>From above, we have $m_1\ ||\ m'_1$ and $m_1\ ||\ m'_2$. We can replace $m_1$ with $m_2$ to get four messages with the same digest. We can pick any move by concatenate different message chunks, as shown below:</p>
+
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+rankdir=LR
+splines=false
+
+node[shape=point]
+
+h0[shape=rectangle, label=&amp;#34;Start&amp;#34;]
+h21[shape=square, label=✂️]
+h22[shape=square, label=📄]
+h23[shape=square, label=✂️]
+h24[shape=square, label=🪨]
+
+h0 -&amp;gt; h11[label=&amp;lt;m&amp;lt;sub&amp;gt;1&amp;lt;/sub&amp;gt;: move ← 📄&amp;gt;]
+h0 -&amp;gt; h12
+h0 -&amp;gt; h12[label=&amp;lt;m&amp;lt;sub&amp;gt;2&amp;lt;/sub&amp;gt;: do nothing&amp;gt;]
+
+h11 -&amp;gt; h21[label=&amp;lt;m&amp;#39;&amp;lt;sub&amp;gt;1&amp;lt;/sub&amp;gt;: move ← ✂️&amp;gt;]
+h11 -&amp;gt; h22
+h11 -&amp;gt; h22[label=&amp;lt;m&amp;#39;&amp;lt;sub&amp;gt;2&amp;lt;/sub&amp;gt;: do nothing&amp;gt;]
+h12 -&amp;gt; h23[label=&amp;lt;m&amp;#39;&amp;lt;sub&amp;gt;1&amp;lt;/sub&amp;gt;: move ← ✂️&amp;gt;]
+h12 -&amp;gt; h24
+h12 -&amp;gt; h24[label=&amp;lt;m&amp;#39;&amp;lt;sub&amp;gt;2&amp;lt;/sub&amp;gt;: do nothing&amp;gt;]
+
+  }
+  </div>
+</div>    
+
+<p>Finally, we can concatenate the <code>nonce_server</code> and <code>nonce_client</code> to whatever we want. These are the final messages, with the assumption that <code>nonce_server = ff...ff</code> and <code>nonce_client = 00...00</code>:</p>
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-collision-2-0.png"   />
+    
+      <figcaption class="right" >$m_2\ ||\ m'_2 \ ||\ \text{suffix}$. Plays 🪨.</figcaption>
+    
+  </figure>
+
+
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-collision-2-1.png"   />
+    
+      <figcaption class="right" >$m_1\ ||\ m'_2 \ ||\ \text{suffix}$. Plays 📄.</figcaption>
+    
+  </figure>
+
+
+
+
+  <figure class="center" >
+    <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-collision-2-2.png"   />
+    
+      <figcaption class="right" >$m_1\ ||\ m'_1 \ ||\ \text{suffix}$. Plays ✂️.</figcaption>
+    
+  </figure>
+
+
+
+<p>We can now use $m_1$, $m_2$, $m'_1$ and $m'_2$ to win every single game and get the flag: <code>hkcert22{bu7_wh0_u53s_md5_1n_2022}</code>. Congratulations to <a href="https://twitter.com/hoifanrd" target="_blank" rel="nofollow">@hoifanrd</a> (short for <em>Hoi Fan Road</em>, or 海帆道) being the only solver of the challenge.</p>
+<div class="footnotes">
+
+<hr>
+
+<ol>
+<li id="fn:so">Why are my set commands resulting in nothing getting stored?<br><a href="https://stackoverflow.com/questions/14347038/why-are-my-set-commands-resulting-in-nothing-getting-stored">https://stackoverflow.com/questions/14347038/why-are-my-set-commands-resulting-in-nothing-getting-stored</a>
+ <a class="footnote-return" href="#fnref:so">↩</a></li>
+</ol>
+</div>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/">
+                <span class="button__icon">←</span>
+                <span class="button__text">HKCERT CTF 2022 Postmortem (III): The Remaining Challenges</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2022/2022-10-19-h4ck1ng-g00gl3/">
+                <span class="button__text">H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2022 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

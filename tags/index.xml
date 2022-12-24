@@ -6,40 +6,67 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Oct 2022 00:02:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>bleichenbacher</title>
-      <link>https://mystiz.hk/tags/bleichenbacher/</link>
-      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/bleichenbacher/</guid>
-      <description></description>
-    </item>
-    
+    <lastBuildDate>Sat, 24 Dec 2022 16:46:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>challenge-writing</title>
       <link>https://mystiz.hk/tags/challenge-writing/</link>
-      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
+      <pubDate>Sat, 24 Dec 2022 16:46:02 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/challenge-writing/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>ctf</title>
+      <link>https://mystiz.hk/tags/ctf/</link>
+      <pubDate>Sat, 24 Dec 2022 16:46:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hkcert-ctf</title>
+      <link>https://mystiz.hk/tags/hkcert-ctf/</link>
+      <pubDate>Sat, 24 Dec 2022 16:46:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/hkcert-ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>minecraft</title>
+      <link>https://mystiz.hk/tags/minecraft/</link>
+      <pubDate>Sat, 24 Dec 2022 16:46:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/minecraft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reverse</title>
+      <link>https://mystiz.hk/tags/reverse/</link>
+      <pubDate>Sat, 24 Dec 2022 16:46:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/reverse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>crypto</title>
       <link>https://mystiz.hk/tags/crypto/</link>
-      <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
+      <pubDate>Sat, 24 Dec 2022 16:46:01 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/crypto/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>ctf</title>
-      <link>https://mystiz.hk/tags/ctf/</link>
+      <title>bleichenbacher</title>
+      <link>https://mystiz.hk/tags/bleichenbacher/</link>
       <pubDate>Wed, 19 Oct 2022 00:02:00 +0800</pubDate>
       
-      <guid>https://mystiz.hk/tags/ctf/</guid>
+      <guid>https://mystiz.hk/tags/bleichenbacher/</guid>
       <description></description>
     </item>
     
@@ -206,15 +233,6 @@
     </item>
     
     <item>
-      <title>hkcert-ctf</title>
-      <link>https://mystiz.hk/tags/hkcert-ctf/</link>
-      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/hkcert-ctf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>pwn</title>
       <link>https://mystiz.hk/tags/pwn/</link>
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
@@ -229,15 +247,6 @@
       <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/web/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>reverse</title>
-      <link>https://mystiz.hk/tags/reverse/</link>
-      <pubDate>Thu, 18 Nov 2021 16:05:02 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/reverse/</guid>
       <description></description>
     </item>
     
