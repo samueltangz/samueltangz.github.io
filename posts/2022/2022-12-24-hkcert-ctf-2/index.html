@@ -6,7 +6,7 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="✨ Regarding the thumbnail. This my Discord avatar combined with Komi from the anime Komi can&amp;rsquo;t communicate, where the challenge Mystiz can&amp;rsquo;t code referred. Made by @byronwai.  We will continue walking through the remaining crypto challenges I wrote for HKCERT CTF 2022: Mystiz can&#39;t code, Slow keystream and King of Rock, Paper, Scissors.
+<meta name="description" content="✨ Regarding the thumbnail. This is my Discord avatar combined with Komi from the anime Komi can&amp;rsquo;t communicate, where the challenge Mystiz can&amp;rsquo;t code is referred to. Made by @byronwai.  We will continue walking through the remaining crypto challenges I wrote for HKCERT CTF 2022: Mystiz can&#39;t code, Slow keystream and King of Rock, Paper, Scissors.
 亞洲協會香港中心 / Mystiz can&#39;t code (Crypto) Challenge Summary  Mystiz can&#39;t code! He wanted to implement Advanced Encryption Standard (AES) in batch but he couldn&#39;t do it correctly." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
@@ -181,7 +181,7 @@
 
   <div class="post-content js-toc-content"><div>
         <div class="alert success">
-  ✨ <strong>Regarding the thumbnail.</strong> This my Discord avatar combined with Komi from the anime <em>Komi can&rsquo;t communicate</em>, where the challenge <em>Mystiz can&rsquo;t code</em> referred. Made by <em>@byronwai</em>.
+  ✨ <strong>Regarding the thumbnail.</strong> This is my Discord avatar combined with Komi from the anime <em>Komi can&rsquo;t communicate</em>, where the challenge <em>Mystiz can&rsquo;t code</em> is referred to. Made by <em>@byronwai</em>.
 </div>
 
 
@@ -209,13 +209,13 @@ C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
 <h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
 <div class="alert info">
-  😒 <strong>Objection!</strong> I can actually code. I actually built a wrote a working AES then to break it in the way I wanted.
+  😒 <strong>Objection!</strong> I can actually code. I actually built a wrote a working AES then broke it in the way I wanted.
 </div>
 
 
 <h4 id="part-i-background-story">Part I: Background story<a href="#part-i-background-story" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>I am a newbie to batch scripts. The only batch scripts I wrote was to shutdown a machine. Back in the days <em>MSN</em> still exists (an application in the stone age, huh?), I used to rename those batch scripts into files, changed their icons and sent them to my friends. It was pretty satisfacting when you see they became offline as soon as they receive the files.</p>
+<p>I am a newbie to batch scripts. The only batch script I wrote was to shut down a machine. Back in the day <em>MSN</em> still exists (an application in the stone age, huh?), I used to rename those batch scripts into files, changed their icons and sent them to my friends. It was pretty satisfying when you see they became offline as soon as they receive the files.</p>
 
 <p>Well, after uncountably many years, I am asked to write batch scripts for my work to maintain Windows machines. I was stuck into an issue for a few hours... and it was pretty amusing. Anyway, I thought that is worth making it into a CTF challenge.</p>
 
@@ -269,13 +269,13 @@ C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
   <figure class="center" >
     <img src="/images/2022-12-24-hkcert-ctf/mystiz-cant-code-2.png"   />
     
-      <figcaption class="right" >The actual encryption flow for given batch file.</figcaption>
+      <figcaption class="right" >The actual encryption flow for the given batch file.</figcaption>
     
   </figure>
 
 
 
-<p>We can see from above that only two bytes from the subkeys are used when encrypting a block, which are $k_{33}$ from the 0-th and the $n$-th round keys. The other parts are performed in the same way that AES does. Up to here, we can already write a script to exhaust the $2^{16}$ subkey candidates for each block.</p>
+<p>We can see from above that only two bytes from the subkeys are used when encrypting a block, which is $k_{33}$ from the 0-th and the $n$-th round keys. The other parts are performed in the same way that AES does. Up to here, we can already write a script to exhaust the $2^{16}$ subkey candidates for each block.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">hkcert22{pr09r4mm1ng_in_b47ch_1s_s0_d1fficul7_4nd_why_d03s_th1n9s_1n_br4ck3t_run5_in_p4ral13l}</code></pre></div>
 <h4 id="part-iii-batch-why">Part III: Batch, why?<a href="#part-iii-batch-why" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
@@ -286,7 +286,7 @@ C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
 
 <p>In this section, we will study the causes of the problem. In short, the commands in the parentheses are executed simultaneously<sup class="footnote-ref" id="fnref:so"><a class="footnote" href="#fn:so">1</a></sup>.</p>
 
-<p>For batch scripts, all functions variables are global unless we specify <code>SETLOCAL</code> in the function. Let's consider how the first block is encrypted. It calls <code>LoadState</code> at the very beginning, which eventually sets $j \leftarrow 15$. Since $j$ is global, its value will be shared. After that, <code>AddRoundKey</code>, which is defined below, is called with the argument <code>round_id = 0</code>.</p>
+<p>For batch scripts, all function variables are global unless we specify <code>SETLOCAL</code> in the function. Let's consider how the first block is encrypted. It calls <code>LoadState</code> at the very beginning, which eventually sets $j \leftarrow 15$. Since $j$ is global, its value will be shared. After that, <code>AddRoundKey</code>, which is defined below, is called with the argument <code>round_id = 0</code>.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-batch" data-lang="batch">:AddRoundKey
     <span style="color:#66d9ef">set</span> round_id=%1
     <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/l</span> <span style="color:#ae81ff">%%</span>i <span style="color:#66d9ef">in</span> (<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">15</span>) <span style="color:#66d9ef">do</span> (
@@ -294,7 +294,7 @@ C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
         <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">/a</span> STATE[<span style="color:#f92672">%%</span>i]<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;STATE[</span><span style="color:#ae81ff">%%</span><span style="color:#e6db74">i]^KEY[</span>%j%<span style="color:#e6db74">]&#34;</span>
     )
 <span style="color:#66d9ef">exit</span> /b 0</code></pre></div>
-<p>Since the commands are executed simultaneously, $j$ was unable to update timely when it is used to update the state. The value of $j$ in the line that sets the value of <code>STATE[i]</code> is fixed for all $i = 0, 1, ..., 15$. Therefore, instead of xoring the message with the round key, every byte of the message is xored with <code>KEY[15]</code> (i.e., $k_{33}$ from the 0-th round key).</p>
+<p>Since the commands are executed simultaneously, $j$ was unable to update timely when it is used to update the state. The value of $j$ in the line that sets the value of <code>STATE[i]</code> is fixed for all $i = 0, 1, ..., 15$. Therefore, instead of XORing the message with the round key, every byte of the message is XORed with <code>KEY[15]</code> (i.e., $k_{33}$ from the 0-th round key).</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-batch" data-lang="batch">:EncryptBlock
     <span style="color:#66d9ef">set</span> block_id=%1
 
@@ -364,7 +364,7 @@ C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
 
 <h4 id="part-i-what-is-in-golangs-prng">Part I: What is in Golang's PRNG?<a href="#part-i-what-is-in-golangs-prng" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>In this challenge, the characters of the encrypted flag is XORed with the outputs from <code>rand.Uint64</code>. With that said, we have to look deeper into the internals of the PRNG. We can start with <a href="https://pkg.go.dev/math/rand@go1.19#Uint64">the documentation</a> - with that, we can read the source code and see where the actual code is. Tracing in the <a href="https://cs.opensource.google/go/go/+/refs/tags/go1.19:src/math/rand/">codebase</a>, eventually we end up at its implementation (snippeted below):</p>
+<p>In this challenge, the characters of the encrypted flag is XORed with the outputs from <code>rand.Uint64</code>. With that said, we have to look deeper into the internals of the PRNG. We can start with <a href="https://pkg.go.dev/math/rand@go1.19#Uint64">the documentation</a> - with that, we can read the source code and see where the actual code is. Tracing in the <a href="https://cs.opensource.google/go/go/+/refs/tags/go1.19:src/math/rand/">codebase</a>, eventually, we end up at its implementation (snippets below):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// https://cs.opensource.google/go/go/+/refs/tags/go1.19:src/math/rand/rng.go
 </span><span style="color:#75715e"></span>
 <span style="color:#75715e">// Copyright 2009 The Go Authors. All rights reserved.
@@ -472,7 +472,7 @@ C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
 </div>
 
 
-<p>We can see that <code>rng.vec</code> is an array of 607 64-bit numbers. When <code>Uint64</code> is called, two numbers from the array is retrieved, summed and returned. The sum will be stored into the array for future calls. Let $v^{(n)} := (v_0^{(n)}, v_1^{(n)}, ..., v_{606}^{(n)})$ be the vector after $n$ <code>Uint64</code> calls. Then the first two $v^{(n)}$s being:</p>
+<p>We can see that <code>rng.vec</code> is an array of 607 64-bit numbers. When <code>Uint64</code> is called, two numbers from the array are retrieved, summed and returned. The sum will be stored in the array for future calls. Let $v^{(n)} := (v_0^{(n)}, v_1^{(n)}, ..., v_{606}^{(n)})$ be the vector after $n$ <code>Uint64</code> calls. Then the first two $v^{(n)}$s being:</p>
 
 <p><span  class="math">\[v^{(1)}_k := \begin{cases}
 v^{(0)}_{333} + v^{(0)}_{606} & \text{if}\ k = 333 \\
@@ -483,7 +483,7 @@ v^{(1)}_{332} + v^{(1)}_{605} & \text{if}\ k = 332 \\
 v^{(1)}_k & \text{otherwise}
 \end{cases}, ...\]</span></p>
 
-<p>It is obvious that <code>Uint64</code> changes only one entry a time. Let's define</p>
+<p>It is obvious that <code>Uint64</code> changes only one entry at a time. Let's define</p>
 
 <p><span  class="math">\[(a_0, a_1, ..., a_{606}) := (v^{(0)}_{333}, v^{(0)}_{332}, ..., v^{(0)}_{0}, v^{(0)}_{606}, v^{(0)}_{605}, ..., v^{(0)}_{334}).\]</span></p>
 
@@ -536,7 +536,7 @@ v^{(1)}_k & \text{otherwise}
 <li>Generate two unused <code>rand.Uint64()</code> and set $k \leftarrow 0$.</li>
 <li>Generate a <code>rand.Uint64()</code> to decrypt the $k$-th byte from <code>flag.enc</code>.</li>
 <li>Generate $2^{k+1}$ unused <code>rand.Uint64()</code>.</li>
-<li>If $k &lt; n-1$, set $k \leftarrow k + 1$ and jump to step 2. Otherwise we are done.</li>
+<li>If $k &lt; n-1$, set $k \leftarrow k + 1$ and jump to step 2. Otherwise, we are done.</li>
 </ol>
 
 <p>Equivalently, this is the draft of the solve script:</p>
@@ -547,7 +547,7 @@ v^{(1)}_k & \text{otherwise}
 <li>Set $\bold{a} \leftarrow T \cdot \bold{a}$.</li>
 <li>Decrypt the $k$-th character of the flag from the last entry of $\bold{a}$.</li>
 <li>Set $\bold{a} \leftarrow S \cdot \bold{a}$ and $S \leftarrow S^2$.</li>
-<li>If $k &lt; n-1$, set $k \leftarrow k + 1$ and jump to step 3. Otherwise we are done.</li>
+<li>If $k &lt; n-1$, set $k \leftarrow k + 1$ and jump to step 3. Otherwise, we are done.</li>
 </ol>
 
 <p>In particular, step 5 is used for &quot;fast forwarding&quot;. If $S = T^m$, then $\bold{a} \leftarrow S \cdot \bold{a}$ is a way to skip $m$ steps at a time. Also, $S \leftarrow S^2$ sets $S$ to $T^{2m}$, which makes subsequent calls to skip $2m$ steps.</p>
@@ -653,14 +653,14 @@ output <span style="color:#f92672">=</span> []
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">ServerRoundFinalMessage</span> {<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span>  Player winner <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span>};</code></pre></div>
-<p>Define a commitment scheme $\mathcal{C}$ between two parties (the server and the client) to play rock paper scissor, define the protocol below:</p>
+<p>Define a commitment scheme $\mathcal{C}$ between two parties (the server and the client) to play rock paper scissors, define the protocol below:</p>
 
 <ol>
-<li>The server generates a nonce sends the <code>ServerRoundInitMessage</code> to the client.</li>
+<li>The server generates a nonce and sends the <code>ServerRoundInitMessage</code> to the client.</li>
 <li>The client
 
 <ul>
-<li>determines an move (rock, scissors or stone),</li>
+<li>determines a move (rock, scissors or stone),</li>
 <li>generates a nonce,</li>
 <li>constructs a <code>ClientMoveMessage</code> and computes its MD5 digest,</li>
 <li>constructs a <code>ClientRoundInitMessage</code>, and</li>
@@ -675,7 +675,7 @@ output <span style="color:#f92672">=</span> []
 
 <h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<h4 id="part-i-a-short-demo-on-the-protocol">Part I: A short demo on the protocol<a href="#part-i-a-short-demo-on-the-protocol" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<h4 id="part-i-a-short-demo-of-the-protocol">Part I: A short demo of the protocol<a href="#part-i-a-short-demo-of-the-protocol" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <div class="alert info">
   📝 <strong>Note.</strong> For simplicity, I will use JSON instead of protobuf encoding to show how the protocol works. I used the latter for the challenge because it is easier to exploit&hellip; We will talk about that later.
@@ -726,11 +726,11 @@ output <span style="color:#f92672">=</span> []
 <h4 id="part-ii-attacks-related-to-md5">Part II: Attacks related to MD5<a href="#part-ii-attacks-related-to-md5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <div class="alert danger">
-  🤏 <strong>TL;DR. Can I skip?</strong> If you know <em>Unicoll</em> and know what it could do, yes.
+  🤏 <strong>TL;DR. Can I skip this?</strong> If you know <em>Unicoll</em> and know what it could do, yes.
 </div>
 
 
-<p>MD5 is insecure. It is very easy to find a MD5 collision in 2022. <a href="https://github.com/corkami/collisions">corkami/collisions</a> is a repository explaining all sorts of hash collisions. There are various attacks, <a href="https://www.win.tue.nl/hashclash/">FastColl</a>, <a href="https://github.com/corkami/collisions/blob/master/unicoll.md">UniColl</a> and <a href="https://github.com/cr-marcstevens/hashclash">HashClash</a>, and each of them has a different running speed and capability.</p>
+<p>MD5 is insecure. It is very easy to find an MD5 collision in 2022. <a href="https://github.com/corkami/collisions">corkami/collisions</a> is a repository explaining all sorts of hash collisions. There are various attacks, <a href="https://www.win.tue.nl/hashclash/">FastColl</a>, <a href="https://github.com/corkami/collisions/blob/master/unicoll.md">UniColl</a> and <a href="https://github.com/cr-marcstevens/hashclash">HashClash</a>, and each of them has a different running speed and capability.</p>
 
 <p>In short, we can forge a move without changing the MD5 digest. An idea would be to inject some &quot;junk&quot; fields that no one cared. They are not used to validate anything while affecting the hashed outcome.</p>
 
@@ -813,15 +813,15 @@ md5sum collision*.bin
 
 <h5 id="the-wire-types">The wire types<a href="#the-wire-types" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
 
-<p>We will only mention two wire types: <code>VARINT</code> and <code>LEN</code> because they are the only types those are used in <code>ClientMoveMessage</code>. It is probably not what you expect -- we used <code>bytes</code> and <code>Move</code> (which is a enum) instead of those types!</p>
+<p>We will only mention two wire types: <code>VARINT</code> and <code>LEN</code> because they are the only types that are used in <code>ClientMoveMessage</code>. It is probably not what you expect -- we used <code>bytes</code> and <code>Move</code> (which is an enum) instead of those types!</p>
 
-<p>In reality, <code>VARINT</code> is a wire type that is used when transmitting the data types <code>int32</code>, <code>int64</code>, <code>enum</code> and so on. It uses a $k$-byte buffer to represent an unsigned integer not longer than $7k$-bit long. An one-byte <code>VARINT</code> can express up to $127$, and a two-byte <code>VARINT</code> can express up to $16383 = 2^{14} - 1$. Also, the most significant bit from each byte is considered to be the &quot;continuation bit&quot;, which determines whether the subsequent byte belongs to the <code>VARINT</code>.</p>
+<p>In reality, <code>VARINT</code> is a wire type that is used when transmitting the data types <code>int32</code>, <code>int64</code>, <code>enum</code> and so on. It uses a $k$-byte buffer to represent an unsigned integer not longer than $7k$-bit long. A one-byte <code>VARINT</code> can express up to $127$, and a two-byte <code>VARINT</code> can express up to $16383 = 2^{14} - 1$. Also, the most significant bit from each byte is considered to be the &quot;continuation bit&quot;, which determines whether the subsequent byte belongs to the <code>VARINT</code>.</p>
 
 <p>Below is an example of a <code>VARINT</code> of three bytes long (represented as binary):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">[byte 1] [byte 2] [byte 3]
 11000000 10100000 00010000
 *(   64) *(   32)  (   16)</code></pre></div>
-<p>We can see that the MSB of the first two bytes are <code>1</code> and the MSB of the last byte is <code>0</code>. This happens on every <code>VARINT</code>: All MSBs are <code>1</code> except the last byte. After that, we will interpret the integer from its base 128 expression:</p>
+<p>We can see that the MSB of the first two bytes are <code>1</code> and the MSB of the last byte is <code>0</code>. This happens on every <code>VARINT</code>: All MSBs are <code>1</code> except the last byte. After that, we will interpret the integer from its base 128 expressions:</p>
 
 <p><span  class="math">\[64 \cdot 128^0 + 32 \cdot 128^1 + 16 \cdot 128^2 = 266304.\]</span></p>
 
@@ -847,7 +847,7 @@ md5sum collision*.bin
 
 <p>For exercise 1, only the first entry is a valid <code>VARINT</code>. The answer for exercise 2 is $1337 = 0001010\ 0111001_2$.</p>
 
-<p>Now onto the wire type <code>LEN</code>. One data type it can handle is <code>bytes</code>. Its expression is straight forward -- it begins with a <code>VARINT</code> consisting of the length $l$, followed by $l$ bytes being the buffer. For example, the below <code>LEN</code> is equivalent to <code>hello</code>:</p>
+<p>Now onto the wire type <code>LEN</code>. One data type it can handle is <code>bytes</code>. Its expression is straightforward -- it begins with a <code>VARINT</code> consisting of the length $l$, followed by $l$ bytes being the buffer. For example, the below <code>LEN</code> is equivalent to <code>hello</code>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">00000101 01101000 01100101 01101100 01101100 01101111
 ********                                              -- an unsigned integer 5
          ******** ******** ******** ******** ******** -- 5-byte buffer &#34;hello&#34; </code></pre></div>
@@ -906,14 +906,14 @@ move: SCISSORS</code></pre></div>
 <h4 id="part-iv-generating-the-first-pair-of-collision">Part IV: Generating the first pair of collision<a href="#part-iv-generating-the-first-pair-of-collision" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <div class="alert success">
-  🎉 <strong>Congratulations!</strong> We finally arrive to the important part. Congratulations for bearing all the background information in the previous sections.
+  🎉 <strong>Congratulations!</strong> We finally arrive at the important part. Congratulations on bearing all the background information in the previous sections.
 </div>
 
 
 <p>Now the goal is clear: For any <code>nonce_server</code>, find three <code>ClientMoveMessage</code>s such that their <code>nonce_client</code>s are all the same, their <code>move</code>s are all different and the MD5 digests are the same. Here is the first property on protobuf:</p>
 
 <div class="alert info">
-  💡 <strong>Property on protobuf (1).</strong> If the wire type does not match with the data type, then the record will be dropped.
+  💡 <strong>Property on protobuf (1).</strong> If the wire type does not match the data type, then the record will be dropped.
 </div>
 
 
@@ -937,7 +937,7 @@ move: SCISSORS</code></pre></div>
 move: PAPER</code></pre></div>
 <p>Let's make a pair of <code>ClientMoveMessage</code>s with the same MD5 digest and the moves being <code>ROCK</code> and <code>PAPER</code>, and will tackle <code>SCISSORS</code> later. Also, since <code>nonce_server</code> and <code>nonce_client</code> can be handled easily, we will not deal with them now.</p>
 
-<p>This is a 20-byte prefix I made for <em>Unicoll</em> and it is expected that the size of the outputs are 128 bytes long.</p>
+<p>This is a 20-byte prefix I made for <em>Unicoll</em> and it is expected that the size of the outputs is 128 bytes long.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c</code></pre></div>
 <p>These are the outputs from <em>Unicoll</em>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
@@ -958,7 +958,7 @@ move: PAPER</code></pre></div>
   <figure class="center" >
     <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-collision-1-1.png"   />
     
-      <figcaption class="right" >The first message from Unicoll which plays paper.</figcaption>
+      <figcaption class="right" >The first message is from Unicoll which plays paper.</figcaption>
     
   </figure>
 
@@ -968,7 +968,7 @@ move: PAPER</code></pre></div>
   <figure class="center" >
     <img src="/images/2022-12-24-hkcert-ctf/king-of-rps-collision-1-0.png"   />
     
-      <figcaption class="right" >The second message from Unicoll which plays rock.</figcaption>
+      <figcaption class="right" >The second message is from Unicoll which plays rock.</figcaption>
     
   </figure>
 
@@ -982,7 +982,7 @@ move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</sp
 <p>Since it is illegal to assign <code>move</code> as bytes (it is an enum), only the second and the third records will be kept. Therefore, only two fields are assigned.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">nonce_server: 0405060708 (hex-encoded)
 move: PAPER</code></pre></div>
-<p>Besides, the second message composes of three records but none of them are valid. Since no moves are assigned, it uses the default value, <code>ROCK</code>.</p>
+<p>Besides, the second message composes of three records but none of them is valid. Since no moves are assigned, it uses the default value, <code>ROCK</code>.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
 move <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x08_07_06_05_04_05_0a_01</span>               <span style="color:#75715e"># fixed64</span>
 move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;11 e1 00 ... e0 23 86&#39;</span>)  <span style="color:#75715e"># bytes</span></code></pre></div>
@@ -1006,14 +1006,14 @@ move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</sp
 </div>
 
 
-<p>Essentially we can generate $m'_1$ and $m'_2$ which respectively &quot;overwrites the move with scissors&quot; and &quot;does nothing&quot;. This is actually the same as what we did previously: $m_1$ overwrote the move with paper and $m_2$ did nothing... and we have a 148-byte prefix for <em>Unicoll</em>!</p>
+<p>Essentially we can generate $m'_1$ and $m'_2$ which respectively &quot;overwrites the move with scissors&quot; and &quot;does nothing&quot;. This is the same as what we did previously: $m_1$ overwrote the move with paper and $m_2$ did nothing... and we have a 148-byte prefix for <em>Unicoll</em>!</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
 45 c7 64 92 91 43 f4 6c 46 11 cd 78 ac 72 d5 49 7f dd ec 8b 6f 18 a7 9f 5e 55 1a 49 90 0b 29 6e
 23 8b 8e 23 06 62 2a 07 ec be 56 14 39 02 91 60 ce c6 60 be 16 35 74 a3 b5 78 11 21 3b e6 2d d8
 2a bb cc aa 9b 55 89 bc 43 a8 cc 5c 97 0f 92 25 f6 72 0b 99 0f 47 2e e0 71 15 4e 97 85 e0 23 86
 
 1a 07 00 00 00 00 00 00 00 18 02 0a 05 04 05 06 07 08 1a 6c</code></pre></div>
-<p>These is the collision pair generated, and both of the messages have the MD5 digest <code>d65c76e692c2b4c81b05a20928375fc3</code>:</p>
+<p>There is the collision pair generated, and both of the messages have the MD5 digest <code>d65c76e692c2b4c81b05a20928375fc3</code>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">1a 07 00 00 00 00 00 00 00 18 01 0a 05 04 05 06 07 08 1a 6c 11 e1 00 b5 d6 e0 e8 59 d2 1a ba f6
 45 c7 64 92 91 43 f4 6c 46 11 cd 78 ac 72 d5 49 7f dd ec 8b 6f 18 a7 9f 5e 55 1a 49 90 0b 29 6e
 23 8b 8e 23 06 62 2a 07 ec be 56 14 39 02 91 60 ce c6 60 be 16 35 74 a3 b5 78 11 21 3b e6 2d d8
@@ -1031,7 +1031,7 @@ a6 ef 7d c3 07 4d 40 c3 8b d5 73 42 37 3f 6d e1 b5 50 67 87 ed 32 cd 23 75 f5 15
 47 80 c9 13 9b 01 66 db 88 46 2e 6a cc fe ea d5 5a 12 ff f1 4d a6 c4 9d ef c4 cb 40 62 b4 90 cf
 92 3f 36 ec 96 0f c9 54 43 ff e4 a9 3e 4d df f8 99 92 77 54 1a 27 64 00 79 f2 52 2c 48 39 6f b9
 a6 ef 7d c3 07 4d 40 c3 8b d5 73 42 37 3f 6d e1 b5 50 67 87 ed 32 cd 23 75 f5 15 05 51 75 51 70</code></pre></div>
-<p>And they are accordingly, when decoded,</p>
+<p>And they are accordingly when decoded,</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">move <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00 00 00 00 00 00 00&#39;</span>)   <span style="color:#75715e"># bytes</span>
 move <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>                                       <span style="color:#75715e"># enum, equivalent to &#34;PAPER&#34;</span>
 nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>) <span style="color:#75715e"># bytes</span>
@@ -1058,7 +1058,7 @@ move <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <
 nonce_client <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;04 05 06 07 08&#39;</span>)</code></pre></div>
 <h4 id="part-vi-the-final-messages">Part VI: The final messages<a href="#part-vi-the-final-messages" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>From above, we have $m_1\ ||\ m'_1$ and $m_1\ ||\ m'_2$. We can replace $m_1$ with $m_2$ to get four messages with the same digest. We can pick any move by concatenate different message chunks, as shown below:</p>
+<p>From above, we have $m_1\ ||\ m'_1$ and $m_1\ ||\ m'_2$. We can replace $m_1$ with $m_2$ to get four messages with the same digest. We can pick any move by concatenating different message chunks, as shown below:</p>
 
 <div style="text-align: center;">
   <div class="graphviz">

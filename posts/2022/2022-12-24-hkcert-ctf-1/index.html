@@ -6,7 +6,7 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="This is the third year Black Bauhinia coorganizes HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.
+<meta name="description" content="This is the third year Black Bauhinia co-organized HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.
 Similar to the last year, I have a series of three blog posts walking through the challenges that I wrote. We will discuss the four easier crypto challenges: Flawed ElGamal, Catch-22, Rogue Secret Assistant and Base64 encryption.
 This is an index of the challenges I wrote for HKCERT CTF 2022." />
 <meta name="keywords" content="ctf" />
@@ -47,7 +47,7 @@ This is an index of the challenges I wrote for HKCERT CTF 2022." />
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges">
-<meta property="og:description" content="This is the third year Black Bauhinia coorganizes HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.
+<meta property="og:description" content="This is the third year Black Bauhinia co-organized HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.
 
 Similar to the last year, I have a series of three blog posts walking through the challenges that I wrote. We will discuss the four easier crypto challenges: Flawed ElGamal, Catch-22, Rogue Secret Assistant and Base64 encryption." />
 <meta property="og:url" content="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-1/" />
@@ -183,7 +183,7 @@ Similar to the last year, I have a series of three blog posts walking through th
   
 
   <div class="post-content js-toc-content"><div>
-        <p>This is the third year Black Bauhinia coorganizes HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.</p>
+        <p>This is the third year Black Bauhinia co-organized HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.</p>
 
 <p>Similar to the last year, I have a series of three blog posts walking through the challenges that I wrote. We will discuss the four easier crypto challenges: <em>Flawed ElGamal</em>, <em>Catch-22</em>, <em>Rogue Secret Assistant</em> and <em>Base64 encryption</em>.</p>
 
@@ -228,7 +228,7 @@ h <span style="color:#f92672">=</span> <span style="color:#ae81ff">6791754741873
 
 <h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<p>An important observation is that $c_2 := m \cdot s$ is not taken modulo $p$, therefore it is a multiple of $m$. If we get many ciphertexts $(c_1, c_2)$, $(c_1', c_2')$, ... by connecting to the server for multiple times, eventually we have</p>
+<p>An important observation is that $c_2 := m \cdot s$ is not taken modulo $p$, therefore it is a multiple of $m$. If we get many ciphertexts $(c_1, c_2)$, $(c_1', c_2')$, ... by connecting to the server multiple times, eventually we have</p>
 
 <p><span  class="math">\[m = \gcd(c_2, c_2', ...).\]</span></p>
 
@@ -241,10 +241,10 @@ h <span style="color:#f92672">=</span> <span style="color:#ae81ff">6791754741873
 
 <p><span  class="math">\[\gcd(a, b, ..., c) = \gcd(...\gcd(\gcd(a, b), ...), c).\]</span></p>
 
-<p>After getting the number $m$, we can convert it into a string. From <code>chall.py</code>, the flag string is converted to a number by <code>m = int.from_bytes(flag, 'big')</code>. You may want to look at how an reverse operation can be done using <a href="https://docs.python.org/3/library/stdtypes.html#int.to_bytes"><code>int.to_bytes</code></a> in Python. Eventually, we have <code>hkcert22{4nd_th1s_t1m3_7h3_i5su3_1s_s0l31y_n0t_t4k1n9_m0du10s}</code>.</p>
+<p>After getting the number $m$, we can convert it into a string. From <code>chall.py</code>, the flag string is converted to a number by <code>m = int.from_bytes(flag, 'big')</code>. You may want to look at how a reverse operation can be done using <a href="https://docs.python.org/3/library/stdtypes.html#int.to_bytes"><code>int.to_bytes</code></a> in Python. Eventually, we have <code>hkcert22{4nd_th1s_t1m3_7h3_i5su3_1s_s0l31y_n0t_t4k1n9_m0du10s}</code>.</p>
 
 <div class="alert danger">
-  <strong>🏁 I am not getting the flag!</strong> That means the <code>m</code> you got is incorrect. It is likely that the GCD you obtained is a small multiple of the actual $m$ - go get more $c_2$&rsquo;s and compute GCDs further!
+  <strong>🏁 I am not getting the flag!</strong> That means the <code>m</code> you got is incorrect. The GCD you obtained is probably a small multiple of the actual $m$ - go get more $c_2$&rsquo;s and compute GCDs further!
 </div>
 
 
@@ -285,7 +285,7 @@ h <span style="color:#f92672">=</span> <span style="color:#ae81ff">6791754741873
 
 <h4 id="part-ii-encrypting-messages-of-arbitrary-length-for-block-ciphers">Part II: Encrypting messages of arbitrary length for block ciphers<a href="#part-ii-encrypting-messages-of-arbitrary-length-for-block-ciphers" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>Block ciphers are only capable to encrypt messages of a fixed length. For instance, <em>Advanced Encryption Standard (AES)</em> can only encrypt messages of 16 bytes. To encrypt messages of variable length, the messages are first padded such that its length is a multiple of the block size. After that, a mode of operation is picked.</p>
+<p>Block ciphers are only capable to encrypt messages of a fixed length. For instance, <em>Advanced Encryption Standard (AES)</em> can only encrypt messages of 16 bytes. To encrypt messages of variable length, the messages are first padded such that their length is a multiple of the block size. After that, a mode of operation is picked.</p>
 
 <h5 id="the-electronic-codebook-ecb-mode-of-operation">The electronic codebook (ECB) mode of operation<a href="#the-electronic-codebook-ecb-mode-of-operation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
 
@@ -467,8 +467,8 @@ Ciphertext:  fff21bf4a7d27a027502b1e1a253b35f fff21bf4a7d27a027502b1e1a253b35f</
 
 <p>If we move the second block between the fourth and the fifth blocks, then this is the new plaintext:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;username&#34;</span>:<span style="color:#e6db74">&#34;mystiz_&#34;</span>,<span style="color:#f92672">&#34;x&#34;</span>:<span style="color:#ae81ff">13</span>,<span style="color:#f92672">&#34;y&#34;</span>:<span style="color:#ae81ff">5</span>,<span style="color:#f92672">&#34;inventory&#34;</span>:[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span> ],<span style="color:#f92672">&#34;onMapItems&#34;</span>:[{<span style="color:#f92672">&#34;item&#34;</span>:<span style="color:#ae81ff">0</span>,<span style="color:#f92672">&#34;x&#34;</span>:<span style="color:#ae81ff">3</span>,<span style="color:#f92672">&#34;y&#34;</span>:<span style="color:#ae81ff">4</span>},{<span style="color:#f92672">&#34;item&#34;</span>:<span style="color:#ae81ff">1</span>,<span style="color:#f92672">&#34;x&#34;</span>:<span style="color:#ae81ff">4</span>,<span style="color:#f92672">&#34;y&#34;</span>:<span style="color:#ae81ff">5</span>},{<span style="color:#f92672">&#34;item&#34;</span>:<span style="color:#ae81ff">1</span>,<span style="color:#f92672">&#34;x&#34;</span>:<span style="color:#ae81ff">5</span>,<span style="color:#f92672">&#34;y&#34;</span>:<span style="color:#ae81ff">5</span>},{<span style="color:#f92672">&#34;item&#34;</span>:<span style="color:#ae81ff">1</span>,<span style="color:#f92672">&#34;x&#34;</span>:<span style="color:#ae81ff">6</span>,<span style="color:#f92672">&#34;y&#34;</span>:<span style="color:#ae81ff">5</span>},{<span style="color:#f92672">&#34;item&#34;</span>:<span style="color:#ae81ff">0</span>,<span style="color:#f92672">&#34;x&#34;</span>:<span style="color:#ae81ff">15</span>,<span style="color:#f92672">&#34;y&#34;</span>:<span style="color:#ae81ff">1</span>}]}</code></pre></div>
-<p>We can concatenate the ciphertext blocks and update the cookie accordingly. Now we are able to fill our inventory with eight keys, which is more than enough! One last thing is to walk to the doors, unlock them with the keys and finally grab the flag: <code>hkcert22{cu7_4nd_p45t3_1ik3_4_3ng1n3er}</code>! 🎉</p>
-
+<p>We can concatenate the ciphertext blocks and update the cookie accordingly. Now we can fill our inventory with eight keys, which is more than enough! One last thing is to walk to the doors, unlock them with the keys and finally grab the flag! 🎉</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">hkcert22{cu7_4nd_p45t3_1ik3_4_3ng1n3er}</code></pre></div>
 
   <figure class="center" >
     <img src="/images/2022-12-24-hkcert-ctf/catch-22-multiple-keys.png"   />
@@ -528,7 +528,7 @@ Ciphertext:  fff21bf4a7d27a027502b1e1a253b35f fff21bf4a7d27a027502b1e1a253b35f</
 <p>If you believe that base64 is just an encoding, then convince me that you are able to &quot;decode&quot; the article (which is in English).</p>
 </blockquote>
 
-<p>We are given a 1198-byte message (in English) encoded in base64, except that the charset is shuffled (without a mapping given). The goal is to recover the message.</p>
+<p>We are given an 1198-byte message (in English) encoded in base64, except that the charset is shuffled (without a mapping given). The goal is to recover the message.</p>
 
 <h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
@@ -546,11 +546,11 @@ Ciphertext:  fff21bf4a7d27a027502b1e1a253b35f fff21bf4a7d27a027502b1e1a253b35f</
 </div>
 
 
-<p>For substitution ciphers, we can look at the frequencies for every characters to recover the key. Say, if <code>w</code> appears the most in the ciphertext, it is probably encrypted from <code>e</code> because <code>e</code> is the most used letter in English language. Can we apply the same to base64 encoded messages? Yes!</p>
+<p>For substitution ciphers, we can look at the frequencies for every character to recover the key. Say, if <code>w</code> appears the most in the ciphertext, it is probably encrypted from <code>e</code> because <code>e</code> is the most used letter in the English language. Can we apply the same to base64 encoded messages? Yes!</p>
 
 <p>I will take <a href="https://ocw.mit.edu/ans7870/6/6.006/s08/lecturenotes/files/t8.shakespeare.txt">t8.shakespeare.txt</a> as the ground truth. To get started, I encoded it with base64 (the message begins with <code>VGhpcyBpcyB0aGUgMTAwdGggRXRleHQgZmlsZSBwcmVzZ</code>). After that, I partitioned the message into four groups, where group one contains the $4k+1$<sup>th</sup> characters (i.e., <code>VccaMd...</code>) of the encoded message for $k \geq 0$; group two contains the $4k+2$<sup>th</sup> characters (i.e., <code>GyyGTG...</code>); and so on.</p>
 
-<p>Why four groups? This is because base64 encodes message into sizes being a multiple of 4. For instance, the $4k+1$<sup>th</sup> encoded character comes from the six upper bits of the $3k+1$<sup>th</sup> byte. Those characters always depend on the six most significant bits from the source bytes.</p>
+<p>Why four groups? This is because base64 encodes a message into strings with sizes being a multiple of 4. For instance, the $4k+1$<sup>th</sup> encoded character comes from the six upper bits of the $3k+1$<sup>th</sup> byte. Those characters always depend on the six most significant bits from the source bytes.</p>
 
 
   <figure class="center" >
@@ -605,14 +605,14 @@ Ciphertext:  fff21bf4a7d27a027502b1e1a253b35f fff21bf4a7d27a027502b1e1a253b35f</
     </tbody>
 </table>
 
-<p>Why do we care about the most frequent characters? Well... who cares if you mispelt once in 1000 words. But it matters when you mispelt once every two words.</p>
+<p>Why do we care about the most frequent characters? Well... who cares if you misspelt once in 1000 words. But it matters when you misspelt once every two words.</p>
 
-<p>Anyway, let's guess the character that encrypts to <code>w</code>. Maybe <code>I</code>? It appears the most from the base64-encoded Shakespeare's text. Apparently not. The frequencies of <code>I</code> from the four groups are respectively (23.9%, 0.0%, 1.3%, 0.3%), which is not similar to the frequencies of encrypted <code>w</code>. Instead, it look more alike to <code>G</code>, which has frequencies (0.0%, 17.6%, 0.0%, 2.1%).</p>
+<p>Anyway, let's guess the character that encrypts to <code>w</code>. Maybe <code>I</code>? It appears the most from the base64-encoded Shakespeare's text. Apparently not. The frequencies of <code>I</code> from the four groups are respectively 23.9%, 0.0%, 1.3% and 0.3%, which is not similar to the frequencies of encrypted <code>w</code>. Instead, it looks more like <code>G</code>, which has frequencies (0.0%, 17.6%, 0.0%, 2.1%).</p>
 
 <p>We then continue to find the best guess that encrypts to <code>Y</code>. It is likely to be <code>b</code>, because the frequencies of the ciphertext <code>Y</code> and the plaintext <code>b</code> are respectively (18.5%, 0.0%, 1.0%, 0.0%) and (13.6%, 0.0%, 0.0%, 0.04%). Repeating the process, we have the plaintext-ciphertext mapping below:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Plaintext:  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 Ciphertext: 4czfHjwa9rl+Xds/1EbFuJioVRnYL0ym86UZ2WDMQPgBKGT5AN3Cqe7OShpvkxIt</code></pre></div>
-<p>&quot;Decrypting&quot; the ciphertext and decode the whole message with base64, we have:</p>
+<p>&quot;Decrypting&quot; the ciphertext and decoding the whole message with base64, we have:</p>
 
 
   <figure class="center" >
@@ -628,7 +628,7 @@ Ciphertext: 4czfHjwa9rl+Xds/1EbFuJioVRnYL0ym86UZ2WDMQPgBKGT5AN3Cqe7OShpvkxIt</co
 
 <h4 id="part-iii-improving-the-heuristic">Part III: Improving the heuristic<a href="#part-iii-improving-the-heuristic" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>Since the article is written in English, it might be safe to assume that the ASCII code for all characters are in $[0, 128)$. The most significant bit for each byte is zero. When encoded in base64, the below bits are zero:</p>
+<p>Since the article is written in English, it might be safe to assume that the ASCII code for all characters is in $[0, 128)$. The most significant bit for each byte is zero. When encoded in base64, the below bits are zero:</p>
 
 <ul>
 <li>the first bit in group 1,</li>
@@ -648,7 +648,7 @@ Ciphertext: 4czfHjwa9rl+Xds/1EbFuJioVRnYL0ym86UZ2WDMQPgBKGT5AN3Cqe7OShpvkxIt</co
 
 <p>What does it mean? We will never see <code>ghijklmnopqrstuvwxyz0123456789+/</code> in group 1. Likewise, <code>IJKLMNOPYZabcdefopqrstuv456789+/</code> and <code>CDGHKLOPSTWXabefijmnqruvyz2367+/</code> will not appear in groups 2 and 3 respectively. To avoid those characters in the respective groups, we can add a <em>huge</em> penalty when those characters are picked.</p>
 
-<p>Previously, we expected that <code>Y</code> decrypts to <code>b</code> as they have similar distributions. However, <code>b</code> will appear in group 3 and thus this is not a good choice. <code>I</code> may be a better corresponding plaintext in this case - the distributions are similar, and we are not penalised by picking it. The below are the new mapping and the plaintext:</p>
+<p>Previously, we expected that <code>Y</code> decrypts to <code>b</code> as they have similar distributions. However, <code>b</code> will appear in group 3 and thus this is not a good choice. <code>I</code> may be a better corresponding plaintext in this case - the distributions are similar, and we are not penalised by picking it. Below are the new mapping and the plaintext:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Plaintext:  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygf6UGZWDMQPuBClqKAX35Te9ONhsv2mkp</code></pre></div>
 
@@ -671,10 +671,10 @@ Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygf6UGZWDMQPuBClqKAX35Te9ONhsv2mkp</co
 
 
 
-<p>When base64 encoded, they are respectively <code>...aGF0IGhz...</code> and <code>...aGF0IGlz...</code>. Let's make <code>W</code> and <code>6</code> decrypt to <code>h</code> and <code>l</code> respectively (they were corresponding to <code>l</code> and <code>h</code>). The article looked a bit better.</p>
+<p>When encoded in base64, they are respectively <code>...aGF0IGhz...</code> and <code>...aGF0IGlz...</code>. Let's make <code>W</code> and <code>6</code> decrypt to <code>h</code> and <code>l</code> respectively (they were corresponding to <code>l</code> and <code>h</code>). The article looked a bit better.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Plaintext:  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygfWUGZ6DMQPuBClqKAX35Te9ONhsv2mkp</code></pre></div>
-<p>We can fix the plaintext-ciphertext mapping by looking at the spelling mistakes. For instance, spaces should appear more frequent.</p>
+<p>We can fix the plaintext-ciphertext mapping by looking at the spelling mistakes. For instance, spaces should appear more frequently.</p>
 
 
   <figure class="center" >
@@ -684,7 +684,7 @@ Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygfWUGZ6DMQPuBClqKAX35Te9ONhsv2mkp</co
 
 
 
-<p>Eventually, it is quite a manual work to recover the final message:</p>
+<p>Eventually, it is quite manual work to recover the final message:</p>
 
 
   <figure class="center" >
@@ -702,13 +702,13 @@ Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygfWUGZ6DMQPuBClqKAX35Te9ONhsv2mkp</co
 <p>Mystiz does not seem to give up using RSA to store his secrets. This time you are even allowed to send arbitrary public exponent, <em>e</em>. Can you unveil the secret flag?</p>
 </blockquote>
 
-<p>When connected to the server, a 2048-bit RSA public exponent $n$ and a 128-character long secret are generated (none of them are given to the players). Players are allowed to send three different $e$ such that $e \neq 1$. The message</p>
+<p>When connected to the server, a 2048-bit RSA public exponent $n$ and a 128-character long secret are generated (none of them is given to the players). Players can send three different $e$ such that $e \neq 1$. The message</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">The secret token is [SECRET] and it is encrypted with e = [E].</code></pre></div>
 <p>is encrypted using RSA with the key $(n, e)$. The goal is to recover the secret.</p>
 
 <h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
-<h4 id="part-i-connection-the-unknowns-by-a-congruence">Part I: Connection the unknowns by a congruence<a href="#part-i-connection-the-unknowns-by-a-congruence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<h4 id="part-i-connection-of-the-unknowns-by-a-congruence">Part I: Connection of the unknowns by a congruence<a href="#part-i-connection-of-the-unknowns-by-a-congruence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <p>Let $m_0$, $m_1$ and $m_2$ be the constant parts of the message, $s$ be the secret and $e_\text{c}$ be the public exponent in ASCII (and $l$ be its length). Then the message would be</p>
 
@@ -754,7 +754,7 @@ c_3 = (\mu_{l_3, e_3} + 256^{l_3 + 31} \cdot {\color{red}s})^{e_3} \ (\text{mod}
 \Longrightarrow \ & c_i - (\mu_{2, e_i} + \frac{1 - \mu_{2, -1} \cdot c_1}{c_1})^{e_i} \equiv 0 \ (\text{mod}\ n)
 \end{aligned}\]</span></p>
 
-<p>Thus we have two multiples of $n$. By taking its GCD, then we can recover $n$... but wait, how can we do division without knowing the modulo? We can do multiplication instead. Now we assume further that $e_2 = -2$ and $e_3 = -3$. For $i = 2, 3$:</p>
+<p>Thus we have two multiples of $n$. By taking its GCD, then we can recover $n$... but wait, how can we divide without the modulus? We can do multiplication instead. Now we assume further that $e_2 = -2$ and $e_3 = -3$. For $i = 2, 3$:</p>
 
 <p><span  class="math">\[\begin{aligned}
 & c_i - (\mu_{2, e_i} + \frac{1 - \mu_{2, -1} \cdot c_1}{c_1})^{e_i} \equiv 0 \ (\text{mod}\ n) \\
@@ -769,7 +769,7 @@ c_3 = (\mu_{l_3, e_3} + 256^{l_3 + 31} \cdot {\color{red}s})^{e_3} \ (\text{mod}
 
 <p>which are both multiples of $n$. We can finally compute the GCD. Since the GCD of the two numbers are not necessarily equal to $n$ (it could be a <em>small</em> multiple of $n$), I attempted to remove small factors from the GCD in the solve script.</p>
 
-<p>It is very unlikely that the <code>n</code> obtained is not equal to actual public modulus. If that's the case, we can simply re-run the script. Eventually we will get the flag: <code>hkcert22{r5a_i5_ju5t_a_6unch_0f_m4th5}</code>.</p>
+<p>It is very unlikely that the <code>n</code> obtained is not equal to the actual public modulus. If that's the case, we can simply re-run the script. Eventually, we will get the flag: <code>hkcert22{r5a_i5_ju5t_a_6unch_0f_m4th5}</code>.</p>
 
 <h3 id="solve-script">Solve script<a href="#solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> math <span style="color:#f92672">import</span> gcd

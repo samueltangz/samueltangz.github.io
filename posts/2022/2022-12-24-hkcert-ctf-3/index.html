@@ -193,7 +193,7 @@
 <p>This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?</p>
 </blockquote>
 
-<p>There is a <code>nc</code> service, and we will be given some numbers upon connecting. We are asked to send something each time the 🥺 emoji appeared. From the description, we will be given the flag after sending correct responses for 100 times.</p>
+<p>There is a <code>nc</code> service, and we will be given some numbers upon connecting. We are asked to send something each time the 🥺 emoji appeared. From the description, we will be given the flag after sending correct responses 100 times.</p>
 
 
 
@@ -313,11 +313,11 @@ x_1 \cdot x_2 \cdot ... \cdot x_m& \equiv p' \quad (\text{mod}\ q)
 \end{cases}\]</span></p>
 
 <div class="alert success">
-  🎯 <strong>Objective.</strong> In this section, we will reduce the challenge from $m &gt; 2$ to $m = 2$, which its solution will be discussed in the next part. For $m = 1$, it is obvious that the system is solvable if and only if $s = p$, with solution being $x_0 = s$.
+  🎯 <strong>Objective.</strong> In this section, we will reduce the challenge from $m &gt; 2$ to $m = 2$, and its solution will be discussed in the next part. For $m = 1$, it is obvious that the system is solvable if and only if $s = p$, with the solution being $x_0 = s$.
 </div>
 
 
-<p>This is actually easy. We can just assume that $x_1 = 1, x_2 = 2, ..., x_{m-2} = m-2$. What is remaining in the equations are:</p>
+<p>This is easy. We can just assume that $x_1 = 1, x_2 = 2, ..., x_{m-2} = m-2$. What is remaining in the equations are:</p>
 
 <p><span  class="math">\[\begin{cases}
 1 + 2 \cdot 2 + ... + (m-2) \cdot (m-2) + (m-1) x_{m-1} + m x_m & \equiv s \quad (\text{mod}\ q) \\
@@ -362,7 +362,7 @@ x_{m-1} \cdot x_m & \equiv p'' \quad (\text{mod}\ q)
 
 <p>With $u = x_m - s \cdot (2m)^{-1}$ and $b = [s \sdot (2m)^{-1}]^2 - (m-1) \cdot m^{-1} \cdot p''$, we have the equation $u^2 \equiv b \ (\text{mod}\ q)$. To find the values of $u$, we can apply the <a href="https://en.wikipedia.org/wiki/Tonelli%E2%80%93Shanks_algorithm">Tonelli-Shanks algorithm</a>. After that, we can compute $x_m$ from $u + s \cdot (2m)^{-1}$ and obtain $x_{m-1}$ easily.</p>
 
-<p>It is not uncommon that either no solutions exists, or $m-2 &lt; x_{m-1} &lt; x_m &lt; q$ does not hold. In these cases, we can use another set of values for $(x_1, x_2, ..., x_{m-3}, x_{m-2})$ such that $x_{m-2}$ is small enough. After that, we can find $x_{m-1}$ and $x_m$ with the above approach and stop when we have $x_{m-2} &lt; x_{m-1} &lt; x_m &lt; q$.</p>
+<p>It is not uncommon that either no solutions exist, or $m-2 &lt; x_{m-1} &lt; x_m &lt; q$ does not hold. In these cases, we can use another set of values for $(x_1, x_2, ..., x_{m-3}, x_{m-2})$ such that $x_{m-2}$ is small enough. After that, we can find $x_{m-1}$ and $x_m$ with the above approach and stop when we have $x_{m-2} &lt; x_{m-1} &lt; x_m &lt; q$.</p>
 
 <p>With that implemented, we can finally pass the 100 rounds. We will eventually get the flag: <code>hkcert22{z3_i5_4n_sw1s5_4rmy_kn1f3_bu7_1t_i5_n0t_alw4y5_f4s7}</code>.</p>
 
@@ -401,7 +401,7 @@ x_{m-1} \cdot x_m & \equiv p'' \quad (\text{mod}\ q)
 
 
 <div class="alert success">
-  <strong>🤩 Where does the inspiration came from?</strong> This challenge is inspired from <a href="https://www.youtube.com/watch?v=gSxcDYCK_lY">&ldquo;They Cracked My Server!&quot;</a> by <em>@LiveOverflow</em> in the <em>Minecraft:HACKED</em> series.
+  <strong>🤩 Where does the inspiration come from?</strong> This challenge is inspired by <a href="https://www.youtube.com/watch?v=gSxcDYCK_lY">&ldquo;They Cracked My Server!&quot;</a> by <em>@LiveOverflow</em> in the <em>Minecraft:HACKED</em> series.
 </div>
 
 
@@ -414,17 +414,17 @@ x_{m-1} \cdot x_m & \equiv p'' \quad (\text{mod}\ q)
 
 <h4 id="part-i-doing-some-osints-with-the-screenshot">Part I: Doing some OSINTs with the screenshot<a href="#part-i-doing-some-osints-with-the-screenshot" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>The most attractive thing of the screenshot is definitely the prefix of the flag. But what else can we retrieve from it?</p>
+<p>The most attractive thing about the screenshot is the prefix of the flag. But what else can we retrieve from it?</p>
 
-<p>Let's talk about Minecraft history. <a href="https://twitter.com/SimplySarc" target="_blank" rel="nofollow">@SimplySarc</a> uploaded <a href="https://www.youtube.com/watch?v=NIs_LU9KH5c">a video</a> in 2012 and showed that the rotation of lily pads is only dependent to its position. Also, snapshot 14w27b (for version 1.8) was released eight years ago. The below is an excerpt of the <a href="https://minecraft.fandom.com/wiki/Java_Edition_14w27b#General">patch notes</a>:</p>
+<p>Let's talk about Minecraft history. <a href="https://twitter.com/SimplySarc" target="_blank" rel="nofollow">@SimplySarc</a> uploaded <a href="https://www.youtube.com/watch?v=NIs_LU9KH5c">a video</a> in 2012 that showed that the rotation of lily pads is only dependent on their position. Also, snapshot 14w27b (for version 1.8) was released eight years ago. Below is an excerpt of the <a href="https://minecraft.fandom.com/wiki/Java_Edition_14w27b#General">patch notes</a>:</p>
 
 <blockquote>
 <p>The block state files now support an array of models allowing for random models. As a result of this, grass blocks, dirt, sand, red sand, stone, netherrack, bedrock, and TNT all have their top texture randomly rotated.</p>
 </blockquote>
 
-<p>When they say &quot;random&quot;, it is actually dependent on the position like the lily pads. With that said, we can collect information from the grass blocks' rotation to find its coordinates. Surprising, right?</p>
+<p>When they say &quot;random&quot;, it is dependent on the position like the lily pads. With that said, we can collect information from the grass blocks' rotation to find its coordinates. Surprising, right?</p>
 
-<p>A legendary GeoGuessr player, <a href="https://twitter.com/georainbolt" target="_blank" rel="nofollow">@georainbolt</a>, once said <a href="https://www.youtube.com/watch?v=iOCR73U8t6E"><em>why touch grass when you can study grass</em></a>. We can actually do the same in the Minecraft world. Now look at a grass block. There are four rotations (rotated 0º, 90º, 180º and 270º).</p>
+<p>A legendary GeoGuessr player, <a href="https://twitter.com/georainbolt" target="_blank" rel="nofollow">@georainbolt</a>, once said <a href="https://www.youtube.com/watch?v=iOCR73U8t6E"><em>why touch grass when you can study grass</em></a>. We can do the same in the Minecraft world. Now, look at a grass block. There are four rotations (rotated 0º, 90º, 180º and 270º).</p>
 
 
   <figure class="center" >
@@ -436,13 +436,13 @@ x_{m-1} \cdot x_m & \equiv p'' \quad (\text{mod}\ q)
 
 
 
-<p>Well, I know this is probably the most difficult part -- labeling. Let's identify the orientations of some grass blocks in the screenshot:</p>
+<p>Well, I know this is probably the most difficult part -- labelling. Let's identify the orientations of some grass blocks in the screenshot:</p>
 
 
   <figure class="center" >
     <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-with-rotations.png"   />
     
-      <figcaption class="right" >The screenshot with some grass blocks labeled with rotations.</figcaption>
+      <figcaption class="right" >The screenshot with some grass blocks labelled with rotations.</figcaption>
     
   </figure>
 
@@ -484,7 +484,7 @@ x_{m-1} \cdot x_m & \equiv p'' \quad (\text{mod}\ q)
     </tr>
 </table>
 
-<p>It is very unlikely (with probability being $1/4^{22}$) for a patch of 22 blocks that has the same rotations. Thus, there should be only one matching coordinates if we scan through every block in $-20000 \leq x, z \leq 20000$ and $0 \leq y \leq 256$. Below is the pseudo-code that we are going to implement:</p>
+<p>It is very unlikely (with the probability being $1/4^{22}$) for a patch of 22 blocks that has the same rotations. Thus, there should be only one matching coordinate if we scan through every block in $-20000 \leq x, z \leq 20000$ and $0 \leq y \leq 256$. Below is the pseudo-code that we are going to implement:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">From above, we know (x0+0, y0+0, z0+0) is pointing rightwards and
                     (x0+0, y0+0, z0+1) is pointing leftwards and ... and
                     (x0+1, y0-2, z0+9) is pointing rightwards
@@ -494,13 +494,13 @@ For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 2
   If (x+0, y+0, z+0) is pointing rightwards and
      (x+0, y+0, z+1) is pointing leftwards and ... and
      (x+1, y-2, z+9) is pointing rightwards, then:
-    (x, y, z) is the coordinates we want!</code></pre></div>
-<p>A final problem is we don't know which direction the player is facing. Luckily, as there are only four possibilities, we can simply exhaust them all. By the way, some players are able to identity the player's orientation, so they can speed up their algorithm (at least) four times faster than our brute-forcing approach!</p>
+    (x, y, z) are the coordinates we want!</code></pre></div>
+<p>A final problem is we don't know which direction the player is facing. Luckily, as there are only four possibilities, we can simply exhaust them all. By the way, some players can identify the player's orientation, so they can speed up their algorithm (at least) four times faster than our brute-forcing approach!</p>
 
 <h4 id="part-ii-reverse-engineering-minecraft">Part II: Reverse engineering Minecraft<a href="#part-ii-reverse-engineering-minecraft" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <div class="alert info">
-  🤔 <strong>Is revese engineering necessary?</strong> No. We are not required to decompile and reverse engineer the source code of Minecraft to study the &ldquo;rotation&rdquo; of the blocks. There is a community of Minecraft working on reverse engineering (mostly on modding) and there are some resources discussing the rotation.
+  🤔 <strong>Is reverse engineering necessary?</strong> No. We are not required to decompile and reverse engineer the source code of Minecraft to study the &ldquo;rotation&rdquo; of the blocks. There is a community of Minecraft working on reverse engineering (mostly on modding) and there are some resources discussing the rotation.
 </div>
 
 
@@ -530,10 +530,10 @@ For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 2
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">nextLong</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">return</span> <span style="color:#f92672">((</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)(</span>next<span style="color:#f92672">(</span>32<span style="color:#f92672">))</span> <span style="color:#f92672">&lt;&lt;</span> 32<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> next<span style="color:#f92672">(</span>32<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span></code></pre></div>
-<h4 id="part-iii-preparing-programm-for-bruteforcing">Part III: Preparing programm for brute-forcing<a href="#part-iii-preparing-programm-for-bruteforcing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<h4 id="part-iii-preparing-a-program-for-bruteforcing">Part III: Preparing a program for brute-forcing<a href="#part-iii-preparing-a-program-for-bruteforcing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
 <div class="alert danger">
-  👊 <strong>Is brute-force the only way to go?</strong> I am not sure. Please share with us if you have a solution without brute-forcing.
+  👊 <strong>Is brute force the only way to go?</strong> I am not sure. Please share with us if you have a solution without brute-forcing.
 </div>
 
 
@@ -566,13 +566,13 @@ For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 2
 	}
 	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">3</span>
 }</code></pre></div>
-<p>Well, I did't compare the running times of the implementations in Golang and Java... They may be similar. I use Golang simply because I rarely code in Java anyway.</p>
+<p>Well, I didn't compare the running times of the implementations in Golang and Java, which may be similar. I use Golang simply because I rarely code in Java anyway.</p>
 
-<p>After that, what is missing is just a routine that exhaust the whole search space, and include the block rotation we found from the screenshot. We can decrase the running time with multithreading, too.</p>
+<p>After that, what is missing is just a routine that exhausts the whole search space, and includes the block rotation we found from the screenshot. We can decrease the running time with multithreading, too.</p>
 
-<p>I implemented my own solution using Golang. With 8 threads and search space being $-20000 \leq x, z \leq 20000$ and $64 \leq y &lt; 100$, it only takes 6 minutes to run.</p>
+<p>I implemented my solution using Golang. With 8 threads and search space being $-20000 \leq x, z \leq 20000$ and $64 \leq y &lt; 100$, it only takes 6 minutes to run.</p>
 
-<p>The coordinates we found is $(16551, 67, 4170)$. We can now ask our intern to teleport nearby for the whole flag: <code>hkcert22{s33d_cr34kin9_1s_r3ver53_4nd_cryp70_com61ned}</code>.</p>
+<p>The coordinates we found are $(16551, 67, 4170)$. We can now ask our intern to teleport nearby for the whole flag: <code>hkcert22{s33d_cr34kin9_1s_r3ver53_4nd_cryp70_com61ned}</code>.</p>
 
 <div class="alert success">
   🛠️ <strong>Alternate tools.</strong> <a href="https://github.com/19MisterX98/TextureRotations">19MisterX98/TextureRotations</a> is a repository (in Java) that does the same thing. You can use the code to recover the coordinates.
@@ -581,7 +581,7 @@ For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 2
 
 <h4 id="part-iv-reducing-the-search-time">Part IV: Reducing the search time<a href="#part-iv-reducing-the-search-time" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 
-<p>There are two notable ways to reduce the search time, provided by the contestants <a href="https://twitter.com/HotDawggyy" target="_blank" rel="nofollow">@HotDawggyy</a> and <em>Gameboy612</em>. We can recover the coordinates in less than ten seconds with either of the two improvements implemented. This is really remarkable!</p>
+<p>There are two notable ways to reduce the search time, provided by the contestants <a href="https://twitter.com/HotDawggyy" target="_blank" rel="nofollow">@HotDawggyy</a> and <em>Gameboy612</em>. We can recover the coordinates in less than ten seconds with either of the two improvements implemented. This is remarkable!</p>
 
 <h5 id="hey-look-at-the-clouds">Hey, look at the clouds!<a href="#hey-look-at-the-clouds" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
 
@@ -599,7 +599,7 @@ For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 2
 
 <h5 id="look-at-the-water-too">Look at the water, too!<a href="#look-at-the-water-too" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
 
-<p>On the other hand, <em>Gameboy612</em> reduced the search space by determining the sea level. If we assume that the pool of water is at the sea level (i.e., $y = 62$), we can just fix the $y$-coordinate to one single value. This reduces the search space by 97.2%.</p>
+<p>On the other hand, <em>Gameboy612</em> reduced the search space by determining the sea level. If we assume that the pool of water is at sea level (i.e., $y = 62$), we can just fix the $y$-coordinate to one single value. This reduces the search space by 97.2%.</p>
 
 
   <figure class="center" >
@@ -611,7 +611,7 @@ For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 2
 
 
 
-<p>Finally, it is impressing that <em>Gameboy612</em> is a secondary school student and their team got the first blood 🩸 of this challenge. Congratulations!</p>
+<p>Finally, it is impressive that <em>Gameboy612</em> is a secondary school student and their team got the first blood 🩸 of this challenge. Congratulations!</p>
 
       </div></div>
 
