@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://mystiz.hk/tags/life/</loc>
+    <lastmod>2022-12-31T19:50:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/</loc>
+    <lastmod>2022-12-31T19:50:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2022-12-31T19:50:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/retrospective/</loc>
+    <lastmod>2022-12-31T19:50:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2022/2022-12-31-retrospective/</loc>
+    <lastmod>2022-12-31T19:50:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2022-12-31T19:50:00+08:00</lastmod>
+  </url><url>
     <loc>https://mystiz.hk/tags/challenge-writing/</loc>
     <lastmod>2022-12-24T16:46:02+08:00</lastmod>
   </url><url>
@@ -17,16 +35,7 @@
     <loc>https://mystiz.hk/tags/minecraft/</loc>
     <lastmod>2022-12-24T16:46:02+08:00</lastmod>
   </url><url>
-    <loc>https://mystiz.hk/</loc>
-    <lastmod>2022-12-24T16:46:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/posts/</loc>
-    <lastmod>2022-12-24T16:46:02+08:00</lastmod>
-  </url><url>
     <loc>https://mystiz.hk/tags/reverse/</loc>
-    <lastmod>2022-12-24T16:46:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
     <lastmod>2022-12-24T16:46:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/crypto/</loc>

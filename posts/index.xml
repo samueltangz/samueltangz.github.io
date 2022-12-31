@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 24 Dec 2022 16:46:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 31 Dec 2022 19:50:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Retrospective 2022</title>
+      <link>https://mystiz.hk/posts/2022/2022-12-31-retrospective/</link>
+      <pubDate>Sat, 31 Dec 2022 19:50:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2022/2022-12-31-retrospective/</guid>
+      <description>💭 Is this technical? No. If you are looking for CTF writeups, this is not what you are interested. Instead, this is just me talking on my 2022.  2022 is a life-changer for me. There were some tough decisions and a few surprises.
+Leaving Hong Kong   The #1 difference for me is I moved from Hong Kong 🇭🇰 to Taiwan 🇹🇼. The most obvious reason is to commence my new career at Google, which I think was an opportunity as well.</description>
+    </item>
+    
     <item>
       <title>HKCERT CTF 2022 Postmortem (III): The Remaining Challenges</title>
       <link>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/</link>
