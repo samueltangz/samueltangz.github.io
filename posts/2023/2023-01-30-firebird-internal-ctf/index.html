@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Firebird Internal CTF 2023 Writeup :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Like in 2021 and 2022, I contributed some challenges for Firebird&amp;rsquo;s internal CTF, which are from the Hong Kong University of Science and Technology. This time I wrote three crypto challenges: Randomsum, Shelter and Threerider.
+There were 24 teams participating. There were three solves for Randomsum, while Shelter and Threerider were unsolved during the CTF.
+Randomsum Challenge Summary  I am leaking random bits of the RSA factors. Who doesn&amp;rsquo;t like leaks?" />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://mystiz.hk/" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Firebird Internal CTF 2023 Writeup">
+<meta property="og:description" content="Like in 2021 and 2022, I contributed some challenges for Firebird’s internal CTF, which are from the Hong Kong University of Science and Technology. This time I wrote three crypto challenges: Randomsum, Shelter and Threerider.
+
+There were 24 teams participating. There were three solves for Randomsum, while Shelter and Threerider were unsolved during the CTF." />
+<meta property="og:url" content="https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="https://mystiz.hk/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2023-01-30 03:40:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/">Firebird Internal CTF 2023 Writeup</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2023-01-30 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/firebird-training/">firebird-training</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>Like in 2021 and 2022, I contributed some challenges for Firebird&rsquo;s internal CTF, which are from <a href="https://hkust.edu.hk/">the Hong Kong University of Science and Technology</a>. This time I wrote three crypto challenges: <em>Randomsum</em>, <em>Shelter</em> and <em>Threerider</em>.</p>
+<p>There were 24 teams participating. There were three solves for <em>Randomsum</em>, while <em>Shelter</em> and <em>Threerider</em> were unsolved during the CTF.</p>
+<h2 id="randomsum">Randomsum<a href="#randomsum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I am leaking random bits of the RSA factors. Who doesn&rsquo;t like leaks?</p>
+</blockquote>
+<p>We are given a 2048-bit RSA modulus $n$, a public exponent $e = 65537$ and an encrypted flag $c$. We are also given $t$, which consists of 2048 bits (1318 distinct bits) from the factors, $p$ and $q$. The objective is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> Crypto.PublicKey <span style="color:#f92672">import</span> RSA
+<span style="color:#f92672">import</span> random
+
+random<span style="color:#f92672">.</span>seed(<span style="color:#ae81ff">1337</span>)
+
+key <span style="color:#f92672">=</span> RSA<span style="color:#f92672">.</span>generate(<span style="color:#ae81ff">2048</span>)
+
+t <span style="color:#f92672">=</span> [(key<span style="color:#f92672">.</span>p<span style="color:#f92672">&gt;&gt;</span>random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">10</span>))<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">else</span> (key<span style="color:#f92672">.</span>q<span style="color:#f92672">&gt;&gt;</span>random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">10</span>))<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2048</span>)]
+t <span style="color:#f92672">=</span> sum(t[i]<span style="color:#f92672">&lt;&lt;</span>i <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2048</span>))
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;flag.txt&#39;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    m <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(f<span style="color:#f92672">.</span>read(), <span style="color:#e6db74">&#39;big&#39;</span>)
+
+n, e <span style="color:#f92672">=</span> key<span style="color:#f92672">.</span>n, key<span style="color:#f92672">.</span>e
+c <span style="color:#f92672">=</span> pow(m, e, n)
+
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>n <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>e <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>t <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>c <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+
+<span style="color:#75715e"># n = 23972924803656725645946104612288180239254366533835447570211958435888835149024704127730216635918366064642338427956144263722073485986182242950506562077115261972266819566896991605805331175926336936623727858956342095970617971414648408199255433214266089182676417304576439449775708611349397255997892478936263800821533938404508818638694040349742659681140030800595271768949111564030020912493782604042297523251856213731597666043107228963973074577037344345426025975807448211052650699923918471883180836394144595630503970610793789138051476548955355193194759840128264687246565426588680843522246453634852078525991710060236523993541</span>
+<span style="color:#75715e"># e = 65537</span>
+<span style="color:#75715e"># t = 14000066433047292246448752794201977165563733655047203575867121262166187560566711892325594792129845153282249633931642143973215540568376319171334159461972160877466256238242152503653373908684017280676080125004854850332445723153614845802146395899581463896936557611606222767193353523987995818833578861773617167644193038121558267674251210114195760011821306729346761634659759967871454608623374306270379642305886119902085577927092579512468263725679201030921437666386689058685094677660425920780030296995254804923997961573399239884517270135267952236745232513979074599714453057660939074051865674834210296195715452442772175320306</span>
+<span style="color:#75715e"># c = 6629119219609628910262885521069144816410786299451464969111007624958603576922839074850618464009859754669933262329186876226112761547177882680972685257697161919090897947135355903504454390331332951864051787079151186147963687429869735814443602986151345233136170388603746969296411646714158233418888611277576374237710204734229716394950713361265013458346462648487382316305877942127752214474859094795859454295294490880154326380500685914654596927550241665243599892940472157748432105831205326132442653659482947911799058715375236555903827420335782334212566356002880715361572706447898027515949713485430213701388248011598192532689</span>
+</code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since we are given $t$ (i.e., 1318 distinct bits of $p$ and $q$), we can immediately apply from section 4.3.1<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> to factorize $n$. In short, $p$ and $q$ can be obtained with branch-and-prune algorithm by checking $n\ \text{mod}\ 2$, $n\ \text{mod}\ 2^2$ and so on.</p>
+<h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> random
+<span style="color:#f92672">import</span> sys
+
+MASKS <span style="color:#f92672">=</span> [(<span style="color:#ae81ff">2</span><span style="color:#f92672">&lt;&lt;</span>i)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1024</span>)]
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">guess</span>(n, _ps, _qs, p0<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, q0<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, bits<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>):
+    n0 <span style="color:#f92672">=</span> p0 <span style="color:#f92672">*</span> q0
+    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">==</span> n0: <span style="color:#66d9ef">return</span> p0
+    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> n0: <span style="color:#66d9ef">return</span>
+
+    <span style="color:#66d9ef">for</span> pb <span style="color:#f92672">in</span> _ps[bits]:
+        p1 <span style="color:#f92672">=</span> p0 <span style="color:#f92672">|</span> (pb<span style="color:#f92672">&lt;&lt;</span>bits)
+        <span style="color:#66d9ef">for</span> qb <span style="color:#f92672">in</span> _qs[bits]:
+            q1 <span style="color:#f92672">=</span> q0 <span style="color:#f92672">|</span> (qb<span style="color:#f92672">&lt;&lt;</span>bits)
+            <span style="color:#66d9ef">if</span> p1<span style="color:#f92672">*</span>q1 <span style="color:#f92672">&amp;</span> MASKS[bits] <span style="color:#f92672">!=</span> n <span style="color:#f92672">&amp;</span> MASKS[bits]: <span style="color:#66d9ef">continue</span>
+            res <span style="color:#f92672">=</span> guess(n, _ps, _qs, p1, q1, bits<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+            <span style="color:#66d9ef">if</span> res <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>: <span style="color:#66d9ef">return</span> res
+
+sys<span style="color:#f92672">.</span>setrecursionlimit(<span style="color:#ae81ff">10000</span>)
+n <span style="color:#f92672">=</span> <span style="color:#ae81ff">23972924803656725645946104612288180239254366533835447570211958435888835149024704127730216635918366064642338427956144263722073485986182242950506562077115261972266819566896991605805331175926336936623727858956342095970617971414648408199255433214266089182676417304576439449775708611349397255997892478936263800821533938404508818638694040349742659681140030800595271768949111564030020912493782604042297523251856213731597666043107228963973074577037344345426025975807448211052650699923918471883180836394144595630503970610793789138051476548955355193194759840128264687246565426588680843522246453634852078525991710060236523993541</span>
+e <span style="color:#f92672">=</span> <span style="color:#ae81ff">65537</span>
+t <span style="color:#f92672">=</span> <span style="color:#ae81ff">14000066433047292246448752794201977165563733655047203575867121262166187560566711892325594792129845153282249633931642143973215540568376319171334159461972160877466256238242152503653373908684017280676080125004854850332445723153614845802146395899581463896936557611606222767193353523987995818833578861773617167644193038121558267674251210114195760011821306729346761634659759967871454608623374306270379642305886119902085577927092579512468263725679201030921437666386689058685094677660425920780030296995254804923997961573399239884517270135267952236745232513979074599714453057660939074051865674834210296195715452442772175320306</span>
+c <span style="color:#f92672">=</span> <span style="color:#ae81ff">6629119219609628910262885521069144816410786299451464969111007624958603576922839074850618464009859754669933262329186876226112761547177882680972685257697161919090897947135355903504454390331332951864051787079151186147963687429869735814443602986151345233136170388603746969296411646714158233418888611277576374237710204734229716394950713361265013458346462648487382316305877942127752214474859094795859454295294490880154326380500685914654596927550241665243599892940472157748432105831205326132442653659482947911799058715375236555903827420335782334212566356002880715361572706447898027515949713485430213701388248011598192532689</span>
+
+<span style="color:#75715e"># Known bits</span>
+random<span style="color:#f92672">.</span>seed(<span style="color:#ae81ff">1337</span>)
+bs <span style="color:#f92672">=</span> [(<span style="color:#ae81ff">0</span>, random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">10</span>)) <span style="color:#66d9ef">if</span> random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">else</span> (<span style="color:#ae81ff">1</span>, random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">10</span>)) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2048</span>)]
+
+_ps <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1024</span>)]
+_qs <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1024</span>)]
+
+<span style="color:#66d9ef">for</span> i, (id, b) <span style="color:#f92672">in</span> enumerate(bs):
+    v <span style="color:#f92672">=</span> (t<span style="color:#f92672">&gt;&gt;</span>i) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">if</span> id <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">assert</span> _ps[b] <span style="color:#f92672">in</span> [[v], [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>]]
+        _ps[b] <span style="color:#f92672">=</span> [v]
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">assert</span> _qs[b] <span style="color:#f92672">in</span> [[v], [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>]]
+        _qs[b] <span style="color:#f92672">=</span> [v]
+
+p <span style="color:#f92672">=</span> guess(n, _ps, _qs)
+<span style="color:#66d9ef">assert</span> n <span style="color:#f92672">%</span> p <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
+q <span style="color:#f92672">=</span> n <span style="color:#f92672">//</span> p
+
+phi_n <span style="color:#f92672">=</span> (p<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> (q<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+d <span style="color:#f92672">=</span> pow(e, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, phi_n)
+
+m <span style="color:#f92672">=</span> pow(c, d, n)
+flag <span style="color:#f92672">=</span> int(m)<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">2048</span><span style="color:#f92672">//</span><span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#39;big&#39;</span>)<span style="color:#f92672">.</span>lstrip(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>flag <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+</code></pre></div><h2 id="shelter">Shelter<a href="#shelter" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I hope my account is intact under the hackers' attack!</p>
+</blockquote>
+<p>We are given an authentication service which allows us to</p>
+<ol>
+<li><strong>[register]</strong> create a new user with a given username and password,</li>
+<li><strong>[sign in]</strong> sign in to a user with a set of credentials by returning a token,</li>
+<li><strong>[auth]</strong> retrieve the username from the token.</li>
+</ol>
+<p>Remarkably, the token is a ciphertext of <code>username=[USERMAME]&amp;password=[PASSWORD]</code>, using AES-CBC with a fixed key and a random IV. It is notable that the <em>auth</em> endpoint is vulnerable to the padding oracle attack.</p>
+<p>On the other hand, we are also given a hacker&rsquo;s exploit which attempts to steal the username and password from a given token. The goal is to create a valid token such that the hacker is unable to retrieve its credentials with the <code>crack</code> function.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Hacker</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, srv):
+        <span style="color:#75715e"># The function to check if the padding is correct</span>
+        self<span style="color:#f92672">.</span>srv <span style="color:#f92672">=</span> srv
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__oracle</span>(self, token):
+        <span style="color:#66d9ef">try</span>:
+            self<span style="color:#f92672">.</span>srv<span style="color:#f92672">.</span>authenticate(token<span style="color:#f92672">.</span>hex())
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> err:
+            <span style="color:#66d9ef">return</span> str(err) <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> [
+                <span style="color:#e6db74">&#39;Padding is incorrect.&#39;</span>,
+                <span style="color:#e6db74">&#39;PKCS#7 padding is incorrect.&#39;</span>
+            ]
+
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__recover_block</span>(self, ciphertext_block):
+        iv <span style="color:#f92672">=</span> bytearray(<span style="color:#ae81ff">16</span>)
+
+        <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+                iv[<span style="color:#ae81ff">15</span><span style="color:#f92672">-</span>k] <span style="color:#f92672">=</span> i
+                crafted_iv <span style="color:#f92672">=</span> xor(iv, bytes([k<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>)]))
+                <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>__oracle(crafted_iv <span style="color:#f92672">+</span> ciphertext_block): <span style="color:#66d9ef">break</span>
+        <span style="color:#66d9ef">return</span> iv
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__recover</span>(self, ciphertext):
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join([
+            xor(ciphertext[i<span style="color:#f92672">-</span><span style="color:#ae81ff">16</span>:i],
+                self<span style="color:#f92672">.</span>__recover_block(ciphertext[i:i<span style="color:#f92672">+</span><span style="color:#ae81ff">16</span>]))
+            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>, len(ciphertext), <span style="color:#ae81ff">16</span>)
+        ])
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">crack</span>(self, token):
+        token <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(token)
+        m <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>__recover(token)
+        m <span style="color:#f92672">=</span> unpad(m, <span style="color:#ae81ff">16</span>)
+        m <span style="color:#f92672">=</span> parse_qs(m<span style="color:#f92672">.</span>decode())
+
+        username, <span style="color:#f92672">=</span> m<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;username&#39;</span>)
+        password, <span style="color:#f92672">=</span> m<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;password&#39;</span>)
+
+        <span style="color:#66d9ef">return</span> username, password
+</code></pre></div><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-padding-oracle-and-its-attacks">The padding oracle and its attacks<a href="#the-padding-oracle-and-its-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Suppose that we are given a function $\mathcal{O}$ that tells us whether a ciphertext $c$ has a valid PKCS#7 padding, i.e.,</p>
+<p>$$\mathcal{O}(c) = \begin{cases}
+\color{green}{\checkmark} &amp; \text{if}\ c\ \text{has a valid padding} \\
+\color{red}{✗} &amp; \text{otherwise}
+\end{cases}.$$</p>
+<p>There are a lot of instances vulnerable to the padding oracle attack. It affected multiple frameworks like <em>Ruby on Rails</em><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>, <em>ASP.NET</em> and so on.</p>
+<p>Let&rsquo;s get to the details of the padding oracle attack, which happens in the cipher block chaining (CBC) mod of operation. If we let $m_1$, $c_0$ and $c_1$ being respectively a plaintext block, an IV and a ciphertext block, then the below relation holds:</p>
+<p>$$m_1 = c_0 \oplus \text{Decrypt}_k(c_1).$$</p>
+<p>The general idea for the padding oracle attack is to change $c_0$ (while keeping $c_1$ fixed). We can recover $\text{Decrypt}_k(c_1)$ by checking whether $m_1$ has a valid padding. For example, we want to recover the below ciphertext:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">000102030405060708090a0b0c0d0e0f 1d53a4e415b0893fc386fbea776b7198
+</code></pre></div><p>Assuming that the ciphertext decrypts to <code>68656c6c6f20776f726c642104040404</code>. Passing the ciphertext to $\mathcal{O}$ would return $\color{green}{\checkmark}$ because it has a valid padding (the message ends with four <code>04</code>s).</p>
+<p>Of course, as the hacker we do not have the access to the plaintext. We have to use $\mathcal{O}$ to recover the plaintext byte-by-byte. Let&rsquo;s follow the algorithm given from <code>__recover_block</code> and see how $\mathcal{O}$ recovers the plaintext. To begin, it sets</p>
+<p>$$\begin{aligned}
+&amp; c_0 = \texttt{01010101010101010101010101010101} \quad \text{and} \\
+&amp; c_1 = \texttt{1d53a4e415b0893fc386fbea776b7198}.
+\end{aligned}$$</p>
+<p>The ciphertext decrypts to <code>69656f6e6a2470697b646f2b09080b0a</code>, and it does <em>not</em> have a valid padding, i.e., $\mathcal{O}(c_0 \ || \ c_1) = \color{red}{✗}$. We then send $\mathcal{O}(c_0' \ || \ c_1)$, where</p>
+<p>$$\begin{aligned}
+c_0' &amp;= \texttt{00000000000000000000000000000001} \oplus \texttt{01010101010101010101010101010101} \\
+&amp;= \texttt{01010101010101010101010101010100}.
+\end{aligned}$$</p>
+<p>The corresponding plaintext is now <code>69656f6e6a2470697b646f2b09080b0b</code>, which also implies that $\mathcal{O}(c_0' \ || \ c_1) = \color{red}{✗}$.</p>
+
+  <figure class="center" >
+    <img src="/images/2023-01-29-firebird/shelter-oracle-1.png"   />
+    
+      <figcaption class="right" >The 256 attempts to recover the last byte of $m_1$.</figcaption>
+    
+  </figure>
+
+
+<p>Eventually, we will send $\mathcal{O}(c_0'' \ || \ c_1)$ with</p>
+<p>$$\begin{aligned}
+c_0'' &amp;= \texttt{0000000000000000000000000000000b} \oplus \texttt{01010101010101010101010101010101} \\
+&amp;= \texttt{0101010101010101010101010101010a}.
+\end{aligned}$$</p>
+<p>The plaintext is now <code>69656f6e6a2470697b646f2b09080b01</code> and it has a valid PKCS#7 padding, i.e., $\mathcal{O}(c_0'' \ || \ c_1) = \color{green}{\checkmark}$. Knowing this as a valid plaintext, we immediately know that the last byte of the plaintext (denoted by $m_1''$) is a <code>01</code>. Therefore, we know that the last byte of $\text{Decrypt}_k(c_1)$ is $\texttt{0a} \oplus \texttt{01} = \texttt{0b}$, using the relation</p>
+<p>$$\begin{aligned}
+&amp; m_1'' = c_0'' \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \texttt{{\color{gray}[15 bytes]}01} = \texttt{{\color{gray}[15 bytes]}0a} \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \text{Decrypt}_k(c_1) = \texttt{{\color{gray}[15 bytes]}01} \oplus \texttt{{\color{gray}[15 bytes]}0a} = \texttt{{\color{gray}[15 bytes]}0b}.
+\end{aligned}$$</p>
+<p>Subsequently, we can recover the second last byte. Define $c_0^{(3)}$ by</p>
+<p>$$\begin{aligned}
+c_0^{(3)} &amp;= \texttt{0000000000000000000000000000000b} \oplus \texttt{02020202020202020202020202020202} \\
+&amp;= \texttt{02020202020202020202020202020209}.
+\end{aligned}$$</p>
+<p>The plaintext for $c_0^{(3)} \ || \ c_1$ is <code>6a666c6d6927736a78676c280a0b0802</code>, thus $\mathcal{O}(c_0^{(3)} \ || \ c_1) = \color{red}{✗}$. We can keep increasing the counter for the second-last byte. Eventually, the counter will be increased to $\texttt{11}$&hellip; and this is its corresponding $c_0^{(4)}$:</p>
+<p>$$\begin{aligned}
+c_0^{(4)} &amp;= \texttt{00000000000000000000000000000a0b} \oplus \texttt{02020202020202020202020202020202} \\
+&amp;= \texttt{02020202020202020202020202020809}.
+\end{aligned}$$</p>
+<p>The plaintext for $c_0^{(4)} \ || \ c_1$ is <code>6a666c6d6927736a78676c280a0b0202</code>, thus $\mathcal{O}(c_0^{(4)} \ || \ c_1) = \color{green}{\checkmark}$. Thus the last two bytes of $\text{Decrypt}_k(c_1)$ is $\texttt{0a0b}$, since</p>
+<p>$$\begin{aligned}
+&amp; m_1^{(4)} = c_0^{(4)} \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \texttt{{\color{gray}[14 bytes]}0202} = \texttt{{\color{gray}[14 bytes]}0a0b} \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \text{Decrypt}_k(c_1) = \texttt{{\color{gray}[14 bytes]}0202} \oplus \texttt{{\color{gray}[14 bytes]}0809} = \texttt{{\color{gray}[14 bytes]}0a0b}.
+\end{aligned}$$</p>
+
+  <figure class="center" >
+    <img src="/images/2023-01-29-firebird/shelter-oracle-2.png"   />
+    
+      <figcaption class="right" >The 256 attempts to recover the second last byte of $m_1$.</figcaption>
+    
+  </figure>
+
+
+<p>We can repeat the process to recover $\text{Decrypt}_k(c_1)$. With that, we can easily obtain $m_1$ by the identity we mentioned at the very beginning:</p>
+<p>$$m_1 = c_0 \oplus \text{Decrypt}_k(c_1).$$</p>
+<p>By the way, since we will be getting the error message from the <em>auth</em> endpoint, it could tell us if the padding is correct. With that said, this endpoint has a padding oracle and thus cannot escape from the padding oracle vulnerability.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">&gt; auth 204094b9bec1ea6b9473d345130699d2de1c31278bda8b9f4695bc8fac7116735f78bb7509cd5add82abcdca9bf7989d 
+🖥️ The token is correct for foo!
+&gt; auth 204094b9bec1ea6b9473d345130699d2de1c31278bda8b9f4695bc8fac7116735f78bb7509cd5add82abcdca9bf7989e 
+🖥️ Invalid token: Padding is incorrect..
+</code></pre></div><h4 id="a-corner-case">A corner case<a href="#a-corner-case" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I was not entirely correct in the previous section. When recovering the last byte, the trailing byte may not be <code>01</code> for the padding to be PKCS#7-compliant. Instead, it could end with <code>0202</code> (or <code>030303</code>, <code>04040404</code>, &hellip;).</p>
+<p>For instance, let&rsquo;s look at the case $m_1 = \texttt{{\color{gray}[14 bytes]}0201}$ and $c_0 = \texttt{{\color{gray}[14 bytes]}017a}$. The below are the 256 oracle calls that recovers the last byte of $m_1$. Note that $c_1$ below is kept constant in the attempts.</p>
+
+  <figure class="center" >
+    <img src="/images/2023-01-29-firebird/shelter-corner-case.png"   />
+    
+      <figcaption class="right" >The 256 attempts to recover the last byte of $m_1$.</figcaption>
+    
+  </figure>
+
+
+<p>We can see that attempts #122 and #123 has a valid padding, i.e.,</p>
+<p>$$\mathcal{O}(\texttt{{\color{gray}[14 bytes]}017b{\color{gray}[16 bytes]}}) = \mathcal{O}(\texttt{{\color{gray}[14 bytes]}017a{\color{gray}[16 bytes]}}) = \color{green}{\checkmark}.$$</p>
+<p>However, the function stops at the first successful attempt, it assumed that the ciphertext $\texttt{{\color{gray}[14 bytes]}017b{\color{gray}[16 bytes]}}$ would decrypt to $\texttt{{\color{gray}[15 bytes]}01}$, which is wrong. Thus it fails to recover the correct $m_1$.</p>
+<p>There are some message-ciphertext pairs that the hacker&rsquo;s script fails to handle, and one of them being $m_1 = \texttt{{\color{gray}[14 bytes]}0201}$ and $c_1 = \texttt{{\color{gray}[14 bytes]}01}c^*$ with $c^* \oplus 3 &lt; c^*$.</p>
+<h4 id="applying-to-the-challenge">Applying to the challenge<a href="#applying-to-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I used the username <code>foo</code> and password <code>xxxxxxxx[02]</code> (<code>[02]</code> is the byte with ASCII value 2). In that way, the plaintext would be <code>username=foo&amp;password=xxxxxxxx\x02</code>, which is 31 bytes long and a <code>[01]</code> will be appended as a padding due to PKCS#7. We can generate ciphertexts repeatedly using the <code>signin</code> command until the ciphertext ends with <code>0102</code>, <code>0103</code>, <code>0106</code>, &hellip;, <code>01fe</code>, <code>01ff</code> (all of them satisfy $c^* \oplus 3 &lt; c^*$).</p>
+<h4 id="how-do-we-fix-the-attack-script">How do we fix the attack script?<a href="#how-do-we-fix-the-attack-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To handle the corner case, we need to check the plaintext so that it does not end with <code>0202</code>, <code>030303</code> and so on. We will change the second last byte of $c_0$ to a different value. In that way, the second last byte of $m_1$ will be changed as well. If $m_1$ is still PKCS#7-compliant, then that means that $m_1$ ends with a <code>01</code>. In the below figure, attempts #123+ and #124+ are the additional checks imposed.</p>
+
+  <figure class="center" >
+    <img src="/images/2023-01-29-firebird/shelter-corner-case-fix.png"   />
+    
+      <figcaption class="right" >Fixing the corner case.</figcaption>
+    
+  </figure>
+
+
+<h3 id="solution-script-1">Solution script<a href="#solution-script-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;carbon-chal.firebird.sh&#39;</span>, <span style="color:#ae81ff">36013</span>)
+
+r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;register foo xxxxxxxx</span><span style="color:#ae81ff">\x02</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#75715e"># username=foo&amp;password=xxxxxxxx\x02</span>
+
+tokens <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">while</span> len(tokens) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+    <span style="color:#75715e"># Create 1024 tokens at once to save time</span>
+    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1024</span>):
+        r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;signin foo xxxxxxxx</span><span style="color:#ae81ff">\x02</span><span style="color:#e6db74">&#39;</span>)
+
+    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1024</span>):
+        r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Signed in as foo with token &#39;</span>)
+        token <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;.&#39;</span>)[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>decode())
+        
+        <span style="color:#66d9ef">if</span> token[<span style="color:#ae81ff">30</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">continue</span>
+        <span style="color:#66d9ef">if</span> token[<span style="color:#ae81ff">31</span>]<span style="color:#f92672">^</span><span style="color:#ae81ff">0x1</span><span style="color:#f92672">^</span><span style="color:#ae81ff">0x2</span> <span style="color:#f92672">&gt;</span> token[<span style="color:#ae81ff">31</span>]: <span style="color:#66d9ef">continue</span>
+        tokens<span style="color:#f92672">.</span>append(token<span style="color:#f92672">.</span>hex())
+
+token <span style="color:#f92672">=</span> tokens[<span style="color:#ae81ff">0</span>]
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>token <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;hack </span><span style="color:#e6db74">{</span>token<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode())
+r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;WHY? &#39;</span>)
+
+r<span style="color:#f92672">.</span>interactive()
+</code></pre></div><h2 id="threerider">Threerider<a href="#threerider" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert danger">
+  🤯 Who could ever expect that I am plagiarizing the same challenge twice?
+</div>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>The deadline for writing challenges is coming again!</p>
+<p>Mystiz, who claimed himself <a href="https://mystiz.hk/posts/2021-03-28-hkcert-ctf/#interesting-flag-submissions-osint-master">not well-known reusing challenges</a>, decided to free-ride and plagarize challenges from HKCERT CTF 2020. Uh, I mean, <a href="https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-2/#freerider--tenet-the-plagarism-crypto">HKCERT CTF 2021</a>. Maybe you can reuse the solve script last year for the flag.</p>
+<p>Ciphertext:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">f84bf7049cb55a0e1457d977e6cfbc0cc49ee1102da505e10aa3c32e619180446617ae2270cba3629b0851ae627236f19bb9cbfcadcd010eb923d170cbc2a7
+</code></pre></div></blockquote>
+<p>Suppose that the flag matches the regular expression <code>firebird\{\w{53}\}</code>. We define an encryption algorithm, $\mathcal{E}$, with a 16-byte key $k_1k_2&hellip;k_{16}$. Let $m$ be the message we would like to encrypt (all of the counters are set to zero):</p>
+<ol>
+<li>Encrypt $m$ with AES-CTR using the key <code>k1 00 00 00 ... 00</code> ($k_1$ followed by 15 null bytes) and denote it by $t_1$.</li>
+<li>Encrypt $t_1$ with AES-CTR using the key <code>k2 00 00 00 ... 00</code> and denote it by $t_2$.</li>
+<li>&hellip;</li>
+<li>Encrypt $t_{15}$ with AES-CTR using the key <code>k16 00 00 00 ... 00</code> and denote it by $t_{16}$.</li>
+<li>Return $t_{16}$ as the ciphertext.</li>
+</ol>
+<p>$\mathcal{E}$ is used to encrypt the flag and we are given its ciphertext. The objective is to recover the flag. Notably, the challenge is highly referenced from <a href="https://github.com/hkcert-ctf/CTF-Challenges/blob/main/CTF-2020/1.%20%20Cryptography/5.%20Tenet/Challenge/enc.py">Tenet</a> and <a href="https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-2/#freerider--tenet-the-plagarism-crypto">Tenet: The plagarism</a> in HKCERT CTF 2020 and 2021 respectively.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>FreeRider vs Threerider.</strong> We only know 133 bits of information. If we use the intended solution for FreeRider, there are at least $2^{123}$ possible solutions and it is obviously infeasible to find the correct one in time.
+</div>
+
+<p>We can borrow the idea from <em>FreeRider</em>. To get started, we can build a $133 \times 256$ matrix $A$ and a $133 \times 1$ matrix $b$, with entries being 0 or 1:</p>
+<p>$$
+A = \left[\begin{matrix}
+b_{0, j_1} &amp; b_{1, j_1} &amp; b_{2, j_1} &amp; &hellip; &amp; b_{255, j_1} \\
+b_{0, j_2} &amp; b_{1, j_2} &amp; b_{2, j_2} &amp; &hellip; &amp; b_{255, j_2} \\
+&amp;&amp; \vdots \\
+b_{0, j_{133}} &amp; b_{1, j_{133}} &amp; b_{2, j_{133}} &amp; &hellip; &amp; b_{255, j_{133}} \\
+\end{matrix}\right],
+b = \left[\begin{matrix}
+m_{j_1} + c_{j_1} \\
+m_{j_2} + c_{j_2} \\
+\vdots \\
+m_{j_{133}} + c_{j_{133}}
+\end{matrix}\right]
+$$</p>
+<p>Similar to <em>FreeRider</em>, there is a $256 \times 1$ matrix $x$ such that $A \cdot x = b\ (\text{mod}\ 2)$. In particular, if $x = (x_0, x_1, &hellip;, x_{255})$ then $x_j = 1$ if and only if the byte $j$ occurs in the key for an odd number of times.</p>
+<p>For example, if the key is <code>00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0e</code>, then</p>
+<p>$$\begin{cases}
+x_j = 1 &amp; \text{if}\ j = 0, 1, &hellip;, 13 \\
+x_j = 0 &amp; \text{otherwise}
+\end{cases}.$$</p>
+<p>It is remarkable that there are at most sixteen from $x_0, x_1, &hellip;, x_{255}$ such that $x_j = 1$. For simplicity, let&rsquo;s assume that there are exactly sixteen $x_j$&rsquo;s such that $x_j = 1$. In that case, if we pick $m$ entries $x_{j_1}, x_{j_2}, &hellip;, x_{j_m}$ randomly, then the probability of $x_{j_1} = x_{j_2} = &hellip; = x_{j_m} = 0$ would be</p>
+<p>$$\frac{240}{256} \cdot \frac{239}{255} \cdot &hellip; \cdot \frac{240-k+1}{256-k+1}.$$</p>
+<p>Since we have 133 equations and 256 unknowns, we will just randomly pick 123 $x_j$&rsquo;s and assumed that to be zero. From above, the probability for them to actually be zero is around 1 in 56000.</p>
+<p>Eventually, we can just repeatedly assume some of the unknowns to be zero and solve the equations. If there are less than 16 non-zero $x_j$&rsquo;s, then that is very likely to be the vector we are looking for.</p>
+<h3 id="solution-script-2">Solution script<a href="#solution-script-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> random
+<span style="color:#f92672">import</span> re
+<span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
+<span style="color:#f92672">from</span> Crypto.Util <span style="color:#f92672">import</span> Counter
+<span style="color:#f92672">from</span> operator <span style="color:#f92672">import</span> mul
+<span style="color:#f92672">from</span> functools <span style="color:#f92672">import</span> reduce
+
+<span style="color:#75715e">#                      f i r e b i r d {                                                                                                           }</span>
+known <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;ffffffffffffffffff8080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080ff&#39;</span>)
+m <span style="color:#f92672">=</span>     bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;66697265626972647b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007d&#39;</span>)
+c <span style="color:#f92672">=</span>     bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;f84bf7049cb55a0e1457d977e6cfbc0cc49ee1102da505e10aa3c32e619180446617ae2270cba3629b0851ae627236f19bb9cbfcadcd010eb923d170cbc2a7&#39;</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">xor</span>(a, b):
+    <span style="color:#66d9ef">return</span> bytes([u<span style="color:#f92672">^^</span>v <span style="color:#66d9ef">for</span> u, v <span style="color:#f92672">in</span> zip(a, b)])
+
+keystreams <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+    cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(bytes([k]) <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">15</span>, AES<span style="color:#f92672">.</span>MODE_CTR, counter<span style="color:#f92672">=</span>Counter<span style="color:#f92672">.</span>new(<span style="color:#ae81ff">128</span>, initial_value<span style="color:#f92672">=</span>int(<span style="color:#ae81ff">0</span>)))
+    keystreams<span style="color:#f92672">.</span>append(
+        cipher<span style="color:#f92672">.</span>encrypt(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>len(c))
+    )
+
+A <span style="color:#f92672">=</span> []
+b <span style="color:#f92672">=</span> []
+
+<span style="color:#75715e"># The number of entries I guessed that they are zeroes</span>
+<span style="color:#75715e"># Suggested: sampled_zeroes + number_of_equations &gt;= 256 (or add some more to avoid less false positives...)</span>
+
+number_of_equations <span style="color:#f92672">=</span> bin(int<span style="color:#f92672">.</span>from_bytes(known, <span style="color:#e6db74">&#39;big&#39;</span>))<span style="color:#f92672">.</span>count(<span style="color:#e6db74">&#39;1&#39;</span>)
+sampled_zeroes <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span> <span style="color:#f92672">-</span> number_of_equations
+<span style="color:#66d9ef">assert</span> sampled_zeroes <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">256</span><span style="color:#f92672">-</span><span style="color:#ae81ff">16</span>
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>sampled_zeroes <span style="color:#f92672">+</span> number_of_equations <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+
+<span style="color:#66d9ef">for</span> i, (rc, mc, cc) <span style="color:#f92672">in</span> enumerate(zip(known, m, c)):
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+        <span style="color:#66d9ef">if</span> (rc<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">continue</span>
+        mb <span style="color:#f92672">=</span> (mc<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>
+        cb <span style="color:#f92672">=</span> (cc<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>
+
+        row <span style="color:#f92672">=</span> [(k[i]<span style="color:#f92672">&gt;&gt;</span>j) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> keystreams]
+
+        A<span style="color:#f92672">.</span>append(row)
+        b<span style="color:#f92672">.</span>append(mb<span style="color:#f92672">^^</span>cb)
+
+F <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">2</span>)
+A <span style="color:#f92672">=</span> Matrix(F, A)
+b <span style="color:#f92672">=</span> vector(F, b)
+
+hit_frequency <span style="color:#f92672">=</span> reduce(mul, [(<span style="color:#ae81ff">256</span><span style="color:#f92672">-</span><span style="color:#ae81ff">16</span><span style="color:#f92672">-</span>k)<span style="color:#f92672">/</span>(<span style="color:#ae81ff">256</span><span style="color:#f92672">-</span>k) <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(sampled_zeroes)])
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>number_of_equations <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>sampled_zeroes <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Expecting a hit every </span><span style="color:#e6db74">{</span>int(<span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>hit_frequency)<span style="color:#e6db74">}</span><span style="color:#e6db74"> times&#39;</span>)
+
+attempt <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+    attempt <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+
+    <span style="color:#75715e"># The 128 entries &#34;I&#34; guessed it is non-zero</span>
+    v <span style="color:#f92672">=</span> sorted(random<span style="color:#f92672">.</span>sample(range(<span style="color:#ae81ff">256</span>), k<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span><span style="color:#f92672">-</span>sampled_zeroes))
+    
+    _A <span style="color:#f92672">=</span> A[:, v]
+    <span style="color:#66d9ef">try</span>:
+        x0 <span style="color:#f92672">=</span> _A<span style="color:#f92672">.</span>solve_right(b)
+        <span style="color:#66d9ef">for</span> dx <span style="color:#f92672">in</span> _A<span style="color:#f92672">.</span>right_kernel():
+            flag <span style="color:#f92672">=</span> c
+            set_bits_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span><span style="color:#f92672">-</span>sampled_zeroes):
+                <span style="color:#66d9ef">if</span> x0[i] <span style="color:#f92672">==</span> dx[i]: <span style="color:#66d9ef">continue</span>
+                set_bits_count <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+                flag <span style="color:#f92672">=</span> xor(flag, keystreams[v[i]])
+
+            flag <span style="color:#f92672">=</span> flag<span style="color:#f92672">.</span>decode()
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> re<span style="color:#f92672">.</span>match(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;firebird\{\w+\}&#39;</span>, flag): <span style="color:#66d9ef">continue</span>
+            <span style="color:#66d9ef">if</span> set_bits_count <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">16</span>: <span style="color:#66d9ef">continue</span>
+
+            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[*] Flag recovered at attempt #</span><span style="color:#e6db74">{</span>attempt<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>flag<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+            <span style="color:#66d9ef">assert</span> <span style="color:#66d9ef">False</span>, <span style="color:#e6db74">&#39;done!&#39;</span>
+
+    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyboardInterrupt</span>:
+        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">KeyboardInterrupt</span>
+    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">AssertionError</span> <span style="color:#66d9ef">as</span> err:
+        <span style="color:#66d9ef">raise</span> err
+    <span style="color:#66d9ef">except</span>:
+        <span style="color:#66d9ef">pass</span>
+</code></pre></div><section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>Gabrielle de Micheli, Nadia Heninger (2020) &ldquo;Recovering cryptographic keys from partial information, by example&rdquo;<br>
+<a href="https://hal.science/hal-03045663/document">https://hal.science/hal-03045663/document</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>Juliano Rizzo, Thai Duong (2010) &ldquo;Practical Padding Oracle Attacks&rdquo;<br>
+<a href="https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf">https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2022/2022-12-31-retrospective/">
+                <span class="button__text">Retrospective 2022</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Firebird Internal CTF 2023 Writeup
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2023 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-180181192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-180181192-1');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -6,7 +6,18 @@
     <description>Recent content in Posts on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 31 Dec 2022 19:50:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Jan 2023 03:40:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Firebird Internal CTF 2023 Writeup</title>
+      <link>https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/</link>
+      <pubDate>Mon, 30 Jan 2023 03:40:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/</guid>
+      <description>Like in 2021 and 2022, I contributed some challenges for Firebird&amp;rsquo;s internal CTF, which are from the Hong Kong University of Science and Technology. This time I wrote three crypto challenges: Randomsum, Shelter and Threerider.
+There were 24 teams participating. There were three solves for Randomsum, while Shelter and Threerider were unsolved during the CTF.
+Randomsum Challenge Summary  I am leaking random bits of the RSA factors. Who doesn&amp;rsquo;t like leaks?</description>
+    </item>
+    
     <item>
       <title>Retrospective 2022</title>
       <link>https://mystiz.hk/posts/2022/2022-12-31-retrospective/</link>
