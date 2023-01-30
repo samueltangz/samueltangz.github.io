@@ -34,7 +34,7 @@ Randomsum Challenge Summary  I am leaking random bits of the RSA factors. Who do
 
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://mystiz.hk/" />
+<meta name="twitter:image" content="https://mystiz.hk/images/2023-01-30-firebird/thumbnail.png" />
 
 
   
@@ -53,7 +53,7 @@ There were 24 teams participating. There were three solves for Randomsum, while 
 <meta property="og:url" content="https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/" />
 <meta property="og:site_name" content="Mystify" />
 
-  <meta property="og:image" content="https://mystiz.hk/">
+  <meta property="og:image" content="https://mystiz.hk/images/2023-01-30-firebird/thumbnail.png">
 
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1024">
@@ -178,6 +178,8 @@ There were 24 teams participating. There were three solves for Randomsum, while 
 
   
 
+  
+    <img src="https://mystiz.hk/images/2023-01-30-firebird/thumbnail.png" class="post-cover center" alt="Firebird Internal CTF 2023 Writeup" />
   
 
   <div class="post-content js-toc-content"><div>
@@ -353,7 +355,7 @@ c_0' &amp;= \texttt{00000000000000000000000000000001} \oplus \texttt{01010101010
 <p>The corresponding plaintext is <code>69656f6e6a2470697b646f2b09080b0b</code>, which also imply that $\mathcal{O}(c_0' \ || \ c_1) = \color{red}{✗}$. The below figure shows the results of the 256 possible attempts:</p>
 
   <figure class="center" >
-    <img src="/images/2023-01-29-firebird/shelter-oracle-1.png"   />
+    <img src="/images/2023-01-30-firebird/shelter-oracle-1.png"   />
     
       <figcaption class="right" >The 256 attempts to recover the last byte of $m_1$.</figcaption>
     
@@ -389,7 +391,7 @@ c_0^{(4)} &amp;= \texttt{00000000000000000000000000000a0b} \oplus \texttt{020202
 \end{aligned}$$</p>
 
   <figure class="center" >
-    <img src="/images/2023-01-29-firebird/shelter-oracle-2.png"   />
+    <img src="/images/2023-01-30-firebird/shelter-oracle-2.png"   />
     
       <figcaption class="right" >The 256 attempts to recover the second last byte of $m_1$.</figcaption>
     
@@ -408,7 +410,7 @@ c_0^{(4)} &amp;= \texttt{00000000000000000000000000000a0b} \oplus \texttt{020202
 <p>For instance, let&rsquo;s look at the case $m_1 = \texttt{{\color{gray}[14 bytes]}0201}$ and $c_0 = \texttt{{\color{gray}[14 bytes]}017a}$. The below are the 256 oracle calls that recovers the last byte of $m_1$. Note that $c_1$ below is kept constant in the attempts.</p>
 
   <figure class="center" >
-    <img src="/images/2023-01-29-firebird/shelter-corner-case.png"   />
+    <img src="/images/2023-01-30-firebird/shelter-corner-case.png"   />
     
       <figcaption class="right" >The 256 attempts to recover the last byte of $m_1$.</figcaption>
     
@@ -426,7 +428,7 @@ c_0^{(4)} &amp;= \texttt{00000000000000000000000000000a0b} \oplus \texttt{020202
 <p>To handle the corner case, we need to check the plaintext so that it does not end with <code>0202</code>, <code>030303</code> and so on. We will change the second last byte of $c_0$ to a different value. In that way, the second last byte of $m_1$ will be changed as well. If $m_1$ is still PKCS#7-compliant, then that means that $m_1$ ends with a <code>01</code>. In the below figure, attempts #123+ and #124+ are the additional checks imposed.</p>
 
   <figure class="center" >
-    <img src="/images/2023-01-29-firebird/shelter-corner-case-fix.png"   />
+    <img src="/images/2023-01-30-firebird/shelter-corner-case-fix.png"   />
     
       <figcaption class="right" >Fixing the corner case.</figcaption>
     
