@@ -219,6 +219,10 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</spa
 <span style="color:#75715e"># c = 6629119219609628910262885521069144816410786299451464969111007624958603576922839074850618464009859754669933262329186876226112761547177882680972685257697161919090897947135355903504454390331332951864051787079151186147963687429869735814443602986151345233136170388603746969296411646714158233418888611277576374237710204734229716394950713361265013458346462648487382316305877942127752214474859094795859454295294490880154326380500685914654596927550241665243599892940472157748432105831205326132442653659482947911799058715375236555903827420335782334212566356002880715361572706447898027515949713485430213701388248011598192532689</span>
 </code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Since we are given $t$ (i.e., 1318 distinct bits of $p$ and $q$), we can immediately apply from section 4.3.1<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> to factorize $n$. In short, $p$ and $q$ can be obtained with branch-and-prune algorithm by checking $n\ \text{mod}\ 2$, $n\ \text{mod}\ 2^2$ and so on.</p>
+<div class="alert info">
+  🙋 <strong>Alternate solutions.</strong> <em>Mushroom1</em> used z3 to recover $p$ and $q$. I am surprised that the challenge can be solved with z3.
+</div>
+
 <h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> random
 <span style="color:#f92672">import</span> sys
