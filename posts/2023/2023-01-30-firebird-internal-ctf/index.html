@@ -235,7 +235,7 @@ MASKS <span style="color:#f92672">=</span> [(<span style="color:#ae81ff">2</span
             res <span style="color:#f92672">=</span> guess(n, _ps, _qs, p1, q1, bits<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
             <span style="color:#66d9ef">if</span> res <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>: <span style="color:#66d9ef">return</span> res
 
-sys<span style="color:#f92672">.</span>setrecursionlimit(<span style="color:#ae81ff">10000</span>)
+sys<span style="color:#f92672">.</span>setrecursionlimit(<span style="color:#ae81ff">1027</span>)
 n <span style="color:#f92672">=</span> <span style="color:#ae81ff">23972924803656725645946104612288180239254366533835447570211958435888835149024704127730216635918366064642338427956144263722073485986182242950506562077115261972266819566896991605805331175926336936623727858956342095970617971414648408199255433214266089182676417304576439449775708611349397255997892478936263800821533938404508818638694040349742659681140030800595271768949111564030020912493782604042297523251856213731597666043107228963973074577037344345426025975807448211052650699923918471883180836394144595630503970610793789138051476548955355193194759840128264687246565426588680843522246453634852078525991710060236523993541</span>
 e <span style="color:#f92672">=</span> <span style="color:#ae81ff">65537</span>
 t <span style="color:#f92672">=</span> <span style="color:#ae81ff">14000066433047292246448752794201977165563733655047203575867121262166187560566711892325594792129845153282249633931642143973215540568376319171334159461972160877466256238242152503653373908684017280676080125004854850332445723153614845802146395899581463896936557611606222767193353523987995818833578861773617167644193038121558267674251210114195760011821306729346761634659759967871454608623374306270379642305886119902085577927092579512468263725679201030921437666386689058685094677660425920780030296995254804923997961573399239884517270135267952236745232513979074599714453057660939074051865674834210296195715452442772175320306</span>
@@ -331,9 +331,9 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</spa
 \color{red}{✗} &amp; \text{otherwise}
 \end{cases}.$$</p>
 <p>There are a lot of instances vulnerable to the padding oracle attack. It affected multiple frameworks like <em>Ruby on Rails</em><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>, <em>ASP.NET</em> and so on.</p>
-<p>Let&rsquo;s get to the details of the padding oracle attack, which happens in the cipher block chaining (CBC) mod of operation. If we let $m_1$, $c_0$ and $c_1$ being respectively a plaintext block, an IV and a ciphertext block, then the below relation holds:</p>
+<p>Let&rsquo;s get to the details of the padding oracle attack, which happens in the cipher block chaining (CBC) mod of operation. If we let $m_1$, $c_0$ and $c_1$ being respectively a plaintext, an IV and a ciphertext (all of them are 16-byte long), then the below relation holds:</p>
 <p>$$m_1 = c_0 \oplus \text{Decrypt}_k(c_1).$$</p>
-<p>The general idea for the padding oracle attack is to change $c_0$ (while keeping $c_1$ fixed). We can recover $\text{Decrypt}_k(c_1)$ by checking whether $m_1$ has a valid padding. For example, we want to recover the below ciphertext:</p>
+<p>The general idea for the padding oracle attack is to change $c_0$ and keep $c_1$ fixed. We can recover $\text{Decrypt}_k(c_1)$ by checking whether $m_1$ has a valid padding. For example, we want to recover the below ciphertext:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">000102030405060708090a0b0c0d0e0f 1d53a4e415b0893fc386fbea776b7198
 </code></pre></div><p>Assuming that the ciphertext decrypts to <code>68656c6c6f20776f726c642104040404</code>. Passing the ciphertext to $\mathcal{O}$ would return $\color{green}{\checkmark}$ because it has a valid padding (the message ends with four <code>04</code>s).</p>
 <p>Of course, as the hacker we do not have the access to the plaintext. We have to use $\mathcal{O}$ to recover the plaintext byte-by-byte. Let&rsquo;s follow the algorithm given from <code>__recover_block</code> and see how $\mathcal{O}$ recovers the plaintext. To begin, it sets</p>
@@ -341,12 +341,16 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</spa
 &amp; c_0 = \texttt{01010101010101010101010101010101} \quad \text{and} \\
 &amp; c_1 = \texttt{1d53a4e415b0893fc386fbea776b7198}.
 \end{aligned}$$</p>
+<div class="alert info">
+  🤔 <strong>Why $\texttt{0101&hellip;0101}$?</strong> I think it is more elegant to define $c_0$ with $\hat{c_0}$ and the padding. $\hat{c_0}$ is a counter and it would eventually be $\text{Decrypt}_k(c_1)$, and is initially defined to be $\texttt{0000&hellip;0000}$. On the other hand, when we are recovering the last character of $\text{Decrypt}_k(c_1)$, we make the padding to be $\texttt{0101&hellip;0101}$ (which will be changed to $\texttt{0202&hellip;0202}$, $\texttt{0303&hellip;0303}$ when we try to recover the second last character onwards)&hellip; In short, the code to recover $\text{Decrypt}_k(c_1)$ (thus $m_1$) will look prettier.
+</div>
+
 <p>The ciphertext decrypts to <code>69656f6e6a2470697b646f2b09080b0a</code>, and it does <em>not</em> have a valid padding, i.e., $\mathcal{O}(c_0 \ || \ c_1) = \color{red}{✗}$. We then send $\mathcal{O}(c_0' \ || \ c_1)$, where</p>
 <p>$$\begin{aligned}
 c_0' &amp;= \texttt{00000000000000000000000000000001} \oplus \texttt{01010101010101010101010101010101} \\
 &amp;= \texttt{01010101010101010101010101010100}.
 \end{aligned}$$</p>
-<p>The corresponding plaintext is now <code>69656f6e6a2470697b646f2b09080b0b</code>, which also implies that $\mathcal{O}(c_0' \ || \ c_1) = \color{red}{✗}$.</p>
+<p>The corresponding plaintext is <code>69656f6e6a2470697b646f2b09080b0b</code>, which also imply that $\mathcal{O}(c_0' \ || \ c_1) = \color{red}{✗}$. The below figure shows the results of the 256 possible attempts:</p>
 
   <figure class="center" >
     <img src="/images/2023-01-29-firebird/shelter-oracle-1.png"   />
@@ -372,7 +376,7 @@ c_0'' &amp;= \texttt{0000000000000000000000000000000b} \oplus \texttt{0101010101
 c_0^{(3)} &amp;= \texttt{0000000000000000000000000000000b} \oplus \texttt{02020202020202020202020202020202} \\
 &amp;= \texttt{02020202020202020202020202020209}.
 \end{aligned}$$</p>
-<p>The plaintext for $c_0^{(3)} \ || \ c_1$ is <code>6a666c6d6927736a78676c280a0b0802</code>, thus $\mathcal{O}(c_0^{(3)} \ || \ c_1) = \color{red}{✗}$. We can keep increasing the counter for the second-last byte. Eventually, the counter will be increased to $\texttt{11}$&hellip; and this is its corresponding $c_0^{(4)}$:</p>
+<p>The plaintext for $c_0^{(3)} \ || \ c_1$ is <code>6a666c6d6927736a78676c280a0b0802</code>, thus $\mathcal{O}(c_0^{(3)} \ || \ c_1) = \color{red}{✗}$. We can keep increasing the counter for the second-last byte. Eventually, the counter will be increased to $\texttt{0a}$&hellip; and this is its corresponding $c_0^{(4)}$:</p>
 <p>$$\begin{aligned}
 c_0^{(4)} &amp;= \texttt{00000000000000000000000000000a0b} \oplus \texttt{02020202020202020202020202020202} \\
 &amp;= \texttt{02020202020202020202020202020809}.
@@ -411,12 +415,13 @@ c_0^{(4)} &amp;= \texttt{00000000000000000000000000000a0b} \oplus \texttt{020202
   </figure>
 
 
-<p>We can see that attempts #122 and #123 has a valid padding, i.e.,</p>
+<p>We can see that attempts #123 and #124 have valid paddings, i.e.,</p>
 <p>$$\mathcal{O}(\texttt{{\color{gray}[14 bytes]}017b{\color{gray}[16 bytes]}}) = \mathcal{O}(\texttt{{\color{gray}[14 bytes]}017a{\color{gray}[16 bytes]}}) = \color{green}{\checkmark}.$$</p>
 <p>However, the function stops at the first successful attempt, it assumed that the ciphertext $\texttt{{\color{gray}[14 bytes]}017b{\color{gray}[16 bytes]}}$ would decrypt to $\texttt{{\color{gray}[15 bytes]}01}$, which is wrong. Thus it fails to recover the correct $m_1$.</p>
-<p>There are some message-ciphertext pairs that the hacker&rsquo;s script fails to handle, and one of them being $m_1 = \texttt{{\color{gray}[14 bytes]}0201}$ and $c_1 = \texttt{{\color{gray}[14 bytes]}01}c^*$ with $c^* \oplus 3 &lt; c^*$.</p>
+<p>Notably, there are some message-ciphertext pairs that the hacker fails to handle, and one of them being $m_1 = \texttt{{\color{gray}[14 bytes]}0201}$ and $c_1 = \texttt{{\color{gray}[14 bytes]}01}c^*$ with $(c^* \oplus 3) &lt; c^*$.</p>
 <h4 id="applying-to-the-challenge">Applying to the challenge<a href="#applying-to-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <p>I used the username <code>foo</code> and password <code>xxxxxxxx[02]</code> (<code>[02]</code> is the byte with ASCII value 2). In that way, the plaintext would be <code>username=foo&amp;password=xxxxxxxx\x02</code>, which is 31 bytes long and a <code>[01]</code> will be appended as a padding due to PKCS#7. We can generate ciphertexts repeatedly using the <code>signin</code> command until the ciphertext ends with <code>0102</code>, <code>0103</code>, <code>0106</code>, &hellip;, <code>01fe</code>, <code>01ff</code> (all of them satisfy $c^* \oplus 3 &lt; c^*$).</p>
+<p>There are, in average, one out of 512 tokens that the hacker fails to decrypt.</p>
 <h4 id="how-do-we-fix-the-attack-script">How do we fix the attack script?<a href="#how-do-we-fix-the-attack-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <p>To handle the corner case, we need to check the plaintext so that it does not end with <code>0202</code>, <code>030303</code> and so on. We will change the second last byte of $c_0$ to a different value. In that way, the second last byte of $m_1$ will be changed as well. If $m_1$ is still PKCS#7-compliant, then that means that $m_1$ ends with a <code>01</code>. In the below figure, attempts #123+ and #124+ are the additional checks imposed.</p>
 
