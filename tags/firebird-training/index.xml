@@ -15,7 +15,7 @@
       <guid>https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/</guid>
       <description>Like in 2021 and 2022, I contributed some challenges for Firebird&amp;rsquo;s internal CTF, which are from the Hong Kong University of Science and Technology. This time I wrote three crypto challenges: Randomsum, Shelter and Threerider.
 There were 24 teams participating. There were three solves for Randomsum, while Shelter and Threerider were unsolved during the CTF.
-Randomsum Challenge Summary  I am leaking random bits of the RSA factors. Who doesn&amp;rsquo;t like leaks?</description>
+🎉 Thank you! Kudos to @LifeIsHard for reading the write-up and giving me comments (including those erratas) so that I could improve the blog post!</description>
     </item>
     
     <item>

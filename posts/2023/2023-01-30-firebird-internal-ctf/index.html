@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Like in 2021 and 2022, I contributed some challenges for Firebird&amp;rsquo;s internal CTF, which are from the Hong Kong University of Science and Technology. This time I wrote three crypto challenges: Randomsum, Shelter and Threerider.
 There were 24 teams participating. There were three solves for Randomsum, while Shelter and Threerider were unsolved during the CTF.
-Randomsum Challenge Summary  I am leaking random bits of the RSA factors. Who doesn&amp;rsquo;t like leaks?" />
+🎉 Thank you! Kudos to @LifeIsHard for reading the write-up and giving me comments (including those erratas) so that I could improve the blog post!" />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/" />
@@ -185,6 +185,10 @@ There were 24 teams participating. There were three solves for Randomsum, while 
   <div class="post-content js-toc-content"><div>
         <p>Like in 2021 and 2022, I contributed some challenges for Firebird&rsquo;s internal CTF, which are from <a href="https://hkust.edu.hk/">the Hong Kong University of Science and Technology</a>. This time I wrote three crypto challenges: <em>Randomsum</em>, <em>Shelter</em> and <em>Threerider</em>.</p>
 <p>There were 24 teams participating. There were three solves for <em>Randomsum</em>, while <em>Shelter</em> and <em>Threerider</em> were unsolved during the CTF.</p>
+<div class="alert success">
+  🎉 <strong>Thank you!</strong> Kudos to <em>@LifeIsHard</em> for reading the write-up and giving me comments (including those erratas) so that I could improve the blog post!
+</div>
+
 <h2 id="randomsum">Randomsum<a href="#randomsum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
@@ -519,9 +523,13 @@ x_j = 1 &amp; \text{if}\ j = 0, 1, &hellip;, 13 \\
 x_j = 0 &amp; \text{otherwise}
 \end{cases}.$$</p>
 <p>It is remarkable that there are at most sixteen from $x_0, x_1, &hellip;, x_{255}$ such that $x_j = 1$. For simplicity, let&rsquo;s assume that there are exactly sixteen $x_j$&rsquo;s such that $x_j = 1$. In that case, if we pick $m$ entries $x_{j_1}, x_{j_2}, &hellip;, x_{j_m}$ randomly, then the probability of $x_{j_1} = x_{j_2} = &hellip; = x_{j_m} = 0$ would be</p>
-<p>$$\frac{240}{256} \cdot \frac{239}{255} \cdot &hellip; \cdot \frac{240-k+1}{256-k+1}.$$</p>
+<p>$$\frac{240}{256} \cdot \frac{239}{255} \cdot &hellip; \cdot \frac{240-m+1}{256-m+1}.$$</p>
 <p>Since we have 133 equations and 256 unknowns, we will just randomly pick 123 $x_j$&rsquo;s and assumed that to be zero. From above, the probability for them to actually be zero is around 1 in 56000.</p>
-<p>Eventually, we can just repeatedly assume some of the unknowns to be zero and solve the equations. If there are less than 16 non-zero $x_j$&rsquo;s, then that is very likely to be the vector we are looking for.</p>
+<p>Eventually, we can just repeatedly assume some of the unknowns to be zero and solve the equations. If there are less than or equal to 16 non-zero $x_j$&rsquo;s, then that is very likely to be the vector we are looking for.</p>
+<div class="alert warning">
+  🤨 <strong>Why?</strong> We assume that those incorrect $x$&rsquo;s such that $A \cdot x = b$ is sampled randomly. Since there are 113 equations, then it is expected that there are 57 1&rsquo;s ($113/2 \approx 57$). It is really rare that there are only 16 1&rsquo;s.
+</div>
+
 <h3 id="solution-script-2">Solution script<a href="#solution-script-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> random
 <span style="color:#f92672">import</span> re
