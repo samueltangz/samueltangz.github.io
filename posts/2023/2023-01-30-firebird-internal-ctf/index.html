@@ -527,7 +527,7 @@ x_j = 0 &amp; \text{otherwise}
 <p>Since we have 133 equations and 256 unknowns, we will just randomly pick 123 $x_j$&rsquo;s and assumed that to be zero. From above, the probability for them to actually be zero is around 1 in 56000.</p>
 <p>Eventually, we can just repeatedly assume some of the unknowns to be zero and solve the equations. If there are less than or equal to 16 non-zero $x_j$&rsquo;s, then that is very likely to be the vector we are looking for.</p>
 <div class="alert warning">
-  🤨 <strong>Why?</strong> We assume that those incorrect $x$&rsquo;s such that $A \cdot x = b$ is sampled randomly. Since there are 113 equations, then it is expected that there are 57 1&rsquo;s ($113/2 \approx 57$). It is really rare that there are only 16 1&rsquo;s.
+  🤨 <strong>Why?</strong> We assume that those incorrect $x$&rsquo;s such that $A \cdot x = b$ is sampled randomly. Since there are 123 equations, then it is expected that there are 62 1&rsquo;s ($123/2 \approx 62$). It is really rare that there are only 16 1&rsquo;s.
 </div>
 
 <h3 id="solution-script-2">Solution script<a href="#solution-script-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
