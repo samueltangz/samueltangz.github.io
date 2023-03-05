@@ -6,7 +6,18 @@
     <description>Recent content in mocsctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Feb 2022 17:50:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/mocsctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Mar 2023 00:45:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/mocsctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MOCSCTF 2023 Postmortem</title>
+      <link>https://mystiz.hk/posts/2023/2023-03-06-mocsctf/</link>
+      <pubDate>Mon, 06 Mar 2023 00:45:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2023/2023-03-06-mocsctf/</guid>
+      <description>I prepared three challenges on behalf of @blackb6a for MOCSCTF, which is a 8-hour long CTF happened yesterday. This blogpost serves as the write-up for the three challenges that I wrote.
+There are two solves (out of 40 participants) for Three-pass, and zero solves for jav-asr-ipt and Catch-22 Mini.
+Three-pass Challenge Summary  Shamir is a famous cryptographer. He invented the three-pass protocol, so I don&amp;rsquo;t see it is unsafe.</description>
+    </item>
+    
     <item>
       <title>MOCSCTF 2022 Postmortem</title>
       <link>https://mystiz.hk/posts/2022/2022-02-19-mocsctf/</link>
