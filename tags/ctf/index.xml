@@ -14,7 +14,7 @@
       
       <guid>https://mystiz.hk/posts/2023/2023-03-12-idekctf/</guid>
       <description>idekCTF 2022* definitely has a fun and inspiring set of cryptography challenges. I played with @blackb6a and we solved 8 of the 10 crypto challenges.
-In this post, I&amp;rsquo;ll include my solution on Primonumerophobia (10 solves), Formal Security Poop (6 solves), Chronophobia (5 solves) and Decidophobia (3 solves).
+In this blog post, I&amp;rsquo;ll include my solution on three of them: Primonumerophobia (10 solves), Chronophobia (5 solves) and Decidophobia (3 solves).
 Primonumerophobia Challenge Summary Let $T = \{0, 4, 6, 10, 16, 18, 24, 28, 30, 34, 36, 40, 42, 44, 45\}$. An initial state $(t_0, t_1, &amp;hellip;, t_{46})$ with $t_0, t_1, &amp;hellip;, t_{46} \in \{0, 1\}$ is generated and define</description>
     </item>
     
