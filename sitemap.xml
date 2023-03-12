@@ -2,10 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
-    <lastmod>2023-03-06T00:45:00+08:00</lastmod>
+    <loc>https://mystiz.hk/tags/crypto/</loc>
+    <lastmod>2023-03-12T21:07:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/ctf/</loc>
+    <lastmod>2023-03-12T21:07:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/idekctf/</loc>
+    <lastmod>2023-03-12T21:07:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2023/2023-03-12-idekctf/</loc>
+    <lastmod>2023-03-12T21:07:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/</loc>
+    <lastmod>2023-03-12T21:07:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2023-03-12T21:07:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2023-03-12T21:07:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
     <lastmod>2023-03-06T00:45:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/mocsctf/</loc>
@@ -13,18 +31,6 @@
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-03-06-mocsctf/</loc>
     <lastmod>2023-03-06T00:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/</loc>
-    <lastmod>2023-03-06T00:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/posts/</loc>
-    <lastmod>2023-03-06T00:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
-    <lastmod>2023-03-06T00:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/crypto/</loc>
-    <lastmod>2023-01-30T16:40:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/</loc>
     <lastmod>2023-01-30T16:40:00+08:00</lastmod>

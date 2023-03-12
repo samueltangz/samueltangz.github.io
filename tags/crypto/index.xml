@@ -6,7 +6,18 @@
     <description>Recent content in crypto on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Jan 2023 16:40:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Mar 2023 21:07:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>idekCTF 2022* Writeup</title>
+      <link>https://mystiz.hk/posts/2023/2023-03-12-idekctf/</link>
+      <pubDate>Sun, 12 Mar 2023 21:07:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2023/2023-03-12-idekctf/</guid>
+      <description>idekCTF 2022* definitely has a fun and inspiring set of cryptography challenges. I played with @blackb6a and we solved 8 of the 10 crypto challenges.
+In this post, I&amp;rsquo;ll include my solution on Primonumerophobia (10 solves), Formal Security Poop (6 solves), Chronophobia (5 solves) and Decidophobia (3 solves).
+Primonumerophobia Challenge Summary Let $T = \{0, 4, 6, 10, 16, 18, 24, 28, 30, 34, 36, 40, 42, 44, 45\}$. An initial state $(t_0, t_1, &amp;hellip;, t_{46})$ with $t_0, t_1, &amp;hellip;, t_{46} \in \{0, 1\}$ is generated and define</description>
+    </item>
+    
     <item>
       <title>Firebird Internal CTF 2023 Writeup</title>
       <link>https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/</link>
