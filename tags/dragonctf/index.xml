@@ -23,9 +23,9 @@ Warmup edition only. If you are interested to learn the harder edition that invo
       <pubDate>Mon, 23 Nov 2020 04:33:50 +0800</pubDate>
       
       <guid>https://mystiz.hk/posts/2020/2020-11-23-dragonctf/</guid>
-      <description>Written from the perspective of Mystiz. babykok writeup by GeoffreyY.  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
+      <description>Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
 There are three challenges writeup in this post:
- Bit Flip (parts 2 and 3) Frying in motion babykok  Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>
+ Bit Flip (parts 2 and 3) Frying in motion  Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>
     </item>
     
   </channel>

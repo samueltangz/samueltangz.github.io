@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Mar 2023 21:07:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 Mar 2023 00:50:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ACSC 2023 Quals (I): Gotion and easySSTI</title>
+      <link>https://mystiz.hk/posts/2023/2023-03-29-acsc-1/</link>
+      <pubDate>Wed, 29 Mar 2023 00:50:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2023/2023-03-29-acsc-1/</guid>
+      <description>Asian Cyber Security Challenge (ACSC) is an annual CTF where players are competing individually, and the best young Asians will be selected form a team to represent Asia to compete with others. I ended up winning the competition among 450+ players. Unfortunately, I am unable to qualify because of the age and nationality conditions.
+In this blog post, I will cover two web challenges, @t0nk42&amp;rsquo;s easySSTI (43 solves) and @tyage&amp;rsquo;s Gotion (9 solves).</description>
+    </item>
+    
     <item>
       <title>idekCTF 2022* Writeup</title>
       <link>https://mystiz.hk/posts/2023/2023-03-12-idekctf/</link>
@@ -515,9 +525,9 @@ Seriously. I knew nothing on hyperelliptic curves prior to the CTF.</description
       <pubDate>Mon, 23 Nov 2020 04:33:50 +0800</pubDate>
       
       <guid>https://mystiz.hk/posts/2020/2020-11-23-dragonctf/</guid>
-      <description>Written from the perspective of Mystiz. babykok writeup by GeoffreyY.  Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
+      <description>Dragon CTF 2020 is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with @blackb6a. I have solved all the crypto challenges and two challenges with my teammates.
 There are three challenges writeup in this post:
- Bit Flip (parts 2 and 3) Frying in motion babykok  Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>
+ Bit Flip (parts 2 and 3) Frying in motion  Bit Flip (Crypto, 155+324+343 points) Challenge Summary At the beginning, a 128-bit alice_secret (denoted as $a$) is generated.</description>
     </item>
     
     <item>
