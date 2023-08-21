@@ -6,11 +6,29 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 26 Jun 2023 07:45:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Aug 2023 09:45:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>b6actf</title>
+      <link>https://mystiz.hk/tags/b6actf/</link>
+      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/b6actf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>challenge-writing</title>
+      <link>https://mystiz.hk/tags/challenge-writing/</link>
+      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/challenge-writing/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>crypto</title>
       <link>https://mystiz.hk/tags/crypto/</link>
-      <pubDate>Mon, 26 Jun 2023 07:45:00 +0800</pubDate>
+      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/crypto/</guid>
       <description></description>
@@ -19,7 +37,7 @@
     <item>
       <title>ctf</title>
       <link>https://mystiz.hk/tags/ctf/</link>
-      <pubDate>Mon, 26 Jun 2023 07:45:00 +0800</pubDate>
+      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/ctf/</guid>
       <description></description>
@@ -67,15 +85,6 @@
       <pubDate>Sun, 12 Mar 2023 21:07:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/idekctf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>challenge-writing</title>
-      <link>https://mystiz.hk/tags/challenge-writing/</link>
-      <pubDate>Mon, 06 Mar 2023 00:45:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/challenge-writing/</guid>
       <description></description>
     </item>
     

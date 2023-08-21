@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Bauhinia CTF 2023: How to Stop Time :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="After four years of team formation, we organized our first edition of Bauhinia CTF last weekend. There are over 650 teams registered and over 200 teams scored. This year, I made one crypto challenge, How to Stop Time. I also coauthored a web/crypto challenge, Amnesia, with @chthollic_.
+This post is served as a short writeup of How to Stop Time, a crypto challenge with six solves during the contest period." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2023/2023-08-21-b6actf/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://mystiz.hk/images/20230821-b6actf/banner.png" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Bauhinia CTF 2023: How to Stop Time">
+<meta property="og:description" content="After four years of team formation, we organized our first edition of Bauhinia CTF last weekend. There are over 650 teams registered and over 200 teams scored. This year, I made one crypto challenge, How to Stop Time. I also coauthored a web/crypto challenge, Amnesia, with @chthollic_.
+
+This post is served as a short writeup of How to Stop Time, a crypto challenge with six solves during the contest period." />
+<meta property="og:url" content="https://mystiz.hk/posts/2023/2023-08-21-b6actf/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="https://mystiz.hk/images/20230821-b6actf/banner.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2023-08-21 09:45:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2023/2023-08-21-b6actf/">Bauhinia CTF 2023: How to Stop Time</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2023-08-21 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/b6actf/">b6actf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+    <img src="https://mystiz.hk/images/20230821-b6actf/banner.png" class="post-cover center" alt="Bauhinia CTF 2023: How to Stop Time" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>After four years of team formation, we organized our first edition of Bauhinia CTF last weekend. There are over 650 teams registered and over 200 teams scored. This year, I made one crypto challenge, <em>How to Stop Time</em>. I also coauthored a web/crypto challenge, <em>Amnesia</em>, with <a href="https://twitter.com/chthollic_" target="_blank" rel="nofollow">@chthollic_</a>.</p>
+<p>This post is served as a short writeup of <em>How to Stop Time</em>, a crypto challenge with six solves during the contest period.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p><em>Good CTF challenges never die. They will be remembered and reused.</em></p>
+<p>Mystiz loves to pay tribute to (i.e., plagarise) challenges. This time he referenced (i.e., copied) code snippets from at least five challenges to build the most unoriginal crypto challenge ever. Also, he is really verbose and there are a lot of red herrings. Can you avoid the rabbit holes and find the vulnerable one(s)?</p>
+</blockquote>
+<p>In this challenge, two 512-bit numbers $g$ and $x$ are generated. We are asked to send a 512-bit prime $q$ such that $p := 4q+1$ is also a prime. After that, we are given $g$ and $h := g^x \ \text{mod}\ p$. Finally, we are asked to send $x'$. If $x = x'$, we consider that as a win.</p>
+<p>If we win 256 times in a row, we will be given the flag.</p>
+<p>By the way, there are a lot of strange things going on. Some served as red herring, while some are not. These are some of them:</p>
+<ol>
+<li>$g$ and $x$ are generated by Python&rsquo;s <code>random</code> package,</li>
+<li>$\texttt{is\_prime}$ is an implementation based on <a href="https://github.com/sigpwny/UIUCTF-2022-Public/blob/main/crypto/that_crete_log/"><em>That-crete log</em></a> from UIUCTF 2022,</li>
+<li>$p := 4q + 1$ is used instead of $p := 2q + 1$.</li>
+<li>There are a lot of comments&hellip; I have never been more verbose.</li>
+</ol>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>This challenge is implemented in August 2022, approximately one year ago, to serve as an easy-ish challenge as a warm up. The idea came to my mind while I was solving <em>That-crete log</em> from UIUCTF 2022, and everything comes from the $\texttt{is\_prime}$ function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_prime</span>(n):
+    bases <span style="color:#f92672">=</span> [<span style="color:#f92672">...</span>] <span style="color:#75715e"># 207 numbers omitted</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, min(<span style="color:#ae81ff">256</span>, n)):
+        <span style="color:#66d9ef">if</span> n <span style="color:#f92672">%</span> i <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">256</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#66d9ef">return</span> miller_rabin(bases, n)
+</code></pre></div><p>There are some papers mentioning how to generate strong pseudoprimes, i.e., the composite numbers that passes the Miller-Rabin test. However, while I was attempting that challenge, I found that every $n &lt; 0$ is considered a prime by $\texttt{is\_prime}$. Although it seemed to be useful, I could not make use of that to solve the challenge. That is why <em>How to Stop Time</em> appeared.</p>
+<p>Now let&rsquo;s get back to our challenge. If we send a 512-bit $q$ which is also negative, then $\texttt{is\_prime}(q)$ returns $\texttt{true}$. Similarly, $p := 4q + 1 &lt; 0$ is also considered a prime.</p>
+<p>What I did is to find a pair of $(r, k)$ such that $r$ is a small prime, $2^{513} \leq r^k &lt; 2^{514}$ and $r^k \equiv 3 \ (\text{mod}\ 4)$. For instance, $(r, k) = (97523, 31)$ is one of the pairs.</p>
+<p>With $(r, k)$, we then can define $p := -r^k$ and $q := (p - 1)/4$. With $g$ and $h := g^x\ \text{mod}\ r^k$, we can easily recover $x$ with Pohlig-Hellman because the modulus is smooth. Being lazy, I simply use <code>h.log(g)</code> from Sage to recover $x$.</p>
+<h2 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<span style="color:#f92672">from</span> rich.progress <span style="color:#f92672">import</span> track
+
+r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;chall-hk.pwnable.hk&#39;</span>, <span style="color:#ae81ff">30001</span>)
+
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> track(range(<span style="color:#ae81ff">256</span>)):
+    p <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">97523</span><span style="color:#f92672">^</span><span style="color:#ae81ff">31</span>
+    <span style="color:#66d9ef">assert</span> p <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
+    q <span style="color:#f92672">=</span> (p <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">4</span>
+    r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;[&lt;] q = &#39;</span>, str(q)<span style="color:#f92672">.</span>encode())
+
+    r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;[&gt;] g = &#39;</span>)
+    g <span style="color:#f92672">=</span> int(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+
+    r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;[&gt;] h = &#39;</span>)
+    h <span style="color:#f92672">=</span> int(r<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>decode())
+
+    Zp <span style="color:#f92672">=</span> Zmod(p)
+    g, h <span style="color:#f92672">=</span> Zp(g), Zp(h)
+
+    x <span style="color:#f92672">=</span> h<span style="color:#f92672">.</span>log(g)
+    r<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;[&lt;] x = &#39;</span>, str(x)<span style="color:#f92672">.</span>encode())
+
+r<span style="color:#f92672">.</span>interactive()
+</code></pre></div><h2 id="retrospective">Retrospective<a href="#retrospective" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Given that this is not difficult, I expect that there will be more solves. There are some reasons that I could think of:</p>
+<ol>
+<li>The bug is really cleverly hidden (I don&rsquo;t think this is true).</li>
+<li>There are too much red herring in the challenge.</li>
+<li>Players assumed that the challenges I wrote are hard.</li>
+</ol>
+<p>During the contest, I often feel players will be disappointed knowing the intended solution being negative numbers. Please let me know what you think.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/">
+                <span class="button__text">Google CTF 2023: MHK2</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Bauhinia CTF 2023: How to Stop Time
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2023 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2VLBDVW913');
+</script>
+
+
+
+  
+</div>
+
+</body>
+</html>

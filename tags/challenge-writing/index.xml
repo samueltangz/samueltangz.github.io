@@ -6,7 +6,28 @@
     <description>Recent content in challenge-writing on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Mar 2023 00:45:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/challenge-writing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Aug 2023 09:45:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/challenge-writing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bauhinia CTF 2023: How to Stop Time</title>
+      <link>https://mystiz.hk/posts/2023/2023-08-21-b6actf/</link>
+      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2023/2023-08-21-b6actf/</guid>
+      <description>After four years of team formation, we organized our first edition of Bauhinia CTF last weekend. There are over 650 teams registered and over 200 teams scored. This year, I made one crypto challenge, How to Stop Time. I also coauthored a web/crypto challenge, Amnesia, with @chthollic_.
+This post is served as a short writeup of How to Stop Time, a crypto challenge with six solves during the contest period.</description>
+    </item>
+    
+    <item>
+      <title>Google CTF 2023: MHK2</title>
+      <link>https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/</link>
+      <pubDate>Mon, 26 Jun 2023 07:45:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/</guid>
+      <description>MHK2 is one of the challenges I coauthored for Google CTF 2023 and there were 18 teams solving this challenge during the contest time.
+Challenge Summary This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:
+Generating a keypair  For $i = 1, 2$:  Generate a random sequence $\textbf{s}_i = (s_{i, 1}, s_{i, 2}, &amp;hellip;, s_{i, 256})$ where $0 \leq s_{ij} &amp;lt; 2^{128}$.</description>
+    </item>
+    
     <item>
       <title>MOCSCTF 2023 Postmortem</title>
       <link>https://mystiz.hk/posts/2023/2023-03-06-mocsctf/</link>
