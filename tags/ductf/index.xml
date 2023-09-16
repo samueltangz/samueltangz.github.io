@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 16 Sep 2023 11:47:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/ductf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DownUnderCTF 2023 Writeup</title>
-      <link>https://mystiz.hk/posts/2023/2023-09-17-ductf/</link>
+      <link>https://mystiz.hk/posts/2023/2023-09-16-ductf/</link>
       <pubDate>Sat, 16 Sep 2023 11:47:00 +0800</pubDate>
       
-      <guid>https://mystiz.hk/posts/2023/2023-09-17-ductf/</guid>
+      <guid>https://mystiz.hk/posts/2023/2023-09-16-ductf/</guid>
       <description>The crypto challenges in DownUnderCTF are very intriguing. Unfortunately I have very limited time during the contest and could only solve apbq rsa ii (26 solves), hhhhh (14 solves) and handshake (4 solves). I will be covering the latter two challenges in this writeup.
 hhhhh Challenge Summary The code given in this challenge is pretty short:
 #!/usr/bin/env python3 from os import getenv as hhhhhhh from hashlib import md5 as hhhhh def hhhhhh(hhh): h = hhhhh() hh = bytes([0] * 16) for hhhh in hhh: h.</description>
