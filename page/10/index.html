@@ -160,6 +160,51 @@
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="https://mystiz.hk/posts/2021/2021-01-18-firebird-internal-ctf/">Firebird Internal CTF 2021 Writeup</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2021-01-18
+          </span>
+          
+            <span class="post-author">:: Mystiz</span>
+          
+        </div>
+
+        
+          <span class="post-tags">
+            
+            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/firebird-training/">firebird-training</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+            
+          </span>
+        
+
+        
+
+        
+
+        <div class="post-content">
+          
+          I have written four question for Firebird Internal CTF - Oofbleck (Crypto), Obvious Transfer (Crypto), RC4 (Misc) and Prooof-ooof-Wooork (Reverse, Misc). I will be including all of them in this blog post.
+          
+        </div>
+
+        
+        <div>
+          <a class="read-more button"
+            href="/posts/2021/2021-01-18-firebird-internal-ctf/">Read more →</a>
+        </div>
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="https://mystiz.hk/posts/2021/2021-01-03-tetctf-unevaluated/">TetCTF 2021: unevaluated</a>
         </h1>
         <div class="post-meta">
@@ -338,51 +383,6 @@
         
       </div>
     
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="https://mystiz.hk/posts/2020/2020-09-08-confidencectf-team-trees/">CONFidence 2020 CTF: Team Trees</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2020-09-08
-          </span>
-          
-            <span class="post-author">:: Mystiz</span>
-          
-        </div>
-
-        
-          <span class="post-tags">
-            
-            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/confidence-ctf/">confidence-ctf</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/reverse/">reverse</a>&nbsp;
-            
-          </span>
-        
-
-        
-
-        
-
-        <div class="post-content">
-          
-          <p>This week, we have teamed up as @blackb6a to play CONFidence 2020 CTF. We end up ranked 15, but we are more proud of ourselves able to solve a reversing challenge called Team Trees (395 points, 5 solves).</p>
-<p>In particular, we are the first-to-solve to the challenge. It took us around two hours to win the flag. This writeup is written by @harrier_lcc and @mystiz613.</p>
-
-          
-        </div>
-
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2020/2020-09-08-confidencectf-team-trees/">Read more →</a>
-        </div>
-        
-      </div>
-    
     <div class="pagination">
   <div class="pagination__buttons">
     
@@ -482,6 +482,21 @@ mermaid.initialize({
     }
 });
 </script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
 
   
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
@@ -492,6 +507,7 @@ mermaid.initialize({
 
   gtag('config', 'G-2VLBDVW913');
 </script>
+
 
 
 

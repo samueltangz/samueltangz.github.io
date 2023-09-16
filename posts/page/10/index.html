@@ -150,6 +150,49 @@
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="https://mystiz.hk/posts/2023/2023-09-17-ductf/">DownUnderCTF 2023 Writeup</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2023-09-16
+          </span>
+          
+            <span class="post-author">:: Mystiz</span>
+          
+        </div>
+
+        
+          <span class="post-tags">
+            
+            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/ductf/">ductf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+            
+          </span>
+        
+
+        
+
+        
+
+        <div class="post-content">
+          
+          The crypto challenges in DownUnderCTF are very intriguing. Unfortunately I have very limited time during the contest and could only solve apbq rsa ii (26 solves), hhhhh (14 solves) and handshake (4 solves). I will be covering the latter two challenges in this writeup.
+          
+        </div>
+
+        
+        <div>
+          <a class="read-more button"
+            href="/posts/2023/2023-09-17-ductf/">Read more →</a>
+        </div>
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="https://mystiz.hk/posts/2023/2023-08-21-b6actf/">Bauhinia CTF 2023: How to Stop Time</a>
         </h1>
         <div class="post-meta">
@@ -2825,6 +2868,21 @@ mermaid.initialize({
     }
 });
 </script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
 
   
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
@@ -2835,6 +2893,7 @@ mermaid.initialize({
 
   gtag('config', 'G-2VLBDVW913');
 </script>
+
 
 
 

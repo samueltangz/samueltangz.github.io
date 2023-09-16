@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Aug 2023 09:45:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 Sep 2023 11:47:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>crypto</title>
+      <link>https://mystiz.hk/tags/crypto/</link>
+      <pubDate>Sat, 16 Sep 2023 11:47:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/crypto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ctf</title>
+      <link>https://mystiz.hk/tags/ctf/</link>
+      <pubDate>Sat, 16 Sep 2023 11:47:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ductf</title>
+      <link>https://mystiz.hk/tags/ductf/</link>
+      <pubDate>Sat, 16 Sep 2023 11:47:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/ductf/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>b6actf</title>
       <link>https://mystiz.hk/tags/b6actf/</link>
@@ -22,24 +49,6 @@
       <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/challenge-writing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>crypto</title>
-      <link>https://mystiz.hk/tags/crypto/</link>
-      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/crypto/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ctf</title>
-      <link>https://mystiz.hk/tags/ctf/</link>
-      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/ctf/</guid>
       <description></description>
     </item>
     

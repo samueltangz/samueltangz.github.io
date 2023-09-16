@@ -372,8 +372,8 @@
 
 
   <div class="collapsable-code">
-    <input id="142537869" type="checkbox" checked />
-    <label for="142537869">
+    <input id="291436875" type="checkbox" checked />
+    <label for="291436875">
       <span class="collapsable-code__language">text</span>
       
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -462,8 +462,8 @@ I like playing puzzle...
 
 
   <div class="collapsable-code">
-    <input id="963157248" type="checkbox" checked />
-    <label for="963157248">
+    <input id="819523467" type="checkbox" checked />
+    <label for="819523467">
       <span class="collapsable-code__language">text</span>
       
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -714,6 +714,21 @@ mermaid.initialize({
     }
 });
 </script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
 
   
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
@@ -724,6 +739,7 @@ mermaid.initialize({
 
   gtag('config', 'G-2VLBDVW913');
 </script>
+
 
 
 

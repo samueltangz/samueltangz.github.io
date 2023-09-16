@@ -817,8 +817,8 @@ Qy = 400318997929211178980655332518284307371175652959089080115156520541977149672
 
 
   <div class="collapsable-code">
-    <input id="753961842" type="checkbox" checked />
-    <label for="753961842">
+    <input id="689132457" type="checkbox" checked />
+    <label for="689132457">
       <span class="collapsable-code__language">python</span>
       <span class="collapsable-code__title">Persian cat cipher</span>
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -1506,8 +1506,8 @@ h <span style="color:#f92672">=</span> <span style="color:#ae81ff">2017210894190
 
 
   <div class="collapsable-code">
-    <input id="841936275" type="checkbox" checked />
-    <label for="841936275">
+    <input id="291345876" type="checkbox" checked />
+    <label for="291345876">
       <span class="collapsable-code__language">python</span>
       <span class="collapsable-code__title">Spiral</span>
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -1962,6 +1962,21 @@ mermaid.initialize({
     }
 });
 </script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
 
   
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
@@ -1972,6 +1987,7 @@ mermaid.initialize({
 
   gtag('config', 'G-2VLBDVW913');
 </script>
+
 
 
 

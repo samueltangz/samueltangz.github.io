@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://mystiz.hk/tags/crypto/</loc>
+    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/ctf/</loc>
+    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2023/2023-09-17-ductf/</loc>
+    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/ductf/</loc>
+    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/</loc>
+    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
+  </url><url>
     <loc>https://mystiz.hk/tags/b6actf/</loc>
     <lastmod>2023-08-21T09:45:00+08:00</lastmod>
   </url><url>
@@ -9,21 +30,6 @@
     <lastmod>2023-08-21T09:45:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/challenge-writing/</loc>
-    <lastmod>2023-08-21T09:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/crypto/</loc>
-    <lastmod>2023-08-21T09:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/ctf/</loc>
-    <lastmod>2023-08-21T09:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/</loc>
-    <lastmod>2023-08-21T09:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/posts/</loc>
-    <lastmod>2023-08-21T09:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
     <lastmod>2023-08-21T09:45:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/</loc>
