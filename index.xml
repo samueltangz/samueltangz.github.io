@@ -6,7 +6,17 @@
     <description>Recent content on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 16 Sep 2023 11:47:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 31 Dec 2023 23:09:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Retrospective 2023</title>
+      <link>https://mystiz.hk/posts/2023/2023-12-31-retrospective/</link>
+      <pubDate>Sun, 31 Dec 2023 23:09:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2023/2023-12-31-retrospective/</guid>
+      <description>There are a lot of ups and downs for in 2023. There were some joyful gatherings and reunions, but at the same time, things did go very wrong.
+Despite my reluctance travelling back to Hong Kong, I was motivated enough and went back twice in January and June. Owing to various reasons, it is much harder for me to see the people I care if I couldn&amp;rsquo;t meet them in time.</description>
+    </item>
+    
     <item>
       <title>DownUnderCTF 2023 Writeup</title>
       <link>https://mystiz.hk/posts/2023/2023-09-16-ductf/</link>
