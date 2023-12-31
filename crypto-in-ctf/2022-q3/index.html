@@ -817,8 +817,8 @@ Qy = 400318997929211178980655332518284307371175652959089080115156520541977149672
 
 
   <div class="collapsable-code">
-    <input id="942365178" type="checkbox" checked />
-    <label for="942365178">
+    <input id="362158749" type="checkbox" checked />
+    <label for="362158749">
       <span class="collapsable-code__language">python</span>
       <span class="collapsable-code__title">Persian cat cipher</span>
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -1506,8 +1506,8 @@ h <span style="color:#f92672">=</span> <span style="color:#ae81ff">2017210894190
 
 
   <div class="collapsable-code">
-    <input id="198536742" type="checkbox" checked />
-    <label for="198536742">
+    <input id="346257189" type="checkbox" checked />
+    <label for="346257189">
       <span class="collapsable-code__language">python</span>
       <span class="collapsable-code__title">Spiral</span>
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
@@ -1720,8 +1720,116 @@ y_i &amp;= s_i + s_{i+16} + s_{i+32} + s_{i+120} + s_i s_{i+8} + s_i s_{i+32} + 
 &amp;\qquad + s_i s_{i+8} s_{i+64} + s_{i+16} s_{i+32} s_{i+64} + s_i s_{i+8} s_{i+16} s_{i+64} s_{i+120} + s_{i+8} s_{i+16} s_{i+32} s_{i+64} s_{i+120}.
 \end{aligned}$$</p>
 <p>We are given the first 8192 bits of the output (i.e., $y_0, y_1, &hellip;, y_{8191}$). The goal is to recover the key (i.e., $s_0, s_1, &hellip;, s_{127}$).</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<!-- ## CakeCTF 2022
+
+### frozen cake
+
+* Solves: 132/713
+* Difficulty: ⭐?
+* Tags: `math`
+* Author: <a href="https://twitter.com/theoremoon" target="_blank" rel="nofollow">@theoremoon</a>
+
+Let $n = p \cdot q$ where $p, q$ are two 512-bit primes. Let $m$ be the flag and we are given $n$, $a = m^p\ \text{mod}\ n$, $b = m^q\ \text{mod}\ n$ and $c = m^n\ \text{mod}\ n$. The goal is to recover $m$.
+
+```python
+n = 101205131618457490641888226172378900782027938652382007193297646066245321085334424928920128567827889452079884571045344711457176257019858157287424646000972526730522884040459357134430948940886663606586037466289300864147185085616790054121654786459639161527509024925015109654917697542322418538800304501255357308131
+a = 38686943509950033726712042913718602015746270494794620817845630744834821038141855935687477445507431250618882887343417719366326751444481151632966047740583539454488232216388308299503129892656814962238386222995387787074530151173515835774172341113153924268653274210010830431617266231895651198976989796620254642528
+b = 83977895709438322981595417453453058400465353471362634652936475655371158094363869813512319678334779139681172477729044378942906546785697439730712057649619691929500952253818768414839548038664187232924265128952392200845425064991075296143440829148415481807496095010301335416711112897000382336725454278461965303477
+c = 21459707600930866066419234194792759634183685313775248277484460333960658047171300820279668556014320938220170794027117386852057041210320434076253459389230704653466300429747719579911728990434338588576613885658479123772761552010662234507298817973164062457755456249314287213795660922615911433075228241429771610549
+```
+
+### brand new crypto
+
+* Solves: 46/713
+* Difficulty: ⭐?
+* Tags: `?`
+* Author: <a href="https://twitter.com/theoremoon" target="_blank" rel="nofollow">@theoremoon</a>
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+
+
+### hi yoshiking
+
+* Solves: 10/713
+* Difficulty: ⭐?
+* Tags: `?`
+* Author: <a href="https://twitter.com/theoremoon" target="_blank" rel="nofollow">@theoremoon</a>
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+
+
+### Rock Door
+
+* Solves: 9/713
+* Difficulty: ⭐?
+* Tags: `?`
+* Author: <a href="https://twitter.com/theoremoon" target="_blank" rel="nofollow">@theoremoon</a>
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+
+
+## 0CTF 2022
+
+### real magic dlog
+
+* Solves: 66/605
+* Difficulty: ⭐?
+* Tags: `?`
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+
+
+### Leopard
+
+* Solves: 6/605
+* Difficulty: ⭐?
+* Tags: `?`
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+
+
+### ezRSA++
+
+* Solves: 4/605
+* Difficulty: ⭐?
+* Tags: `?`
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+
+
+### Login
+
+* Solves: 2/605
+* Difficulty: ⭐?
+* Tags: `?`
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+
+
+### Chimera
+
+* Solves: 0/605
+* Difficulty: ⭐?
+* Tags: `?`
+
+<div class="alert info">
+  🛠️ <strong>To-be written.</strong> This is a placeholder because I am lazy. Please read the tags, or the official source meanwhile.
+</div>
+ -->
 <h2 id="downunderctf-2022">DownUnderCTF 2022<a href="#downunderctf-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="baby-arx">baby arx<a href="#baby-arx" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
