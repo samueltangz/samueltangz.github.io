@@ -2,13 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://mystiz.hk/tags/life/</loc>
-    <lastmod>2023-12-31T23:09:00+08:00</lastmod>
+    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/crypto/</loc>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/ctf/</loc>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2024/2024-01-21-firebird-ctf/</loc>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/firebird-training/</loc>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/</loc>
-    <lastmod>2023-12-31T23:09:00+08:00</lastmod>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2024-01-21T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/life/</loc>
     <lastmod>2023-12-31T23:09:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/retrospective/</loc>
@@ -16,15 +34,6 @@
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-12-31-retrospective/</loc>
     <lastmod>2023-12-31T23:09:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
-    <lastmod>2023-12-31T23:09:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/crypto/</loc>
-    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/ctf/</loc>
-    <lastmod>2023-09-16T11:47:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-09-16-ductf/</loc>
     <lastmod>2023-09-16T11:47:00+08:00</lastmod>
@@ -36,9 +45,6 @@
     <lastmod>2023-08-21T09:45:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-08-21-b6actf/</loc>
-    <lastmod>2023-08-21T09:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
     <lastmod>2023-08-21T09:45:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/</loc>
@@ -72,9 +78,6 @@
     <lastmod>2023-03-06T00:45:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-01-30-firebird-internal-ctf/</loc>
-    <lastmod>2023-01-30T16:40:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/firebird-training/</loc>
     <lastmod>2023-01-30T16:40:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2022/2022-12-31-retrospective/</loc>

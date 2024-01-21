@@ -6,7 +6,43 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 Dec 2023 23:09:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jan 2024 22:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>challenge-writing</title>
+      <link>https://mystiz.hk/tags/challenge-writing/</link>
+      <pubDate>Sun, 21 Jan 2024 22:00:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/challenge-writing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>crypto</title>
+      <link>https://mystiz.hk/tags/crypto/</link>
+      <pubDate>Sun, 21 Jan 2024 22:00:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/crypto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ctf</title>
+      <link>https://mystiz.hk/tags/ctf/</link>
+      <pubDate>Sun, 21 Jan 2024 22:00:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>firebird-training</title>
+      <link>https://mystiz.hk/tags/firebird-training/</link>
+      <pubDate>Sun, 21 Jan 2024 22:00:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/firebird-training/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>life</title>
       <link>https://mystiz.hk/tags/life/</link>
@@ -26,24 +62,6 @@
     </item>
     
     <item>
-      <title>crypto</title>
-      <link>https://mystiz.hk/tags/crypto/</link>
-      <pubDate>Sat, 16 Sep 2023 11:47:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/crypto/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ctf</title>
-      <link>https://mystiz.hk/tags/ctf/</link>
-      <pubDate>Sat, 16 Sep 2023 11:47:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/ctf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>ductf</title>
       <link>https://mystiz.hk/tags/ductf/</link>
       <pubDate>Sat, 16 Sep 2023 11:47:00 +0800</pubDate>
@@ -58,15 +76,6 @@
       <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/b6actf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>challenge-writing</title>
-      <link>https://mystiz.hk/tags/challenge-writing/</link>
-      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/challenge-writing/</guid>
       <description></description>
     </item>
     
@@ -121,15 +130,6 @@
       <pubDate>Mon, 06 Mar 2023 00:45:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/mocsctf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>firebird-training</title>
-      <link>https://mystiz.hk/tags/firebird-training/</link>
-      <pubDate>Mon, 30 Jan 2023 16:40:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/firebird-training/</guid>
       <description></description>
     </item>
     

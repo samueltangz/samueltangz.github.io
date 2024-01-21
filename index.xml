@@ -6,7 +6,20 @@
     <description>Recent content on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 Dec 2023 23:09:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jan 2024 22:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Firebird CTF 2024: Goldilocks</title>
+      <link>https://mystiz.hk/posts/2024/2024-01-21-firebird-ctf/</link>
+      <pubDate>Sun, 21 Jan 2024 22:00:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-01-21-firebird-ctf/</guid>
+      <description>This is yet another annual Firebird CTF and I only wrote one cryptography challenge this time, Goldilocks. There were one solve (out of 53 participating teams) during the contest period.
+Challenge Summary  If you think discrete log is too easy, try discrete log log. It is easier.
+nc HOST PORT
+chall.py
+ In this challenge, we are given primes $p, q$ such that $p = 2q + 1$ and $p$ is 1024 bits.</description>
+    </item>
+    
     <item>
       <title>Retrospective 2023</title>
       <link>https://mystiz.hk/posts/2023/2023-12-31-retrospective/</link>
