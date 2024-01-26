@@ -6,7 +6,41 @@
     <description>Recent content on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 21 Jan 2024 22:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Jan 2024 05:30:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</title>
+      <link>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</link>
+      <pubDate>Sat, 27 Jan 2024 05:30:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</guid>
+      <description>We will finally cover the non-crypto challenges that I wrote for HKCERT CTF 2023. This includes one misc (Hackforces), two pwn (ISA Jump Scare &amp;amp; ISA Jogger) and two reverse (The Flag Game &amp;amp; Loot and Scoot) challenges.
+Hackforces Challenge Summary  Do you know Codeforces? Well, what you need is to find a corner case to make the given submission not work.
+Attachment: hackforces.zip
+ We are given an introductory competitive programming problem (equivalent to Unique Paths II in LeetCode) with its solution implemented in C.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2023 Postmortem (II): Harder Crypto Challenges</title>
+      <link>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-2/</link>
+      <pubDate>Sat, 27 Jan 2024 05:30:01 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-2/</guid>
+      <description>In the second part of the series, I will cover four cryptography challenges: baDES, Maybe Someday, Cipher Bridging Service and RSA Triooo. Interestingly, most of them are somehow &amp;ldquo;plagiarized&amp;rdquo; from the other CTFs.
+baDES Challenge Summary  DES, published as an official Federal Information Processing Standard in 1977, is considered bad in 2023. We will slightly change the cipher and attack that together!
+Note: There is a guide for this challenge here.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2023 Postmortem (I): Easier Crypto Challenges</title>
+      <link>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-1/</link>
+      <pubDate>Sat, 27 Jan 2024 05:30:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-1/</guid>
+      <description>This is yet another moment that Black Bauhinia co-organizes HKCERT CTF. This year, I am slightly more productive than the previous years and wrote 13 challenges for the CTF. There are three blog posts in this series, where I will respectively cover the author&amp;rsquo;s solutions to the easier crypto challenges, the harder crypto challenges and the remaining challenges.
+The below is the list of challenges:
+   Challenge Name Category Difficulty Score Solves     The Art of Embarrassment Crypto ⭐ 150 0 - - -   Sign me a Flag (I) Crypto 👣 150 19 25 37 31   Sign me a Flag (II) Crypto ⭐⭐ 250 0 0 5 6   Solitude, Solitude, Solitude Crypto ⭐ 150 0 5 10 17   baDES Crypto 👣 200 5 20 20 15   Maybe Someday Crypto ⭐⭐⭐ 350 - 0 5 4   Cipher Bridging Service Crypto ⭐⭐⭐⭐ 450 0 10 3 5   RSA Triooo Crypto ⭐⭐⭐⭐⭐ 500 - 0 1 2   Hackforces Misc ⭐⭐⭐ 300 5 6 8 8   ISA Jump Scare Pwn 👣 200 12 20 30 15   ISA Jogger Pwn ⭐⭐ 200 5 15 27 13   The Flag Game Reverse ⭐⭐ 200 8 10 19 8   Loot and Scoot Reverse ⭐⭐⭐⭐⭐ 500 0 0 3 3    Step-by-step challenges are marked by 👣 in the &amp;ldquo;Difficulty&amp;rdquo; column.</description>
+    </item>
+    
     <item>
       <title>Firebird CTF 2024: Goldilocks</title>
       <link>https://mystiz.hk/posts/2024/2024-01-21-firebird-ctf/</link>

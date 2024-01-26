@@ -6,7 +6,19 @@
     <description>Recent content in reverse on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 24 Dec 2022 16:46:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Jan 2024 05:30:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</title>
+      <link>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</link>
+      <pubDate>Sat, 27 Jan 2024 05:30:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</guid>
+      <description>We will finally cover the non-crypto challenges that I wrote for HKCERT CTF 2023. This includes one misc (Hackforces), two pwn (ISA Jump Scare &amp;amp; ISA Jogger) and two reverse (The Flag Game &amp;amp; Loot and Scoot) challenges.
+Hackforces Challenge Summary  Do you know Codeforces? Well, what you need is to find a corner case to make the given submission not work.
+Attachment: hackforces.zip
+ We are given an introductory competitive programming problem (equivalent to Unique Paths II in LeetCode) with its solution implemented in C.</description>
+    </item>
+    
     <item>
       <title>HKCERT CTF 2022 Postmortem (III): The Remaining Challenges</title>
       <link>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/</link>

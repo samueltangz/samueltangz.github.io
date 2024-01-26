@@ -160,6 +160,162 @@
     
       <div class="post on-list">
         <h1 class="post-title">
+          <a href="https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-1/">HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2022-12-24
+          </span>
+          
+            <span class="post-author">:: Mystiz</span>
+          
+        </div>
+
+        
+          <span class="post-tags">
+            
+            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/hkcert-ctf/">hkcert-ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+            
+          </span>
+        
+
+        
+
+        
+          <img src="https://mystiz.hk/images/2022-12-24-hkcert-ctf/catch-22-summary.png" class="post-cover center" alt="HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges" />
+        
+
+        <div class="post-content">
+          
+          <p>This is the third year Black Bauhinia co-organized HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.</p>
+<p>Similar to the last year, I have a series of three blog posts walking through the challenges that I wrote. We will discuss the four easier crypto challenges: Flawed ElGamal, Catch-22, Rogue Secret Assistant and Base64 encryption.</p>
+
+          
+        </div>
+
+        
+        <div>
+          <a class="read-more button"
+            href="/posts/2022/2022-12-24-hkcert-ctf-1/">Read more →</a>
+        </div>
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
+          <a href="https://mystiz.hk/posts/2022/2022-10-19-h4ck1ng-g00gl3/">H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2022-10-19
+          </span>
+          
+            <span class="post-author">:: Mystiz</span>
+          
+        </div>
+
+        
+          <span class="post-tags">
+            
+            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/google-ctf/">google-ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/rsa/">rsa</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/bleichenbacher/">bleichenbacher</a>&nbsp;
+            
+          </span>
+        
+
+        
+        <h6 class="post-subtitle">Bleichenbacher strikes back again (and again).</h6>
+        
+
+        
+          <img src="https://mystiz.hk/images/2022-10-19-h4ck1ng-g00gl3/pzero-adventures.gif" class="post-cover center" alt="H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure" />
+        
+
+        <div class="post-content">
+          
+          <p>HACKING GOOGLE is a documentary of Google’s cybersecurity teams and H4CK1NG G00GL3 is it’s CTF counterpart. Project Zero Adventure is a cryptography challenge I wrote.</p>
+<p>In the game, the players control the Security Princess to dodge the obstacles and catch the bugs (a variant of Google Chrome’s dinosaur game). After that, the server will sign messages consisting of the players' name and the score via the <code>/sign</code> API. The players will then submit it to the <code>/highscore</code> API. If the score submitted to the highscore API is negative, they will be given the flag.</p>
+<p>However, there is one catch: The server is only willing to sign the results with non-negative scores.</p>
+
+          
+        </div>
+
+        
+        <div>
+          <a class="read-more button"
+            href="/posts/2022/2022-10-19-h4ck1ng-g00gl3/">Read more →</a>
+        </div>
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
+          <a href="https://mystiz.hk/posts/2022/2022-09-05-balsn/">BalsnCTF 2022 Writeup</a>
+        </h1>
+        <div class="post-meta">
+          <span class="post-date">
+            2022-09-05
+          </span>
+          
+            <span class="post-author">:: Mystiz</span>
+          
+        </div>
+
+        
+          <span class="post-tags">
+            
+            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/balsn-ctf/">balsn-ctf</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/lfsr/">lfsr</a>&nbsp;
+            
+            #<a href="https://mystiz.hk/tags/lll/">lll</a>&nbsp;
+            
+          </span>
+        
+
+        
+
+        
+          <img src="https://mystiz.hk/images/2022-09-05-balsn/lll-nightmare.png" class="post-cover center" alt="BalsnCTF 2022 Writeup" />
+        
+
+        <div class="post-content">
+          
+          <p>vss is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge. This challenge reminds me the yet another PRNG challenge from pbctf 2021, but with a setting which looked harder. I was pretty surprised that LLL worked, too.</p>
+<p>lfsr is another crypto challenge in BalsnCTF with 6 solves. In the challenge, the output bits are computed nonlinearly from the LFSR states. Given that I knew almost nothing about LFSR, I just came up with the attack by myself… Well, I am not quite a paper guy and I couldn’t read.</p>
+
+          
+        </div>
+
+        
+        <div>
+          <a class="read-more button"
+            href="/posts/2022/2022-09-05-balsn/">Read more →</a>
+        </div>
+        
+      </div>
+    
+      <div class="post on-list">
+        <h1 class="post-title">
           <a href="https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/">Google CTF 2022: Maybe Someday</a>
         </h1>
         <div class="post-meta">
@@ -250,142 +406,6 @@
         <div>
           <a class="read-more button"
             href="/posts/2022/2022-03-02-tsjctf-2/">Read more →</a>
-        </div>
-        
-      </div>
-    
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="https://mystiz.hk/posts/2022/2022-03-01-tsjctf-1/">TSJ CTF 2022 (I): Cipher Switching Service</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2022-03-01
-          </span>
-          
-            <span class="post-author">:: Mystiz</span>
-          
-        </div>
-
-        
-          <span class="post-tags">
-            
-            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/tsj-ctf/">tsj-ctf</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
-            
-          </span>
-        
-
-        
-
-        
-          <img src="https://mystiz.hk/images/2022-03-01-tsjctf/tsjctf.jpg" class="post-cover center" alt="TSJ CTF 2022 (I): Cipher Switching Service" />
-        
-
-        <div class="post-content">
-          
-          <p>@blackb6a played TSJ CTF and CODEGATE CTF this weekend. Both of the CTFs had a bunch of epic (and hard-ish) crypto challenges, which made our head scratched for days.</p>
-<p>We were two points behind @balsnctf few minutes before the game ends and I found one more flag. It is proud to tell that we won TSJ CTF 🎉!</p>
-<p>Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, namely Cipher Switching Service, Signature and Genie. I will go through Cipher Switching Service as the first part of the series.</p>
-
-          
-        </div>
-
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2022/2022-03-01-tsjctf-1/">Read more →</a>
-        </div>
-        
-      </div>
-    
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="https://mystiz.hk/posts/2022/2022-02-19-mocsctf/">MOCSCTF 2022 Postmortem</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2022-02-19
-          </span>
-          
-            <span class="post-author">:: Mystiz</span>
-          
-        </div>
-
-        
-          <span class="post-tags">
-            
-            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/mocsctf/">mocsctf</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
-            
-          </span>
-        
-
-        
-
-        
-
-        <div class="post-content">
-          
-          @blackb6a helped preparing some challenges for MOCSCTF, a 8.5-hour long CTF in Macau. This time I wrote nine challenges and @hoifanrd made one of them (3-AES). This blog post covers the intended solution for all of them.
-          
-        </div>
-
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2022/2022-02-19-mocsctf/">Read more →</a>
-        </div>
-        
-      </div>
-    
-      <div class="post on-list">
-        <h1 class="post-title">
-          <a href="https://mystiz.hk/posts/2022/2022-02-14-intigriti-xss/">Intigriti&rsquo;s XSS Challenge (February 2022)</a>
-        </h1>
-        <div class="post-meta">
-          <span class="post-date">
-            2022-02-14
-          </span>
-          
-            <span class="post-author">:: Mystiz</span>
-          
-        </div>
-
-        
-          <span class="post-tags">
-            
-            #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/xss/">xss</a>&nbsp;
-            
-            #<a href="https://mystiz.hk/tags/intigriti-challenge/">intigriti-challenge</a>&nbsp;
-            
-          </span>
-        
-
-        
-
-        
-          <img src="https://mystiz.hk/images/2022-02-14-intigriti-xss/banner.png" class="post-cover center" alt="Intigriti&#39;s XSS Challenge (February 2022)" />
-        
-
-        <div class="post-content">
-          
-          This is another round of @intigriti&rsquo;s XSS challenge, and this time it is written by @aszx87410. I spent around four hours solving it.
-          
-        </div>
-
-        
-        <div>
-          <a class="read-more button"
-            href="/posts/2022/2022-02-14-intigriti-xss/">Read more →</a>
         </div>
         
       </div>
