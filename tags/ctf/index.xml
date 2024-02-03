@@ -6,7 +6,17 @@
     <description>Recent content in ctf on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jan 2024 05:30:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 03 Feb 2024 16:25:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TetCTF 2024: adapt</title>
+      <link>https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/</link>
+      <pubDate>Sat, 03 Feb 2024 16:25:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/</guid>
+      <description>TetCTF comes back with their great crypto challenges. I played with @blackb6a and we ended up securing the 🥉 third place. In this blog post, I will walk through adapt, a challenge which required us to make fake proofs in an IAVL tree implementation. There are only three solves during the contest period.
+Challenge Summary We are started with an empty immutable AVL (IAVL) tree every connection. We can send up to 2024 messages and it will store the key-value pair (message, &amp;quot;&amp;quot;) to the tree.</description>
+    </item>
+    
     <item>
       <title>HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</title>
       <link>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</link>

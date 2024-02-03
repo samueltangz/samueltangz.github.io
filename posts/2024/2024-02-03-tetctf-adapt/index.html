@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>TetCTF 2024: adapt :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TetCTF comes back with their great crypto challenges. I played with @blackb6a and we ended up securing the 🥉 third place. In this blog post, I will walk through adapt, a challenge which required us to make fake proofs in an IAVL tree implementation. There are only three solves during the contest period.
+Challenge Summary We are started with an empty immutable AVL (IAVL) tree every connection. We can send up to 2024 messages and it will store the key-value pair (message, &amp;quot;&amp;quot;) to the tree." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://mystiz.hk/" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="TetCTF 2024: adapt">
+<meta property="og:description" content="TetCTF comes back with their great crypto challenges. I played with @blackb6a and we ended up securing the 🥉 third place. In this blog post, I will walk through adapt, a challenge which required us to make fake proofs in an IAVL tree implementation. There are only three solves during the contest period." />
+<meta property="og:url" content="https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="https://mystiz.hk/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2024-02-03 16:25:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/">TetCTF 2024: adapt</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2024-02-03 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/tetctf/">tetctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+  <h6 class="post-subtitle">Creating fake proofs on cosmos/iavl@v0.19.7.</h6>
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>TetCTF comes back with their great crypto challenges. I played with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> and we ended up securing the 🥉 third place. In this blog post, I will walk through <em>adapt</em>, a challenge which required us to make fake proofs in an IAVL tree implementation. There are only three solves during the contest period.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We are started with an empty immutable AVL (IAVL) tree every connection. We can send up to 2024 messages and it will store the key-value pair <code>(message, &quot;&quot;)</code> to the tree. In this stage, we have to set the message to $m_0$ at least once. After that, we are asked to provide a proof that $m_0$ is not on the tree.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-background">Part I: Background<a href="#part-i-background" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><code>cosmos/iavl@v0.19.2</code> is known to be vulnerable<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> for the Binance Bridge hack in October 2022, which has been fixed in v0.19.3. However, there is a issue in ≤v0.19.7 that allow us to create fake absence proofs.</p>
+<h3 id="part-ii-attack-overview">Part II: Attack overview<a href="#part-ii-attack-overview" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In short, the vulnerability appears because of the below reasons:</p>
+<ol>
+<li>similarity between serialization of parent nodes and leaf nodes, and</li>
+<li>missing checks to heights for parent nodes.</li>
+</ol>
+<p>We then can create malicious leaf nodes that appeared to be parent nodes, and use that node to generate range proofs to show that an key is absent from the tree.</p>
+<div class="alert warning">
+  🤖 <strong>Where are the details?</strong> They are in the next part! I intend to skip the technical details here to let the readers to have a idea what&rsquo;s going on.
+</div>
+
+<p>We now present an example where we assume that there is a single node (namely 🚩) in the IAVL tree. The objective is to supply a proof that 🚩 is absent.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+flag[label=&amp;lt;🚩&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>    
+<p>What we do is to insert a <em>single</em> malicious node to the left of the IAVL tree, here 😈 needs to lexicographically smaller than 🚩 so that the malicious node is placed to the left of 🚩:</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+root[label=&amp;lt;📂&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 1&amp;lt;BR /&amp;gt;Size: 2&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+malicious[label=&amp;lt;😈&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+flag[label=&amp;lt;🚩&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+
+root-&amp;gt;malicious
+root-&amp;gt;flag
+
+  }
+  </div>
+</div>    
+<p>This malicious node is disguised as a parent node with two child nodes, 👻 and 📁, when supplied as a proof. We require 👻 to be lexicographically greater than 🚩. If we generate a range proof containing 👻 as the only node, we can tell that 👻 is the leftmost element in the IAVL tree. With that said, there are no keys in $(-\infty, 👻)$. Given that $🚩 \in (-\infty, 👻)$, the verifier is convinced that 🚩 is absent.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+root[label=&amp;lt;📂&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 1&amp;lt;BR /&amp;gt;Size: 2&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;, fillcolor=&amp;#34;#66666c&amp;#34;]
+malicious[label=&amp;lt;😈&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;, fillcolor=&amp;#34;#66666c&amp;#34;]
+malicious_left_child[label=&amp;lt;👻&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;, fillcolor=&amp;#34;#66666c&amp;#34;, style=&amp;#34;dashed,rounded,filled&amp;#34;]
+malicious_right_subtree[label=&amp;lt;📁&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: ?&amp;lt;BR /&amp;gt;Size: ?&amp;lt;BR /&amp;gt;Version: ?&amp;lt;/font&amp;gt;&amp;gt;, style=&amp;#34;dashed,rounded,filled&amp;#34;]
+flag[label=&amp;lt;🚩&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+
+root-&amp;gt;malicious
+root-&amp;gt;flag
+malicious-&amp;gt;malicious_left_child
+malicious-&amp;gt;malicious_right_subtree
+
+  }
+  </div>
+</div>    
+<h3 id="part-iii-implementation-details">Part III: Implementation details<a href="#part-iii-implementation-details" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="computing-a-node-hash-of-iavl-trees">Computing a node hash of IAVL trees<a href="#computing-a-node-hash-of-iavl-trees" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>There will be a hash for each node in IAVL trees. The parent and leaf nodes use different material to compute the hashes as defined in <a href="https://github.com/cosmos/iavl/blob/v0.19.2/node.go#L334"><code>writeHashBytes</code></a> in <code>node.go</code>:</p>
+<ul>
+<li>Parent node: <code>SHA256(height || size || version || leftHash || rightHash)</code></li>
+<li>Leaf node: <code>SHA256(height || size || version || key || valueHash)</code></li>
+</ul>
+<p>Here <code>height</code>, <code>size</code> and <code>version</code> are integers and the remaining are bytes. They are uniquely encoded so that no two parent nodes (resp. leaf nodes) could end up having the same node hash.</p>
+<p>For the below node with <code>key</code> being <code>hello</code> and <code>value</code> being the empty string, we have the digest being <code>addee74d...</code>.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+dummy[label=&amp;lt;hello&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>    
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hashlib<span style="color:#f92672">.</span>sha256(bytes<span style="color:#f92672">.</span>fromhex(
+    <span style="color:#e6db74">&#39;00&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e"># height=0</span>
+    <span style="color:#e6db74">&#39;02&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e"># size=1</span>
+    <span style="color:#e6db74">&#39;02&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e"># version=1</span>
+    <span style="color:#e6db74">&#39;05 68656c6c6f&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e"># key=hello</span>
+    <span style="color:#e6db74">&#39;20 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&#39;</span> <span style="color:#75715e"># SHA256(value)</span>
+))<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># addee74d6c7b968206e8072eb5147e48dc14d1ab78dceb3a352b1e6fa144fc4f</span>
+</code></pre></div><p>Now proceed to a tree. From above, we know that the digests of the left and right child nodes are respectively <code>addee74d...</code> and <code>bdfd061f...</code>.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+root[label=&amp;lt;📂&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 1&amp;lt;BR /&amp;gt;Size: 2&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+dummy1[label=&amp;lt;hello&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+dummy2[label=&amp;lt;world&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;/font&amp;gt;&amp;gt;]
+
+root -&amp;gt; dummy1
+root -&amp;gt; dummy2
+
+  }
+  </div>
+</div>    
+<p>With that, we can compute the digest of 📂:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hashlib<span style="color:#f92672">.</span>sha256(bytes<span style="color:#f92672">.</span>fromhex(
+    <span style="color:#e6db74">&#39;02&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e"># height=1</span>
+    <span style="color:#e6db74">&#39;04&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e"># size=2</span>
+    <span style="color:#e6db74">&#39;02&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75715e"># version=1</span>
+    <span style="color:#e6db74">&#39;20 addee74d6c7b968206e8072eb5147e48dc14d1ab78dceb3a352b1e6fa144fc4f&#39;</span> <span style="color:#f92672">+</span>
+    <span style="color:#e6db74">&#39;20 bdfd061f8989347217253be5a7ef06117d2be62fc6dde0d9752a5debc902f011&#39;</span>
+))<span style="color:#f92672">.</span>hexdigest()
+<span style="color:#75715e"># 166c299760ef7b1e27116893a2623e38a8b3c763b831568eac46138527553bc5</span>
+</code></pre></div><p>It would be theoretically infeasible to find two trees that yield the same node hash for the root node. Therefore we can use root node hashes to determine the integrity of IAVL trees.</p>
+<div class="alert info">
+  😕 <strong>How about the add and remove operations?</strong> We are only interested in the final shapes of the IAVL trees, the update operations will be out of scope.
+</div>
+
+<h4 id="range-proofs">Range proofs<a href="#range-proofs" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The leaf nodes of IAVL trees are sorted. If node A is lexicographically smaller than node B, we will see node A is on the left of node B. With this property, we are able to reveal a subtree of consecutive leaf nodes to show the absence of a given node.</p>
+<p>We can imagine that we have a sorted array. If $a &lt; x &lt; b$, by showing a contiguous subarray <code>[a, b]</code> we can prove that <code>x</code> does not exist in the array. Now you have to convince the verifier that <code>[a, b]</code> is a subarray, and it is contiguous.</p>
+<p>By having a IAVL tree, the verifier only have to maintain the digest of the root nodes to verify proofs. For more details, please read <a href="https://github.com/cosmos/iavl/blob/master/docs/proof/proof.md">the documentation on proofs in cosmos/iavl</a>.</p>
+<h3 id="part-iv-shaping-the-attack">Part IV: Shaping the attack<a href="#part-iv-shaping-the-attack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>As mentioned before, the entire attack involves three leaf nodes: 🚩, 😈 and 👻. We assume that 🚩 is already in the tree and will only insert 😈 to it. The values are always empty in the challenge and we can&rsquo;t alter them.</p>
+<p>We will first find the key of 👻. It has to be lexicographically greater than 🚩, and its node hash is lexicographically smaller than 🚩 at the same time.</p>
+<p>In our case, the keys for 🚩 and 👻 are <code>Please give me flag</code> and <code>QQR</code> respectively. The node hash for 👻 is <code>22220311...</code> hex-encoded.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+malicious_left_child[label=&amp;lt;👻&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: 22220311...&amp;lt;/font&amp;gt;&amp;gt;]
+flag[label=&amp;lt;🚩&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: a6fb1c60...&amp;lt;/font&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>    
+<p>Now we can simply use the hex-encoded <code>22220311...</code> as the key for 😈, and insert it to the tree. Now there are two nodes in our tree.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+root[label=&amp;lt;📂&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 1&amp;lt;BR /&amp;gt;Size: 2&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: 660f9501...&amp;lt;/font&amp;gt;&amp;gt;]
+malicious[label=&amp;lt;😈&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: 01f31a15...&amp;lt;/font&amp;gt;&amp;gt;]
+flag[label=&amp;lt;🚩&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: a6fb1c60...&amp;lt;/font&amp;gt;&amp;gt;]
+
+root-&amp;gt;malicious
+root-&amp;gt;flag
+
+  }
+  </div>
+</div>    
+<p>In the proof, we can disguise 😈 as a parent node with 👻 being its left child. We then reveal the below subtree to the verifier:</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+root[label=&amp;lt;📂&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 1&amp;lt;BR /&amp;gt;Size: 2&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: 660f9501...&amp;lt;/font&amp;gt;&amp;gt;, fillcolor=&amp;#34;#66666c&amp;#34;]
+malicious[label=&amp;lt;😈&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: 01f31a15...&amp;lt;/font&amp;gt;&amp;gt;, fillcolor=&amp;#34;#66666c&amp;#34;]
+malicious_left_child[label=&amp;lt;👻&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Height: 0&amp;lt;BR /&amp;gt;Size: 1&amp;lt;BR /&amp;gt;Version: 1&amp;lt;BR /&amp;gt;Hash: 22220311...&amp;lt;/font&amp;gt;&amp;gt;, fillcolor=&amp;#34;#66666c&amp;#34;, style=&amp;#34;dashed,rounded,filled&amp;#34;]
+malicious_right_subtree[label=&amp;lt;&amp;lt;font point-size=&amp;#34;30&amp;#34;&amp;gt;📁&amp;lt;/font&amp;gt;&amp;lt;BR /&amp;gt;&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Hash: e3b0c442...&amp;lt;/font&amp;gt;&amp;gt;, style=plaintext, color=transparent]
+flag[label=&amp;lt;&amp;lt;font point-size=&amp;#34;30&amp;#34;&amp;gt;📁&amp;lt;/font&amp;gt;&amp;lt;BR /&amp;gt;&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Hash: a6fb1c60...&amp;lt;/font&amp;gt;&amp;gt;, style=plaintext, color=transparent]
+
+root-&amp;gt;malicious
+root-&amp;gt;flag
+malicious-&amp;gt;malicious_left_child
+malicious-&amp;gt;malicious_right_subtree
+
+  }
+  </div>
+</div>    
+<p>And finally the verifier is convinced that 🚩 is not in the tree.</p>
+<p>Below is the equivalent proof that I sent to the verifier, and eventually I got the flag &ndash; <code>TetCTF{l34f_c0ns3cut1v3n3ss_n0t_3nf0rc3d}</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;left_path&#34;</span>: [
+        {
+            <span style="color:#f92672">&#34;height&#34;</span>: <span style="color:#ae81ff">1</span>,
+            <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">2</span>,
+            <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#ae81ff">1</span>,
+            <span style="color:#f92672">&#34;right&#34;</span>: <span style="color:#e6db74">&#34;pvscYKxyFDUPxP0R6qEYaAMYdJC4G2VXKhgJAuAh4So=&#34;</span>
+        },
+        {
+            <span style="color:#f92672">&#34;height&#34;</span>: <span style="color:#ae81ff">0</span>,
+            <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">1</span>,
+            <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#ae81ff">1</span>,
+            <span style="color:#f92672">&#34;right&#34;</span>: <span style="color:#e6db74">&#34;47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=&#34;</span>
+        }
+    ],
+    <span style="color:#f92672">&#34;inner_nodes&#34;</span>: [],
+    <span style="color:#f92672">&#34;leaves&#34;</span>: [
+        {
+            <span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;515152&#34;</span>,
+            <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&#34;</span>,
+            <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#ae81ff">1</span>
+        }
+    ]
+}
+</code></pre></div><div class="alert danger">
+  🤔 <strong>What&rsquo;s in the node <code>e3b0c442...</code>?</strong> We are forced to set this because the value of leaf nodes must be empty, thus we are unable to forge a subtree. We can assume that is a &ldquo;corrupted&rdquo; subtree that no one can ever expand.
+</div>
+
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>sanebow (2022): &ldquo;BNB Hack: IAVL Spoofing Explained&rdquo;<br><a href="https://sanebow.me/bnb-hack-iavl-explained">https://sanebow.me/bnb-hack-iavl-explained</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>Immunefi (2023): &ldquo;Hack Analysis: Binance Bridge, October 2022&rdquo;<br><a href="https://medium.com/immunefi/hack-analysis-binance-bridge-october-2022-2876d39247c1">https://medium.com/immunefi/hack-analysis-binance-bridge-october-2022-2876d39247c1</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/">
+                <span class="button__text">HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    TetCTF 2024: adapt
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2024 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2VLBDVW913');
+</script>
+
+
+
+
+  
+</div>
+
+</body>
+</html>

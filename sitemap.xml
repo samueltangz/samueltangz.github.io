@@ -2,10 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
-    <lastmod>2024-01-27T05:30:02+08:00</lastmod>
+    <loc>https://mystiz.hk/tags/crypto/</loc>
+    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/ctf/</loc>
+    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/</loc>
+    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/tetctf/</loc>
+    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/</loc>
+    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
     <lastmod>2024-01-27T05:30:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</loc>
@@ -17,23 +35,11 @@
     <loc>https://mystiz.hk/tags/misc/</loc>
     <lastmod>2024-01-27T05:30:02+08:00</lastmod>
   </url><url>
-    <loc>https://mystiz.hk/</loc>
-    <lastmod>2024-01-27T05:30:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/posts/</loc>
-    <lastmod>2024-01-27T05:30:02+08:00</lastmod>
-  </url><url>
     <loc>https://mystiz.hk/tags/pwn/</loc>
     <lastmod>2024-01-27T05:30:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/reverse/</loc>
     <lastmod>2024-01-27T05:30:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
-    <lastmod>2024-01-27T05:30:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/crypto/</loc>
-    <lastmod>2024-01-27T05:30:01+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-2/</loc>
     <lastmod>2024-01-27T05:30:01+08:00</lastmod>
@@ -345,9 +351,6 @@
     <lastmod>2021-01-18T22:00:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/discrete-logarithm/</loc>
-    <lastmod>2021-01-03T13:39:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/tetctf/</loc>
     <lastmod>2021-01-03T13:39:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2021/2021-01-03-tetctf-unevaluated/</loc>
