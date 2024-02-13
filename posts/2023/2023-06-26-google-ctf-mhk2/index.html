@@ -245,22 +245,29 @@ $$\left\{\begin{aligned}
 <p>$$\left[\begin{matrix} x_{i0}\ \text{mod}\ a_{i0} &amp; s_{i1} \cdot x_{i0} - s_{i0} \cdot x_{i1} &amp; \cdots &amp; s_{in} \cdot x_{i0} - s_{i0} \cdot x_{in}  &amp; 0 &amp; \cdots &amp; 0 \end{matrix}\right].$$</p>
 <p>From $x_{i0} \ \text{mod} \ a_{i0}$, we can retrieve few candidates of $x_{i0}$. Following that, we can obtain $p_i$ and $e_i$. Repeat for $i = 1, 2$ and we can recover the secret key. We can easily decrypt the flag with the secret key.</p>
 <h3 id="an-oversight">An oversight<a href="#an-oversight" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<p>To encrypt one bit in the actual MHK2 cryptosystem, we should be checking the below congruence instead of $\sum_j c_j r_{1j} = \sum_j c_j r_{2j}$:</p>
-<p>$$\sum_j c_j r_{1j} \equiv \sum_j c_j r_{2j} \ (\text{mod}\ 2)$$</p>
-<hr>
-<ul>
-<li><a href="https://discord.com/channels/692694094111309866/744261335826563145/1122592671488278528">https://discord.com/channels/692694094111309866/744261335826563145/1122592671488278528</a>:
-vishiswoz:
-but then @Quasar noticed that you only care when A1/A2 is odd, cause when it&rsquo;s even (b1/b2 is 0) the randomness doesn&rsquo;t matter so it doesn&rsquo;t really affect the bit value you recover
-so i only threw in half of a1 basically and that finished</li>
-<li><a href="https://d33b4t0.com/equivalent/">https://d33b4t0.com/equivalent/</a> (for MHK)</li>
-<li><a href="https://discord.com/channels/984515980766109716/1120323829303083079/1122608033789399191">https://discord.com/channels/984515980766109716/1120323829303083079/1122608033789399191</a>:
-winger:
-just solve for r1, r2 with one lattice and add a constraint for dot product with c</li>
-<li><a href="https://discord.com/channels/692694094111309866/744261335826563145/1122782020733521922">https://discord.com/channels/692694094111309866/744261335826563145/1122782020733521922</a>
-defund: the xor works because you&rsquo;re guaranteed this equality (missing mod 2 that one)</li>
-<li>rbtree&rsquo;s tweet</li>
-</ul>
+<div class="alert danger">
+  🚧 <strong>Work in progress.</strong> This part contains the players' unintended solutions and it is under construction.
+</div>
+
+<!--
+To encrypt one bit in the actual MHK2 cryptosystem, we should be checking the below congruence instead of $\sum_j c_j r_{1j} = \sum_j c_j r_{2j}$:
+
+$$\sum_j c_j r_{1j} \equiv \sum_j c_j r_{2j} \ (\text{mod}\ 2)$$
+
+---
+
+- https://discord.com/channels/692694094111309866/744261335826563145/1122592671488278528:
+  vishiswoz:
+  but then @Quasar noticed that you only care when A1/A2 is odd, cause when it's even (b1/b2 is 0) the randomness doesn't matter so it doesn't really affect the bit value you recover
+  so i only threw in half of a1 basically and that finished
+- https://d33b4t0.com/equivalent/ (for MHK)
+- https://discord.com/channels/984515980766109716/1120323829303083079/1122608033789399191:
+  winger:
+  just solve for r1, r2 with one lattice and add a constraint for dot product with c
+- https://discord.com/channels/692694094111309866/744261335826563145/1122782020733521922
+  defund: the xor works because you're guaranteed this equality (missing mod 2 that one)
+- rbtree's tweet
+-->
 
       </div></div>
 
