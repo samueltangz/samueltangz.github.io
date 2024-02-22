@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Intigriti&#39;s XSS Challenge (February 2024) :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I came across with @intigriti&amp;rsquo;s XSS challenge this month. This time we are given a love letter storage system which allow us to show our love to our hacking buddies.
+Challenge Summary Solution Part I: Cross-site scripting on GET /readTestLetter/:uuid From the source code, we can see that GET /readTestLetter/:uuid is the only endpoint that returns the user input with the content type text/html. Let&amp;rsquo;s see how is our data handled:" />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2024/2024-02-23-intigriti-xss/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://mystiz.hk/images/2024-02-23-intigriti-xss/banner.png" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Intigriti&#39;s XSS Challenge (February 2024)">
+<meta property="og:description" content="I came across with @intigriti’s XSS challenge this month. This time we are given a love letter storage system which allow us to show our love to our hacking buddies." />
+<meta property="og:url" content="https://mystiz.hk/posts/2024/2024-02-23-intigriti-xss/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="https://mystiz.hk/images/2024-02-23-intigriti-xss/banner.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2024-02-23 00:00:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2024/2024-02-23-intigriti-xss/">Intigriti&rsquo;s XSS Challenge (February 2024)</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2024-02-23 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/xss/">xss</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/intigriti-challenge/">intigriti-challenge</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+    <img src="https://mystiz.hk/images/2024-02-23-intigriti-xss/banner.png" class="post-cover center" alt="Intigriti&#39;s XSS Challenge (February 2024)" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>I came across with <a href="https://twitter.com/intigriti" target="_blank" rel="nofollow">@intigriti</a>&rsquo;s XSS challenge this month. This time we are given a love letter storage system which allow us to show our love to our hacking buddies.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-cross-site-scripting-on-get-readtestletteruuid">Part I: Cross-site scripting on <code>GET /readTestLetter/:uuid</code><a href="#part-i-cross-site-scripting-on-get-readtestletteruuid" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>From the source code, we can see that <code>GET /readTestLetter/:uuid</code> is the <em>only</em> endpoint that returns the user input with the content type <code>text/html</code>. Let&rsquo;s see how is our data handled:</p>
+
+  <figure class="center" >
+    <img src="/images/2024-02-23-intigriti-xss/debug-letter-flow.png"   />
+    
+  </figure>
+
+
+<p>The challenge uses the latest version of <em>DOMPurify</em> (v3.0.8). I don&rsquo;t think we are supposed to find 0-days in the package. Thus, we assumed that what <em>DOMPurify</em> has sanitized should be safe. If there is a XSS vulnerability, the insecure payload must be generated post-sanitization.</p>
+<p>These are the operations performed to the our message after DOMPurify:</p>
+<ul>
+<li><code>POST /setTestLetter</code>
+<ul>
+<li>converts into a buffer and encodes it in base64, and</li>
+<li>stores to the database as a varchar.</li>
+</ul>
+</li>
+<li><code>GET /readTestLetter/:uuid</code>
+<ul>
+<li>retrieves from the database,</li>
+<li>decodes in base64, and</li>
+<li>renders as a string in ascii encoding.</li>
+</ul>
+</li>
+</ul>
+<p>In short, the vulnerability comes from the conversion to ASCII string from buffer. According to the <a href="https://nodejs.org/docs/latest/api/buffer.html#buffers-and-character-encodings">Node.js documentation</a>, decoding the buffer into an ASCII string would unset the highest bit of each byte. For instance, the word <code>測試</code> is converted to <code>e6 b8 ac e8 a9 a6</code> in buffers. When casted to string using encoding <code>ascii</code>, it became <code>66 38 2c 68 29 26</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">testBuffer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Buffer</span>.<span style="color:#a6e22e">from</span>(<span style="color:#e6db74">&#39;測試&#39;</span>)
+<span style="color:#a6e22e">testBuffer</span>.<span style="color:#a6e22e">toString</span>()
+<span style="color:#75715e">// &#39;測試&#39;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">testBuffer</span>.<span style="color:#a6e22e">toString</span>(<span style="color:#e6db74">&#39;ascii&#39;</span>)
+<span style="color:#75715e">// &#39;f8,h)&amp;&#39;
+</span></code></pre></div><p>Of course, <em>DOMPurify</em> will consider the UTF-8 characters harmless and thus will do nothing to them. We can confess our loves by creating alerts to the recipients with the below message:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">偼script 偾alert(document.domain) //偼/script 偾
+</code></pre></div><div class="alert info">
+  🤔 <strong>Why an alert?</strong> <code>偼</code> and <code>偾</code> are respectively <code>e5 81 bc</code> and <code>e5 81 be</code> in UTF-8. They became <code>e.&lt;</code> (<code>65 01 3c</code>) and <code>e.&gt;</code> (<code>65 01 3e</code>) when decoded in ASCII. Thus it became <code>e.&lt;script e.&gt;alert(document.domain) //e.&lt;/script e.&gt;</code> when somemone retrieves the letter.
+</div>
+
+<h3 id="part-ii-stealing-admins-letter">Part II: Stealing admin&rsquo;s letter<a href="#part-ii-stealing-admins-letter" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now what is left is to craft a payload to steal admin&rsquo;s letter. Notably, there is a &ldquo;contact admin&rdquo; API, where the admin will perform a sequence of tasks with the link we supplied (which needs to be in <code>*.challenge-0224.intigriti.io</code>):</p>
+<ol>
+<li>The admin opens a browser and creates a new tab.</li>
+<li>The admin signs in to their own account.</li>
+<li>The admin visits the webpage we provided.</li>
+<li>The admin closes the page.</li>
+<li>The admin opens a new tab.</li>
+<li>The admin calls <code>GET /user</code> to check if the current user is the admin account. If not, the admin will terminate the session.</li>
+<li>The admin calls <code>GET /getLetterData</code> and see if the &ldquo;intigriti community letter&rdquo; they wrote still exists. If not, he will call <code>POST /storeLetter</code> to create the letter again.</li>
+<li>The admin closes the browser.</li>
+</ol>
+<p>Notably, <code>GET /getLetterData</code> does <em>not</em> contain the letters' content. To read the content of the letters, one has to call <code>POST /readLetterData</code> with their password. Unfortunately, the admin is not typing their password except at the beginning. There is no hope stealing their passwords.</p>
+<p>Another idea that I had is to remove a letter by <code>POST /unsetLetter</code> and make them call <code>POST /storeLetter</code> on our behalf. One thing that had in my mind is to make the admin sign in to our account <em>after</em> they called <code>GET /user</code>.</p>
+<p>Unfortunately, they are closing the tab we serve before they visit <code>GET /user</code>. It seemed that we are unable to defer the sign in process. However, I observed that the admin does <em>not</em> close the additional tabs created by us. If we create an additional tab that could sign in to our own account after a certain amount of time, we are able to let admin to see themselves at <code>GET /user</code>, while calling <code>POST /storeLetter</code> for us. After all, I created two letters and sent the second letter to the admin:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- https://api.challenge-0224.intigriti.io/readTestLetter/a --&gt;</span>
+&lt;<span style="color:#f92672">script</span>&gt;
+<span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#34;/unsetLetter&#34;</span>, {
+  <span style="color:#e6db74">&#34;method&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;POST&#34;</span>,
+  <span style="color:#e6db74">&#34;body&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`{&#34;letterId&#34;:&#34;3&#34;}`</span>,
+  <span style="color:#e6db74">&#34;headers&#34;</span><span style="color:#f92672">:</span> {<span style="color:#e6db74">&#34;content-type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;application/json&#34;</span>}
+})
+<span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#34;/login&#34;</span>, {
+  <span style="color:#e6db74">&#34;method&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;POST&#34;</span>,
+  <span style="color:#e6db74">&#34;body&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`{&#34;username&#34;:&#34;mystiz&#34;,&#34;password&#34;:&#34;asdasdasd&#34;}`</span>,
+  <span style="color:#e6db74">&#34;headers&#34;</span><span style="color:#f92672">:</span> {<span style="color:#e6db74">&#34;content-type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;application/json&#34;</span>}
+}), <span style="color:#ae81ff">4000</span>)
+&lt;/<span style="color:#f92672">script</span>&gt;
+
+<span style="color:#75715e">&lt;!-- https://api.challenge-0224.intigriti.io/readTestLetter/b --&gt;</span>
+&lt;<span style="color:#f92672">script</span>&gt;
+window.<span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;https://api.challenge-0224.intigriti.io/readTestLetter/a&#34;</span>, <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;_blank&#34;</span>)
+&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>After all, we are able to retrieve the admin&rsquo;s letter that confess their love to the community.</p>
+
+  <figure class="center" >
+    <img src="/images/2024-02-23-intigriti-xss/intigriti-community-letter.png"   />
+    
+  </figure>
+
+
+<h2 id="the-after-story">The after story<a href="#the-after-story" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+  <figure class="center" >
+    <img src="/images/2024-02-23-intigriti-xss/intigriti-issue.png"   />
+    
+  </figure>
+
+
+<p>I created a report to the Intigriti team after I retrieve the secret message. I almost became the first solver and could won the swags.</p>
+<p>More importantly, I was told that my solution was partially unintended. The intended solution is to set our authentication cookie with <code>Path=/storeLetter</code>. In this way, the token will <em>only</em> be used at the <code>POST /storeLetter</code> API by the admin. Cookies that activate on specific paths are sneakier since people are able to detect something malicious when the attackers are creating new tabs. Loved this solution!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/">
+                <span class="button__text">TetCTF 2024: adapt</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Intigriti&rsquo;s XSS Challenge (February 2024)
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2024 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2VLBDVW913');
+</script>
+
+
+
+
+  
+</div>
+
+</body>
+</html>

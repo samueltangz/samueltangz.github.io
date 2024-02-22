@@ -6,7 +6,17 @@
     <description>Recent content on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Feb 2024 16:25:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 23 Feb 2024 00:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intigriti&#39;s XSS Challenge (February 2024)</title>
+      <link>https://mystiz.hk/posts/2024/2024-02-23-intigriti-xss/</link>
+      <pubDate>Fri, 23 Feb 2024 00:00:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-02-23-intigriti-xss/</guid>
+      <description>I came across with @intigriti&amp;rsquo;s XSS challenge this month. This time we are given a love letter storage system which allow us to show our love to our hacking buddies.
+Challenge Summary Solution Part I: Cross-site scripting on GET /readTestLetter/:uuid From the source code, we can see that GET /readTestLetter/:uuid is the only endpoint that returns the user input with the content type text/html. Let&amp;rsquo;s see how is our data handled:</description>
+    </item>
+    
     <item>
       <title>TetCTF 2024: adapt</title>
       <link>https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/</link>
