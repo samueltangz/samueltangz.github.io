@@ -6,13 +6,31 @@
     <description>Recent content in Tags on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Feb 2024 00:00:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Jun 2024 02:00:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>challenge-writing</title>
+      <link>https://mystiz.hk/tags/challenge-writing/</link>
+      <pubDate>Mon, 24 Jun 2024 02:00:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/challenge-writing/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>ctf</title>
       <link>https://mystiz.hk/tags/ctf/</link>
-      <pubDate>Fri, 23 Feb 2024 00:00:00 +0800</pubDate>
+      <pubDate>Mon, 24 Jun 2024 02:00:02 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>google-ctf</title>
+      <link>https://mystiz.hk/tags/google-ctf/</link>
+      <pubDate>Mon, 24 Jun 2024 02:00:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/tags/google-ctf/</guid>
       <description></description>
     </item>
     
@@ -49,15 +67,6 @@
       <pubDate>Sat, 03 Feb 2024 16:25:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/tetctf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>challenge-writing</title>
-      <link>https://mystiz.hk/tags/challenge-writing/</link>
-      <pubDate>Sat, 27 Jan 2024 05:30:02 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/challenge-writing/</guid>
       <description></description>
     </item>
     
@@ -139,15 +148,6 @@
       <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
       
       <guid>https://mystiz.hk/tags/b6actf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>google-ctf</title>
-      <link>https://mystiz.hk/tags/google-ctf/</link>
-      <pubDate>Mon, 26 Jun 2023 07:45:00 +0800</pubDate>
-      
-      <guid>https://mystiz.hk/tags/google-ctf/</guid>
       <description></description>
     </item>
     

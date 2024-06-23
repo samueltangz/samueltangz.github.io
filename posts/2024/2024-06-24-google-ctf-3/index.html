@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Google CTF 2024 (III): IDEA :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="IDEA is a challenge written by @0xdeuterium. He even provided me the paper to refer, my only contribution to the challenge is to optimize the original solution so that we don&amp;rsquo;t need 65K-ish oracle calls.
+Challenge Summary  We have a new idea about a cipher which we think may provide pretty good privacy. So bruce for impact as we may patent our new proposed encryption standard.
+Attachment: idea.zip
+ In this challenge, we are asked to break the IDEA cipher with three rounds." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Google CTF 2024 (III): IDEA">
+<meta property="og:description" content="IDEA is a challenge written by @0xdeuterium. He even provided me the paper to refer, my only contribution to the challenge is to optimize the original solution so that we don’t need 65K-ish oracle calls." />
+<meta property="og:url" content="https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/" />
+<meta property="og:site_name" content="Mystify" />
+
+  
+    <meta property="og:image" content="https://mystiz.hk/img/favicon/mystiz.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2024-06-24 02:00:02 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/">Google CTF 2024 (III): IDEA</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2024-06-24 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/google-ctf/">google-ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+  </span>
+  
+
+  
+  <h6 class="post-subtitle">Related key attack on reduced-round IDEA</h6>
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>IDEA is a challenge written by <a href="https://twitter.com/0xdeuterium" target="_blank" rel="nofollow">@0xdeuterium</a>. He even provided me the paper to refer, my only contribution to the challenge is to optimize the original solution so that we don&rsquo;t need 65K-ish oracle calls.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>We have a new idea about a cipher which we think may provide pretty good privacy.
+So bruce for impact as we may patent our new proposed encryption standard.</p>
+<p>Attachment: idea.zip</p>
+</blockquote>
+<p>In this challenge, we are asked to break the IDEA cipher with three rounds. We are given 2024 credits, and there are two operations provided by the server:</p>
+<ol>
+<li>Encrypt a given message under the current key (uses 1 credit).</li>
+<li>Flip a bit, specified by the players, of the key (uses 100 credits).</li>
+</ol>
+<p>The objective is to recover the original key without using up the credits.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="background">Background<a href="#background" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  💰 <strong>The solution is money-saving!</strong> My solution does not require multithreading and could complete within the time limit. We will simply reconnect to the server if there are a lot of possible solutions (in particular after step 3) and hope that there are less false positives with another key.
+</div>
+
+<p>Section 4.2 of J. Kelsey, B. Schneier, D. Wagner&rsquo;s paper<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> has a brief solution on how to recover the key. Our solution intends to optimize the algorithm by reducing the number of ciphertexts required, as well as the running time by using multiple strategies like meet-in-the-middle.</p>
+<p>The below figure shows one round of the IDEA cipher. In our reduced-round scenario, we have $(m_1, m_2, m_3, m_4) = (s_{0, 11}, s_{0, 13}, s_{0, 12}, s_{0, 14})$ and $(c_1, c_2, c_3, c_4) = (s_{4, 1}, s_{4, 2}, s_{4, 3}, s_{4, 4})$ being respectively the plaintext and the ciphertext.</p>
+
+  <figure class="center" >
+    <img src="/images/2024-06-24-google-ctf/idea-one-round.png"   />
+    
+      <figcaption class="right" >One round of the IDEA cipher.</figcaption>
+    
+  </figure>
+
+
+<p>In this writeup, we denote $c^* := \mathcal{E}(K^*, m)$ be the ciphertext of $m$ encrypted with key $K^*$, and $s^*_{i,j}$ as its intermediate values.</p>
+<h3 id="the-key-schedule">The key schedule<a href="#the-key-schedule" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>IDEA uses a 128-bit key (namely $K$) and its subkeys use a contiguous bit segment. The below table shows the bits used for the subkey $k_{i,j}$. As an example, $k_{1, 1}$ uses bit 127 up to 112, inclusive, which is the top 16 bits of $K$; $k_{4, 3}$ uses the lowest 14 bits of $K$ followed by its top two bits.</p>
+<table>
+<thead>
+<tr>
+<th>$i$ \ $j$</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>127...112</td>
+<td>111...96</td>
+<td>95...80</td>
+<td>79...64</td>
+<td>63...48</td>
+<td>47...32</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>31...16</td>
+<td>15...0</td>
+<td>102...87</td>
+<td>86...71</td>
+<td>70...55</td>
+<td>54...39</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>38...23</td>
+<td>22...7</td>
+<td>6...119</td>
+<td>118...103</td>
+<td>77...62</td>
+<td>61...46</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>45...30</td>
+<td>29...14</td>
+<td>13...126</td>
+<td>125...110</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>We can view the usage of $K$&rsquo;s bits. For instance, the most significant bit (bit 127) of $K$ will be used by three subkeys: $k_{1, 1}$, $k_{3, 3}$ and $k_{4, 3}$, bit 109 is only used twice, however, by $k_{1, 2}$ and $k_{3, 4}$.</p>
+<h3 id="step-1-recovering-k_4-1-and-k_4-3">Step 1: Recovering $k_{4, 1}$ and $k_{4, 3}$<a href="#step-1-recovering-k_4-1-and-k_4-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To recover $k_{4, 1}$ and $k_{4, 3}$, we can compute:</p>
+<p>$$
+\begin{aligned}
+&amp; c^{(\text{A}, 1)} := \mathcal{E}(K, (0, 0, 0, 0)), \qquad c^{(\text{B}, 1)} := \mathcal{E}(K', (0, 2^{15}, 0, 0)) \\
+&amp; c^{(\text{A}, 2)} := \mathcal{E}(K, (0, 0, 0, 1)), \qquad c^{(\text{B}, 2)} := \mathcal{E}(K', (0, 2^{15}, 0, 1)),
+\end{aligned}
+$$</p>
+<p>where $K' = K \oplus 2^{111}$. As an example, $c^{(\text{A}, 1)}$ is the ciphertext when we encrypt $(0, 0, 0, 0)$ using the default key.</p>
+<p>By flipping bit 111 of the key, only three subkeys would be changed: $k_{1, 2}$, $k_{3, 4}$ and $k_{4, 4}$. In particular, $k'_{1, 2} = k_{1, 2} \oplus 2^{15}$. If we compare the intermediate state for $c^{(\text{A}, i)}$ and $c^{(\text{B}, i)}$, only the values in orange are different:</p>
+
+  <figure class="center" >
+    <img src="/images/2024-06-24-google-ctf/idea-step-1.png"   />
+    
+      <figcaption class="right" >The values that differ when comparing $c^{(\text{A}, i)}$ and $c^{(\text{B}, i)}$ are colored orange.</figcaption>
+    
+  </figure>
+
+
+<p>The values that are in black are the same between the two encryptions. For instance, $s^{(\text{A}, i)}_{3, 1} = s^{(\text{B}, i)}_{3, 1}$ and $s^{(\text{A}, i)}_{3, 5} = s^{(\text{B}, i)}_{3, 5}$. In particular, since $s^{(\text{A}, i)}_{3, 5} = s^{(\text{B}, i)}_{3, 5}$, we have</p>
+<p>$$
+\begin{aligned}
+&amp; (c^{(\text{A}, i)}_1 \odot k_{4,1}^{-1}) \oplus (c^{(\text{A}, i)}_3 \boxminus k_{4,3}) \\
+&amp;\quad = s^{(\text{A}, i)}_{3,11} \oplus s^{(\text{A}, i)}_{3,13} \\
+&amp;\quad = (s^{(\text{A}, i)}_{3, 1} \oplus s^{(\text{A}, i)}_{3, 10}) \oplus (s^{(\text{A}, i)}_{3, 10} \oplus s^{(\text{A}, i)}_{3, 3}) \\
+&amp;\quad = s^{(\text{A}, i)}_{3, 1} \oplus s^{(\text{A}, i)}_{3, 3} = s^{(\text{A}, i)}_{3, 5} = s^{(\text{B}, i)}_{3, 5} = \dots \\
+&amp;\quad = (c^{(\text{B}, i)}_1 \odot k_{4,1}^{-1}) \oplus (c^{(\text{B}, i)}_3 \boxminus k_{4,3}).
+\end{aligned}
+$$</p>
+<p>Therefore we can exhaust $(k_{4,1}, k_{4,3})$ and check if both of the below equalities hold:</p>
+<p>$$
+\begin{aligned}
+&amp; (c^{(\text{A}, 1)}_1 \odot k_{4,1}^{-1}) \oplus (c^{(\text{B}, 1)}_1 \odot k_{4,1}^{-1}) = (c^{(\text{A}, 1)}_3 \boxminus k_{4,3}) \oplus (c^{(\text{B}, 1)}_3 \boxminus k_{4,3}), \\
+&amp; (c^{(\text{A}, 2)}_1 \odot k_{4,1}^{-1}) \oplus (c^{(\text{B}, 2)}_1 \odot k_{4,1}^{-1}) = (c^{(\text{A}, 2)}_3 \boxminus k_{4,3}) \oplus (c^{(\text{B}, 2)}_3 \boxminus k_{4,3})
+\end{aligned}
+$$</p>
+<p>We can optimize the process with the meet-in-the-middle approach by exhausting the both sides using $k_{4,1}$ and $k_{4,3}$ independently. In this way, we can reduce the time complexity from $\mathcal{O}(2^{32})$ to $\mathcal{O}(2^{16})$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step1</span>(rem, candidate_key_list, c1, c2, c3, c4):
+    new_candidate_key_list <span style="color:#f92672">=</span> []
+
+    c1_1, _, c1_3, _ <span style="color:#f92672">=</span> c1 <span style="color:#75715e"># Enc(k,          (0x0000, 0x0000, 0x0000, 0x0000))</span>
+    c2_1, _, c2_3, _ <span style="color:#f92672">=</span> c2 <span style="color:#75715e"># Enc(k ^ 2**111, (0x0000, 0x0000, 0x0000, 0x0000))</span>
+    c3_1, _, c3_3, _ <span style="color:#f92672">=</span> c3 <span style="color:#75715e"># Enc(k,          (0x0000, 0x0000, 0x0000, 0x0001))</span>
+    c4_1, _, c4_3, _ <span style="color:#f92672">=</span> c4 <span style="color:#75715e"># Enc(k ^ 2**111, (0x0000, 0x0000, 0x0000, 0x0001))</span>
+
+    <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> candidate_key_list:
+        middletext_to_k41_map <span style="color:#f92672">=</span> defaultdict(list)
+        <span style="color:#66d9ef">for</span> k41 <span style="color:#f92672">in</span> pk<span style="color:#f92672">.</span>subkeys(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>):
+            s1_3_11 <span style="color:#f92672">=</span> div(c1_1, k41)
+            s2_3_11 <span style="color:#f92672">=</span> div(c2_1, k41)
+            s3_3_11 <span style="color:#f92672">=</span> div(c3_1, k41)
+            s4_3_11 <span style="color:#f92672">=</span> div(c4_1, k41)
+
+            middletext <span style="color:#f92672">=</span> (s1_3_11<span style="color:#f92672">^</span>s2_3_11, s3_3_11<span style="color:#f92672">^</span>s4_3_11)
+            middletext_to_k41_map[middletext]<span style="color:#f92672">.</span>append(k41)
+
+        <span style="color:#66d9ef">for</span> k43 <span style="color:#f92672">in</span> pk<span style="color:#f92672">.</span>subkeys(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>):
+            s1_3_13 <span style="color:#f92672">=</span> sub(c1_3, k43)
+            s2_3_13 <span style="color:#f92672">=</span> sub(c2_3, k43)
+            s3_3_13 <span style="color:#f92672">=</span> sub(c3_3, k43)
+            s4_3_13 <span style="color:#f92672">=</span> sub(c4_3, k43)
+
+            middletext <span style="color:#f92672">=</span> (s1_3_13<span style="color:#f92672">^</span>s2_3_13, s3_3_13<span style="color:#f92672">^</span>s4_3_13)
+            <span style="color:#66d9ef">for</span> k41 <span style="color:#f92672">in</span> middletext_to_k41_map[middletext]:
+                new_pk <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>copy()
+                new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>, k41)
+                new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>, k43)
+                new_candidate_key_list<span style="color:#f92672">.</span>append(pk)
+
+    <span style="color:#66d9ef">return</span> new_candidate_key_list
+</code></pre></div><div class="alert success">
+  📊 <strong>Status:</strong> 32/128 key bits recovered; 2 key bits flipped and 4 ciphertexts computed.
+</div>
+
+<h3 id="step-2-recovering-k_1-1">Step 2: Recovering $k_{1, 1}$<a href="#step-2-recovering-k_1-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now we want to recover $k_{1, 1}$. To do so, we let $K'' = K \oplus 2^{112}$. Now only $k_{1,1}$, $k_{3,4}$ and $k_{4,4}$ differ and $k''_{1,1} = k_{1,1} \oplus 1$.</p>
+<p>Let $c^{(\text{D})}$ and $c^{(\text{E})}$ be ciphertexts encrypted with key $K$ and $K''$, respectively. This time we want to make $s^{(\text{D})}_{1,1} = s^{(\text{E})}_{1,1}$, i.e., $m^{(\text{D})}_1 \odot k_{1,1} = s^{(\text{D})}_{1,1} = s^{(\text{E})}_{1,1} = m^{(\text{E})}_1 \odot (k_{1,1} \oplus 1)$. We do not have a deterministic way to set $m^{(\text{D})}_1$ and $m^{(\text{E})}_1$ because $k_{1,1}$ is unknown. However, we can obtain</p>
+<p>$$
+c^{(\text{D},i)} := \mathcal{E}(K, (m^{(\text{D})}_{i,1}, 0, 0, 0)) \quad \text{and} \quad c^{(\text{E},j)} := \mathcal{E}(K'', (m^{(\text{E})}_{j,1}, 0, 0, 0)),
+$$</p>
+<p>and check if there exists $i, j$ such that $s_{3,5}^{(\text{D},i)} = s_{3,5}^{(\text{E},j)}$. If that&rsquo;s the case, we have $[\dagger]$:</p>
+<p>$$
+m^{(\text{D})}_{i,1} \odot k_{1,1} = m^{(\text{E})}_{j,1} \odot k''_{1,1} = m^{(\text{E})}_{j,1} \odot (k_{1,1} \oplus 1).
+$$</p>
+<p>We then can effectively recover $k_{1,1}$ since we have $m^{(\text{D})}_{i,1}$ and $m^{(\text{E})}_{j,1}$. However, one question remain: How do we pick $m^{(\text{D})}_i$ and $m^{(\text{E})}_j$? The original paper<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> suggests us to pick $m^{(\text{D})}_{1,1} = 0$ and $m^{(\text{E})}_{j,1} = j$ for $j = 0, 1, &hellip;, 2^{16}-1$, but this requires 65537 oracle calls and we do not have enough credits for that.</p>
+<p>Our approach required 512 calls given by $m^{(\text{D})}_i = (5^{-i}, 0, 0, 0)$ for $i = 0, 1, &hellip;, 256$ and $m^{(\text{E})}_j = (5^{257j}, 0, 0, 0)$ for $j = 0, 1, &hellip;, 254$. Here $a^b$ is given by</p>
+<p>$$
+a^b = \underbrace{a \odot a \odot \dots \odot a}_{b \ a'\text{s}}.
+$$</p>
+<p>We can substitute the above and rearrange $[\dagger]$ to obtain the below equality:</p>
+<p>$$
+k_{1,1} \odot (k_{1,1} \oplus 1)^{-1} = 5^{257j + i}.
+$$</p>
+<p>Since $5$ is a primitive root modulo $65537$ and we have $1, 5, 5^2, &hellip;, 5^{65534}$ on the right hand side, we are guaranteed that we can find $k_{1,1}$ this way.</p>
+<p>Additionally, considering that the two high bits of $k_{1, 1}$ are the two low bits of $k_{4, 3}$, we can filter out some of the keys using the condition <code>(k11&gt;&gt;14) &amp; 0x3 == k43 &amp; 0x3</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step2</span>(rem, candidate_key_list, c5_list, c6_list):
+    new_candidate_key_list <span style="color:#f92672">=</span> []
+
+    m5_1_list <span style="color:#f92672">=</span> [pow(<span style="color:#ae81ff">5</span>, <span style="color:#f92672">-</span>i, <span style="color:#ae81ff">65537</span>) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xffff</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">257</span>)]
+    m6_1_list <span style="color:#f92672">=</span> [pow(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">257</span><span style="color:#f92672">*</span>i, <span style="color:#ae81ff">65537</span>) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xffff</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">255</span>)]
+    
+    <span style="color:#75715e"># solns[x] are the solutions of k such that k / (k^1) = x.</span>
+    <span style="color:#75715e"># this could solve k * x1 == (k^1) * x2, where x = x2/x1</span>
+    solns <span style="color:#f92672">=</span> [[] <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">65536</span>)]
+    <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">65536</span>):
+        solns[div(k, k<span style="color:#f92672">^</span><span style="color:#ae81ff">1</span>)]<span style="color:#f92672">.</span>append(k)
+
+    <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> track(candidate_key_list):
+        middletext_to_m5_1_map <span style="color:#f92672">=</span> defaultdict(list)
+        middletext_to_m6_1_map <span style="color:#f92672">=</span> defaultdict(list)
+
+        k41 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>)
+        k43 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>)
+
+        <span style="color:#66d9ef">for</span> m5_1, c5 <span style="color:#f92672">in</span> zip(m5_1_list, c5_list):
+            c5_1, _, c5_3, _ <span style="color:#f92672">=</span> c5 <span style="color:#75715e"># Enc(k, (m5_1, 0x0000, 0x0000, 0x0000))</span>
+            s5_3_11 <span style="color:#f92672">=</span> div(c5_1, k41)
+            s5_3_13 <span style="color:#f92672">=</span> sub(c5_3, k43)
+
+            middletext <span style="color:#f92672">=</span> s5_3_11 <span style="color:#f92672">^</span> s5_3_13
+            middletext_to_m5_1_map[middletext]<span style="color:#f92672">.</span>append(m5_1)
+
+        <span style="color:#66d9ef">for</span> m6_1, c6 <span style="color:#f92672">in</span> zip(m6_1_list, c6_list):
+            c6_1, _, c6_3, _ <span style="color:#f92672">=</span> c6 <span style="color:#75715e"># Enc(k, (m6_1, 0x0000, 0x0000, 0x0000))</span>
+            s6_3_11 <span style="color:#f92672">=</span> div(c6_1, k41)
+            s6_3_13 <span style="color:#f92672">=</span> sub(c6_3, k43)
+
+            middletext <span style="color:#f92672">=</span> s6_3_11 <span style="color:#f92672">^</span> s6_3_13
+            middletext_to_m6_1_map[middletext]<span style="color:#f92672">.</span>append(m6_1)
+
+        <span style="color:#66d9ef">for</span> middletext <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">16</span>):
+            <span style="color:#66d9ef">for</span> m5_1, m6_1 <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>product(middletext_to_m5_1_map[middletext],
+                                                middletext_to_m6_1_map[middletext]):
+                <span style="color:#66d9ef">for</span> k11 <span style="color:#f92672">in</span> solns[div(m6_1, m5_1)]:
+                    new_pk <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>copy()
+                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, k11): <span style="color:#66d9ef">continue</span>
+                    new_candidate_key_list<span style="color:#f92672">.</span>append(new_pk)
+
+    <span style="color:#66d9ef">return</span> new_candidate_key_list
+</code></pre></div><div class="alert success">
+  📊 <strong>Status:</strong> 46/128 key bits recovered; 4 key bits flipped and 516 ciphertexts computed.
+</div>
+
+<h3 id="step-3-recovering-k_4-2-and-k_4-4">Step 3: Recovering $k_{4, 2}$ and $k_{4, 4}$<a href="#step-3-recovering-k_4-2-and-k_4-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  🧩 <strong>What 2* oracle calls?</strong> The number of oracle calls is twice the number of possible $k_{1, 1}$&rsquo;s we have after step 2. $k_{1, 1}$ is usually unique, but it is probable that there are ten possible $k_{1, 1}$&rsquo;s.
+</div>
+
+<p>Let $K''' = K \oplus 2^{127}$ this time. This time $k_{1, 1}$, $k_{3, 3}$ and $k_{4, 3}$ will be changed, and in particular $k'''_{1, 1} = k_{1, 1} \oplus 2^{15}$. We encrypt two messages with the flipped key:</p>
+<p>$$
+\qquad c^{(\text{C}, 1)} := \mathcal{E}(K''', (m^{(\text{C})}_1, 0, 0, 0)) \quad \text{and} \quad c^{(\text{C}, 2)} := \mathcal{E}(K''', (m^{(\text{C})}_1, 0, 0, 1)).
+$$</p>
+<p>Here $m^{(\text{C}, i)}$ is given by $0 \odot k_{1, 1} \odot (k_{1, 1} \oplus 2^{15})^{-1}$, as we then could have</p>
+<p>$$
+\begin{aligned}
+&amp; s^{(\text{A}, i)}_{1, 1} = m^{(\text{A}, i)}_1 \odot k_{1, 1} = 0 \odot k_{1, 1} \\
+&amp; \quad = \left[0 \odot k_{1, 1} \odot (k_{1, 1} \oplus 2^{15})^{-1}\right] \odot (k_{1, 1} \oplus 2^{15}) \\
+&amp; \quad = m^{(\text{C}, i)}_1 \odot (k_{1, 1} \oplus 2^{15}) = s^{(\text{C}, i)}_{1, 1}.
+\end{aligned}
+$$</p>
+<p>Thus only the orange edges in the below figure will be changed.</p>
+
+  <figure class="center" >
+    <img src="/images/2024-06-24-google-ctf/idea-step-3.png"   />
+    
+  </figure>
+
+
+<p>Since $s^{(\text{A}, i)}_{3,6} = s^{(\text{C}, i)}_{3, 6}$, we have</p>
+<p>$$
+\begin{aligned}
+&amp; (c^{(\text{A}, i)}_2 \boxminus k_{4,2}) \oplus (c^{(\text{A}, i)}_4 \odot k_{4,4}^{-1}) \\
+&amp; \quad = s^{(\text{A}, i)}_{3, 12} \oplus s^{(\text{A}, i)}_{3, 14} = s^{(\text{A}, i)}_{3, 6} = s^{(\text{C}, i)}_{3, 6} = \dots \\
+&amp; \quad = (c^{(\text{C}, i)}_2 \boxminus k_{4,2}) \oplus (c^{(\text{C}, i)}_4 \odot k_{4,4}^{-1}).
+\end{aligned}
+$$</p>
+<p>Hence we can obtain a set of possible $(k_{4, 2}, k_{4, 4})$ using MITM, as what we did in step 1.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step3</span>(rem, candidate_key_list, c1, c3):
+    new_candidate_key_list <span style="color:#f92672">=</span> []
+
+    k11_list <span style="color:#f92672">=</span> set(pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> candidate_key_list)
+    rem<span style="color:#f92672">.</span>switch_key(<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">112</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">127</span>)
+
+    k11_to_c7_map <span style="color:#f92672">=</span> defaultdict(<span style="color:#66d9ef">None</span>)
+    k11_to_c8_map <span style="color:#f92672">=</span> defaultdict(<span style="color:#66d9ef">None</span>)
+    <span style="color:#66d9ef">for</span> k11 <span style="color:#f92672">in</span> k11_list:
+        m7_1 <span style="color:#f92672">=</span> div(mul(k11, <span style="color:#ae81ff">0</span>), k11 <span style="color:#f92672">^</span> (<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">15</span>))
+
+        k11_to_c7_map[k11] <span style="color:#f92672">=</span> rem<span style="color:#f92672">.</span>enc(m7_1<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">48</span>)     <span style="color:#75715e"># Enc(k, (m71, 0x0000, 0x0000, 0x0000))</span>
+        k11_to_c8_map[k11] <span style="color:#f92672">=</span> rem<span style="color:#f92672">.</span>enc(m7_1<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">48</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span>) <span style="color:#75715e"># Enc(k, (m71, 0x0000, 0x0000, 0x0001))</span>
+
+    <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> candidate_key_list:
+        k11 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
+
+        k42_list <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkeys(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2</span>)
+        k44_list <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkeys(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>)
+ 
+        c7, c8 <span style="color:#f92672">=</span> k11_to_c7_map[k11], k11_to_c8_map[k11]
+        _, c1_2, _, c1_4 <span style="color:#f92672">=</span> c1
+        _, c3_2, _, c3_4 <span style="color:#f92672">=</span> c3
+        _, c7_2, _, c7_4 <span style="color:#f92672">=</span> c7
+        _, c8_2, _, c8_4 <span style="color:#f92672">=</span> c8
+
+        middletext_to_k42_map <span style="color:#f92672">=</span> defaultdict(list)
+
+        <span style="color:#66d9ef">for</span> k42 <span style="color:#f92672">in</span> k42_list:
+            s1_3_12 <span style="color:#f92672">=</span> sub(c1_2, k42)
+            s3_3_12 <span style="color:#f92672">=</span> sub(c3_2, k42)
+            s7_3_12 <span style="color:#f92672">=</span> sub(c7_2, k42)
+            s8_3_12 <span style="color:#f92672">=</span> sub(c8_2, k42)
+
+            middletext <span style="color:#f92672">=</span> (s1_3_12<span style="color:#f92672">^</span>s7_3_12, s3_3_12<span style="color:#f92672">^</span>s8_3_12)
+            middletext_to_k42_map[middletext]<span style="color:#f92672">.</span>append(k42)
+
+        <span style="color:#66d9ef">for</span> k44 <span style="color:#f92672">in</span> k44_list:
+            s1_3_14 <span style="color:#f92672">=</span> div(c1_4, k44)
+            s3_3_14 <span style="color:#f92672">=</span> div(c3_4, k44)
+            s7_3_14 <span style="color:#f92672">=</span> div(c7_4, k44)
+            s8_3_14 <span style="color:#f92672">=</span> div(c8_4, k44) 
+
+            middletext <span style="color:#f92672">=</span> (s1_3_14<span style="color:#f92672">^</span>s7_3_14, s3_3_14<span style="color:#f92672">^</span>s8_3_14)
+            <span style="color:#66d9ef">for</span> k42 <span style="color:#f92672">in</span> middletext_to_k42_map[middletext]:
+                new_pk <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>copy()
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2</span>, k42): <span style="color:#66d9ef">continue</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>, k44): <span style="color:#66d9ef">continue</span>
+                new_candidate_key_list<span style="color:#f92672">.</span>append(new_pk)
+
+    <span style="color:#66d9ef">return</span> new_candidate_key_list
+</code></pre></div><div class="alert success">
+  📊 <strong>Status:</strong> 64/128 key bits recovered; 6 key bits flipped and 518 ciphertexts computed.
+</div>
+
+<h3 id="step-4-recovering-k_3-5-and-k_3-6">Step 4: Recovering $k_{3, 5}$ and $k_{3, 6}$<a href="#step-4-recovering-k_3-5-and-k_3-6" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  📚 <strong>Note.</strong> From this step onwards, we will make use of the previous calls. No additional encryptions will be needed.
+</div>
+
+<p>In this step, we will make use of $c^{(\text{A}, 1)}, c^{(\text{B}, 1)}, c^{(\text{A}, 2)}$ and $c^{(\text{B}, 2)}$ again.</p>
+<p>Knowing $k_{4, 1}, k_{4, 2}, k_{4, 3}$ and $k_{4, 4}$, we can retrieve $s_{3, 5}$ and $s_{3, 6}$ by</p>
+<p>$$
+\begin{aligned}
+&amp; s_{3, 5} = s_{3, 11} \oplus s_{3, 13} = (c_1 \odot k_{4, 1}^{-1}) \oplus (c_3 \boxminus k_{4, 3}) \\
+&amp; s_{3, 6} = s_{3, 12} \oplus s_{3, 14} = (c_2 \boxminus k_{4, 2}) \oplus (c_4 \odot k_{4, 4}^{-1})
+\end{aligned}
+$$</p>
+<p>We also know that $s^{(\text{A}, i)}_{3, 1} = s^{(\text{B}, i)}_{3, 1}$ for $i = 1, 2$. We can unveil $s_{3, 1}$ if we have $k_{3, 5}$ and $k_{3, 6}$:</p>
+<p>$$
+\begin{aligned}
+&amp; s_{3, 7} = s_{3, 5} \odot k_{3, 5} \\
+&amp; s_{3, 8} = s_{3, 6} \boxplus s_{3, 7} \\
+&amp; s_{3, 10} = s_{3, 8} \odot k_{3, 6} \\
+&amp; s_{3, 1} = s_{3, 10} \oplus s_{3, 11}
+\end{aligned}
+$$</p>
+<p>We will only accept those $(k_{3, 5}, k_{3, 6})$s such that</p>
+<p>$$
+s^{(\text{A}, 1)}_{3, 1} = s^{(\text{B}, 1)}_{3, 1} \quad \text{and} \quad
+s^{(\text{A}, 2)}_{3, 1} = s^{(\text{B}, 2)}_{3, 1}.
+$$</p>
+<p>The above computation required $\mathcal{O}(2^{32})$ and can be optimized. Instead of exhausting $(k_{3, 5}, k_{3, 6})$, we can search for $(s^{(\text{A}, 1)}_{3, 7}, s^{(\text{A}, 1)}_{3, 10})$ instead. Please read the <code>step4_subsolve</code> method below for more details.</p>
+<div class="alert warning">
+  🍝 <strong>Spaghetti code ahead!</strong> I should implement some class methods to retrieve the target intermediate values with breadth-first search or so, instead of computing the values one by one&hellip;
+</div>
+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Return a list of (x, y)&#39;s such that (x + y) ^ [x + (y ^ a)] = b</span>
+<span style="color:#a6e22e">@cache</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step4_subsolve</span>(a, b):
+    solns <span style="color:#f92672">=</span> []
+    <span style="color:#75715e"># Here we use the substitution u = (x + y) ^ b, and</span>
+    <span style="color:#75715e"># perform MITM with (b ^ u) - u = y - (y ^ a).</span>
+    lhs <span style="color:#f92672">=</span> defaultdict(list)
+    <span style="color:#66d9ef">for</span> u <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">16</span>):
+        lhs[sub(xor(b, u), u)]<span style="color:#f92672">.</span>append(u)
+
+    rhs <span style="color:#f92672">=</span> defaultdict(list)
+    <span style="color:#66d9ef">for</span> y <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">16</span>):
+        rhs[sub(y, xor(y, a))]<span style="color:#f92672">.</span>append(y)
+
+    <span style="color:#66d9ef">for</span> v <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">16</span>):
+        <span style="color:#66d9ef">for</span> u, y <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>product(lhs[v], rhs[v]):
+            x <span style="color:#f92672">=</span> sub(xor(b, u), y)
+            solns<span style="color:#f92672">.</span>append((x, y))
+
+    <span style="color:#66d9ef">return</span> solns
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step4</span>(rem, candidate_key_list, c1, c2, c3, c4):
+    new_candidate_key_list <span style="color:#f92672">=</span> []
+
+    c1_1, c1_2, c1_3, c1_4 <span style="color:#f92672">=</span> c1
+    c2_1, c2_2, _,    c2_4 <span style="color:#f92672">=</span> c2
+    c3_1, c3_2, c3_3, c3_4 <span style="color:#f92672">=</span> c3
+    c4_1, c4_2, _,    c4_4 <span style="color:#f92672">=</span> c4
+
+    <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> track(candidate_key_list):
+        k41 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>)
+        k42 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2</span>)
+        k43 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>)
+        k44 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>)
+
+        s1_3_11 <span style="color:#f92672">=</span> div(c1_1, k41)
+        s2_3_11 <span style="color:#f92672">=</span> div(c2_1, k41)
+        s3_3_11 <span style="color:#f92672">=</span> div(c3_1, k41)
+        s4_3_11 <span style="color:#f92672">=</span> div(c4_1, k41)
+
+        s1_3_12 <span style="color:#f92672">=</span> sub(c1_2, k42)
+        s2_3_12 <span style="color:#f92672">=</span> sub(c2_2, k42)
+        s3_3_12 <span style="color:#f92672">=</span> sub(c3_2, k42)
+        s4_3_12 <span style="color:#f92672">=</span> sub(c4_2, k42)
+
+        s1_3_13 <span style="color:#f92672">=</span> sub(c1_3, k43)
+        s3_3_13 <span style="color:#f92672">=</span> sub(c3_3, k43)
+
+        s1_3_14 <span style="color:#f92672">=</span> div(c1_4, k44)
+        s2_3_14 <span style="color:#f92672">=</span> div(c2_4, k44 <span style="color:#f92672">^</span> (<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>))
+        s3_3_14 <span style="color:#f92672">=</span> div(c3_4, k44)
+        s4_3_14 <span style="color:#f92672">=</span> div(c4_4, k44 <span style="color:#f92672">^</span> (<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>))
+
+        s1_3_5 <span style="color:#f92672">=</span> xor(s1_3_11, s1_3_13)
+        s3_3_5 <span style="color:#f92672">=</span> xor(s3_3_11, s3_3_13)
+
+        s1_3_6 <span style="color:#f92672">=</span> xor(s1_3_12, s1_3_14)
+        s2_3_6 <span style="color:#f92672">=</span> xor(s2_3_12, s2_3_14)
+        s3_3_6 <span style="color:#f92672">=</span> xor(s3_3_12, s3_3_14)
+        s4_3_6 <span style="color:#f92672">=</span> xor(s4_3_12, s4_3_14)
+
+        k35_and_k36_list <span style="color:#f92672">=</span> []
+
+        s1_3_7_and_s1_3_10_list <span style="color:#f92672">=</span> step4_subsolve(s1_3_11<span style="color:#f92672">^</span>s2_3_11, s1_3_12<span style="color:#f92672">^</span>s2_3_12)
+        <span style="color:#66d9ef">for</span> s1_3_7, s1_3_10 <span style="color:#f92672">in</span> s1_3_7_and_s1_3_10_list:
+            s1_3_8 <span style="color:#f92672">=</span> add(s1_3_6, s1_3_7)
+
+            k35 <span style="color:#f92672">=</span> div(s1_3_7, s1_3_5)
+            k36 <span style="color:#f92672">=</span> div(s1_3_10, s1_3_8)
+            k35_and_k36_list<span style="color:#f92672">.</span>append((k35, k36))
+
+        <span style="color:#66d9ef">for</span> k35, k36 <span style="color:#f92672">in</span> k35_and_k36_list:
+            <span style="color:#75715e"># Check against the first pair</span>
+            s1_3_7 <span style="color:#f92672">=</span> mul(s1_3_5, k35)
+            s2_3_7 <span style="color:#f92672">=</span> s1_3_7
+
+            s1_3_8 <span style="color:#f92672">=</span> add(s1_3_6, s1_3_7)
+            s2_3_8 <span style="color:#f92672">=</span> add(s2_3_6, s2_3_7)
+ 
+            s1_3_10 <span style="color:#f92672">=</span> mul(s1_3_8, k36)
+            s2_3_10 <span style="color:#f92672">=</span> mul(s2_3_8, k36)
+
+            s1_3_1 <span style="color:#f92672">=</span> xor(s1_3_10, s1_3_11)
+            s2_3_1 <span style="color:#f92672">=</span> xor(s2_3_10, s2_3_11)
+
+            <span style="color:#66d9ef">if</span> s1_3_1 <span style="color:#f92672">!=</span> s2_3_1: <span style="color:#66d9ef">continue</span>
+
+            <span style="color:#75715e"># Check against the second pair</span>
+            s3_3_7 <span style="color:#f92672">=</span> mul(s3_3_5, k35)
+            s4_3_7 <span style="color:#f92672">=</span> s3_3_7
+
+            s3_3_8 <span style="color:#f92672">=</span> add(s3_3_6, s3_3_7)
+            s4_3_8 <span style="color:#f92672">=</span> add(s4_3_6, s4_3_7)
+
+            s3_3_10 <span style="color:#f92672">=</span> mul(s3_3_8, k36)
+            s4_3_10 <span style="color:#f92672">=</span> mul(s4_3_8, k36)
+
+            s3_3_1 <span style="color:#f92672">=</span> xor(s3_3_10, s3_3_11)
+            s4_3_1 <span style="color:#f92672">=</span> xor(s4_3_10, s4_3_11)
+
+            <span style="color:#66d9ef">if</span> s3_3_1 <span style="color:#f92672">!=</span> s4_3_1: <span style="color:#66d9ef">continue</span>
+
+            new_pk <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>copy()
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, k35): <span style="color:#66d9ef">continue</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>, k36): <span style="color:#66d9ef">continue</span>
+            new_candidate_key_list<span style="color:#f92672">.</span>append(new_pk)
+
+    <span style="color:#66d9ef">return</span> new_candidate_key_list
+</code></pre></div><div class="alert success">
+  📊 <strong>Status:</strong> 96/128 key bits recovered.
+</div>
+
+<h3 id="step-5-recovering-k_3-4">Step 5: Recovering $k_{3, 4}$<a href="#step-5-recovering-k_3-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now we have fully recovered $k_{3, 5}, k_{3, 6}, k_{4, 1}, k_{4, 2}, k_{4, 3}$ and $k_{4, 4}$, we are able to further reduce the number of rounds from 3 to 2. With that said, we are able to retrieve $s_{3, 1}, s_{3, 2}, s_{3, 3}$ and $s_{3, 4}$ given a ciphertext.</p>
+<p>To recover $k_{3, 4}$, we will at $c^{(\text{A}, 1)}$ and $c^{(\text{B}, 1)}$ again. We know what $s^{(\text{A}, 1)}_{3, 4}$ and $s^{(\text{B}, 1)}_{3, 4}$ are, as well as $s^{(\text{A}, 1)}_{2, 14} = s^{(\text{B}, 1)}_{2, 14}$. Therefore, we can exhaust $k_{3, 4}$ and look for the cases when the equality holds.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step5</span>(rem, candidate_key_list, c1, c2):
+    new_candidate_key_list <span style="color:#f92672">=</span> []
+
+    c1_1, c1_2, c1_3, c1_4 <span style="color:#f92672">=</span> c1
+    _,    c2_2, _,    c2_4 <span style="color:#f92672">=</span> c2
+
+    <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> candidate_key_list:
+        k35 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>)
+        k36 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>)
+        k41 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>)
+        k42 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2</span>)
+        k43 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>)
+        k44 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>)
+
+        s1_3_11 <span style="color:#f92672">=</span> div(c1_1, k41)
+
+        s1_3_12 <span style="color:#f92672">=</span> sub(c1_2, k42)
+        s2_3_12 <span style="color:#f92672">=</span> sub(c2_2, k42)
+
+        s1_3_13 <span style="color:#f92672">=</span> sub(c1_3, k43)
+
+        s1_3_14 <span style="color:#f92672">=</span> div(c1_4, k44)
+        s2_3_14 <span style="color:#f92672">=</span> div(c2_4, k44 <span style="color:#f92672">^</span> (<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span>))
+
+        s1_3_5 <span style="color:#f92672">=</span> xor(s1_3_11, s1_3_13)
+        s2_3_5 <span style="color:#f92672">=</span> s1_3_5
+
+        s1_3_6 <span style="color:#f92672">=</span> xor(s1_3_12, s1_3_14)
+        s2_3_6 <span style="color:#f92672">=</span> xor(s2_3_12, s2_3_14)
+
+        s1_3_7 <span style="color:#f92672">=</span> mul(s1_3_5, k35)
+
+        <span style="color:#66d9ef">for</span> k34 <span style="color:#f92672">in</span> pk<span style="color:#f92672">.</span>subkeys(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>):
+            s1_3_7 <span style="color:#f92672">=</span> mul(s1_3_5, k35)
+            s2_3_7 <span style="color:#f92672">=</span> mul(s2_3_5, k35)
+
+            s1_3_8 <span style="color:#f92672">=</span> add(s1_3_6, s1_3_7)
+            s2_3_8 <span style="color:#f92672">=</span> add(s2_3_6, s2_3_7)
+
+            s1_3_10 <span style="color:#f92672">=</span> mul(s1_3_8, k36)
+            s2_3_10 <span style="color:#f92672">=</span> mul(s2_3_8, k36)
+
+            s1_3_9 <span style="color:#f92672">=</span> add(s1_3_7, s1_3_10)
+            s2_3_9 <span style="color:#f92672">=</span> add(s2_3_7, s2_3_10)
+
+            s1_3_4 <span style="color:#f92672">=</span> xor(s1_3_9, s1_3_14)
+            s2_3_4 <span style="color:#f92672">=</span> xor(s2_3_9, s2_3_14)
+
+            s1_2_14 <span style="color:#f92672">=</span> div(s1_3_4, k34)
+            s2_2_14 <span style="color:#f92672">=</span> div(s2_3_4, k34 <span style="color:#f92672">^</span> (<span style="color:#ae81ff">1</span><span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">8</span>))
+
+            <span style="color:#66d9ef">if</span> s1_2_14 <span style="color:#f92672">!=</span> s2_2_14: <span style="color:#66d9ef">continue</span>
+
+            new_pk <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>copy()
+            new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, k34)
+            new_candidate_key_list<span style="color:#f92672">.</span>append(new_pk)
+
+    <span style="color:#66d9ef">return</span> new_candidate_key_list
+</code></pre></div><div class="alert success">
+  📊 <strong>Status:</strong> 103/128 key bits recovered.
+</div>
+
+<h3 id="step-6-recovering-k_1-3">Step 6: Recovering $k_{1, 3}$<a href="#step-6-recovering-k_1-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We can use $c^{(\text{A}, 1)}$ to recover $k_{1, 3}$ this time. Up to now, only $k_{1, 2}, k_{1, 3}, k_{1, 4}, k_{2, 3}$ and $k_{2, 4}$ are unknown. Fortunately, we still can recover $s^{(\text{A}, 1)}_{1, 3}$ from its ciphertext. With that, we can obtain $k_{1, 3}$ with $k_{1, 3} = s^{(\text{A}, 1)}_{1, 3} \boxminus m^{(\text{A}, 1)}_3 = s^{(\text{A}, 1)}_{1, 3}$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step6</span>(rem, candidate_key_list, c1):
+    new_candidate_key_list <span style="color:#f92672">=</span> []
+
+    m1_1, _,    m1_3, _    <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000</span>, <span style="color:#ae81ff">0x0000</span>, <span style="color:#ae81ff">0x0000</span>, <span style="color:#ae81ff">0x0000</span>
+    c1_1, c1_2, c1_3, c1_4 <span style="color:#f92672">=</span> c1
+
+    <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> candidate_key_list:
+        k11 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
+        k21 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>)
+        <span style="color:#75715e"># omitted for brevity...</span>
+        k43 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>)
+        k44 <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>subkey(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>)
+
+        s1_3_11 <span style="color:#f92672">=</span> div(c1_1, k41)
+        s1_3_12 <span style="color:#f92672">=</span> sub(c1_2, k42)
+        <span style="color:#75715e"># omitted for brevity...</span>
+        s1_1_13 <span style="color:#f92672">=</span> sub(s1_2_2, k22)
+        s1_1_3 <span style="color:#f92672">=</span> xor(s1_1_10, s1_1_13)
+
+        k13 <span style="color:#f92672">=</span> sub(s1_1_3, m1_3)
+
+        new_pk <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>copy()
+        new_pk<span style="color:#f92672">.</span>set_subkey(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, k13)
+        new_candidate_key_list<span style="color:#f92672">.</span>append(new_pk)
+
+    <span style="color:#66d9ef">return</span> new_candidate_key_list
+</code></pre></div><div class="alert success">
+  📊 <strong>Status:</strong> 119/128 key bits recovered.
+</div>
+
+<h3 id="step-7-recovering-the-entire-key">Step 7: Recovering the entire key!<a href="#step-7-recovering-the-entire-key" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>At this moment, only nine bits of $K$ are unknown. We can simply exhaust the possible keys and check if $(0, 0, 0, 0)$ encrypts to $c^{(\text{A}, 1)}$, as well as $(0, 0, 0, 1)$ encrypts to $c^{(\text{A}, 2)}$. It is very likely that the $K$ recovered is unique. With the key recovered, we can send that to retrieve our flag: <code>CTF{we_have_no_idea_on_related_key_attacks}</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">step7</span>(rem, candidate_key_list, c1, c3):
+    new_candidate_key_list <span style="color:#f92672">=</span> []
+
+    m1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000_0000_0000_0000</span>
+    m3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000_0000_0000_0001</span>
+
+    <span style="color:#66d9ef">for</span> pk <span style="color:#f92672">in</span> candidate_key_list:
+        <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> pk<span style="color:#f92672">.</span>keys:
+            cipher <span style="color:#f92672">=</span> IDEA(key, rounds<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
+            <span style="color:#66d9ef">if</span> split_chunks(cipher<span style="color:#f92672">.</span>encrypt(m1)) <span style="color:#f92672">!=</span> c1: <span style="color:#66d9ef">continue</span>
+            <span style="color:#66d9ef">if</span> split_chunks(cipher<span style="color:#f92672">.</span>encrypt(m3)) <span style="color:#f92672">!=</span> c3: <span style="color:#66d9ef">continue</span>
+
+            new_pk <span style="color:#f92672">=</span> pk<span style="color:#f92672">.</span>copy()
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> new_pk<span style="color:#f92672">.</span>set_key(key): <span style="color:#66d9ef">continue</span>
+            new_candidate_key_list<span style="color:#f92672">.</span>append(new_pk)
+
+    <span style="color:#66d9ef">return</span> new_candidate_key_list
+</code></pre></div><div class="alert success">
+  🎉 <strong>Status:</strong> 128/128 key bits recovered.
+</div>
+
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>J. Kelsey, B. Schneier, D. Wagner (2016). &ldquo;Key-Schedule Cryptanalysis of IDEA, G-DES, GOST, SAFER, and Triple-DES&rdquo; <br><a href="https://www.schneier.com/wp-content/uploads/2016/02/paper-key-schedule.pdf">https://www.schneier.com/wp-content/uploads/2016/02/paper-key-schedule.pdf</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2024/2024-06-24-google-ctf-2/">
+                <span class="button__text">Google CTF 2024 (II): ZKPOK</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    Google CTF 2024 (III): IDEA
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2024 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2VLBDVW913');
+</script>
+
+
+
+
+  
+</div>
+
+</body>
+</html>

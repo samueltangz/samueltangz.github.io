@@ -6,7 +6,40 @@
     <description>Recent content in challenge-writing on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jan 2024 05:30:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/challenge-writing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Jun 2024 02:00:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/challenge-writing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google CTF 2024 (III): IDEA</title>
+      <link>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/</link>
+      <pubDate>Mon, 24 Jun 2024 02:00:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/</guid>
+      <description>IDEA is a challenge written by @0xdeuterium. He even provided me the paper to refer, my only contribution to the challenge is to optimize the original solution so that we don&amp;rsquo;t need 65K-ish oracle calls.
+Challenge Summary  We have a new idea about a cipher which we think may provide pretty good privacy. So bruce for impact as we may patent our new proposed encryption standard.
+Attachment: idea.zip
+ In this challenge, we are asked to break the IDEA cipher with three rounds.</description>
+    </item>
+    
+    <item>
+      <title>Google CTF 2024 (II): ZKPOK</title>
+      <link>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-2/</link>
+      <pubDate>Mon, 24 Jun 2024 02:00:01 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-2/</guid>
+      <description>ZKPOK is a challenge I made while learning Zero Knowledge Proofs on zk-learning.org. I was watching the first lecture video, I came across with the interactive proof for quadratic residues at 20:00. This made me ponder - it should be easy to apply Fiat-Shamir transform to make this non-interactive. Let&amp;rsquo;s also use MD5 so that it could be vulnerable. Hours later, this challenge appeared without a proper solve script.
+Surprisingly, the challenge ended up having three solves, which makes this the least solved challenge in Google CTF 2024.</description>
+    </item>
+    
+    <item>
+      <title>Google CTF 2024 (I): Blinders</title>
+      <link>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-1/</link>
+      <pubDate>Mon, 24 Jun 2024 02:00:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-1/</guid>
+      <description>This is yet another edition of Google CTF, where I wrote some crypto challenges with my colleagues. I contributed on three challenges this time, namely, Blinders, ZKPOK and IDEA. There are respectively 56, 3 and 4 solves (out of 267 teams scoring non-zero flags) during the contest period.
+Blinders is one of the challenges I coauthored, which introduces a protocol for private set membership.
+Challenge Summary  If you are really efficient at guessing which number is missing from {0, 1, &amp;hellip;, 255}, I am more than happy to share you the flag!</description>
+    </item>
+    
     <item>
       <title>HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</title>
       <link>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</link>
