@@ -225,7 +225,7 @@ Note over Client: Knows that id ∈ S if\neid' := eidᵢ for some i.
 
 </div>
 
-<p>Assume that we want to check if $\{2, 3\} \subseteq S$. We can send $\text{eid} := \text{H}(2) + \text{H}(3)$ to the server. The server then responds us with $(\text{eid}_1, \text{eid}_2, &hellip;, \text{eid}_n, \text{deid})$. We then can search for $i, j \in {0, 1, &hellip;, 255}$ such that $\text{eid}_i + \text{eid}_j = \text{deid}$. If such $(i, j)$ exists, we can claim that $\{2, 3\} \subseteq S$.</p>
+<p>Assume that we want to check if $\{2, 3\} \subseteq S$. We can send $\text{eid} := \text{H}(2) + \text{H}(3)$ to the server. The server then responds us with $(\text{eid}_1, \text{eid}_2, &hellip;, \text{eid}_n, \text{deid})$. We then can search for $i, j \in \{1, 2, &hellip;, 256\}$ such that $\text{eid}_i + \text{eid}_j = \text{deid}$. If such $(i, j)$ exists, we can claim that $\{2, 3\} \subseteq S$.</p>
 <h3 id="recover-x-with-only-two-calls">Recover $x$ with only two calls<a href="#recover-x-with-only-two-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>We can send $\text{eid} := \text{H}(2) + \text{H}(4) + &hellip; + \text{H}(256)$ and $\text{eid}' := \text{H}(1) + \text{H}(3) + &hellip; + \text{H}(255)$ to the server. Let $(\text{eid}_1, \text{eid}_2, &hellip;, \text{eid}_{255}, \text{deid})$ and $(\text{eid}'_1, \text{eid}'_2, &hellip;, \text{eid}'_{255}, \text{deid}')$ be the corresponding responses from the server.</p>
 <ol>
@@ -235,7 +235,7 @@ Note over Client: Knows that id ∈ S if\neid' := eidᵢ for some i.
 <p>For instance, we can determine if $x = 15$ by checking whether</p>
 <p>$$(\text{eid}_2 + \text{eid}_4 + &hellip; +\text{eid}_{14}) + (\text{eid}_{15} + \text{eid}_{17} + &hellip; + \text{eid}_{255}) = \text{deid}.$$</p>
 <p>We can likewise learn if $x = 24$ with</p>
-<p>$$(\text{eid}'_1) + \text{eid}'_3 + &hellip; + \text{eid}'_{23}) + (\text{eid}'_{24} + \text{eid}'_{26} + &hellip; + \text{eid}'_{254}) = \text{deid}'.$$</p>
+<p>$$(\text{eid}'_1 + \text{eid}'_3 + &hellip; + \text{eid}'_{23}) + (\text{eid}'_{24} + \text{eid}'_{26} + &hellip; + \text{eid}'_{254}) = \text{deid}'.$$</p>
 <p>Therefore we can recover $x$ with two oracle calls. Repeating the progress 16 times, we have the flag: <code>CTF{pr1v4t3_s3t_m3mb3rsh1p_qu3r135_m3d4_m0r3_p0w3rfu1}</code>.</p>
 
       </div></div>

@@ -201,12 +201,21 @@ So bruce for impact as we may patent our new proposed encryption standard.</p>
 </div>
 
 <p>Section 4.2 of J. Kelsey, B. Schneier, D. Wagner&rsquo;s paper<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> has a brief solution on how to recover the key. Our solution intends to optimize the algorithm by reducing the number of ciphertexts required, as well as the running time by using multiple strategies like meet-in-the-middle.</p>
-<p>The below figure shows one round of the IDEA cipher. In our reduced-round scenario, we have $(m_1, m_2, m_3, m_4) = (s_{0, 11}, s_{0, 13}, s_{0, 12}, s_{0, 14})$ and $(c_1, c_2, c_3, c_4) = (s_{4, 1}, s_{4, 2}, s_{4, 3}, s_{4, 4})$ being respectively the plaintext and the ciphertext.</p>
+<p>The below figure shows one round of the IDEA cipher. In our reduced-round scenario, we have $(m_1, m_2, m_3, m_4) = (s_{0, 11}, s_{0, 13}, s_{0, 12}, s_{0, 14})$ and $(c_1, c_2, c_3, c_4) = (s_{4, 1}, s_{4, 2}, s_{4, 3}, s_{4, 4})$ being respectively the plaintext and the ciphertext. Note that for the last round, we have $s_{3, 12} \boxplus k_{4, 2} = c_2$ and $s_{3, 13} \boxplus k_{4, 3} = c_3$ instead of $s_{3, 13} \boxplus k_{4, 2} = c_2$ and $s_{3, 12} \boxplus k_{4, 3} = c_3$.</p>
 
   <figure class="center" >
     <img src="/images/2024-06-24-google-ctf/idea-one-round.png"   />
     
       <figcaption class="right" >One round of the IDEA cipher.</figcaption>
+    
+  </figure>
+
+
+
+  <figure class="center" >
+    <img src="/images/2024-06-24-google-ctf/idea-last-round.png"   />
+    
+      <figcaption class="right" >The last round of the IDEA cipher. The edges $s_{3, 12}$ and $s_{3, 13}$ are not crossed.</figcaption>
     
   </figure>
 
@@ -266,7 +275,7 @@ So bruce for impact as we may patent our new proposed encryption standard.</p>
 </tbody>
 </table>
 <p>We can view the usage of $K$&rsquo;s bits. For instance, the most significant bit (bit 127) of $K$ will be used by three subkeys: $k_{1, 1}$, $k_{3, 3}$ and $k_{4, 3}$, bit 109 is only used twice, however, by $k_{1, 2}$ and $k_{3, 4}$.</p>
-<h3 id="step-1-recovering-k_4-1-and-k_4-3">Step 1: Recovering $k_{4, 1}$ and $k_{4, 3}$<a href="#step-1-recovering-k_4-1-and-k_4-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="step-1-recovering-k_4-1-and-k_4-3-with-a-bit-flip-and-4-calls">Step 1: Recovering $k_{4, 1}$ and $k_{4, 3}$ with a bit flip and 4 calls<a href="#step-1-recovering-k_4-1-and-k_4-3-with-a-bit-flip-and-4-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>To recover $k_{4, 1}$ and $k_{4, 3}$, we can compute:</p>
 <p>$$
 \begin{aligned}
@@ -337,10 +346,10 @@ $$</p>
 
     <span style="color:#66d9ef">return</span> new_candidate_key_list
 </code></pre></div><div class="alert success">
-  📊 <strong>Status:</strong> 32/128 key bits recovered; 2 key bits flipped and 4 ciphertexts computed.
+  📊 <strong>Status:</strong> 32/128 key bits recovered; 1 key bit flipped and 4 ciphertexts computed.
 </div>
 
-<h3 id="step-2-recovering-k_1-1">Step 2: Recovering $k_{1, 1}$<a href="#step-2-recovering-k_1-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="step-2-recovering-k_1-1-with-2-bit-flips-and-512-calls">Step 2: Recovering $k_{1, 1}$ with 2 bit flips and 512 calls<a href="#step-2-recovering-k_1-1-with-2-bit-flips-and-512-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Now we want to recover $k_{1, 1}$. To do so, we let $K'' = K \oplus 2^{112}$. Now only $k_{1,1}$, $k_{3,4}$ and $k_{4,4}$ differ and $k''_{1,1} = k_{1,1} \oplus 1$.</p>
 <p>Let $c^{(\text{D})}$ and $c^{(\text{E})}$ be ciphertexts encrypted with key $K$ and $K''$, respectively. This time we want to make $s^{(\text{D})}_{1,1} = s^{(\text{E})}_{1,1}$, i.e., $m^{(\text{D})}_1 \odot k_{1,1} = s^{(\text{D})}_{1,1} = s^{(\text{E})}_{1,1} = m^{(\text{E})}_1 \odot (k_{1,1} \oplus 1)$. We do not have a deterministic way to set $m^{(\text{D})}_1$ and $m^{(\text{E})}_1$ because $k_{1,1}$ is unknown. However, we can obtain</p>
 <p>$$
@@ -406,10 +415,10 @@ $$</p>
 
     <span style="color:#66d9ef">return</span> new_candidate_key_list
 </code></pre></div><div class="alert success">
-  📊 <strong>Status:</strong> 46/128 key bits recovered; 4 key bits flipped and 516 ciphertexts computed.
+  📊 <strong>Status:</strong> 46/128 key bits recovered; 3 key bits flipped and 516 ciphertexts computed.
 </div>
 
-<h3 id="step-3-recovering-k_4-2-and-k_4-4">Step 3: Recovering $k_{4, 2}$ and $k_{4, 4}$<a href="#step-3-recovering-k_4-2-and-k_4-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="step-3-recovering-k_4-2-and-k_4-4-with-2-bit-flips-and-2-calls">Step 3: Recovering $k_{4, 2}$ and $k_{4, 4}$ with 2 bit flips and 2* calls<a href="#step-3-recovering-k_4-2-and-k_4-4-with-2-bit-flips-and-2-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <div class="alert warning">
   🧩 <strong>What 2* oracle calls?</strong> The number of oracle calls is twice the number of possible $k_{1, 1}$&rsquo;s we have after step 2. $k_{1, 1}$ is usually unique, but it is probable that there are ten possible $k_{1, 1}$&rsquo;s.
 </div>
