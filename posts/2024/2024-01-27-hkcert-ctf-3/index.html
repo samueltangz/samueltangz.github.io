@@ -8,7 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="We will finally cover the non-crypto challenges that I wrote for HKCERT CTF 2023. This includes one misc (Hackforces), two pwn (ISA Jump Scare &amp;amp; ISA Jogger) and two reverse (The Flag Game &amp;amp; Loot and Scoot) challenges.
 Hackforces Challenge Summary  Do you know Codeforces? Well, what you need is to find a corner case to make the given submission not work.
-Attachment: hackforces.zip
+http://HOST:PORT/
+Attachments: hackforces.zip
  We are given an introductory competitive programming problem (equivalent to Unique Paths II in LeetCode) with its solution implemented in C." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
@@ -191,7 +192,8 @@ Attachment: hackforces.zip
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>Do you know <a href="http://codeforces.com/">Codeforces</a>? Well, what you need is to find a corner case to make the given submission <em>not</em> work.</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/hackforces_c9b284d8311d29dad10b20493e56ff9e.zip">hackforces.zip</a></p>
+<p>http://HOST:PORT/</p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/hackforces_c9b284d8311d29dad10b20493e56ff9e.zip">hackforces.zip</a></p>
 </blockquote>
 <p>We are given an introductory competitive programming problem (equivalent to <a href="https://leetcode.com/problems/unique-paths-ii/">Unique Paths II in LeetCode</a>) with its solution implemented in C.</p>
 <pre tabindex="0"><code class="language-c=" data-lang="c=">#include &lt;stdio.h&gt;
@@ -290,7 +292,7 @@ int main () {
 <p>What is ISA: <a href="https://hackmd.io/@blackb6a/bauhinia-isa">https://hackmd.io/@blackb6a/bauhinia-isa</a></p>
 <p><strong>Note:</strong> There is a guide for this challenge <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2023-i-en-a58d115f39feab46">here</a>.</p>
 <p><strong>Note:</strong> You can find the flag at the file <code>flag.txt</code></p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/isa-jump-scare_9e0b5de4f92acff7b1af96d59cb3503f.zip">isa-jump-scare.zip</a></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/isa-jump-scare_9e0b5de4f92acff7b1af96d59cb3503f.zip">isa-jump-scare.zip</a></p>
 </blockquote>
 <p>In this challenge, we are asked to write a commentless program to read <code>flag.txt</code>. However, there is a catch: There is a checker that validates whether each line of the input program starts with a <code>JMP</code>.</p>
 <h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -347,7 +349,7 @@ JMP SYSCALL
 <p>Web: <a href="http://bauhinia-isa-hwuj66.hkcert23.pwnable.hk:28900/?id=6">http://bauhinia-isa-hwuj66.hkcert23.pwnable.hk:28900/?id=6</a></p>
 <p>What is ISA: <a href="https://hackmd.io/@blackb6a/bauhinia-isa">https://hackmd.io/@blackb6a/bauhinia-isa</a></p>
 <p><strong>Note:</strong> You can find the flag at the file <code>flag.txt</code></p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/isa-jogger_2f0b6c22aa5f1f87770f205016f44a1a.zip">isa-jogger.zip</a></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/isa-jogger_2f0b6c22aa5f1f87770f205016f44a1a.zip">isa-jogger.zip</a></p>
 </blockquote>
 <p>This challenge is similar to <a href="#isa-jump-scare">ISA Jump Scare</a>. Except that we are allowed to use only the <code>MOV</code> instruction instead of the <code>JMP</code> instruction.</p>
 <h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -399,6 +401,7 @@ MOV [R8+0x400587], 0x4c
 <h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>Did you beat The Password Game? Let&rsquo;s beat The Flag Game this time!</p>
+<p>http://HOST:PORT/ (Docker environment available <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/tree/master/01-the-flag-game/env">here</a>)</p>
 </blockquote>
 
   <figure class="center" >
@@ -555,7 +558,8 @@ MOV [R8+0x400587], 0x4c
 <h3 id="challenge-summary-4">Challenge Summary<a href="#challenge-summary-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>Collect the keys and unlock the crypt to the flag.</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/loot-and-scoot_91f788ef9735eb6ba507b61fa313e230.zip">loot-and-scoot.zip</a></p>
+<p>http://HOST:PORT/</p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/loot-and-scoot_91f788ef9735eb6ba507b61fa313e230.zip">loot-and-scoot.zip</a></p>
 </blockquote>
 
   <figure class="center" >
@@ -573,8 +577,8 @@ MOV [R8+0x400587], 0x4c
 
 
   <div class="collapsable-code">
-    <input id="871549362" type="checkbox" checked />
-    <label for="871549362">
+    <input id="985416723" type="checkbox" checked />
+    <label for="985416723">
       <span class="collapsable-code__language">c</span>
       <span class="collapsable-code__title">Source code for game.c</span>
       <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>

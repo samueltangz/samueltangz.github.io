@@ -209,6 +209,12 @@ Similar to the last year, I have a series of three blog posts walking through th
 <p>Cryptography is difficult. It is hard to implement -- every small mistakes would lead to a total break down.</p>
 
 <p>I tried my very best to implement the ElGamal according to the Wikipedia page. What can go wrong?</p>
+
+<p>Solution: <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2022-i-en-3f8a9ef6">https://hackmd.io/@blackb6a/hkcert-ctf-2022-i-en-3f8a9ef6</a></p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/elgamal/public/chall.py">chall.py</a></p>
 </blockquote>
 
 <p>The server will be returning an encrypted flag, $(c_1, c_2)$, every time a player connects to the server. This is the public key used:</p>
@@ -254,6 +260,12 @@ h <span style="color:#f92672">=</span> <span style="color:#ae81ff">6791754741873
 
 <blockquote>
 <p>You need a key to open the door... but what if the key is in the room?</p>
+
+<p>Solution: <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2022-ii-en-6a196795">https://hackmd.io/@blackb6a/hkcert-ctf-2022-ii-en-6a196795</a></p>
+
+<p><a href="http://HOST:PORT/">http://HOST:PORT/</a></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20221111-hkcert-ctf/catch-22/public">catch-22.zip</a></p>
 </blockquote>
 
 <p>We are given a web game. The player can navigate in the map and the goal is to access the flag.</p>
@@ -526,6 +538,8 @@ Ciphertext:  fff21bf4a7d27a027502b1e1a253b35f fff21bf4a7d27a027502b1e1a253b35f</
 <p>People said that base64 is an encoding, not an encryption. Did they have a misconception about that?</p>
 
 <p>If you believe that base64 is just an encoding, then convince me that you are able to &quot;decode&quot; the article (which is in English).</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/base64-encryption/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/base64-encryption/public/message.enc.txt">message.enc.txt</a></p>
 </blockquote>
 
 <p>We are given an 1198-byte message (in English) encoded in base64, except that the charset is shuffled (without a mapping given). The goal is to recover the message.</p>
@@ -700,6 +714,10 @@ Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygfWUGZ6DMQPuBClqKAX35Te9ONhsv2mkp</co
 
 <blockquote>
 <p>Mystiz does not seem to give up using RSA to store his secrets. This time you are even allowed to send arbitrary public exponent, <em>e</em>. Can you unveil the secret flag?</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/rogue-secret-assistant/public/chall.py">chall.py</a></p>
 </blockquote>
 
 <p>When connected to the server, a 2048-bit RSA public exponent $n$ and a 128-character long secret are generated (none of them is given to the players). Players can send three different $e$ such that $e \neq 1$. The message</p>

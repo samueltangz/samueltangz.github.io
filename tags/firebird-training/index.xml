@@ -16,7 +16,7 @@
       <description>This is yet another annual Firebird CTF and I only wrote one cryptography challenge this time, Goldilocks. There were one solve (out of 53 participating teams) during the contest period.
 Challenge Summary  If you think discrete log is too easy, try discrete log log. It is easier.
 nc HOST PORT
-chall.py
+Attachments: chall.py
  In this challenge, we are given primes $p, q$ such that $p = 2q + 1$ and $p$ is 1024 bits.</description>
     </item>
     

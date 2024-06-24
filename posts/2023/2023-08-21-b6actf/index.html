@@ -188,6 +188,8 @@ This post is served as a short writeup of How to Stop Time, a crypto challenge w
 <blockquote>
 <p><em>Good CTF challenges never die. They will be remembered and reused.</em></p>
 <p>Mystiz loves to pay tribute to (i.e., plagarise) challenges. This time he referenced (i.e., copied) code snippets from at least five challenges to build the most unoriginal crypto challenge ever. Also, he is really verbose and there are a lot of red herrings. Can you avoid the rabbit holes and find the vulnerable one(s)?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/blackb6a-ctf-2023-challenges/blob/main/01-how-to-stop-time/public/chall.py">chall.py</a>, <a href="https://github.com/blackb6a/blackb6a-ctf-2023-challenges/blob/main/01-how-to-stop-time/public/mathy.py">mathy.py</a></p>
 </blockquote>
 <p>In this challenge, two 512-bit numbers $g$ and $x$ are generated. We are asked to send a 512-bit prime $q$ such that $p := 4q+1$ is also a prime. After that, we are given $g$ and $h := g^x \ \text{mod}\ p$. Finally, we are asked to send $x'$. If $x = x'$, we consider that as a win.</p>
 <p>If we win 256 times in a row, we will be given the flag.</p>

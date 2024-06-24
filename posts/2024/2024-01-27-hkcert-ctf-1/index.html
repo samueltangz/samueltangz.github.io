@@ -335,7 +335,7 @@ The below is the list of challenges:
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>I implemented the <em>ideal cipher model</em>. Would it be too wasteful if I am using that to encrypt the flag?</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/ideal-cipher_d781f11df15309fecad53314983d36c9.zip">ideal-cipher.zip</a></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/ideal-cipher_d781f11df15309fecad53314983d36c9.zip">ideal-cipher.zip</a></p>
 </blockquote>
 <p>In this challenge, we are given a block cipher, $\mathcal{E}$, implemented with the ideal cipher model. The trimmed flag are encrypted with $\mathcal{E}$ using cipher block chaining (CBC) mode with 13337 different keys. We are given the ciphertext of all the encrypted, trimmed flag. The objective is to recover the flag.</p>
 <h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -430,8 +430,9 @@ The below is the list of challenges:
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>No gib flag? No flag!</p>
+<p><code>nc HOST PORT</code></p>
 <p><strong>Note:</strong> This is a easier version of the <em>Sign me a Flag (II)</em> challenge, and there is a guide for this challenge <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2023-i-en-a58d115f39feab46">here</a>.</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/sign-me-a-flag-i_65fda9e4c67e61ad322c158bf7d5ff9a.zip">sign-me-a-flag-i.zip</a></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/sign-me-a-flag-i_65fda9e4c67e61ad322c158bf7d5ff9a.zip">sign-me-a-flag-i.zip</a></p>
 </blockquote>
 <p>In this challenge, we are given a remote oracle and is allowed to perform the below operations:</p>
 <ol>
@@ -472,8 +473,9 @@ The below is the list of challenges:
 <h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>No gib flag? No flag!</p>
+<p><code>nc HOST PORT</code></p>
 <p><strong>Note:</strong> This is a harder version of the <em>Sign me a Flag (I)</em> challenge.</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/sign-me-a-flag-ii_ee9268d1310ede6d37cd4b5eda18457f.zip">sign-me-a-flag-ii.zip</a></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/sign-me-a-flag-ii_ee9268d1310ede6d37cd4b5eda18457f.zip">sign-me-a-flag-ii.zip</a></p>
 </blockquote>
 <p>This challenge is similar to <em>Sign me a Flag (I)</em>, except that</p>
 <ol>
@@ -575,7 +577,8 @@ We can use this oracle call as a reference for the future.</li>
 <h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>Yet another implementation of Shamir&rsquo;s Secret Sharing. Of course you don&rsquo;t have privileges and can only get one share.</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/solitude_92b66a8882479819f0170a1efa4c8baf.zip">solitude.zip</a></p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/solitude_92b66a8882479819f0170a1efa4c8baf.zip">solitude.zip</a></p>
 </blockquote>
 <p>When connected to the server, an odd number of 1024 bits is generated as the modulus $p$. The server also created a degree-9 polynomial $\text{f}$ with coefficients being $[0, p)$ such that $\text{f}(0) = \text{secret}$. We are only given the value of $p$.</p>
 <p>The user is then asked to send an integer $x$ such that $x \not\equiv 0 \ (\text{mod}\ p)$, and the server will return the corresponding share (i.e., $\text{f}(x)\ \text{mod}\ p$). The goal is to recover $\text{secret}$.</p>

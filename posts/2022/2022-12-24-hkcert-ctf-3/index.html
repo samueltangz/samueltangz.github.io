@@ -8,6 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: Numbers go brrr and Minecraft geoguessr.
 ​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse) Challenge Summary  This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?
+nc HOST PORT
+Attachments: solve.py
  There is a nc service, and we will be given some numbers upon connecting." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
@@ -191,6 +193,10 @@
 
 <blockquote>
 <p>This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/numbers-go-brrr/public/solve.py">solve.py</a></p>
 </blockquote>
 
 <p>There is a <code>nc</code> service, and we will be given some numbers upon connecting. We are asked to send something each time the 🥺 emoji appeared. From the description, we will be given the flag after sending correct responses 100 times.</p>
@@ -378,6 +384,10 @@ x_{m-1} \cdot x_m & \equiv p'' \quad (\text{mod}\ q)
 <p>Note: If you are desperate, you can watch <a href="https://www.youtube.com/watch?v=2KXcQ18JyMs">Rainbolt's most insane geoguessr moments</a>, or <a href="https://www.youtube.com/watch?v=Ekcseve-mOg&amp;list=PLhixgUqwRTjwvBI-hmbZ2rpkAl4lutnJG">LiveOverflow's video series on Minecraft Hacking</a>.</p>
 
 <p>By the way, the map is generated with Minecraft 1.17.1. With that said, you may be unable to look for the better caves.</p>
+
+<p><a href="https://HOST:PORT/">https://HOST:PORT/</a></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/minecraft-geoguessr/public/whereami.png">whereami.png</a></p>
 </blockquote>
 
 <p>We are given a web service that receives 5-tuples $(x, y, z, \theta, \varphi)$ from players, where $x, y, z$ are the coordinates, and $\theta$ and $\varphi$ are respectively the yaw and pitch. We will receive a screenshot taken in the specified location. Also, $-20000 \leq x, z \leq 20000$, $0 \leq y \leq 256$, $-180 \leq \theta \leq 180$, $-90 \leq \varphi \leq 90$.</p>

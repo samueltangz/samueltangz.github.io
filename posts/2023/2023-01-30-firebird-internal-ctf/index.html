@@ -193,7 +193,7 @@ There were 24 teams participating. There were three solves for Randomsum, while 
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>I am leaking random bits of the RSA factors. Who doesn&rsquo;t like leaks?</p>
-<p>Attachment: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/randomsum/public/chall.py">chall.py</a> • <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/randomsum/public/output.txt">output.txt</a></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/randomsum/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/randomsum/public/output.txt">output.txt</a></p>
 </blockquote>
 <p>We are given a 2048-bit RSA modulus $n$, a public exponent $e = 65537$ and an encrypted flag $c$. We are also given $t$, which consists of 2048 bits (1318 distinct bits) from the factors, $p$ and $q$. The objective is to recover the flag.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> Crypto.PublicKey <span style="color:#f92672">import</span> RSA
@@ -283,7 +283,7 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</spa
 <blockquote>
 <p>I hope my account is intact under the hackers' attack!</p>
 <p><code>nc HOST PORT</code></p>
-<p>Attachment: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/chall.py">chall.py</a> • <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/auth.py">auth.py</a> • <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/hacker.py">hacker.py</a></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/auth.py">auth.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/hacker.py">hacker.py</a></p>
 </blockquote>
 <p>We are given an authentication service which allows us to</p>
 <ol>
@@ -485,7 +485,7 @@ r<span style="color:#f92672">.</span>interactive()
 <p>Mystiz, who claimed himself <a href="https://mystiz.hk/posts/2021-03-28-hkcert-ctf/#interesting-flag-submissions-osint-master">not well-known reusing challenges</a>, decided to free-ride and plagarize challenges from HKCERT CTF 2020. Uh, I mean, <a href="https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-2/#freerider--tenet-the-plagarism-crypto">HKCERT CTF 2021</a>. Maybe you can reuse the solve script last year for the flag.</p>
 <p>Ciphertext:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">f84bf7049cb55a0e1457d977e6cfbc0cc49ee1102da505e10aa3c32e619180446617ae2270cba3629b0851ae627236f19bb9cbfcadcd010eb923d170cbc2a7
-</code></pre></div><p>Attachment: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/threerider/public/challenge.py">challenge.py</a></p>
+</code></pre></div><p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/threerider/public/challenge.py">challenge.py</a></p>
 </blockquote>
 <p>Suppose that the flag matches the regular expression <code>firebird\{\w{53}\}</code>. We define an encryption algorithm, $\mathcal{E}$, with a 16-byte key $k_1k_2&hellip;k_{16}$. Let $m$ be the message we would like to encrypt (all of the counters are set to zero):</p>
 <ol>

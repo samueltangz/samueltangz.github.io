@@ -189,6 +189,8 @@ Challenge Summary  Some of the block cipher modes of operation are pretty vulner
 
 <blockquote>
 <p>Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and <em>Zerologon</em> in CFB8... What about OFB?</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/oofbleck/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/oofbleck/public/output.txt">output.txt</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/oofbleck/public/secret.py">secret.py</a></p>
 </blockquote>
 
 <p>In this challenge, we are given a ciphertext encrypted with OFB, and the respective encryption script. The following is the core part of the program.</p>
@@ -251,6 +253,8 @@ firebird{??????? ???????????????? ???????????????? ???????????????? ???}XXXXXXXX
 <p>Can you distinguish ciphertext from RSA with random?</p>
 
 <p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/obvious-transfer/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/obvious-transfer/public/secret.py">secret.py</a></p>
 </blockquote>
 
 <p>We will be given 100 challenges and will win the flag if all of they are all passed. This is how a challenge performed:</p>
@@ -343,6 +347,8 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🤯 
 
 <blockquote>
 <p>Download the binary, <code>nc HOST PORT</code>, execute the binary, win the flag. That is it. Easy? Easy!</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/prooof-ooof-wooork/public/gen">gen</a></p>
 </blockquote>
 
 <p>When connected to the service, we are given 100 commands to be executed. If we can reply all of the output for the commands in 180 seconds, then the service will grant us the flag. <del>If it is more well-planned, I can simply bribe someone with flags to mine bitcoins.</del></p>
@@ -472,6 +478,8 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;🤯 
 <p>The Firebird admins do not want too much crypto challenges, so I am going to label this as a misc challenge. But no worries, you can get part of the flag if you achieve something.</p>
 
 <p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/rc4/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/rc4/public/rc4.py">rc4.py</a></p>
 </blockquote>
 
 <p>Basically we have an netcat service that sends us a 16-byte key $k_1$. The objective is to send another key $k_2$ such that $\text{RC4}_{k_1}(\text{flag}) = \text{RC4}_{k_2}(\text{flag})$. Also, $k_1$ should <em>not</em> be a substring of $k_2$.</p>

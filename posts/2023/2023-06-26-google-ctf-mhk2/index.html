@@ -7,8 +7,9 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="MHK2 is one of the challenges I coauthored for Google CTF 2023 and there were 18 teams solving this challenge during the contest time.
-Challenge Summary This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:
-Generating a keypair  For $i = 1, 2$:  Generate a random sequence $\textbf{s}_i = (s_{i, 1}, s_{i, 2}, &amp;hellip;, s_{i, 256})$ where $0 \leq s_{ij} &amp;lt; 2^{128}$." />
+Challenge Summary  I hid your flag using one of Murakami&amp;rsquo;s knapsacks
+Attachments: MHK2.sage, output.txt
+ This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:" />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/" />
@@ -183,6 +184,10 @@ Generating a keypair  For $i = 1, 2$:  Generate a random sequence $\textbf{s}_i 
   <div class="post-content js-toc-content"><div>
         <p><em>MHK2</em> is one of the challenges I coauthored for Google CTF 2023 and there were 18 teams solving this challenge during the contest time.</p>
 <h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>I hid your flag using one of Murakami&rsquo;s knapsacks</p>
+<p>Attachments: <a href="https://github.com/google/google-ctf/blob/main/2023/quals/crypto-mhk2/attachments/MHK2.sage">MHK2.sage</a>, <a href="https://github.com/google/google-ctf/blob/main/2023/quals/crypto-mhk2/attachments/output.txt">output.txt</a></p>
+</blockquote>
 <p>This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&rsquo;s paper <a href="https://ieeexplore.ieee.org/document/6979893">&ldquo;A knapsack public-key cryptosystem using two random sequences&rdquo;</a>. Below summarizes how a keypair is generated and how a bit is being encrypted:</p>
 <h3 id="generating-a-keypair">Generating a keypair<a href="#generating-a-keypair" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>

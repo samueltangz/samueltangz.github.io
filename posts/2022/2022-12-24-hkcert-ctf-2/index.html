@@ -195,9 +195,11 @@
 <p>Mystiz can't code! He wanted to implement Advanced Encryption Standard (AES) in batch but he couldn't do it correctly.</p>
 
 <p>Anyway, he decided to give up and uploads what he has for now. Since this is implemented based on AES, it should be almost as secure as AES as well?</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/mystiz-cant-code/public/aes.bat">aes.bat</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/mystiz-cant-code/public/transcript.txt">transcript.txt</a></p>
 </blockquote>
 
-<p>We are given a <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/mystiz-cant-code/public/aes.bat">batch script</a> which <em>attempts</em> to implement AES. We are also given two ciphertexts encrypted with the same key (and one of the plaintexts is given).</p>
+<p>We are given a batch script which <em>attempts</em> to implement AES. We are also given two ciphertexts encrypted with the same key (and one of the plaintexts is given).</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Microsoft Windows [Version 10.0.19044.2006]
 (c) Microsoft Corporation. All rights reserved.
 
@@ -330,6 +332,8 @@ C:\Users\mystiz&gt;aes.bat [**REDACTED_KEY**] [**REDACTED_FLAG**]
 <p>Want a challenge in Hong Kong?</p>
 
 <p>Enter the Australia Dairy Company and execute the 379-byte flag generator written in Golang. I bet you will be expelled from the restaurant before the second character of the flag appears.</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/prng/public/flag">flag</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/prng/public/flag.enc">flag.enc</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/prng/public/flag.go">flag.go</a></p>
 </blockquote>
 
 <p>We are given a binary written in Golang (with source code given below), and <code>flag.enc</code>. The objective is to recover the input.</p>
@@ -628,6 +632,10 @@ output <span style="color:#f92672">=</span> []
 
 <blockquote>
 <p>Let's play rock paper scissors securely. Since we are using a commitment scheme, none of us can cheat!</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/king-of-rps/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/king-of-rps/public/client.py">client.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/king-of-rps/public/game.proto">game.proto</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/king-of-rps/public/game_pb2.py">game_pb2.py</a></p>
 </blockquote>
 
 <p>In this challenge, all messages are transmitted via <em>protocol buffers (protobuf)</em>. Messages related to the protocol are given below:</p>

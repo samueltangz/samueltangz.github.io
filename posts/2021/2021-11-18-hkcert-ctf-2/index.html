@@ -202,7 +202,9 @@ Mystiz, who claimed himself not well-known reusing challenges, decided to free-r
 <p>Mystiz, who claimed himself <a href="https://mystiz.hk/posts/2021/2021-03-28-hkcert-ctf/#interesting-flag-submissions-osint-master">not well-known reusing challenges</a>, decided to free-ride and plagarize challenges from HKCERT CTF 2020. Maybe you can reuse the solve script last year for the flag.</p>
 
 <p>Ciphertext:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">6ccb80c46c19243a37633d316a66871ca70ec8a44f48a80134f31d8d27f920c6bd5d810831833221d0f282130d2c222de38c2080ef995b2ad10dc5af8518</code></pre></div></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">6ccb80c46c19243a37633d316a66871ca70ec8a44f48a80134f31d8d27f920c6bd5d810831833221d0f282130d2c222de38c2080ef995b2ad10dc5af8518</code></pre></div>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/tenet-the-plagarism/public/challenge.py">challenge.py</a></p>
+</blockquote>
 
 <p>Suppose that the flag matches the regular expression <code>hkcert21\{\w{35}\}</code>. We define an encryption algorithm, $\mathcal{E}$, with a 16-byte key $k_1k_2...k_{16}$. Let $m$ be the message we would like to encrypt (all of the counters are set to zero):</p>
 
@@ -372,7 +374,11 @@ x0 <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>sol
 <em>去抵抗風化</em></p>
 
 <p><code>AddRoundKey</code>, <code>SubBytes</code>, <code>ShiftRows</code> and <code>MixColumns</code> are four crucial components are AES. They are used to protect the world in 2021. I wonder what will happen if some of them is out of function.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT</code></pre></div></blockquote>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/sratslla-sea/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/sratslla-sea/public/aes.py">aes.py</a></p>
+</blockquote>
 
 <p>We will use the Advanced Encryption Standard (AES) for encryption in the challenge. Let $k_0k_1k_2...k_{15}$ be a 16-byte key and let $K_n := k_nk_nk_nk_n$ for $n = 0, 1, 2, ..., 15$. When connected to the server, $k_0k_1k_2...k_{15}$ is randomly created and we are able to access the below functions for 128 times:</p>
 
@@ -568,7 +574,11 @@ print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</spa
 <em>重新開始我們上多課</em></p>
 
 <p>Okay. My secure authentication system was proved insecure (see <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20201006-hkcert-ctf/sign-in-please">here</a>) as it got exploited last year by a bunch of bad guys. I improved the system and you would not be able to eavesdrop the passwords ever again.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT</code></pre></div></blockquote>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/sign-in-please-again/public/chall.py">chall.py</a></p>
+</blockquote>
 
 <p>Define the below authentication algorithm $\mathcal{P}$. Suppose that a user have a $n$ character-long password, $p_1p_2...p_n$:</p>
 

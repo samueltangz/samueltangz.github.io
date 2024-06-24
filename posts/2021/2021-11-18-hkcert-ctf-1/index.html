@@ -198,6 +198,8 @@ In the first blog post, we will be going through four easier crypto challenges: 
 
 <p>In the beginning of 2020, Khaled A. Nagaty invented a cryptosystem based on key exchange. The cipher is faster than ever... It is impossible to break, right?</p>
 
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/a-joke-cipher/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/a-joke-cipher/public/output.txt">output.txt</a></p>
+
 <p>To solve this challenge, you need to read the source code <code>chall.py</code>. Try to get those questions answered:</p>
 
 <ul>
@@ -235,7 +237,11 @@ In the first blog post, we will be going through four easier crypto challenges: 
 <em>Reason that meant to be</em></p>
 
 <p>Every slightest mistake in cryptography would lead to a disastrous result. Let's see what will happen when you allow end-users to pick the mode of operation...</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  nc HOST PORT</code></pre></div></blockquote>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/freedom/public/chall.py">chall.py</a></p>
+</blockquote>
 
 <p>A 16-byte key and a 16-byte IV is generated when connected to the server. We are able to use each of the below encryption functions once, to encrypt either a given message or the 80-byte flag:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 1. AES-ECB</span>
@@ -307,7 +313,11 @@ cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</sp
 <p><em>Note: This is part one of a two-part series. Part two: <strong>Braceless / Key Backup Service 2</strong>.</em></p>
 
 <p>Mystiz made a key vault which could encrypts his darkest secrets (i.e., the flag). Everything is protected with a bank-level encryption (i.e., a 256-bit key). You are welcome to look at the encrypted secrets and praise his cryptographic knowledge.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  nc HOST PORT</code></pre></div></blockquote>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/key-backup-service-1/public/chall.py">chall.py</a></p>
+</blockquote>
 
 <p>When connected to the server, a 32-byte master secret $x$ is generated. We are able to call the below functions at a total of 17 times:</p>
 
@@ -370,6 +380,8 @@ c_5 \equiv x^{17}\ (\text{mod}\ n_5)
 <p>Mystiz is really lazy. He expects that someone would crack the bank-level encryption, but he doesn't care about that. After all, the darkest secret is not that dark.</p>
 
 <p>He decided to change the numbers and release it to the public again. Now crack it!</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/key-backup-service-2/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/key-backup-service-2/public/transcript.zip">transcript.zip</a></p>
 </blockquote>
 
 <p>The challenge is identical to <em>長話短說 / Key Backup Service I</em>, with three changes:</p>

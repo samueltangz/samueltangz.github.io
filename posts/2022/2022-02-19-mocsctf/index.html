@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="@blackb6a helped preparing some challenges for MOCSCTF, a 8.5-hour long CTF in Macau. This time I wrote nine challenges and @hoifanrd made one of them (3-AES). This blog post covers the intended solution for all of them.
 These are the summary of the challenges:
-   Challenge Name Category Solves     RSA Trio Crypto 2/43   Slightly Informative Crypto 2/43   NP-SHA256 Crypto 1/43   HMAC-SHA256 Crypto 2/43   RC4 Crypto 0/43   HashTable Misc 3/43   Wordle Crypto, Misc 0/43   3-AES Crypto, Misc 0/43   Elementary Reverse 0/43   Redactor Reverse 1/43    RSA Trio (Crypto) Challenge Summary When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated." />
+   Challenge Name Category Solves     RSA Trio Crypto 2/43   Slightly Informative Crypto 2/43   NP-SHA256 Crypto 1/43   HMAC-SHA256 Crypto 2/43   RC4 Crypto 0/43   HashTable Misc 3/43   Wordle Crypto, Misc 0/43   3-AES Crypto, Misc 0/43   Elementary Reverse 0/43   Redactor Reverse 1/43    RSA Trio (Crypto) Challenge Summary  RSA is difficult." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://mystiz.hk/posts/2022/2022-02-19-mocsctf/" />
@@ -257,6 +257,14 @@ These are the summary of the challenges:
 
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
+<blockquote>
+<p>RSA is difficult. What if Rivest, Shamir and Adleman encrypt your message together?</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/rsa-trio/public/chall.py">chall.py</a></p>
+</blockquote>
+
 <p>When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated. Let $n_1 = pq$, $n_2 = qr$ and $n_3 = rp$ and three RSA public keys $(n_1, e)$, $(n_2, e)$, $(n_3, e)$ are constructed (here <code>e = 0b10001</code> and $q &lt; p &lt; r$, i.e., $n_1 &lt; n_2 &lt; n_3$).</p>
 
 <p>Let $\mathcal{E}(m)$ be the encryption function that returns the ciphertext $c$:</p>
@@ -292,6 +300,12 @@ These are the summary of the challenges:
 <h2 id="slightly-informative-crypto">Slightly Informative (Crypto)<a href="#slightly-informative-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>What will happen if I am giving some more information about my RSA key?</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/slightly-informative/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/slightly-informative/public/output.txt">output.txt</a></p>
+</blockquote>
 
 <p>We are given a RSA public key $(n, e)$ with $n = pq$ and a encrypted flag $c$. We are also given $s$ and $t$ such that $d = sp + t$ ($d$ is the private exponent). The objective is to recover the flag.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">n = 104761374953173292488929744863165210794654068795777885288141577481002622221368522222345141465054888216685195323019389786561685227925970380642821816770602985472200153940453825122714968250922188816858014096712757866955919806714643962473332876738158067418215518151671679136192434497079441504252290233276785611599
@@ -347,6 +361,14 @@ t = 7967501076725747803058232903884621217031867311480596291389476854702834454579
 <h2 id="npsha256-crypto">NP-SHA256 (Crypto)<a href="#npsha256-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
 <h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>I have copied a SHA-256 implementation available <a href="https://github.com/keanemind/python-sha-256/blob/master/sha256.py">online</a> while having the padding removed. It is now 0.1% faster without having the security premises broken.</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/np-sha256/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/np-sha256/public/sha256.py">sha256.py</a></p>
+</blockquote>
 
 <p>The challenge copies a Python SHA256 implementation from <a href="https://github.com/keanemind/python-sha-256/blob/370be6eba8c69c8adf8dfd719cd00f0bda752f39/sha256.py"><code>keanemind/Python-SHA-256</code></a> with few lines removed:</p>
 <pre tabindex="0"><code class="language-diff-python&nbsp;diff-highlight" data-lang="diff-python&nbsp;diff-highlight">def generate_hash(message: bytearray) -&gt; bytearray:
@@ -480,6 +502,14 @@ m4 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span
 
 <h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
+<blockquote>
+<p>It is advised to solve NP-SHA256 first. Does it help? I freakly don't know.</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/hmac-sha256/public/chall.py">chall.py</a></p>
+</blockquote>
+
 <p>We are asked to find 64 pairs of $(k, m)$ such that $\text{HMAC-SHA256}_k(m)$ are all equal.</p>
 
 <h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -507,6 +537,14 @@ m4 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span
 
 
 <h3 id="challenge-summary-4">Challenge Summary<a href="#challenge-summary-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>There are many attacks for RC4 on the internet. Maybe you can find one and apply on this challenge (or not).</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/rc4/public/chall.py">chall.py</a></p>
+</blockquote>
 
 <p>When connected to the server, a 16-byte key will be generated for an altered RC4. We can call the below functions for an arbitrary number of times:</p>
 
@@ -568,6 +606,14 @@ m4 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span
 
 <h3 id="challenge-summary-5">Challenge Summary<a href="#challenge-summary-5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
+<blockquote>
+<p>Making CTF challenges is easy -- Copy code from Github, make it vulnerable and the challenge is done. Mystiz has copied a HashTable implementation and it is your turn to read the flag.</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/hashtable/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/hashtable/public/hashtable.py">hashtable.py</a></p>
+</blockquote>
+
 <p>We are given a <a href="https://gist.github.com/Tetsuya3850/fe841bf1f1088fe1f804c189db4c9daf">Python implementation</a> of hash table. There is a server that allows us to interact with the hash table ($k_0$ is a 16-byte secret):</p>
 
 <ol>
@@ -602,6 +648,14 @@ m4 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span
 <h2 id="wordle-crypto-misc">Wordle (Crypto, Misc)<a href="#wordle-crypto-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
 <h3 id="challenge-summary-6">Challenge Summary<a href="#challenge-summary-6" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>You can guess the word in five attempts. But can you guess the word in ONE attempt?</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/wordle/public/chall.py">chall.py</a></p>
+</blockquote>
 
 <p>We are given a server that plays Wordle with us. The words are picked randomly from the <code>Random</code> class defined below (which is a linear congruential generator):</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Random</span>:
@@ -875,6 +929,17 @@ c_1' &:= \text{AESEnc}(\nu \oplus s_1)
 
 <h3 id="challenge-summary-8">Challenge Summary<a href="#challenge-summary-8" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 
+<blockquote>
+<ol>
+<li>Download the program</li>
+<li>Execute the program.</li>
+<li>??</li>
+<li>Profit!</li>
+</ol>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/elementary/public/chall">chall</a></p>
+</blockquote>
+
 <p>We are given a Linux binary that prints the flag slowly. Players are expected to reverse the binary and optimize the algorithm.</p>
 
 <h3 id="solution-8">Solution<a href="#solution-8" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -949,6 +1014,12 @@ c_1' &:= \text{AESEnc}(\nu \oplus s_1)
 <h2 id="redactor-reverse">Redactor (Reverse)<a href="#redactor-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 
 <h3 id="challenge-summary-9">Challenge Summary<a href="#challenge-summary-9" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+<blockquote>
+<p>I don't know, maybe you can run the program during the CTF and get a sense of what's going on.</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/redactor/public/chall.exe">chall.exe</a></p>
+</blockquote>
 
 <p>We are given a <code>.exe</code> file which is suggested to run in the background. Players may observe that the program would redact the flag (or part of the flag) that exists in the clipboard. For example, if one copies the first line from the clipboard, it became the second line after pasting.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">MOCSCTF{what_is_this?}

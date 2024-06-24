@@ -15,7 +15,8 @@
       <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</guid>
       <description>We will finally cover the non-crypto challenges that I wrote for HKCERT CTF 2023. This includes one misc (Hackforces), two pwn (ISA Jump Scare &amp;amp; ISA Jogger) and two reverse (The Flag Game &amp;amp; Loot and Scoot) challenges.
 Hackforces Challenge Summary  Do you know Codeforces? Well, what you need is to find a corner case to make the given submission not work.
-Attachment: hackforces.zip
+http://HOST:PORT/
+Attachments: hackforces.zip
  We are given an introductory competitive programming problem (equivalent to Unique Paths II in LeetCode) with its solution implemented in C.</description>
     </item>
     
@@ -34,7 +35,9 @@ Attachment: hackforces.zip
 You will be Ok
 You will be Ok
 We are here to help validating your flag! Come use our Flag Checker™!
-nc HOST PORT When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag.</description>
+nc HOST PORT
+Attachments: service.c, service
+ When connected to the server, we are asked the name.</description>
     </item>
     
   </channel>

@@ -15,7 +15,8 @@
       <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</guid>
       <description>We will finally cover the non-crypto challenges that I wrote for HKCERT CTF 2023. This includes one misc (Hackforces), two pwn (ISA Jump Scare &amp;amp; ISA Jogger) and two reverse (The Flag Game &amp;amp; Loot and Scoot) challenges.
 Hackforces Challenge Summary  Do you know Codeforces? Well, what you need is to find a corner case to make the given submission not work.
-Attachment: hackforces.zip
+http://HOST:PORT/
+Attachments: hackforces.zip
  We are given an introductory competitive programming problem (equivalent to Unique Paths II in LeetCode) with its solution implemented in C.</description>
     </item>
     
@@ -27,6 +28,7 @@ Attachment: hackforces.zip
       <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-2/</guid>
       <description>In the second part of the series, I will cover four cryptography challenges: baDES, Maybe Someday, Cipher Bridging Service and RSA Triooo. Interestingly, most of them are somehow &amp;ldquo;plagiarized&amp;rdquo; from the other CTFs.
 baDES Challenge Summary  DES, published as an official Federal Information Processing Standard in 1977, is considered bad in 2023. We will slightly change the cipher and attack that together!
+https://HOST:PORT/
 Note: There is a guide for this challenge here.</description>
     </item>
     
@@ -49,6 +51,8 @@ The below is the list of challenges:
       <guid>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/</guid>
       <description>In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: Numbers go brrr and Minecraft geoguessr.
 ​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse) Challenge Summary  This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?
+nc HOST PORT
+Attachments: solve.py
  There is a nc service, and we will be given some numbers upon connecting.</description>
     </item>
     
@@ -88,7 +92,9 @@ This is an index of the challenges I wrote for HKCERT CTF 2022.</description>
 You will be Ok
 You will be Ok
 We are here to help validating your flag! Come use our Flag Checker™!
-nc HOST PORT When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag.</description>
+nc HOST PORT
+Attachments: service.c, service
+ When connected to the server, we are asked the name.</description>
     </item>
     
     <item>
@@ -105,7 +111,9 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 餘生那段旅途
 與哪類人共舞
 When you think reverse engineering is hard, try working on reverse engineering challenges those need your algorithmic thinking skills!
-nc HOST PORT We are given two Python files excerpted below:</description>
+nc HOST PORT
+Attachments: chall.py, lost.py
+ We are given two Python files excerpted below:</description>
     </item>
     
     <item>

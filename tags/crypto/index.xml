@@ -25,6 +25,7 @@ Challenge Summary We are started with an empty immutable AVL (IAVL) tree every c
       <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-2/</guid>
       <description>In the second part of the series, I will cover four cryptography challenges: baDES, Maybe Someday, Cipher Bridging Service and RSA Triooo. Interestingly, most of them are somehow &amp;ldquo;plagiarized&amp;rdquo; from the other CTFs.
 baDES Challenge Summary  DES, published as an official Federal Information Processing Standard in 1977, is considered bad in 2023. We will slightly change the cipher and attack that together!
+https://HOST:PORT/
 Note: There is a guide for this challenge here.</description>
     </item>
     
@@ -48,7 +49,7 @@ The below is the list of challenges:
       <description>This is yet another annual Firebird CTF and I only wrote one cryptography challenge this time, Goldilocks. There were one solve (out of 53 participating teams) during the contest period.
 Challenge Summary  If you think discrete log is too easy, try discrete log log. It is easier.
 nc HOST PORT
-chall.py
+Attachments: chall.py
  In this challenge, we are given primes $p, q$ such that $p = 2q + 1$ and $p$ is 1024 bits.</description>
     </item>
     
@@ -80,8 +81,9 @@ This post is served as a short writeup of How to Stop Time, a crypto challenge w
       
       <guid>https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/</guid>
       <description>MHK2 is one of the challenges I coauthored for Google CTF 2023 and there were 18 teams solving this challenge during the contest time.
-Challenge Summary This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:
-Generating a keypair  For $i = 1, 2$:  Generate a random sequence $\textbf{s}_i = (s_{i, 1}, s_{i, 2}, &amp;hellip;, s_{i, 256})$ where $0 \leq s_{ij} &amp;lt; 2^{128}$.</description>
+Challenge Summary  I hid your flag using one of Murakami&amp;rsquo;s knapsacks
+Attachments: MHK2.sage, output.txt
+ This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:</description>
     </item>
     
     <item>
@@ -154,7 +156,10 @@ lfsr is another crypto challenge in BalsnCTF with 6 solvers.</description>
       
       <guid>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
       <description>This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.
-Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</description>
+Challenge Summary  Leave me your ciphertexts. I will talk to you later.
+nc HOST PORT
+Attachments: chall.py
+ We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$.</description>
     </item>
     
     <item>

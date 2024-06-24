@@ -32,7 +32,9 @@ In this blog post, I will cover two web challenges, @t0nk42&amp;rsquo;s easySSTI
 You will be Ok
 You will be Ok
 We are here to help validating your flag! Come use our Flag Checker™!
-nc HOST PORT When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag.</description>
+nc HOST PORT
+Attachments: service.c, service
+ When connected to the server, we are asked the name.</description>
     </item>
     
     <item>

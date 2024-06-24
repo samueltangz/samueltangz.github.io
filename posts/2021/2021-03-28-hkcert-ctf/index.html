@@ -194,6 +194,8 @@
 
 <blockquote>
 <p>Is your sanity enough? I afraid you are unable to face the upcoming challenges...</p>
+
+<p><a href="http://HOST:PORT">http://HOST:PORT</a></p>
 </blockquote>
 
 <p>In the challenge, there is a web service for player to input his name. After that, there will be a battle between the players and Cthulhu. If the player beats Cthulhu, then he wins the flag. However, the battle logic is performed on the client side. The Docker environment is available <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20201006-hkcert-ctf/sanity-check/env">here</a>.</p>
@@ -224,7 +226,7 @@
 <blockquote>
 <p>Have you ever played Little Fighter 2? I have modified <em>stage.dat</em> to make the game more interesting. Of course, I hid a flag inside, too.</p>
 
-<p><em>Attachment: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20201006-hkcert-ctf/lf2/public/stage.dat">stage.dat</a></em></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20201006-hkcert-ctf/lf2/public/stage.dat">stage.dat</a></p>
 </blockquote>
 
 <p>The <code>stage.dat</code> provided is pretty much the same as the <code>stage.dat</code> given from v2.0a of LF2, except that the first 123 bytes are different.</p>
@@ -322,7 +324,9 @@ d <span style="color:#f92672">=</span> bytes([(d[i] <span style="color:#f92672">
 <blockquote>
 <p>I have implemented a secure authentication system. You can't eavesdrop the passwords, can you?</p>
 
-<p><em>Attachment: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20201006-hkcert-ctf/sign-in-please/public/chall.py">chall.py</a></em></p>
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20201006-hkcert-ctf/sign-in-please/public/chall.py">chall.py</a></p>
 </blockquote>
 
 <p>We are given ten attempts in total for <em>spy</em> or <em>auth</em>. The objective is to recover a 16-byte password $p$.</p>
@@ -368,7 +372,9 @@ permutated_password <span style="color:#f92672">=</span> permute(pbox, password,
 <blockquote>
 <p>I am so excited having a chance talking to Alice. She told me to calm down - and sent me an encrypted secret.</p>
 
-<p><em>Attachment: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20201006-hkcert-ctf/calm-down/public/chall.py">chall.py</a></em></p>
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20201006-hkcert-ctf/calm-down/public/chall.py">chall.py</a></p>
 </blockquote>
 
 <p>We are given a RSA modulus $n$ and a ciphertext $c$ that contains the flag. We are also given an oracle $\mathscr{O}: \mathbb{Z} \rightarrow \{0, 1\}$, where</p>

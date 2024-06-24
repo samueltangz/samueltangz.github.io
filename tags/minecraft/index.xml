@@ -15,6 +15,8 @@
       <guid>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/</guid>
       <description>In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: Numbers go brrr and Minecraft geoguessr.
 ​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse) Challenge Summary  This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?
+nc HOST PORT
+Attachments: solve.py
  There is a nc service, and we will be given some numbers upon connecting.</description>
     </item>
     

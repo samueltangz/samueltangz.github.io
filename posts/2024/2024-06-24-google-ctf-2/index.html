@@ -184,7 +184,8 @@ Surprisingly, the challenge ended up having three solves, which makes this the l
 <h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <blockquote>
 <p>If you know the flag&hellip; you know the flag!</p>
-<p>Attachment: zkpok.zip</p>
+<p><code>nc zkpok.2024.ctfcompetition.com 1337</code></p>
+<p>Attachments: <a href="https://github.com/google/google-ctf/tree/main/2024/quals/crypto-zkpok/attachments">zkpok.zip</a></p>
 </blockquote>
 <p>We are given $n$ and $c$ in <code>param.py</code>, where $c$ is the encrypted flag using the Rabin cryptosystem, with modulus being $n$ (i.e., we have $c = m^2 \ \text{mod}\ n$ with flag $m$).</p>
 <p>On top of that, the goal is to generate a proof $(s_1, s_2, &hellip;, s_{128}, z_1, z_2, &hellip;, z_{128})$ with</p>

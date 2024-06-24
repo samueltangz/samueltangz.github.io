@@ -14,7 +14,10 @@
       
       <guid>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
       <description>This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.
-Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</description>
+Challenge Summary  Leave me your ciphertexts. I will talk to you later.
+nc HOST PORT
+Attachments: chall.py
+ We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$.</description>
     </item>
     
   </channel>

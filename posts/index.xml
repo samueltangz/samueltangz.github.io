@@ -15,8 +15,7 @@
       <guid>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/</guid>
       <description>IDEA is a challenge written by @0xdeuterium. He even provided me the paper to refer, my only contribution to the challenge is to optimize the original solution so that we don&amp;rsquo;t need 65K-ish oracle calls.
 Challenge Summary  We have a new idea about a cipher which we think may provide pretty good privacy. So bruce for impact as we may patent our new proposed encryption standard.
-Attachment: idea.zip
- In this challenge, we are asked to break the IDEA cipher with three rounds.</description>
+nc idea.2024.ctfcompetition.com 1337</description>
     </item>
     
     <item>
@@ -68,7 +67,8 @@ Challenge Summary We are started with an empty immutable AVL (IAVL) tree every c
       <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</guid>
       <description>We will finally cover the non-crypto challenges that I wrote for HKCERT CTF 2023. This includes one misc (Hackforces), two pwn (ISA Jump Scare &amp;amp; ISA Jogger) and two reverse (The Flag Game &amp;amp; Loot and Scoot) challenges.
 Hackforces Challenge Summary  Do you know Codeforces? Well, what you need is to find a corner case to make the given submission not work.
-Attachment: hackforces.zip
+http://HOST:PORT/
+Attachments: hackforces.zip
  We are given an introductory competitive programming problem (equivalent to Unique Paths II in LeetCode) with its solution implemented in C.</description>
     </item>
     
@@ -80,6 +80,7 @@ Attachment: hackforces.zip
       <guid>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-2/</guid>
       <description>In the second part of the series, I will cover four cryptography challenges: baDES, Maybe Someday, Cipher Bridging Service and RSA Triooo. Interestingly, most of them are somehow &amp;ldquo;plagiarized&amp;rdquo; from the other CTFs.
 baDES Challenge Summary  DES, published as an official Federal Information Processing Standard in 1977, is considered bad in 2023. We will slightly change the cipher and attack that together!
+https://HOST:PORT/
 Note: There is a guide for this challenge here.</description>
     </item>
     
@@ -103,7 +104,7 @@ The below is the list of challenges:
       <description>This is yet another annual Firebird CTF and I only wrote one cryptography challenge this time, Goldilocks. There were one solve (out of 53 participating teams) during the contest period.
 Challenge Summary  If you think discrete log is too easy, try discrete log log. It is easier.
 nc HOST PORT
-chall.py
+Attachments: chall.py
  In this challenge, we are given primes $p, q$ such that $p = 2q + 1$ and $p$ is 1024 bits.</description>
     </item>
     
@@ -145,8 +146,9 @@ This post is served as a short writeup of How to Stop Time, a crypto challenge w
       
       <guid>https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/</guid>
       <description>MHK2 is one of the challenges I coauthored for Google CTF 2023 and there were 18 teams solving this challenge during the contest time.
-Challenge Summary This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:
-Generating a keypair  For $i = 1, 2$:  Generate a random sequence $\textbf{s}_i = (s_{i, 1}, s_{i, 2}, &amp;hellip;, s_{i, 256})$ where $0 \leq s_{ij} &amp;lt; 2^{128}$.</description>
+Challenge Summary  I hid your flag using one of Murakami&amp;rsquo;s knapsacks
+Attachments: MHK2.sage, output.txt
+ This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:</description>
     </item>
     
     <item>
@@ -210,6 +212,8 @@ Leaving Hong Kong   The #1 difference for me is I moved from Hong Kong 🇭🇰 
       <guid>https://mystiz.hk/posts/2022/2022-12-24-hkcert-ctf-3/</guid>
       <description>In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: Numbers go brrr and Minecraft geoguessr.
 ​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse) Challenge Summary  This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?
+nc HOST PORT
+Attachments: solve.py
  There is a nc service, and we will be given some numbers upon connecting.</description>
     </item>
     
@@ -261,7 +265,10 @@ lfsr is another crypto challenge in BalsnCTF with 6 solvers.</description>
       
       <guid>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
       <description>This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.
-Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</description>
+Challenge Summary  Leave me your ciphertexts. I will talk to you later.
+nc HOST PORT
+Attachments: chall.py
+ We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$.</description>
     </item>
     
     <item>
@@ -293,7 +300,7 @@ Anyway, I will compile writeups for (at least) three challenges for TSJ CTF, nam
       <guid>https://mystiz.hk/posts/2022/2022-02-19-mocsctf/</guid>
       <description>@blackb6a helped preparing some challenges for MOCSCTF, a 8.5-hour long CTF in Macau. This time I wrote nine challenges and @hoifanrd made one of them (3-AES). This blog post covers the intended solution for all of them.
 These are the summary of the challenges:
-   Challenge Name Category Solves     RSA Trio Crypto 2/43   Slightly Informative Crypto 2/43   NP-SHA256 Crypto 1/43   HMAC-SHA256 Crypto 2/43   RC4 Crypto 0/43   HashTable Misc 3/43   Wordle Crypto, Misc 0/43   3-AES Crypto, Misc 0/43   Elementary Reverse 0/43   Redactor Reverse 1/43    RSA Trio (Crypto) Challenge Summary When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated.</description>
+   Challenge Name Category Solves     RSA Trio Crypto 2/43   Slightly Informative Crypto 2/43   NP-SHA256 Crypto 1/43   HMAC-SHA256 Crypto 2/43   RC4 Crypto 0/43   HashTable Misc 3/43   Wordle Crypto, Misc 0/43   3-AES Crypto, Misc 0/43   Elementary Reverse 0/43   Redactor Reverse 1/43    RSA Trio (Crypto) Challenge Summary  RSA is difficult.</description>
     </item>
     
     <item>
@@ -371,7 +378,9 @@ Warmup edition only. If you are interested to learn the harder edition that invo
 You will be Ok
 You will be Ok
 We are here to help validating your flag! Come use our Flag Checker™!
-nc HOST PORT When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag.</description>
+nc HOST PORT
+Attachments: service.c, service
+ When connected to the server, we are asked the name.</description>
     </item>
     
     <item>
@@ -388,7 +397,9 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 餘生那段旅途
 與哪類人共舞
 When you think reverse engineering is hard, try working on reverse engineering challenges those need your algorithmic thinking skills!
-nc HOST PORT We are given two Python files excerpted below:</description>
+nc HOST PORT
+Attachments: chall.py, lost.py
+ We are given two Python files excerpted below:</description>
     </item>
     
     <item>

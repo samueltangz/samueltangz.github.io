@@ -15,8 +15,7 @@
       <guid>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/</guid>
       <description>IDEA is a challenge written by @0xdeuterium. He even provided me the paper to refer, my only contribution to the challenge is to optimize the original solution so that we don&amp;rsquo;t need 65K-ish oracle calls.
 Challenge Summary  We have a new idea about a cipher which we think may provide pretty good privacy. So bruce for impact as we may patent our new proposed encryption standard.
-Attachment: idea.zip
- In this challenge, we are asked to break the IDEA cipher with three rounds.</description>
+nc idea.2024.ctfcompetition.com 1337</description>
     </item>
     
     <item>
@@ -47,8 +46,9 @@ Challenge Summary  If you are really efficient at guessing which number is missi
       
       <guid>https://mystiz.hk/posts/2023/2023-06-26-google-ctf-mhk2/</guid>
       <description>MHK2 is one of the challenges I coauthored for Google CTF 2023 and there were 18 teams solving this challenge during the contest time.
-Challenge Summary This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:
-Generating a keypair  For $i = 1, 2$:  Generate a random sequence $\textbf{s}_i = (s_{i, 1}, s_{i, 2}, &amp;hellip;, s_{i, 256})$ where $0 \leq s_{ij} &amp;lt; 2^{128}$.</description>
+Challenge Summary  I hid your flag using one of Murakami&amp;rsquo;s knapsacks
+Attachments: MHK2.sage, output.txt
+ This challenge implements the knapsack cryptosystem from Y. Murakami, S. Hamasho and M. Kasahara&amp;rsquo;s paper &amp;ldquo;A knapsack public-key cryptosystem using two random sequences&amp;rdquo;. Below summarizes how a keypair is generated and how a bit is being encrypted:</description>
     </item>
     
     <item>
@@ -68,7 +68,10 @@ In the game, the players control the Security Princess to dodge the obstacles an
       
       <guid>https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/</guid>
       <description>This is the third year I had a writeup on Google CTF (see my writeup in 2020 and 2021). Yet this time it is the official writeup for a challenge - as the challenge author! There are eventually 35 solvers (out of 382 teams) for the challenge.
-Challenge Summary We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$. In each round of $\mathcal{C}$:</description>
+Challenge Summary  Leave me your ciphertexts. I will talk to you later.
+nc HOST PORT
+Attachments: chall.py
+ We are given a public key of Paillier cryptosystem $(n, g)$, and is asked to complete 16 rounds of challenge $\mathcal{C}$.</description>
     </item>
     
     <item>

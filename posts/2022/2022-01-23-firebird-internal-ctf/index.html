@@ -193,6 +193,8 @@ What are the stars? They are the difficulties I estimated when comparing to glob
 
 <blockquote>
 <p>Mystiz's computer is lack of entropy. He needs to reuse randomness to generate the primes for RSA...</p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/lack-of-entropy/public/chall.py">chall.py</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/lack-of-entropy/public/output.txt">output.txt</a></p>
 </blockquote>
 
 <p>We are given a RSA public key $(n, e)$ and an encrypted flag $c$:</p>
@@ -236,6 +238,10 @@ q = a_0 + 10 a_1 + 10^2 a_2 + ...
 
 <blockquote>
 <p>Hash-based authentication is great and I have invented one. Can you prove that my system is secure?</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/authenticator/public/chall.py">chall.py</a></p>
 </blockquote>
 
 <p>Define a protocol $\mathcal{P}$ that is used to authenticates between a client and a server. Suppose that they have a pre-shared password <code>password</code>:</p>
@@ -317,6 +323,10 @@ response_client <span style="color:#f92672">=</span> blake3(password <span style
 
 <blockquote>
 <p>Find a collision for my hash algorithm! It is basically military-graded: The output is 256-bit long, and discrete log is hard! I even made it harder such that you don't even have the public parameters!</p>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/collider/public/chall.py">chall.py</a></p>
 </blockquote>
 
 <p>Define a hash algorithm below:</p>

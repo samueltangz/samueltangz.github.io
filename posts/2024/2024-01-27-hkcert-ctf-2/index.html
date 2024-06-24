@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="In the second part of the series, I will cover four cryptography challenges: baDES, Maybe Someday, Cipher Bridging Service and RSA Triooo. Interestingly, most of them are somehow &amp;ldquo;plagiarized&amp;rdquo; from the other CTFs.
 baDES Challenge Summary  DES, published as an official Federal Information Processing Standard in 1977, is considered bad in 2023. We will slightly change the cipher and attack that together!
+https://HOST:PORT/
 Note: There is a guide for this challenge here." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
@@ -186,8 +187,9 @@ Note: There is a guide for this challenge here." />
 <h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>DES, published as an official Federal Information Processing Standard in 1977, is considered bad in 2023. We will slightly change the cipher and attack that together!</p>
+<p>https://HOST:PORT/</p>
 <p><strong>Note:</strong> There is a guide for this challenge <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2023-ii-en-4e6150a89a1ff32c">here</a>.</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/bades_bb8b71ab412bcd0a330156417ebcaed1.zip">bades.zip</a></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/bades_bb8b71ab412bcd0a330156417ebcaed1.zip">bades.zip</a></p>
 </blockquote>
 <p>In this challenge, we are given an slightly modified <a href="https://en.wikipedia.org/wiki/Data_Encryption_Standard">Data Encryption Standard</a> (denoted by DES'). Additionally, we are given the two oracles:</p>
 <ol>
@@ -260,7 +262,8 @@ c'_1 &amp;= \text{Encrypt}(c_0 \oplus m'_i) = \text{Encrypt}(c_0 \oplus c_0 \opl
 <blockquote>
 <p>Wait, isn&rsquo;t this the challenge from <a href="https://github.com/google/google-ctf/blob/master/2022/quals/crypto-maybe-someday/attachments/chall.py">Google CTF 2022</a>? As the challenge author, Mystiz has even compiled the <a href="https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/">writeup</a>&hellip;</p>
 <p>The source code is slightly different. Never mind.</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/maybe-someday_b5e4076f38ed2292796e72e560bf1846.zip">maybe-someday.zip</a></p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/maybe-someday_b5e4076f38ed2292796e72e560bf1846.zip">maybe-someday.zip</a></p>
 </blockquote>
 <p>A set of Paillier keys is generated when connected to the server. The players are given the public key $(n, g)$. Also, we are also given an encrypted flag, $c_0$, which is padded in PKCS#1v1.5.</p>
 <p>We are given an oracle for ciphertext $c$. The server will decrypt $c$, unpad and send the least significant bit of the message to the player. If there is an exception (for instance, invalid padding), the program would terminate. Finally, the goal is to recover the flag.</p>
@@ -313,7 +316,8 @@ c'_1 &amp;= \text{Encrypt}(c_0 \oplus m'_i) = \text{Encrypt}(c_0 \oplus c_0 \opl
 <h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>I implemented a cipher switching service (totally not the one from <a href="https://mystiz.hk/posts/2022/2022-03-01-tsjctf-1/">TSJ CTF 2022</a>) and served as a bridge between symmetric and asymmetric ciphers. Can you find my secret on the bridge?</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/cipher-bridging-service_b2d435952d9dd4dd458efe1c599a5c85.zip">cipher-bridging-service.zip</a></p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/cipher-bridging-service_b2d435952d9dd4dd458efe1c599a5c85.zip">cipher-bridging-service.zip</a></p>
 </blockquote>
 <p>In this challenge, we are given a &ldquo;cipher bridging service&rdquo;. When connected to the service, a 16-byte AES key and a 2048-bit RSA key are generated. It will be used in the entire connection. Define the four functions:</p>
 <ol>
@@ -390,7 +394,8 @@ c'_1 &amp;= \text{Encrypt}(c_0 \oplus m'_i) = \text{Encrypt}(c_0 \oplus c_0 \opl
 <h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
 <p>Miss the challenges I made? Here comes a remastered version of <a href="https://mystiz.hk/posts/2022/2022-02-19-mocsctf/#rsa-trio-crypto">RSA Trio</a>!</p>
-<p><strong>Attachment:</strong> <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/rsa-trio_c6633be398ad27d740ad8455bc93ecf1.zip">rsa-trio.zip</a></p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/rsa-trio_c6633be398ad27d740ad8455bc93ecf1.zip">rsa-trio.zip</a></p>
 </blockquote>
 <p>When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated. Let $n_1 = pq$, $n_2 = qr$ and $n_3 = rp$ and three RSA public keys $(n_1, e)$, $(n_2, e)$, $(n_3, e)$ are constructed (here <code>e = 65537</code> and $q &lt; p &lt; r$, i.e., $n_1 &lt; n_2 &lt; n_3$).</p>
 <p>Let $\mathcal{E}(m)$ be the encryption function that returns the ciphertext $c$:</p>

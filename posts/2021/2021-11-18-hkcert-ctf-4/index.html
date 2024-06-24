@@ -15,7 +15,9 @@
 You will be Ok
 You will be Ok
 We are here to help validating your flag! Come use our Flag Checker™!
-nc HOST PORT When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag." />
+nc HOST PORT
+Attachments: service.c, service
+ When connected to the server, we are asked the name." />
 <meta name="keywords" content="ctf" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-4/" />
@@ -208,7 +210,11 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 <em>You will be Ok</em></p>
 
 <p>We are here to help validating your flag! Come use our Flag Checker™!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT</code></pre></div></blockquote>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/flag-checker-tm/public/service.c">service.c</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/flag-checker-tm/public/service">service</a></p>
+</blockquote>
 
 <p>When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag. In the each attempt, we are asked to guess the flag (<code>flag</code>) and the MD5 digest of <code>attempt[k]_[guessed_flag]</code> will be stored to <code>ctx.attempts[k]</code>.</p>
 
@@ -435,6 +441,8 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 <p>Mystiz likes PHP most. He has been programming in PHP at the time PHP 5 was released. Time flies and here comes PHP 8. He decided to craft a Docker image as a sandbox... What can go wrong?</p>
 
 <p><a href="http://HOST:PORT/">http://HOST:PORT/</a></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/the-wilderness/public/Dockerfile">Dockerfile</a>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/the-wilderness/public/index.php">index.php</a></p>
 </blockquote>
 
 <p>We are given a PHP file called <code>index.php</code> and a <code>Dockerfile</code>. The below code are their contents, and the goal is to read the flag in the comment of <code>index.php</code>.</p>
@@ -549,7 +557,11 @@ nc HOST PORT When connected to the server, we are asked the name. We are also gi
 <em>在忙亂之中找到勇氣 一片塵埃中起飛</em></p>
 
 <p>Let's speak in math! Of course we can make it harder by encrypting the numbers, too.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nc HOST PORT</code></pre></div></blockquote>
+
+<p><code>nc HOST PORT</code></p>
+
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/potion-of-ciphermath/public/chall.py">chall.py</a></p>
+</blockquote>
 
 <p>When connected to the server, a 512-bit prime $p$ and a secret $x \in [0, p)$ is generated. Denote $\text{Enc}$ be an encryption function that encrypts a number $n \in [0, 2^{512})$ into a 64-byte ciphertext. We can call the below oracles in a total of 4096 times:</p>
 
