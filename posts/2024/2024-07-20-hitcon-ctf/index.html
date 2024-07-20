@@ -261,10 +261,6 @@ $$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hitcon{the_error_is_leaking_some_knowledge}
 </code></pre></div><h2 id="pcbc-revenge">PCBC Revenge<a href="#pcbc-revenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<div class="alert danger">
-  $\text{Encrypt}$ is confusing - block encryption
-</div>
-
 <p>We are given the $\text{Encrypt}$ function, which is based on a custom mode of operation with three keys, $k_0$, $k_1$ and $k_2$. The implementation is given in the Python snippet below:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encrypt</span>(message):
     cipher <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
