@@ -6,7 +6,19 @@
     <description>Recent content in crypto on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Feb 2024 16:25:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Jul 2024 20:10:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HITCON CTF 2024 Writeup</title>
+      <link>https://mystiz.hk/posts/2024/2024-07-20-hitcon-ctf/</link>
+      <pubDate>Sat, 20 Jul 2024 20:10:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2024/2024-07-20-hitcon-ctf/</guid>
+      <description>The crypto challenge authors in HITCON 2024, @maple3142 and @_bronson113 prepared a set of exciting and difficult challenges.
+I collaborated with @thehackerscrew1 as a guest player this time. In this blog post, we will cover three challenges: ZKPoF, PCBC Revenge and Hyper512.
+ZKPoF Challenge Summary This challenge implements the proof-of-knowledge protocol for factoring specified in Poupard and Stern&amp;rsquo;s paper1, where the server and us take turn being the verifier.
+ In the challenge, we have $A = 2^{1000}$ and $B = 2^{80}$.</description>
+    </item>
+    
     <item>
       <title>TetCTF 2024: adapt</title>
       <link>https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/</link>

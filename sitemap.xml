@@ -2,25 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
-    <lastmod>2024-06-24T02:00:02+08:00</lastmod>
+    <loc>https://mystiz.hk/tags/crypto/</loc>
+    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/ctf/</loc>
+    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2024/2024-07-20-hitcon-ctf/</loc>
+    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/hitcon-ctf/</loc>
+    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/</loc>
+    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
     <lastmod>2024-06-24T02:00:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/</loc>
     <lastmod>2024-06-24T02:00:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/google-ctf/</loc>
-    <lastmod>2024-06-24T02:00:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/</loc>
-    <lastmod>2024-06-24T02:00:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/posts/</loc>
-    <lastmod>2024-06-24T02:00:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
     <lastmod>2024-06-24T02:00:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-2/</loc>
@@ -37,9 +46,6 @@
   </url><url>
     <loc>https://mystiz.hk/tags/xss/</loc>
     <lastmod>2024-02-23T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/crypto/</loc>
-    <lastmod>2024-02-03T16:25:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/tetctf/</loc>
     <lastmod>2024-02-03T16:25:00+08:00</lastmod>
