@@ -2,22 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://mystiz.hk/tags/life/</loc>
-    <lastmod>2024-12-31T23:43:00+08:00</lastmod>
+    <loc>https://mystiz.hk/tags/ctf/</loc>
+    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/</loc>
-    <lastmod>2024-12-31T23:43:00+08:00</lastmod>
+    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</loc>
+    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/nuttyshell-ctf/</loc>
+    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/web/</loc>
+    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/life/</loc>
     <lastmod>2024-12-31T23:43:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/retrospective/</loc>
     <lastmod>2024-12-31T23:43:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-12-31-retrospective/</loc>
-    <lastmod>2024-12-31T23:43:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
     <lastmod>2024-12-31T23:43:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/blazctf/</loc>
@@ -27,9 +39,6 @@
     <lastmod>2024-09-28T01:30:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/blockchain/</loc>
-    <lastmod>2024-09-28T01:30:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/ctf/</loc>
     <lastmod>2024-09-28T01:30:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/crypto/</loc>
@@ -123,9 +132,6 @@
     <lastmod>2023-03-29T00:50:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2023/2023-03-29-acsc-1/</loc>
-    <lastmod>2023-03-29T00:50:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/web/</loc>
     <lastmod>2023-03-29T00:50:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/idekctf/</loc>
