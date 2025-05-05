@@ -295,7 +295,7 @@ Implication: Updates the flag memo to visible.</li>
         url: `/api/memo/${id}/approve`,
         type: 'POST',
         data: title,
-</code></pre><p>We want to control <code>id</code> on line 85 so that we could trigger a <code>POST</code> request on <em>siunam</em>&rsquo;s side when he approves a memo. For instance, if we set <code>id</code> to be <code>../username?</code> and the title to <code>{&quot;username&quot;:&quot;AAAAA...AAA&quot;}</code>, he will change his username to <em>AAAAA&hellip;AAA</em> (we will call him <em>A98A</em> for simplicity) to pwner&rsquo;s liking. An example JSON object would be below:</p>
+</code></pre><p>We want to control <code>id</code> on line 85 so that we could trigger a <code>POST</code> request on <em>siunam</em>&rsquo;s side when he approves a memo. For instance, if we set <code>id</code> to <code>../username?</code> and the title to <code>{&quot;username&quot;:&quot;AAAAA...AAA&quot;}</code>, he will change his username to <em>AAAAA&hellip;AAA</em> (we will call him <em>A98A</em> for simplicity) to pwner&rsquo;s liking. An example JSON object would be below:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">[
   {
     <span style="color:#f92672">&#34;approved&#34;</span>: <span style="color:#66d9ef">false</span>,
@@ -331,9 +331,7 @@ Implication: Updates the flag memo to visible.</li>
 </div>
 
 <p>If the username being <code>AAAAA...AA</code> (100 <code>A</code>&rsquo;s) and the password being <code>password</code>, then the preimage would be <code>AAAAA...AA|password</code>. Since the first 72 bytes will be used to compute the hash, the below equality holds:</p>
-<p>$$
-\texttt{bcrypt}(\underbrace{\texttt{AAA&hellip;AA}}_{100\ \texttt{A}\text{&rsquo;s}}\texttt{|password}, salt) = \texttt{bcrypt}(\underbrace{\texttt{AAA&hellip;AA}}_{72\ \texttt{A}\text{&rsquo;s}}, salt)
-$$</p>
+<p>$$\texttt{bcrypt}(\underbrace{\texttt{AAA&hellip;AA}}_{100\ \texttt{A}\text{&rsquo;s}}\texttt{|password}, \text{salt}=🧂) = \texttt{bcrypt}(\underbrace{\texttt{AAA&hellip;AA}}_{72\ \texttt{A}\text{&rsquo;s}}, \text{salt}=🧂)$$</p>
 <p>When we attempt to log in as <em>A98A</em>, the password we provided will also be truncated. Thus we are able to sign in as <em>A98A</em> and to approve memos. Where do we go from here?</p>
 <h3 id="part-iv-broken-authentication">Part IV: Broken authentication<a href="#part-iv-broken-authentication" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Well, although <code>GET /edit</code> would redirect <em>A98A</em> away, the actual API is still usable for editors. <em>A98A</em> could still edit memos and change their visibility. The below snippet for <code>/app/src/api.js</code> shows that <code>/api/memo/:id</code> only redirects guests away, not the editors:</p>
