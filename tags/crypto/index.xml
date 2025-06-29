@@ -6,7 +6,19 @@
     <description>Recent content in crypto on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 29 Jun 2025 15:30:01 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Jun 2025 07:53:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google CTF 2025 Quals Writeup</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-30-google-ctf/</link>
+      <pubDate>Mon, 30 Jun 2025 07:53:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-30-google-ctf/</guid>
+      <description>I wrote two challenges for Google CTF qualifier - Underhanded and Merkurated. There were 17 and 37 solves during the contest time. I will cover both in this blog post.
+Underhanded Challenge Summary  Proudly sharing our Python implementation of AES. By the way, we sneakily hid a backdoor. Can you see sharp and see what went wrong?
+Attachments: underhanded.zip
+ We are given yet another Python implementation of AES.</description>
+    </item>
+    
     <item>
       <title>HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges</title>
       <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-2/</link>
