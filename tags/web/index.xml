@@ -6,7 +6,17 @@
     <description>Recent content in web on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 May 2025 01:27:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Jun 2025 15:30:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2024 Quals Writeup (III): The Web Challenges</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/</link>
+      <pubDate>Sun, 29 Jun 2025 15:30:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/</guid>
+      <description>Surprisingly, I also wrote three series of web challenges this year: Custom Web Server, Mystiz&amp;rsquo;s Mini CTF and ⚡. They are all inspired from the real-life &amp;ndash; either from security reviews or the bugs I came across while developing web apps.
+Custom Web Server (1) Challenge Summary  Someone said: &amp;lsquo;One advantage of having a homemade server is that it becomes much harder to hack.&amp;rsquo; Do you agree? Give reasons.</description>
+    </item>
+    
     <item>
       <title>NuttyShell CTF 2025: memo-ry</title>
       <link>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</link>

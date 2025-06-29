@@ -6,7 +6,19 @@
     <description>Recent content in reverse on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jan 2024 05:30:02 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Jun 2025 15:30:03 +0800</lastBuildDate><atom:link href="https://mystiz.hk/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2024 Quals Writeup (IV): The Reverse Challenges</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-4/</link>
+      <pubDate>Sun, 29 Jun 2025 15:30:03 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-4/</guid>
+      <description>I also wrote some reverse challenges this year: Void, Cyp.ress and Bashed!. We will cover them all in the last part of the blog post.
+Void Challenge Summary  I made a simple webpage that checks whether the flag is correct&amp;hellip; Wait, where are the flag-checking functions?
+ We are given a static webpage (source code here), where it asks us for the flag:
+ The goal is to provide a legit flag.</description>
+    </item>
+    
     <item>
       <title>HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</title>
       <link>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</link>

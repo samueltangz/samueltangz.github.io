@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges :: Mystify</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="In the second part, I will cover the remaining cryptography challenges, including Almost DSA, mAEStro and Mask-mask-RSA.
+Almost DSA Challenge Summary  According to an external auditor, my code implementing the data signature algorithm (DSA) has a one-byte security fix on a critical issue.
+Well, I am not bothered. Convince me by giving me the flag!
+Attachment: almost-dsa_148b8b2cd8c78df02bbdc24bd7fa3f56.zip
+ We are given $(p, q, g)$, the public parameters of the data signature algorithm (DSA)." />
+<meta name="keywords" content="ctf" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-2/" />
+
+
+
+
+<link rel="stylesheet" href="https://mystiz.hk/assets/style.css">
+
+  <link rel="stylesheet" href="https://mystiz.hk/assets/mystiz.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://mystiz.hk/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://mystiz.hk/img/favicon/mystiz.png">
+
+
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="mystiz613" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges">
+<meta property="og:description" content="In the second part, I will cover the remaining cryptography challenges, including Almost DSA, mAEStro and Mask-mask-RSA." />
+<meta property="og:url" content="https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-2/" />
+<meta property="og:site_name" content="Mystify" />
+
+  
+    <meta property="og:image" content="https://mystiz.hk/img/favicon/mystiz.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2025-06-29 15:30:01 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <script data-ad-client="ca-pub-3220069814773012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+</head>
+<body class="mystiz">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Mystify
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about-me">About Me</a></li>
+        
+      
+        
+          <li><a href="/blogroll">Blogroll</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about-me">About Me</a></li>
+      
+    
+      
+        <li><a href="/blogroll">Blogroll</a></li>
+      
+    
+      
+        <li><a href="/crypto-in-ctf">Crypto in CTF</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-2/">HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2025-06-29 
+      </span>
+    
+    
+    <span class="post-author">:: Mystiz</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://mystiz.hk/tags/ctf/">ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/hkcert-ctf/">hkcert-ctf</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/challenge-writing/">challenge-writing</a>&nbsp;
+    
+    #<a href="https://mystiz.hk/tags/crypto/">crypto</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content js-toc-content"><div>
+        <p>In the second part, I will cover the remaining cryptography challenges, including <em>Almost DSA</em>, <em>mAEStro</em> and <em>Mask-mask-RSA</em>.</p>
+<h2 id="almost-dsa">Almost DSA<a href="#almost-dsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>According to an external auditor, my code implementing the data signature algorithm (DSA) has a one-byte security fix on a critical issue.</p>
+<p>Well, I am not bothered. Convince me by giving me the flag!</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/almost-dsa_148b8b2cd8c78df02bbdc24bd7fa3f56.zip">almost-dsa_148b8b2cd8c78df02bbdc24bd7fa3f56.zip</a></p>
+</blockquote>
+<p>We are given $(p, q, g)$, the public parameters of the data signature algorithm (DSA). We are also given $y$, the public key of the signer we want to impersonate.</p>
+<p>The goal is to forge a signature for the signer.</p>
+<p>Additionally, the signature verification algorithm is given below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verify</span>(params, y, m, sig):
+    p, q, g <span style="color:#f92672">=</span> params
+    r, s <span style="color:#f92672">=</span> sig
+
+    <span style="color:#66d9ef">assert</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;</span> r <span style="color:#f92672">&lt;</span> p
+    <span style="color:#66d9ef">assert</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;</span> s <span style="color:#f92672">&lt;</span> p
+
+    w <span style="color:#f92672">=</span> inverse(s, q)
+    u1 <span style="color:#f92672">=</span> hash(m) <span style="color:#f92672">*</span> w <span style="color:#f92672">%</span> q
+    u2 <span style="color:#f92672">=</span> r <span style="color:#f92672">*</span> w <span style="color:#f92672">%</span> q
+    v <span style="color:#f92672">=</span> pow(g, u1, p) <span style="color:#f92672">*</span> pow(y, u2, p) <span style="color:#f92672">%</span> p <span style="color:#f92672">%</span> q
+    <span style="color:#66d9ef">assert</span> v <span style="color:#f92672">==</span> r
+</code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We would like to check whether $0 &lt; r &lt; q$ and $0 &lt; s &lt; q$. However, the upper bounds were mistakenly taken as $p$ in the challenge. This introduces a vulnerability whereby we can set $r = q$.</p>
+<p>If we send $(r, s) = (1, q)$, we then have</p>
+<ul>
+<li>$w = \texttt{inverse}(s, q) = q^{q-2} \ \text{mod}\ q = 0$</li>
+<li>$u_1 = \texttt{hash}(m) \cdot w \ \text{mod}\ q = 0$</li>
+<li>$u_2 = r \cdot w \ \text{mod}\ q = 0$</li>
+<li>$v = g^{u_1} \cdot y^{u_2} \ \text{mod}\ p \ \text{mod}\ q = g^0 \cdot y^0 \ \text{mod}\ p \ \text{mod} \ q = 1 = r$</li>
+</ul>
+<p>Here $v = r$ and thus passes the check. Additionally, $(r, s) = (1, q)$ should be a valid signature for <em>all</em> messages if the assertions are made incorrect.</p>
+<h2 id="maestro-1-sample">mAEStro (1): Sample<a href="#maestro-1-sample" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Yet another AES challenge in 2024? Well, it is not AES &ndash; The internal operations are randomly selected.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/maestro-1_595679a660ee70b8346961cc6270ec95.zip">maestro-1_595679a660ee70b8346961cc6270ec95.zip</a></p>
+</blockquote>
+<p>In this challenge, we have an implementation of AES. However, the sequence of the steps is sampled from the original list of steps:</p>
+<ul>
+<li>$\texttt{AddRoundKey}(0)$, $\texttt{AddRoundKey}(1)$, &hellip;, $\texttt{AddRoundKey}(14)$</li>
+<li>$\texttt{SubBytes}$, $\texttt{SubBytes}$, &hellip;, $\texttt{SubBytes}$ (14 times)</li>
+<li>$\texttt{ShiftRows}$, $\texttt{ShiftRows}$, &hellip;, $\texttt{ShiftRows}$ (14 times)</li>
+<li>$\texttt{MixColumns}$, $\texttt{MixColumns}$, &hellip;, $\texttt{MixColumns}$ (13 times)</li>
+</ul>
+<p>As the player, we can provide the seed that generates the sequence of steps. We are then given the token encrypted with the backdoored AES.</p>
+<p>After that, we are given the oracle to encrypt messages. The server will return the corresponding ciphertexts. The goal is to find the token.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since $\texttt{AddRoundKey}$ is the only operation that mixes in the secret key, we would want to avoid that as much as possible.</p>
+<p>It is possible to generate a seed such that the sampled operations do not contain any of the $\texttt{AddRoundKey}$, as its probability being $(41/56)^{56}$, which is approximately 1 in $4 \times 10^7$.</p>
+<p>For example, the seed <code>05032cde613198edd26c43a61f0978da</code> (in hex) would generate the below sequence of operations (here <code>SB</code>, <code>SR</code> and <code>MC</code> means $\texttt{SubBytes}$, $\texttt{ShiftRows}$ and $\texttt{MixColumns}$ respectively):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">MC SR SB SR MC SB MC SR MC SR MC SR SR SB
+MC MC MC SB MC SB SB MC MC SB SR SR MC SB
+MC MC MC SR SR MC SB SR MC SB MC MC SR MC
+SR SB SB SR SR SR SB SR MC SR SB SB MC SR
+</code></pre></div><p>Since the secret key is not involved during encryption, one could easily reverse all the operations to &ldquo;decrypt&rdquo; the token.</p>
+<hr>
+<p>A faster solution is to generate a sequence with exactly one $\texttt{AddRoundKey}$, in which the probability would be $56 \cdot (15/56) \cdot (41/56)^{55}$ (around 1 in $2 \times 10^6$). With that, we can encrypt an arbitrary message $m_1$ and obtain $c_1$. With $\text{A} \rightarrow \texttt{AddRoundKey}(j) \rightarrow \text{B}$ and $\text{A}, \text{B}$ not involving $\texttt{AddRoundKey}$, we have</p>
+<p>$$
+m_1 \xrightarrow{\text{Operation set A}} s \xrightarrow{\texttt{AddRoundKey}(j)} t \xrightarrow{\text{Operation set B}} c_1.
+$$</p>
+<p>Since operations in A and B do not involve $\texttt{AddRoundKey}$, we can obtain $s$ and $t$. Mathematically, $s \xrightarrow{\texttt{AddRoundKey}(j)} t$ can be written as $s \oplus k_j = t$ ($k_j$ is the $j$-th subkey), we can obtain $k_j$. Since there are no more unknowns after $k_j$ has been recovered, we can also recover $m_0$ from $c_0$ and retrieve the flag.</p>
+<hr>
+<p>As a concrete example, the seed <code>7d54e4b3d03a5e0fa99c4b356e940de2</code> yields exactly one $\texttt{AddRoundKey}$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">SB MC MC SB MC MC SB SR MC SB SR SR SR ARK2 SR
+SB MC MC SB SB MC MC SR MC MC SR SR SR SB SR
+SB SB MC SR SB SB MC SR SB SB SR SB SB SB SR
+SR SB MC MC MC SB MC SR SB SR SB SR SR MC SB
+</code></pre></div><p>Let $m_1$ be 16 null bytes and $c_1$ be the corresponding ciphertext. We can compute $s$ and $t$ from $(m_1, c_1)$ by</p>
+<p>$$
+m_1 \xrightarrow{\texttt{SubBytes}} \circ \xrightarrow{\texttt{MixColumns}} \dots \xrightarrow{\texttt{ShiftRows}} \circ \xrightarrow{\texttt{ShiftRows}} s \\
+c_1 \xrightarrow{\texttt{SubBytes}^{-1}} \circ \xrightarrow{\texttt{MixColumns}^{-1}} \dots \xrightarrow{\texttt{SubBytes}^{-1}} \circ \xrightarrow{\texttt{ShiftRows}^{-1}} t
+$$</p>
+<p>The below is a sample test vector, here <code>k</code> is the second round key, $k_2$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">m1 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;00000000000000000000000000000000&#39;</span>)
+c1 <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;2745ca25395b74d42125e51ef535973b&#39;</span>)
+
+s  <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;76767676767676767676767676767676&#39;</span>)
+t  <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;913539a268b7940ca066c048b8247e8c&#39;</span>)
+k  <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#39;e7434fd41ec1e27ad610b63ece5208fa&#39;</span>)
+</code></pre></div><h2 id="maestro-2-shuffle">mAEStro (2): Shuffle<a href="#maestro-2-shuffle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Yet another AES challenge in 2024? Well, it is not AES &ndash; The internal operations are randomly shuffled.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/maestro-2_b57368ee01e70c226bcb364cd8fb87a6.zip">maestro-2_b57368ee01e70c226bcb364cd8fb87a6.zip</a></p>
+</blockquote>
+<p>This challenge is similar to the first part, except that the steps are <em>shuffled</em>, not sampled. With that said, there will be 15 $\texttt{AddRoundKey}$, 14 $\texttt{SubBytes}$, 14 $\texttt{ShiftRows}$ and 13 $\texttt{MixColumns}$ operations in the final sequence.</p>
+<p>The goal is to find the token.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We want to find a seed that breaks the sequence of operations into three groups:</p>
+<ul>
+<li>Operation set A [no $\texttt{AddRoundKey}$]</li>
+<li>Operation set B [no $\texttt{MixColumns}$]</li>
+<li>Operation set C [no $\texttt{AddRoundKey}$]</li>
+</ul>
+<p>The probability of finding such a seed is $1/2674440$. As an example, the seed <code>4978c0cb65bb881a3c95ec16d6b3ad1a</code> yields the below sequence of operations:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">MC    MC    SB    MC    SB    MC    MC    MC    MC    SR    MC    MC    MC    SR
+MC    ARK9  SR    ARK2  ARK11 ARK13 ARK4  ARK6  ARK12 SB    ARK8  SB    SR    ARK5  
+SR    SR    SR    SB    ARK1  ARK10 SB    ARK0  SB    ARK7  SB    SB    ARK3  SB
+SB    SR    SR    SB    SR    SR    SR    SB    ARK14 SR    SB    MC    MC    SR
+</code></pre></div><p>Here the operation sets A, B and C are respectively the below sequences:</p>
+<ul>
+<li>$\texttt{MixColumns}, \texttt{MixColumns}, \texttt{SubBytes}, &hellip;, \texttt{MixColumns}, \texttt{MixColumns}$,</li>
+<li>$\texttt{AddRoundKey}(9), \texttt{ShiftRows}, \texttt{AddRoundKey}(2), &hellip;, \texttt{SubBytes}, \texttt{AddRoundKey}(14)$</li>
+<li>$\texttt{ShiftRows}, \texttt{SubBytes}, \texttt{MixColumns}, \texttt{MixColumns}, \texttt{ShiftRows}$</li>
+</ul>
+<p>There are some properties of the sequence:</p>
+<ul>
+<li>Operation sets A and C do not contain $\texttt{AddRoundKey}$, thus set B is the only place that contains the secret.</li>
+<li>Operation set B does not contain $\texttt{MixColumns}$, thus one byte in $s$ would <em>only</em> affect one byte in $t$.</li>
+</ul>
+<p>$$
+m \xrightarrow{\text{Operations A}} s \xrightarrow{\text{Operations B}} t \xrightarrow{\text{Operations C}} c
+$$</p>
+<p>Now we want to know the one-to-one mapping of the characters between $s$ and $t$.</p>
+<p>To start with, we can set $s = \texttt{0000&hellip;00}$ and compute $m$ by reverting the operations in A. We will retrieve $c$ from the oracle. After that, we can compute $t$ by reverting the operations in B.</p>
+<p>We can identify which byte of $s$ would map to which byte of $t$ by looking at the $\texttt{ShiftRows}$ operation. The below table shows that the $j$-th byte of $t$ depends only on the $i$-th byte of $s$ in our example seed:</p>
+<table>
+    <tbody>
+        <tr>
+            <th>i</th>
+            <td>0</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td>10</td>
+            <td>11</td>
+            <td>12</td>
+            <td>13</td>
+            <td>14</td>
+            <td>15</td>
+        </tr>
+        <tr>
+            <th>j</th>
+            <td>0</td>
+            <td>13</td>
+            <td>10</td>
+            <td>7</td>
+            <td>4</td>
+            <td>1</td>
+            <td>14</td>
+            <td>11</td>
+            <td>8</td>
+            <td>5</td>
+            <td>2</td>
+            <td>3</td>
+            <td>12</td>
+            <td>9</td>
+            <td>6</td>
+            <td>7</td>
+        </tr>
+    </tbody>
+</table>
+<p>With that, we can set the value of $s$ to be $\texttt{0000&hellip;00}$, $\texttt{0101&hellip;01}$, &hellip;, $\texttt{ffff&hellip;ff}$ and send the corresponding $m$ to the oracle for the mapping between $s[i]$ and $t[j]$.</p>
+<h2 id="mask-mask-rsa">Mask-mask-RSA<a href="#mask-mask-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Since 2020, Mystiz is well-known plagiarizing his own challenges.</p>
+<p>This situation gets worse in 2024. He is now copying challenges from the <a href="https://github.com/OfficialCyberSpace/CSCTF-2024/blob/main/crypto/mask-rsa/README.md">other CTFs</a>. What&rsquo;s worse, the challenge author participates in this CTF!</p>
+<p>Disclaimer: The challenge author didn&rsquo;t know I was going to copy his challenge.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/mask-mask-rsa_d11a2e5d3f444a9a854327b5c7bfe22f.zip">mask-mask-rsa_d11a2e5d3f444a9a854327b5c7bfe22f.zip</a></p>
+</blockquote>
+<p>When the player connects to the server, the server generates two 513-bit primes, $p$ and $q$ and $n := pq$, $e := 65537$ and $c := m^e \ \text{mod} \ n$ ($m$ is the flag).</p>
+<p>We are only given $c$. Additionally, we are asked to send up to 6 expressions that are</p>
+<ul>
+<li>composed from <code>p</code>, <code>q</code>, <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> and <code>%</code>, and</li>
+<li>of lengths not exceeding four.</li>
+</ul>
+<p>The server would evaluate the expression. Assuming that it returns $x$, it would return every second digit from $x^e \ \text{mod} \ n$.</p>
+<p>The objective is to recover the flag, $m$.</p>
+<div class="alert warning">
+  📢 <strong>Disclaimer.</strong> The challenge is highly referred from <em>aa.crypto</em>&rsquo;s challenge, <em>Mask-RSA</em> from <em>CyberSpace CTF 2024</em>. Despite that <em>aa.crypto</em> plays <em>HKCERT CTF 2024</em>, he does not know that I am referring to his challenge. In the original challenge, we have $e := 3$ and can send up to 20 expressions.
+</div>
+
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-what-could-the-oracle-return">Part I: What could the oracle return?<a href="#part-i-what-could-the-oracle-return" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>By exhausting all the possible patterns from the character set, there are 114 valid expressions that we can send to the server. They will be simplified to the 28 expressions on the left:</p>
+<table>
+<thead>
+  <tr>
+    <th style="width: 22%;">Simplified Expr.</th>
+    <th style="width: 78%;">Input Expressions</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>$p$</td>
+    <td><code>p</code>, <code>+p</code>, <code>++p</code>, <code>--p</code>, <code>+++p</code>, <code>+--p</code>, <code>-+-p</code>, <code>--+p</code></td>
+  </tr>
+  <tr>
+    <td>$q$</td>
+    <td><code>q</code>, <code>+q</code>, <code>++q</code>, <code>--q</code>, <code>+++q</code>, <code>+--q</code>, <code>-+-q</code>, <code>--+q</code></td>
+  </tr>
+  <tr>
+    <td>$-p$</td>
+    <td><code>-p</code>, <code>+-p</code>, <code>-+p</code>, <code>++-p</code>, <code>+-+p</code>, <code>-++p</code>, <code>---p</code></td>
+  </tr>
+  <tr>
+    <td>$-q$</td>
+    <td><code>-q</code>, <code>+-q</code>, <code>-+q</code>, <code>++-q</code>, <code>+-+q</code>, <code>-++q</code>, <code>---q</code></td>
+  </tr>
+  <tr>
+    <td>$2p$</td>
+    <td><code>p+p</code>, <code>p++p</code>, <code>p--p</code>, <code>+p+p</code></td>
+  </tr>
+  <tr>
+    <td>$2q$</td>
+    <td><code>q+q</code>, <code>q++q</code>, <code>q--q</code>, <code>+q+q</code></td>
+  </tr>
+  <tr>
+    <td>$-2p$</td>
+    <td><code>-p-p</code></td>
+  </tr>
+  <tr>
+    <td>$-2q$</td>
+    <td><code>-q-q</code></td>
+  </tr>
+  <tr>
+    <td>$-p-q$</td>
+    <td><code>-p-q</code>, <code>-q-p</code></td>
+  </tr>
+  <tr>
+    <td>$p+q$</td>
+    <td><code>p+q</code>, <code>q+p</code>, <code>p++q</code>, <code>p--q</code>, <code>q++p</code>, <code>q--p</code>, <code>+p+q</code>, <code>+q+p</code></td>
+  </tr>
+  <tr>
+    <td>$p-q$</td>
+    <td><code>p-q</code>, <code>p+-q</code>, <code>p-+q</code>, <code>+p-q</code>, <code>-q+p</code></td>
+  </tr>
+  <tr>
+    <td>$q-p$</td>
+    <td><code>q-p</code>, <code>q+-p</code>, <code>q-+p</code>, <code>+q-p</code>, <code>-p+q</code></td>
+  </tr>
+  <tr>
+    <td>$0$</td>
+    <td><code>p-p</code>, <code>p%p</code>, <code>q-q</code>, <code>q%q</code>, <code>p+-p</code>, <code>p-+p</code>, <code>p%+p</code>, <code>p%-p</code>, <code>q+-q</code>, <code>q-+q</code>, <code>q%+q</code>, <code>q%-q</code>, <code>+p-p</code>, <code>+p%p</code>, <code>+q-q</code>, <code>+q%q</code>, <code>-p+p</code>, <code>-p%p</code>, <code>-q+q</code>, <code>-q%q</code></td>
+  </tr>
+  <tr>
+    <td>$1$</td>
+    <td><code>p//p</code>, <code>q//q</code></td>
+  </tr>
+  <tr>
+    <td>$\lfloor{p/q\rfloor}$</td>
+    <td><code>p//q</code></td>
+  </tr>
+  <tr>
+    <td>$\lfloor{q/p\rfloor}$</td><td><code>q//p</code></td>
+  </tr>
+  <tr>
+    <td>$p^2$</td><td><code>p*p</code>, <code>p*+p</code>, <code>+p*p</code></td>
+  </tr>
+  <tr>
+    <td>$q^2$</td><td><code>q*q</code>, <code>+q*q</code></td>
+  </tr>
+  <tr>
+    <td>$-p^2$</td><td><code>p*-p</code>, <code>-p*p</code></td>
+  </tr>
+  <tr>
+    <td>$-q^2$</td><td><code>q*-q</code>, <code>-q*q</code></td>
+  </tr>
+  <tr>
+    <td>$n$</td>
+    <td><code>p*q</code>, <code>q*p</code>, <code>p*+q</code>, <code>q*+p</code>, <code>+p*q</code>, <code>+q*p</code></td>
+  </tr>
+  <tr>
+    <td>$-n$</td>
+    <td><code>p*-q</code>, <code>-p*q</code>, <code>-q*p</code></td>
+  </tr>
+  <tr>
+    <td>$p \ \text{mod}\ q$</td>
+    <td><code>p%q</code>, <code>p%+q</code>, <code>+p%q</code></td>
+  </tr>
+  <tr>
+    <td>$q \ \text{mod}\ p$</td>
+    <td><code>q%p</code>, <code>q%+p</code>, <code>+q%p</code></td>
+  </tr>
+  <tr>
+    <td>$p \ \text{mod}\ -q$</td>
+    <td><code>p%-q</code></td>
+  </tr>
+  <tr>
+    <td>$q \ \text{mod}\ -p$</td>
+    <td><code>q%-p</code></td>
+  </tr>
+  <tr>
+    <td>$-p \ \text{mod}\ q$</td>
+    <td><code>-p%q</code></td>
+  </tr>
+  <tr>
+    <td>$-q \ \text{mod}\ p$</td>
+    <td><code>-q%p</code></td>
+  </tr>
+</tbody>
+</table>
+<p>Although there are 28 distinct expressions, some of them (for instance $0$ and $1$) are already known. It should also be noted that the returned value is not the evaluated expression, but is also processed by <code>str(pow(result, e, n))[::2]</code>.</p>
+<p>Instead of recovering $n$, our goal is more ambitious - to recover $p$ and $q$.</p>
+<h4 id="part-ii-recovering-pe--textmod--n-and-qe--textmod--n">Part II: Recovering $p^e \ \text{mod} \ n$ and $q^e \ \text{mod} \ n$<a href="#part-ii-recovering-pe--textmod--n-and-qe--textmod--n" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To start with, we can send <code>p</code>, <code>q</code>, <code>p+q</code> to recover half of the digits of $a := p^e \ \text{mod} \ n$, $b := q^e \ \text{mod} \ n$, $s := (p+q)^e \ \text{mod}\ n$.</p>
+<p>Notably, by the binomial theorem,</p>
+<p>$$
+s \equiv (p + q)^e \equiv p^e + e \cdot p^{e-1} q + {e \choose 2} \cdot p^{e-2} q^2 + \dots + q^e \equiv p^e + q^e \equiv a + b \ (\text{mod}\ n).
+$$</p>
+<p>Let&rsquo;s assume that we are lucky enough so that $a$ has 308 digits and $b$ has 309 digits. We can observe this because the output sizes are different (154 digits vs 155 digits), and we can further send <code>p-q</code> to obtain $d := (p-q)^e\ \text{mod}\ n$ (This also works when $a$ has 309 digits and $b$ has 308, where you can send <code>q-p</code>).</p>
+<div class="alert info">
+  <p>🎲 <strong>How likely?</strong> In a simulation of 100,000 runs, ~7% of them satisfies all the conditions:</p>
+<ol>
+<li>$a$ and $b$ have 308 and 309 digits (resp. $a$ and $b$ have 309 and 308 digits),</li>
+<li>$a + b &lt; n$ and,</li>
+<li>$d := b - a$ has 308 digits.</li>
+</ol>
+
+</div>
+
+<p>If both $a + b &lt; n$ and $d$ has 308 digits, then we can simply relate $a, b, s$ and $d$ without the modulus $n$:</p>
+<p>$$
+\left\{\begin{aligned}
+&amp; a + b = s \\
+&amp; a - b = d
+\end{aligned}\right.
+$$</p>
+<p>Then we can recover $a$ and $b$ using a bottom-up approach. How? Let&rsquo;s imagine a baby case that $p$ and $q$ are 7 bits, and</p>
+<p>$$
+\begin{array}{ll}
+\texttt{oracle}(p) = 162, &amp; \texttt{oracle}(q) = 10, \\
+\texttt{oracle}(p-q) = 87, &amp; \texttt{oracle}(p+q) = 157
+\end{array}
+$$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">a = 1_6_2
+b =  1_0_
+s = 1_5_7
+d =  8_7_
+</code></pre></div><p>Let $a = 10^4 \cdot a_4 + 10^3 \cdot a_3 + \dots + a_0$ (similar for $b$, $s$ and $d$).</p>
+<p>We can first take modulo 10 on the equation $s = a + b$ to get $b_0 = 5$. After that, we can use $d = a - b$ to get $d_0 = 7$:</p>
+<p>$$
+\begin{aligned}
+&amp; 10^4 \cdot s_4 + 10^3 \cdot s_3 + \dots + s_0 = s \\
+&amp; \qquad = a + b = (10^4 \cdot a_4 + 10^3 \cdot a_3 + \dots + a_0) + (10^4 \cdot b_4 + 10^3 \cdot b_3 + \dots + b_0)
+\end{aligned}
+$$</p>
+<p>We then take modulo $10^2$ on $d = a - b$ to get $a_1 = 8$, then on $s = a + b$ to get $s_1 = 8$.</p>
+<p>By repeating the process, we can get</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a <span style="color:#f92672">=</span> <span style="color:#ae81ff">10682</span>
+b <span style="color:#f92672">=</span>  <span style="color:#ae81ff">1905</span>
+s <span style="color:#f92672">=</span> <span style="color:#ae81ff">12587</span>
+d <span style="color:#f92672">=</span>  <span style="color:#ae81ff">8777</span>
+</code></pre></div><h4 id="part-iii-building-yet-another-linear-equation-with-two-unknowns">Part III: Building yet another linear equation with two unknowns<a href="#part-iii-building-yet-another-linear-equation-with-two-unknowns" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Having $b := q^e \ \text{mod}\ n$ is useful because it is a multiple of $q$. If we are able to find another multiple of $q$ (denote it by $u$), we can recover $q$ by computing $\text{gcd}(b, u)$.</p>
+<p>Without loss of generality, we can let $a &gt; b$. We send <code>p+p</code> and <code>-q%p</code>. Under the assumption that $q &gt; p$, and since $p, q \in [2^{512}, 2^{513})$, we have $p &lt; q &lt; 2p$. Thus <code>-q%p</code> would be $2p - q$.</p>
+<p>We will obtain $u := 2^e \cdot p^e\ \text{mod}\ n$ and $v := (2p-q)^e \ \text{mod}\ n$. Using the binomial theorem again, $v \equiv 2^e \cdot p^e - q^e \equiv u - a\ (\text{mod}\ n)$.</p>
+<p>We would need to be lucky again, as we want $u$ to have 309 digits and $v$ to have 308 digits. In this case, we would be sure that $v = u - a$ (equal, not <em>only</em> congruent modulo $n$), and thus we can recover $u$ and $v$ using a similar approach in the above section.</p>
+<div class="alert info">
+  🎲 <strong>How likely now?</strong> The probability decreases to 0.9% (~1 in 110) with the conditions $q &lt; p$ and $u$, $v$ have 309 and 308 digits.
+</div>
+
+<p>After all, below are the &ldquo;assumptions&rdquo; taken:</p>
+<table>
+<thead>
+  <tr><th style="width: 10%">#</th><th style="width: 43%">Assumption</th><th style="width: 47%">How to check from the oracle?</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>$a := p^e\ \text{mod}\ n$ has 308 digits     </td><td>$\texttt{oracle}(p)$ has 154 digits<sup>†</sup>                        </td></tr>
+  <tr><td>2</td><td>$b := q^e\ \text{mod}\ n$ has 309 digits     </td><td>$\texttt{oracle}(q)$ has 155 digits                                    </td></tr>
+  <tr><td>3</td><td>$a + b < n$                                  </td><td>$\texttt{oracle}(p + q)$ has 155 digits (and under assumptions 1 and 2)</td></tr>
+  <tr><td>4</td><td>$d := b - a$ has 308 digits                  </td><td>$\texttt{oracle}(q - p)$ has 154 digits                                </td></tr>
+  <tr><td>5</td><td>$q > p$                                      </td><td>unknown                                                                </td></tr>
+  <tr><td>6</td><td>$u := (2p)^e\ \text{mod}\ n$ has 309 digits  </td><td>$\texttt{oracle}(p+p)$ has 155 digits                                  </td></tr>
+  <tr><td>7</td><td>$v := (2p-q)^e\ \text{mod}\ n$ has 308 digits</td><td>$\texttt{oracle}(-q\ \text{mod}\ p)$ has 154 digits                    </td></tr>
+</tbody>
+</table>
+<div class="alert danger">
+  📌 <strong>How to handle the case when $p &lt; q$?</strong> Just rerun.
+</div>
+
+<div class="alert warning">
+  📝 <strong>Note [†].</strong> It is possible that $\texttt{oracle}(m)$ has 154 digits, but $m$ only has 307 digits. In this unfortunate case, rerun.
+</div>
+
+<h4 id="part-iv-the-final-touches">Part IV: The final touches<a href="#part-iv-the-final-touches" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>After all, $b$ and $u$ are two multiples of $q$ and thus able to recover $q$. To recover $p$, we first denote $d_q = e^{-1}\ \text{mod}\ (q-1)$. Because $a \equiv p^e \ (\text{mod}\ q)$, we have</p>
+<p>$$
+p \equiv a^{d_q} \ (\text{mod}\ q).
+$$</p>
+<p>Thus $p = (a^{d_q} \ \text{mod}\ q) + q$. Now we have everything and we can decrypt the flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">hkcert24{p0w3rs_0f_p_p1us_q_m0du1o_n_4r3_4ls0_fr3shm4n5_dr34m}
+</code></pre></div>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/">
+                <span class="button__icon">←</span>
+                <span class="button__text">HKCERT CTF 2024 Quals Writeup (III): The Web Challenges</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-1/">
+                <span class="button__text">HKCERT CTF 2024 Quals Writeup (I): RSA LCG and Pigeon Post</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+
+<aside class="toc-container">
+  <a href="#" style="text-decoration: none; font-weight: 700;">
+    HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges
+  </a>
+  <div class="js-toc"></div>
+</aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js" integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  tocbot.init({
+      headingSelector: 'h1, h2, h3, h4',
+      orderedList: false,
+      headingLabelCallback: s => s.substr(0, s.length-2),
+      collapseDepth: 2
+  });
+</script>
+
+
+
+  </div>
+  <aside class="ads">
+    
+  
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3220069814773012"
+    data-ad-slot="6927401005"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+
+  </aside>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="http://gohugo.io">Hugo</a></span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://mystiz.hk/assets/main.js"></script>
+<script src="https://mystiz.hk/assets/prism.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+<script>
+var viz = new Viz();
+
+document.querySelectorAll("[class=graphviz]").forEach(node => {
+  const escape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+  viz.renderSVGElement(escape(node.innerText), {
+    engine: 'dot'
+  }).then(function (element) {
+    node.parentNode.appendChild(element)
+    node.style.display = 'none'
+  })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    htmlLabels: true,
+    securityLevel: "loose",
+    theme: 'base',
+    themeVariables: {
+        background: '#22222c',
+        primaryColor: '#33333c',
+        primaryTextColor: '#ffe4e1',
+    }
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.min.css" rel="stylesheet" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-min.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js" crossorigin="anonymous"
+  onload="
+    Array.from(document.getElementsByClassName('sequence-diagram')).forEach(dom => {
+      const content = new DOMParser().parseFromString(dom.innerHTML, 'text/html').documentElement.textContent;
+      dom.innerHTML = '';
+      Diagram.parse(content).drawSVG(dom, {
+        theme: 'simple',
+        'font-family': 'Fira Code'
+      })
+    })"></script>
+
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2VLBDVW913"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2VLBDVW913');
+</script>
+
+
+
+
+  
+</div>
+
+</body>
+</html>

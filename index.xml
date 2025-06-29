@@ -6,7 +6,52 @@
     <description>Recent content on Mystify</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 May 2025 01:27:00 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Jun 2025 15:30:03 +0800</lastBuildDate><atom:link href="https://mystiz.hk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2024 Quals Writeup (IV): The Reverse Challenges</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-4/</link>
+      <pubDate>Sun, 29 Jun 2025 15:30:03 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-4/</guid>
+      <description>I also wrote some reverse challenges this year: Void, Cyp.ress and Bashed!. We will cover them all in the last part of the blog post.
+Void Challenge Summary  I made a simple webpage that checks whether the flag is correct&amp;hellip; Wait, where are the flag-checking functions?
+ We are given a static webpage (source code here), where it asks us for the flag:
+ The goal is to provide a legit flag.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2024 Quals Writeup (III): The Web Challenges</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/</link>
+      <pubDate>Sun, 29 Jun 2025 15:30:02 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/</guid>
+      <description>Surprisingly, I also wrote three series of web challenges this year: Custom Web Server, Mystiz&amp;rsquo;s Mini CTF and ⚡. They are all inspired from the real-life &amp;ndash; either from security reviews or the bugs I came across while developing web apps.
+Custom Web Server (1) Challenge Summary  Someone said: &amp;lsquo;One advantage of having a homemade server is that it becomes much harder to hack.&amp;rsquo; Do you agree? Give reasons.</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-2/</link>
+      <pubDate>Sun, 29 Jun 2025 15:30:01 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-2/</guid>
+      <description>In the second part, I will cover the remaining cryptography challenges, including Almost DSA, mAEStro and Mask-mask-RSA.
+Almost DSA Challenge Summary  According to an external auditor, my code implementing the data signature algorithm (DSA) has a one-byte security fix on a critical issue.
+Well, I am not bothered. Convince me by giving me the flag!
+Attachment: almost-dsa_148b8b2cd8c78df02bbdc24bd7fa3f56.zip
+ We are given $(p, q, g)$, the public parameters of the data signature algorithm (DSA).</description>
+    </item>
+    
+    <item>
+      <title>HKCERT CTF 2024 Quals Writeup (I): RSA LCG and Pigeon Post</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-1/</link>
+      <pubDate>Sun, 29 Jun 2025 15:30:00 +0800</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-1/</guid>
+      <description>Black Bauhinia co-organizes the HKCERT CTF for the fifth year. I wrote 18 challenges (in 11 series) this year and here is a series of blog posts covering all of them. I will cover two cryptography series in the first part: RSA LCG and Pigeon Post.
+🤡 What this year? It should be &amp;ldquo;last year&amp;rdquo; at the time I upload the blog post. I have been procrastinating the writeup and I am sorry about that.</description>
+    </item>
+    
     <item>
       <title>NuttyShell CTF 2025: memo-ry</title>
       <link>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</link>
@@ -799,6 +844,15 @@ Challenge Summary A Plaid Puzzle is a RPG game written in PuzzleScript. In the g
       <description>It has been a very long time that I&#39;ve compiled a writeup. This time I have played on my own as @blackb6a. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup too math-intensive.
 The solution scripts will be committed to my Github repository sooner or later, after I&#39;ve managed to prettify them.
 Babylfsr (Crypto, 338 points) This is an easy challenge.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://mystiz.hk/posts/2025/2025-06-30-google-ctf/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://mystiz.hk/posts/2025/2025-06-30-google-ctf/</guid>
+      <description></description>
     </item>
     
     <item>

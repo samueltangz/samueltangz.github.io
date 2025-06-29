@@ -2,25 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
+  </url><url>
     <loc>https://mystiz.hk/tags/ctf/</loc>
-    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-4/</loc>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/hkcert-ctf/</loc>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/</loc>
-    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/</loc>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/reverse/</loc>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/</loc>
+    <lastmod>2025-06-29T15:30:03+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/</loc>
+    <lastmod>2025-06-29T15:30:02+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/web/</loc>
+    <lastmod>2025-06-29T15:30:02+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/tags/crypto/</loc>
+    <lastmod>2025-06-29T15:30:01+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-2/</loc>
+    <lastmod>2025-06-29T15:30:01+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-1/</loc>
+    <lastmod>2025-06-29T15:30:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</loc>
     <lastmod>2025-05-05T01:27:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/nuttyshell-ctf/</loc>
-    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/posts/</loc>
-    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/</loc>
-    <lastmod>2025-05-05T01:27:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/web/</loc>
     <lastmod>2025-05-05T01:27:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/life/</loc>
@@ -41,17 +65,11 @@
     <loc>https://mystiz.hk/tags/blockchain/</loc>
     <lastmod>2024-09-28T01:30:00+08:00</lastmod>
   </url><url>
-    <loc>https://mystiz.hk/tags/crypto/</loc>
-    <lastmod>2024-07-20T20:10:00+08:00</lastmod>
-  </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-07-20-hitcon-ctf/</loc>
     <lastmod>2024-07-20T20:10:00+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/hitcon-ctf/</loc>
     <lastmod>2024-07-20T20:10:00+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/challenge-writing/</loc>
-    <lastmod>2024-06-24T02:00:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-06-24-google-ctf-3/</loc>
     <lastmod>2024-06-24T02:00:02+08:00</lastmod>
@@ -83,16 +101,10 @@
     <loc>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-3/</loc>
     <lastmod>2024-01-27T05:30:02+08:00</lastmod>
   </url><url>
-    <loc>https://mystiz.hk/tags/hkcert-ctf/</loc>
-    <lastmod>2024-01-27T05:30:02+08:00</lastmod>
-  </url><url>
     <loc>https://mystiz.hk/tags/misc/</loc>
     <lastmod>2024-01-27T05:30:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/tags/pwn/</loc>
-    <lastmod>2024-01-27T05:30:02+08:00</lastmod>
-  </url><url>
-    <loc>https://mystiz.hk/tags/reverse/</loc>
     <lastmod>2024-01-27T05:30:02+08:00</lastmod>
   </url><url>
     <loc>https://mystiz.hk/posts/2024/2024-01-27-hkcert-ctf-2/</loc>
@@ -442,6 +454,8 @@
   </url><url>
     <loc>https://mystiz.hk/tags/interpolation-attack/</loc>
     <lastmod>2019-08-06T10:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://mystiz.hk/posts/2025/2025-06-30-google-ctf/</loc>
   </url><url>
     <loc>https://mystiz.hk/about-me/</loc>
   </url><url>
