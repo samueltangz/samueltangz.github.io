@@ -263,6 +263,20 @@ m2 = 00000000000000000000000000000000 0000000000000000000000
 m3 = 00000000000000000000000000000000 000000000000000000000000
 m4 = 00000000000000000000000000000000 000000000000000000000000000000
 m5 = 00000000000000000000000000000000 00000000000000000000000000000000 00000000
+</code></pre></div><p>In particular, below are the list of $k_{ij}$&rsquo;s (marked with <code>@</code>s) that we can recover with the six leaked bytes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">i \ j |  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+------|------------------------------------------------
+    0 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    1 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    2 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    3 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    4 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    5 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+    6 |  .  .  .  .  .  .  @  .  .  .  .  .  .  .  .  .
+    7 |  .  .  @  .  .  .  @  .  .  .  .  .  .  .  .  @
+    8 |  .  .  @  .  .  .  @  .  .  .  .  @  .  .  .  @
+    9 |  .  .  @  .  .  .  @  @  .  .  .  @  .  .  .  @
+   10 |  .  .  @  @  .  .  @  @  .  .  .  @  .  .  .  @
 </code></pre></div><p>We can compute $k_{6,8}, k_{7,8}, k_{8,8}$ and $k_{9,8}$ from the $k_{10,j}$&rsquo;s above. But why are they useful?</p>
 <h4 id="the-meet-in-the-middle">The meet-in-the-middle<a href="#the-meet-in-the-middle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <p>We can leak more than one byte from the chosen ciphertexts. When $i \geq 16$, the $i$-th byte of ciphertext would only affected by <code>add_round_key</code> and <code>sub_bytes</code>. Thus</p>
