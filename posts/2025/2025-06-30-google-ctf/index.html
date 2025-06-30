@@ -272,30 +272,46 @@ m5 = 00000000000000000000000000000000 00000000000000000000000000000000 00000000
     3 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
     4 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
     5 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
-    6 |  .  .  .  .  .  .  @  .  .  .  .  .  .  .  .  .
-    7 |  .  .  @  .  .  .  @  .  .  .  .  .  .  .  .  @
-    8 |  .  .  @  .  .  .  @  .  .  .  .  @  .  .  .  @
-    9 |  .  .  @  .  .  .  @  @  .  .  .  @  .  .  .  @
-   10 |  .  .  @  @  .  .  @  @  .  .  .  @  .  .  .  @
-</code></pre></div><p>We can compute $k_{6,8}, k_{7,8}, k_{8,8}$ and $k_{9,8}$ from the $k_{10,j}$&rsquo;s above. But why are they useful?</p>
-<h4 id="the-meet-in-the-middle">The meet-in-the-middle<a href="#the-meet-in-the-middle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+    6 |  .  .  .  .  .  .  .  @  .  .  .  .  .  .  .  .
+    7 |  .  .  .  @  .  .  .  @  .  .  .  .  @  .  .  .
+    8 |  .  .  .  @  .  .  .  @  @  .  .  .  @  .  .  .
+    9 |  .  .  .  @  @  .  .  @  @  .  .  .  @  .  .  .
+   10 |  @  .  .  @  @  .  .  @  @  .  .  .  @  .  .  .
+</code></pre></div><p>We can compute $k_{6,7}, k_{7,7}, k_{8,7}$ and $k_{9,7}$ from the $k_{10,j}$&rsquo;s above. But why are they useful?</p>
+<div class="alert success">
+  🙏🏼 <strong>Thanks Thr!</strong> <em>@Thr</em> noticed that the table I generated was incorrect. I was using a different set of $k_{10,j}$&rsquo;s&hellip;
+</div>
+
+<div class="alert info">
+  <p>💦 <strong>Alternative bytes to leak.</strong> Since we want to perform &ldquo;the thing&rdquo; on the next section, we would like to know $k_{6, i}, k_{7, i}, k_{8, i}, k_{9, i}$ and $k_{10, i}$ for some $i$. Here are the combinations of $k_{10, j}$&rsquo;s (that includes $k_{10, 8}$) that made it possible:</p>
+<ol>
+<li>$k_{10, 0}, k_{10, 3}, k_{10, 4}, k_{10, 7}, k_{10, 8}, k_{10, 12}$,</li>
+<li>$k_{10, 0}, k_{10, 4}, k_{10, 5}, k_{10, 8}, k_{10, 9}, k_{10, 13}$,</li>
+<li>$k_{10, 0}, k_{10, 4}, k_{10, 8}, k_{10, 9}, k_{10, 12}, k_{10, 13}$,</li>
+<li>$k_{10, 3}, k_{10, 4}, k_{10, 7}, k_{10, 8}, k_{10, 11}, k_{10, 12}$,</li>
+<li>$k_{10, 3}, k_{10, 7}, k_{10, 8}, k_{10, 11}, k_{10, 12}, k_{10, 15}$</li>
+</ol>
+
+</div>
+
+<h4 id="the-2416-bits-meet-in-the-middle">The 24+16 bits meet-in-the-middle<a href="#the-2416-bits-meet-in-the-middle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
 <p>We can leak more than one byte from the chosen ciphertexts. When $i \geq 16$, the $i$-th byte of ciphertext would only affected by <code>add_round_key</code> and <code>sub_bytes</code>. Thus</p>
 <p>$$c_i = \texttt{S}\left[&hellip;\texttt{S}\left[\texttt{S}\left[m_i \oplus k_{0,j}\right] \oplus k_{1,j}\right] \oplus &hellip;\right] \oplus k_{10,j},$$</p>
-<p>where $j = i\ \text{mod}\ 16$. Now we have $k_{6, 8}, &hellip;, k_{10, 8}$, we can obtain $u_i$ such that</p>
+<p>where $j = i\ \text{mod}\ 16$. Now we have $k_{6, 7}, &hellip;, k_{10, 7}$, we can obtain $u_i$ such that</p>
 <p>$$u_i = \texttt{S}\left[&hellip;\texttt{S}\left[\texttt{S}\left[m_i \oplus k_{0,j}\right] \oplus k_{1,j}\right] \oplus &hellip;\right] \oplus k_{5,j}.$$</p>
 <p>Let $i = 24, 40, &hellip;$, we have $j = 8$. We can rearrange the terms to &ldquo;balance&rdquo; out the number of unknowns ($k_{0, j}, &hellip;, k_{5, j}$):</p>
-<p>$$\texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_i \oplus k_{0,8}\right] \oplus k_{1,8}\right] \oplus k_{2,8}\right] \oplus k_{3,8} = \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_i \oplus k_{5, 8}\right] \oplus k_{4, 8}\right].$$</p>
-<p>We can further remove $k_{3,8}$ from the equation by combining two relations (for example, xoring the relations when $i = 24$ and $i = 40$):</p>
+<p>$$\texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_i \oplus k_{0,7}\right] \oplus k_{1,7}\right] \oplus k_{2,7}\right] \oplus k_{3,7} = \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_i \oplus k_{5, 7}\right] \oplus k_{4, 7}\right].$$</p>
+<p>We can further remove $k_{3,7}$ from the equation by combining two relations (for example, xoring the relations when $i = 24$ and $i = 40$):</p>
 <p>$$
 \begin{aligned}
-&amp; \texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_{24} \oplus k_{0,8}\right] \oplus k_{1,8}\right] \oplus k_{2,8}\right] \oplus \texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_{40} \oplus k_{0,8}\right] \oplus k_{1,8}\right] \oplus k_{2,8}\right] \\
-&amp;\qquad = \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_{24} \oplus k_{5, 8}\right] \oplus k_{4, 8}\right] \oplus \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_{40} \oplus k_{5, 8}\right] \oplus k_{4, 8}\right].
+&amp; \texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_{23} \oplus k_{0,7}\right] \oplus k_{1,7}\right] \oplus k_{2,7}\right] \oplus \texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_{40} \oplus k_{0,7}\right] \oplus k_{1,7}\right] \oplus k_{2,7}\right] \\
+&amp;\qquad = \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_{24} \oplus k_{5, 7}\right] \oplus k_{4, 7}\right] \oplus \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_{40} \oplus k_{5, 7}\right] \oplus k_{4, 7}\right].
 \end{aligned}
 $$</p>
-<p>From the above equation, we have five unknowns ($k_{0, 8}, k_{1, 8}, k_{2, 8}, k_{4, 8}$ and $k_{5, 8}$). We can precompute the left hand side and compute the right hand side when we have $k_{6, 8}, k_{7, 8}$, $k_{8, 8}, k_{9, 8}$ and $k_{10, 8}$.</p>
-<p>To get the relations above, we can send the new <code>m5</code> below:</p>
+<p>From the above equation, we have five unknowns ($k_{0, 7}, k_{1, 7}, k_{2, 7}, k_{4, 7}$ and $k_{5, 7}$). We can precompute the left hand side and compute the right hand side when we have $k_{6, 7}, k_{7, 7}$, $k_{8, 7}, k_{9, 7}$ and $k_{10, 7}$.</p>
+<p>We can send the new <code>m5</code> to get the relations above:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">m5 = 00000000000000000000000000000000 0000...00 0101...01 0202...02 ... 00000000
-</code></pre></div><p>In this case, we have $m_{24} = \texttt{00}$, $m_{40} = \texttt{01}$, $m_{56} = \texttt{02}$ and so on. We can compute the corresponding $u_i$&rsquo;s and recover $k_{i, 8}$&rsquo;s. We can further deduce even more subkey bytes and eventually are able to obtain the key.</p>
+</code></pre></div><p>In this case, we have $m_{23} = \texttt{00}$, $m_{39} = \texttt{01}$, $m_{55} = \texttt{02}$ and so on. We can compute the corresponding $u_i$&rsquo;s and recover $k_{i, 7}$&rsquo;s. We can further deduce even more subkey bytes and eventually are able to obtain the key.</p>
 <h2 id="merkurated">Merkurated<a href="#merkurated" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
