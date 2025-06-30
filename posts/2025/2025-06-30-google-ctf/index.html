@@ -293,7 +293,7 @@ m5 = 00000000000000000000000000000000 00000000000000000000000000000000 00000000
 \end{aligned}
 $$</p>
 <p>From the above equation, we have five unknowns ($k_{0, 8}, k_{1, 8}, k_{2, 8}, k_{4, 8}$ and $k_{5, 8}$). We can precompute the left hand side and compute the right hand side when we have $k_{6, 8}, k_{7, 8}$, $k_{8, 8}, k_{9, 8}$ and $k_{10, 8}$.</p>
-<p>To get the relations above, we can send the $m_5$ below instead of the one defined:</p>
+<p>To get the relations above, we can send the new <code>m5</code> below:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">m5 = 00000000000000000000000000000000 0000...00 0101...01 0202...02 ... 00000000
 </code></pre></div><p>In this case, we have $m_{24} = \texttt{00}$, $m_{40} = \texttt{01}$, $m_{56} = \texttt{02}$ and so on. We can compute the corresponding $u_i$&rsquo;s and recover $k_{i, 8}$&rsquo;s. We can further deduce even more subkey bytes and eventually are able to obtain the key.</p>
 <h2 id="merkurated">Merkurated<a href="#merkurated" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
