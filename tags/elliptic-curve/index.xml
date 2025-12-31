@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Elliptic-Curve on Mystify</title>
+    <link>https://mystiz.hk/tags/elliptic-curve/</link>
+    <description>Recent content in Elliptic-Curve on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Jul 2020 18:55:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/elliptic-curve/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UIUCTF 2020: nookcrypt</title>
+      <link>https://mystiz.hk/posts/2020/2020-07-22-uiuctf-nookcrypt/</link>
+      <pubDate>Wed, 22 Jul 2020 18:55:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2020/2020-07-22-uiuctf-nookcrypt/</guid>
+      <description>&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Tom Nook is testing a new encryption scheme for nookphones, but it seems to be a bit faulty... can you break it?&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;&lt;em&gt;nookcrypt&lt;/em&gt; is a netcat service that have no source code released. There are two functions exposed:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;Gets an encrypted copy of the flag (and the message &lt;code&gt;hello world&lt;/code&gt;).&lt;/li&gt;&#xA;&lt;li&gt;Encrypts an arbitrary message.&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;For example, this is what I had when trying out the options:&lt;/p&gt;&#xA;&lt;pre class=&#39;language-bash command-line&#39; data-output=&#39;2-8&#39; data-user=&#39;mystiz&#39; data-host=&#39;fixa&#39;&gt;&#xA;&lt;code class=&#34;language-bash&#34;&gt;nc chal.uiuc.tf 2006&#xA;Option: 1&#xA;enc(FLAG) = (0xf31ce7cb1f2c6e7107318d76bdda50c5, 0x02d979fc3122bbaffcc1111953bc184f)&#xA;enc(&amp;#39;hello world&amp;#39;) = (0x4cf5afcc9bc1db0118172129b713d86a, 0xe41d8761370768aa9694b164c843dde9)&#xA;&#xA;Option: 2&#xA;msg: hello world&#xA;enc(0x68656c6c6f20776f726c64) = (0x4cf5afcc9bc1db0118172129b713d86a, 0xe41d8761370768aa9694b164c843dde9)&amp;lt;/code&amp;gt;&lt;/code&gt;&#xA;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;Since the response is consistent after reconnecting to the netcat service for multiple times, I assume that the parameters are constant.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

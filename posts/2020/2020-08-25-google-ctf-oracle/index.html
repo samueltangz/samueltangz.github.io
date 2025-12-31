@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google CTF 2020: Oracle | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Google CTF 2020: Oracle</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2020-08-25T16:15:00&#43;08:00">2020-08-25</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/google-ctf/" class="text-muted text-decoration-none">#google-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I was teamed-up with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> on Google CTF this time. I have solved 7 challenges alone and 3 challenges with my teammates.</p>
+<p>In particular, <em>Oracle</em> is a crypto challenge with 13 solves. It has got me spending 12 hours. All in all, it was a great experience in terms of learning, but my liver hurts. This piece of writeup may be <em>very</em> computation intensive, just because I would like to make everything clear.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>There are two parts of the challenges. In the first part, we are required to recover an internal state for AEGIS-128L given the encryption oracle. For the second part, we are required to forge a ciphertext given an error oracle from decryption.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-a-brief-summary-for-the-state-in-aegis-128l">Part I: A brief summary for the state in AEGIS-128L<a href="#part-i-a-brief-summary-for-the-state-in-aegis-128l" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>AEGIS-128L has an internal state that is initially computed solely by the <em>key</em> and the <em>IV</em>. The internal state is 128-byte long, broken into eight 16-byte blocks. Let's $S_i$ is updated to $S_{i+1}$ given 32-byte payload $M$. Let's define $S_i = (s_{i, 0}, s_{i, 1}, ..., s_{i, 7})$ and $M = (m_0, m_1)$. We have:</p>
+<ul>
+<li>$s_{i+1, 0} \leftarrow \texttt{AESEnc}(s_{i, 7}, s_{i, 0}) \oplus m_0$,</li>
+<li>$s_{i+1, 4} \leftarrow \texttt{AESEnc}(s_{i, 3}, s_{i, 4}) \oplus m_1$, and</li>
+<li>$s_{i+1, j} \leftarrow \texttt{AESEnc}(s_{i, j-1}, s_{i, j})$ for $j = 1, 2, 3, 5, 6, 7$.</li>
+</ul>
+<p>But what is <code>AESEnc</code>? Let's look at the implementation.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">aes_enc</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">block</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">block</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">block</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;&#34;&#34;Performs the AESENC operation with tables.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t0</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">10</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">15</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">9</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">14</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t2</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">8</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">13</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">7</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t3</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">12</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">6</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">11</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">s</span> <span class="o">=</span> <span class="n">_block_from_ints</span><span class="p">([</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t3</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">_xor</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</span></span></code></pre></div><p>Well... we will go through this later. Let's introduce how keystreams are generated from the internal state. It is (relatively) simple. The keystream $(k_{i, 0}, k_{i, 1})$ for the $i$-th round is given by:</p>
+<p>$$
+k_{i, 0} = (s_{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 6}, \\
+k_{i, 1} = (s_{i, 6} \wedge s_{i, 7}) \oplus s_{i, 5} \oplus s_{i, 2}.
+$$</p>
+<h3 id="part-ii-recovering-part-of-the-state">Part II: Recovering part of the state<a href="#part-ii-recovering-part-of-the-state" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now we are given that key and IV are unchanged. This implies that the initial state, i.e., $s_{00}, s_{01}, ..., s_{07}$ are constants too.</p>
+<p>Suppose that we have two 96-byte messages $M^{(1)}$ and $M^{(2)}$ with only the first two blocks are different (Formally, if $M^{(k)} := (m^{(k)}_{00}, m^{(k)}_{01}, ..., m^{(k)}_{21}$), then $m^{(1)}_{ij} = m^{(2)}_{ij}$ if and only if $i \neq 0$).</p>
+<p>The following table summarizes which of the $s_{ij}$'s that would be different (marked by an <code>!</code>), when encrypting $M^{(1)}$ and $M^{(2)}$ respectively.</p>
+<table class="table table-striped table-bordered text-center" style="width: auto; margin: 12px auto;">
+  <thead>
+    <tr>
+      <th style="width: 50px;">$i$ \ $j$</th>
+      <td style="width: 30px;">0</td>
+      <td style="width: 30px;">1</td>
+      <td style="width: 30px;">2</td>
+      <td style="width: 30px;">3</td>
+      <td style="width: 30px;">4</td>
+      <td style="width: 30px;">5</td>
+      <td style="width: 30px;">6</td>
+      <td style="width: 30px;">7</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>!</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>!</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>!</td>
+      <td>!</td>
+      <td></td>
+      <td></td>
+      <td>!</td>
+      <td>!</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>What does this imply? Knowing that $s^{(1)}_{2,j} = s^{(2)}_{2,j}$ for $j = 2, 3, 6, 7$. Let's look closely on the last 32 bytes of the keystream:</p>
+<p>$$
+\begin{aligned}
+k^{(1)}_{20} \oplus k^{(2)}_{20}
+&amp;= m^{(1)}_{20} \oplus c^{(1)}_{20} \oplus m^{(2)}_{20} \oplus c^{(2)}_{20} \\
+&amp;= \left[ (s^{(1)}_{22} \wedge s^{(1)}_{23}) \oplus s^{(1)}_{21} \oplus s^{(1)}_{26} \right] \oplus \left[ (s^{(2)}_{22} \wedge s^{(2)}_{23}) \oplus s^{(2)}_{21} \oplus s^{(2)}_{26} \right] \\
+&amp;= s^{(1)}_{21} \oplus s^{(2)}_{21}.
+\end{aligned}
+$$</p>
+<p>And similarly $k^{(1)}_{21} \oplus k^{(2)}_{21} = s^{(1)}_{25} \oplus s^{(2)}_{25}$.</p>
+<p>Why is it useful? Let's define a new function, <code>p</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">block</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">block</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t0</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">5</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">10</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">15</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">9</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">14</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t2</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">8</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">13</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">7</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">t3</span> <span class="o">=</span> <span class="p">(</span><span class="n">te0</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">12</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te1</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te2</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">6</span><span class="p">]]</span> <span class="o">^</span> <span class="n">te3</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">11</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">_block_from_ints</span><span class="p">([</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t3</span><span class="p">])</span>
+</span></span></code></pre></div><p>Déjà vu? It is more or less the same with <code>AESEnc</code>. We can state that <code>AESEnc(s, t) == p(s) ^ t</code> too. Looking even more closely, one could observe that the first four bytes from <code>p</code> solely depends on bytes 0, 5, 10 and 15 from <code>s</code>.</p>
+<p>Knowing this, we can further expand $k^{(1)}_{20} \oplus k^{(2)}_{20}$:</p>
+<p>$$\begin{aligned}
+k^{(1)}_{20} \oplus k^{(2)}_{20}
+&amp;= s^{(1)}_{21} \oplus s^{(2)}_{21} \\
+&amp;= \text{AESEnc}(s^{(1)}_{10}, s^{(1)}_{11}) \oplus \text{AESEnc}(s^{(2)}_{10}, s^{(2)}_{11}) \\
+&amp;= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\
+&amp;= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\
+&amp;= p\left(\text{AESEnc}(s^{(1)}_{07}, s^{(1)}_{00}) \oplus m^{(1)}_{00}\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{07}, s^{(2)}_{00}) \oplus m^{(2)}_{00}\right) \\
+&amp;= p(x \oplus m^{(1)}_{00}) \oplus p(x \oplus m^{(2)}_{00}).
+\end{aligned}$$</p>
+<p>(We denote $x := \text{AESEnc}(s_{07}, s_{00}) = s_{10} \oplus m^{(1)}_{00}$ for ease of reading.)</p>
+<p>And now the <em>only</em> unknown is $x$. Can we solve it easily? Yes indeed: we can compute bytes 0, 5, 10, 15 of $x$ from the first four bytes of $k^{(1)}_{20} \oplus k^{(2)}_{20}$. Along with three more equalities from <code>p</code>, we are able to recover $x$ completely. I used an meet-in-the-middle approach to solve for $x$ in five seconds.</p>
+
+
+<figure>
+  <img src="/images/2020-08-25-googlectf/hm.png" title="">
+  
+</figure>
+
+<p>But wait. There is a problem: I am able to find 65536 candidates (or even more) instead of 1, but I am <em>unable</em> to eliminate the rest. The possible number of states will be growing exponentally! What can I do? The solution is actually simple: Just send $M^{(3)}$ and compute another solution set of $x$. After all, it is very likely that $x$ is the only element in the intersection of the two sets. With $x$, we are able to compute $s_{10}$ and $s_{14}$.</p>
+<h3 id="part-iii-finishing-the-first-part-of-the-challenge">Part III: Finishing the first part of the challenge<a href="#part-iii-finishing-the-first-part-of-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We can extend the above idea to leak more. By sending two 128-byte messages with blocks 3 and 4 being different, we are able to recover $s_{20}$ and $s_{24}$. We are able to leak $s_{30}$ and $s_{34}$ with the same idea.</p>
+<p>Two more questions remain: How is it made possible in seven queries? And more importantly, how can we recover $s_{ij}$ for all $j$, for some $i$ (preferably $i = 0\ \text{or}\ 1$)?</p>
+<p><strong>Challenge 1.</strong> Recover the above states in 7 queries.</p>
+<p>In short, we are encrypting these seven plaintexts (each <code>0</code> represents 16 <code>\x00</code>'s, etc):</p>
+<ol>
+<li><code>0000000000</code></li>
+<li><code>0000110000</code></li>
+<li><code>0000220000</code> - Derive $s_{10}$ and $s_{14}$ uniquely with (1) and (2)</li>
+<li><code>0000001100</code></li>
+<li><code>0000002200</code> - Derive $s_{20}$ and $s_{24}$ uniquely with (1) and (4)</li>
+<li><code>0000000011</code></li>
+<li><code>0000000022</code> - Derive $s_{30}$ and $s_{34}$ uniquely with (1) and (6)</li>
+</ol>
+<p><strong>Challenge 2.</strong> Recover $s_{1, j}$ for all $j$.</p>
+<p>From above, we are able to derive $s_{i, 0}$ and $s_{i, 4}$ for $i = 1, 2, 3$ with $m_{ij} = 0$. Hence, the state transition would be $s_{i+1, j} \leftarrow p(s_{i, j-1}) \oplus s_{ij}$ for all $i, j$. Equivalently $s_{i, j-1} = p^{-1}(s_{i+1, j} \oplus s_{ij})$.</p>
+<p>We can compute inverses of $p^{-1}$ easily. Solving system of linear equations would be good, but I'm doing it with meet-in-the-middle. Code reuse for the win! For now, let's visualize how $s_{1, j}$'s can be derived.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  rankdir=BT
+  s₁₀[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₁₄[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₂₀[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₂₄[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₃₀[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+  s₃₄[fillcolor=&amp;#34;#55555c&amp;#34;, style=&amp;#34;filled&amp;#34;]
+
+  s₂₀ -&amp;gt; s₂₇
+  s₃₀ -&amp;gt; s₂₇
+
+  s₂₄ -&amp;gt; s₂₃
+  s₃₄ -&amp;gt; s₂₃
+
+  s₁₄ -&amp;gt; s₁₃
+  s₂₄ -&amp;gt; s₁₃
+
+  s₁₃ -&amp;gt; s₁₂
+  s₂₃ -&amp;gt; s₁₂
+
+  s₁₀ -&amp;gt; s₁₇
+  s₂₀ -&amp;gt; s₁₇
+
+  s₁₇ -&amp;gt; s₁₆
+  s₂₇ -&amp;gt; s₁₆
+
+  s₁₂ -&amp;gt; s₁₁
+  s₁₃ -&amp;gt; s₁₁
+  s₁₆ -&amp;gt; s₁₁
+
+  s₁₆ -&amp;gt; s₁₅
+  s₁₇ -&amp;gt; s₁₅
+  s₁₂ -&amp;gt; s₁₅  
+
+  }
+  </div>
+</div>
+
+<p>After all, the first part of the challenge is done.</p>
+<h3 id="part-iv-aegis-128-vs-aegis-128l">Part IV: AEGIS-128 vs AEGIS-128L<a href="#part-iv-aegis-128-vs-aegis-128l" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>For the second part, AEGIS-128 is used. The state is now 80 bytes (five 16-byte blocks). The payload size has been reduced to one block (let's denote it by $m$). This is how the state transited:</p>
+<ul>
+<li>$s_{i+1, 0} \leftarrow p(s_{i, 4}) \oplus s_{i, 0} \oplus m$, and</li>
+<li>$s_{i+1, j} \leftarrow p(s_{i, j-1}) \oplus s_{i, j}$ for $1 \leq j \leq 4$.</li>
+</ul>
+<p>Moreover, the keystream $k_i$ for the $i$-th round is also altered: $k_i = (s_{i, 2} \wedge s_{i, 3}) \oplus s_{i, 1} \oplus s_{i, 4}$.</p>
+<h3 id="part-v-exploring-the-challenge">Part V: Exploring the challenge<a href="#part-v-exploring-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>I have no idea what's going on, so I decided to recover the printable <code>secret_plaintext</code> first.</p>
+<p>It is pretty easy, and is made possible because we are able to receive the error from the oracle. In particular, from <code>pt.decode(&quot;ascii&quot;)</code>.</p>
+<p>We are able to recover the plaintext with bit-flipping. To begin with, we can flip the whole ciphertext by <code>\x80</code>. The first 32 bytes for the plaintext would be flipped by <code>\x80</code> as well. If we send the flipped ciphertext (denote by $c_?$) to the oracle, we will obtain:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe7 in position 0: ordinal not in range(128)
+</span></span></code></pre></div><p>This means that the first byte of the <em>flipped</em> plaintext would be <code>\xe7</code>. Hence, the first byte of the plaintext is <code>\x67</code> (<code>g</code>). We then flip the first byte of $c_?$ by <code>\x80</code> and send it to the oracle, we will be receiving another error:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xc6 in position 1: ordinal not in range(128)
+</span></span></code></pre></div><p>This recovers the second byte - <code>x46</code> (<code>F</code>). Since the secret plaintext is 96-byte long, we can recover it with 96 oracle calls.</p>
+<p><strong>REMAINING ORACLE CALLS: 231 - 96 = 135.</strong></p>
+<p>With a plaintext recovered, it is time for us to try to recover the internal state. Can we devise a similar strategy that is similar to the first part of the challenge? Formally, what will happen if we have two 48-byte messages $M^{(1)} := (m^{(1)}_0, m^{(1)}_1, m^{(1)}_2)$ and $M^{(2)} := (m^{(2)}_0, m^{(2)}_1, m^{(2)}_2)$ with only the first block being different. Then the last 16 bytes in the keystream will be:</p>
+<p>$$
+\begin{aligned}
+k^{(1)}_2 \oplus k^{(2)}_2
+&amp;= \left[ (s^{(1)}_{22} \wedge s^{(1)}_{23}) \oplus s^{(1)}_{21} \oplus s^{(1)}_{24} \right] \oplus \left[ (s^{(2)}_{22} \wedge s^{(2)}_{23}) \oplus s^{(2)}_{21} \oplus s^{(2)}_{24} \right] \\
+&amp;= s^{(1)}_{21} \oplus s^{(2)}_{21} \\
+&amp;= p(s^{(1)}_{10}) \oplus s^{(1)}_{11} \oplus p(s^{(2)}_{10}) \oplus s^{(2)}_{11} \\
+&amp;= p(s^{(1)}_{10}) \oplus p(s^{(2)}_{10}) \\
+&amp;= p\left(\text{AESEnc}(s^{(1)}_{04}, s^{(1)}_{00}) \oplus m^{(1)}_1\right) \oplus p\left(\text{AESEnc}(s^{(2)}_{04}, s^{(2)}_{00}) \oplus m^{(2)}_1\right) \\
+&amp;= p(x \oplus m^{(1)}_0) \oplus p(x \oplus m^{(2)}_0).
+\end{aligned}
+$$</p>
+<p>Hereby denote $x := \text{AESEnc}(s_{04}, s_{00}) = s_{10} \oplus m^{(1)}_0$. Simply put, if we have the ciphertexts for $M^{(1)}$ and $M^{(2)}$ (denote it as $C^{(k)} = (c^{(k)}_0, c^{(k)}_1, c^{(k)}_2)$), we are able to recover one-fifths of the state if this happens.</p>
+<p>How are we able to do it? Well actually, we have recovered the secret plaintext above. We can flip the first block of the ciphertext arbitrarily (to $C_?$).</p>
+<p>However, since $k^{(2)}_2$ is altered, the third block of the message would be updated. Luckily we are able to recover the message in 17 oracle calls. Here's how:</p>
+<ol>
+<li>Sends $C_?$. We will obtain something like this:
+<pre tabindex="0"><code>UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe8 in position 34...
+</code></pre></li>
+<li>Flips the 35th byte by <code>\xe8</code> in $C_?$. Sends the patched $C_?$:
+<pre tabindex="0"><code>UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xcb in position 35...
+</code></pre></li>
+<li>Flips the 36th byte by <code>\xcb</code> in $C_?$. Repeat the process until we receive <strong>OK</strong>, meaning that the plaintext is now ASCII-encoded.</li>
+<li>For now, we have recovered a subset of message bytes. We then flip the unknown bytes by <code>\x80</code> (for example, bytes 33 and 34) to throw errors from the oracle.</li>
+<li>Repeat step 1 until all unknown bytes are recovered.</li>
+</ol>
+<p>In short, we spent 16 oracle calls to recover the message, and one oracle call to indicate us to flip all the bytes those were originally printable. We are then able to recover a possible set of $s_{10}$ with 65536 entries (or more). We can spend another 17 queries to find the actual $s_{10}$, however.</p>
+<p><strong>REMAINING ORACLE CALLS: 135 - 17×2 = 101.</strong></p>
+<p>With the same idea, we can recover $s_{20}, s_{30}, s_{40}$ with 17×6 queries. This would allow us to recover $s_{10}, s_{11}, ..., s_{14}$ and hence forging arbitrary messages (along with a slightly longer AD).</p>
+<p><strong>REMAINING ORACLE CALLS: 101 - 17×6 = -1.</strong></p>
+<p>Shoot - we are one query short. Since we are able to recover one byte of the plaintext in each of the queries, so it doesn't hurt to sacrifice one oracle calls by guessing one byte. So... in theory, we are able to finish the challenge with once every 256 times.</p>
+<p>Luckily, if we are given a incorrect plaintext (actually keystream), we are unable to recover a single $s_*$. That's pretty good, we are able to solve the challenge every time.</p>
+<p><strong>REMAINING ORACLE CALLS: -1 + 1 = &#x1f389;.</strong></p>
+<p>With the exploit script written, I am able to reach the very end locally. Congratulations to me!</p>
+<h3 id="part-vi-wait-arent-we-done">Part VI: Wait... Aren't we done?<a href="#part-vi-wait-arent-we-done" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>No... When I am interacting to the server, I am <em>always</em> disconnected while sending one of the 231 oracle calls. Asking the organizers in IRC, knowing that there was an 1-minute timeout - it was later increased to 10 minutes. Unfortunately, my solution runs for around 5 minutes. I have two choices:</p>
+<ol>
+<li>Wait until the challenge has a 10-minute timeout, or</li>
+<li>Optimize the script and have it completed in one minute.</li>
+</ol>
+<p>Seeing that there are already few teams solving the challenge, I think (2) would be fun.</p>
+<h4 id="61-reducing-online-complexity">6.1. Reducing online complexity<a href="#61-reducing-online-complexity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>For inputs that does not require immediate feedbacks, we can send them at the same time. This is an example when I am recovering <code>secret_plaintext</code> in the second part.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Before optimization</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_ciphertext</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">c</span><span class="o">^</span><span class="mh">0x80</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ciphertext</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">m0</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">96</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">test_ciphertext</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_ciphertext</span> <span class="o">=</span> <span class="n">cxor</span><span class="p">(</span><span class="n">test_ciphertext</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">,</span> <span class="n">mc</span> <span class="o">=</span> <span class="n">try_decrypt_read</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">p</span> <span class="o">==</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m0</span> <span class="o">+=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">mc</span><span class="o">^</span><span class="mh">0x80</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># After optimization</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_ciphertext</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">c</span><span class="o">^</span><span class="mh">0x80</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ciphertext</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">m0</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">96</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">test_ciphertext</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_ciphertext</span> <span class="o">=</span> <span class="n">cxor</span><span class="p">(</span><span class="n">test_ciphertext</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">96</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">,</span> <span class="n">mc</span> <span class="o">=</span> <span class="n">try_decrypt_read</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">p</span> <span class="o">==</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m0</span> <span class="o">+=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">mc</span><span class="o">^</span><span class="mh">0x80</span><span class="p">])</span>
+</span></span></code></pre></div><h4 id="62-reducing-offline-complexity">6.2. Reducing offline complexity<a href="#62-reducing-offline-complexity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>For example, this is the method I implemented to solve for $x$ from $p(x \oplus a) \oplus p(x \oplus b) = c$ - it takes one second each time:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">px_subsolve</span><span class="p">(</span><span class="n">a_sub</span><span class="p">,</span> <span class="n">b_sub</span><span class="p">,</span> <span class="n">c_sub</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Given a_sub, b_sub, c_sub (4 bytes), find x_sub such that</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ^ te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># = c_sub</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Reformulating:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ te0[(x_sub ^ a_sub)[0]] ^ te1[(x_sub ^ a_sub)[1]] ^ c_sub</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># = te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]] ^ te2[(x_sub ^ a_sub)[2]] ^ te3[(x_sub ^ a_sub)[3]]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">lhss</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># LHS</span>
+</span></span><span class="line"><span class="cl">        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">be0</span><span class="p">[</span><span class="n">x0</span><span class="o">^</span><span class="n">a_sub</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">be0</span><span class="p">[</span><span class="n">x0</span><span class="o">^</span><span class="n">b_sub</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">be1</span><span class="p">[</span><span class="n">x1</span><span class="o">^</span><span class="n">a_sub</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">be1</span><span class="p">[</span><span class="n">x1</span><span class="o">^</span><span class="n">b_sub</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">c_sub</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">_xor</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">lhss</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">lhss</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="n">solns</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># RHS</span>
+</span></span><span class="line"><span class="cl">        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">be2</span><span class="p">[</span><span class="n">x2</span><span class="o">^</span><span class="n">a_sub</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">be2</span><span class="p">[</span><span class="n">x2</span><span class="o">^</span><span class="n">b_sub</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">be3</span><span class="p">[</span><span class="n">x3</span><span class="o">^</span><span class="n">a_sub</span><span class="p">[</span><span class="mi">3</span><span class="p">]],</span> <span class="n">be3</span><span class="p">[</span><span class="n">x3</span><span class="o">^</span><span class="n">b_sub</span><span class="p">[</span><span class="mi">3</span><span class="p">]]]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">_xor</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="ow">in</span> <span class="n">lhss</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">[]):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">solns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">solns</span>
+</span></span></code></pre></div><p>However, if we force <code>a_sub == b'\0'*4</code> and <code>b_sub == b'\1'*4 or b_sub == b'\2'*4</code>, the right hand side can be precomputed. We are able to solve for $x$ once every 0.2 second.</p>
+<p>At last - we are able to get the flag in 30 seconds locally and around 55 seconds online! &#x1f389;</p>
+<hr>
+<h2 id="credits">Credits<a href="#credits" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<ul>
+<li>Thanks <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> who noticed that my <em>lever</em> did not hurt. Playing Minecraft too much, I misspelt liver.</li>
+<li>Thanks <a href="https://twitter.com/hellman1908" target="_blank" rel="nofollow">@hellman1908</a> for pointing that we are able to bruteforce byte by byte instead of bruteforcing columns, since that we can apply <code>MixColumns</code> inverse.</li>
+</ul>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Google CTF 2020: Oracle
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2020/2020-09-08-confidencectf-team-trees/">← CONFidence 2020 CTF: Team Trees</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2020/2020-07-22-uiuctf-nookcrypt/">UIUCTF 2020: nookcrypt →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

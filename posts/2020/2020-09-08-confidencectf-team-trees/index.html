@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CONFidence 2020 CTF: Team Trees | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">CONFidence 2020 CTF: Team Trees</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2020-09-08T18:30:00&#43;08:00">2020-09-08</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/confidence-ctf/" class="text-muted text-decoration-none">#confidence-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/reverse/" class="text-muted text-decoration-none">#reverse</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>This week, we have teamed up as <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> to play CONFidence 2020 CTF. We end up ranked 15, but we are more proud of ourselves able to solve a reversing challenge called Team Trees (395 points, 5 solves).</p>
+<p>In particular, we are the first-to-solve to the challenge. It took us around two hours to win the flag. This writeup is written by <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> and <a href="https://twitter.com/mystiz613" target="_blank" rel="nofollow">@mystiz613</a>.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>We wanted to plant a lot of trees, but it's going kinda slow...</p>
+</blockquote>
+<p>We are given a binary that executes a slow algorithm that takes up a lot of memory. The objective is to wait the program until it is done - the flag would be shown as the output.</p>
+
+
+<figure>
+  <img src="/images/2020-09-08-confidencectf/i-can-explain.png" title="">
+  
+</figure>
+
+<p><strong>Never.</strong> Our PCs don't even have enough memory to play with that. Even so, we gotta wait forever for the flag. Our objective is to optimize and rewrite the algorithm used. By optimize we mean reduce <em>both</em> the time and space complexities.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-baby-steps-from-baby-cases">Part I: Baby steps from baby cases<a href="#part-i-baby-steps-from-baby-cases" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>From the binary, we knew that we are going to find $f(1337)$ for a given $f$. Although we do not know what $f$ is, we could still have an insight on it. For example, we can patch <code>1337</code> by smaller values: <code>0</code>, <code>1</code>, etc.:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">n = 0: p4{32b9b6bca55548ed88ec405c5c7cf3a1}
+</span></span><span class="line"><span class="cl">n = 1: p4{ee5fadd5a727857f32b9b6bca55548ed}
+</span></span><span class="line"><span class="cl">n = 2: p4{ee5fadd5a727857f982d2435efffdac7}
+</span></span><span class="line"><span class="cl">n = 3: p4{c8b5922a9f156985b4f8094372145c13}
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">n = 4: Out of memory ;_;
+</span></span></code></pre></div><p>In particular, <code>32b9b6bca55548ed</code> in the output for $n = 0$ is the <code>v1</code> in <code>sub_400816</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">__noreturn</span> <span class="nf">sub_400816</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">unsigned</span> <span class="kr">__int64</span> <span class="n">v0</span><span class="p">;</span> <span class="c1">// rdx
+</span></span></span><span class="line"><span class="cl">  <span class="kt">signed</span> <span class="kr">__int64</span> <span class="n">v1</span><span class="p">;</span> <span class="c1">// rcx
+</span></span></span><span class="line"><span class="cl">  <span class="kt">signed</span> <span class="kr">__int64</span> <span class="n">v2</span><span class="p">;</span> <span class="c1">// rt0
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">v0</span> <span class="o">=</span> <span class="mh">0x82F96AC97429A68BLL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v1</span> <span class="o">=</span> <span class="mh">0x32B9B6BCA55548EDLL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">__debugbreak</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v2</span> <span class="o">=</span> <span class="n">v1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v1</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">v0</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">v1</span> <span class="o">+</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v0</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>But what is <code>88ec405c5c7cf3a1</code>? It must be related to <code>v0</code> and <code>v1</code>. We tried <code>3*v0 + 2*v1 + 4</code> and it is <code>ee5fadd5a727857f</code>. It does not check out.</p>
+<p>We have spot out that the output shares the same prefix when $n=1$ and $n=2$. Maybe we shall see what is going on with <code>sub_400816</code> - it is simply generating numbers for a sequence, namely $s_n$, indefinitely:</p>
+<ul>
+<li>$s_0 = \texttt{82F96AC97429A68B}_{16}$,</li>
+<li>$s_1 = \texttt{32B9B6BCA55548ED}_{16}$, and</li>
+<li>$s_k = 3 s_{k-2} + 2 s_{k-1} + 4\mod2^{64}$ for $k \geq 2$.</li>
+</ul>
+<p>Let's generate a bunch of $a_k$'s to see if there is something interesting:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">s_2 = 0xee5fadd5a727857f
+</span></span><span class="line"><span class="cl">s_3 = 0x74ec7fe13e4ee5c9
+</span></span><span class="line"><span class="cl">s_4 = 0xb4f8094372145c13
+</span></span><span class="line"><span class="cl">s_5 = 0xc8b5922a9f156985
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></div><p>If we rewrite the program output in terms of $s_k$, we have:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">n = 0: p4{s_1 88ec405c5c7cf3a1}
+</span></span><span class="line"><span class="cl">n = 1: p4{s_2 32b9b6bca55548ed}
+</span></span><span class="line"><span class="cl">n = 2: p4{s_2 982d2435efffdac7}
+</span></span><span class="line"><span class="cl">n = 3: p4{s_5 s_4}
+</span></span></code></pre></div><p>The output when $n = 3$ is actually composed by two elements in the sequence. It makes us think: is it the case that <code>88ec...</code> (also <code>32b9...</code> and <code>982d...</code>) is an <em>intermediate state</em>? To verify our thoughts, we are going to dig deeper into the assembly operations.</p>
+
+
+<figure>
+  <img src="/images/2020-09-08-confidencectf/ida-400816.png" title="">
+  
+</figure>
+
+<p>There are <em>four</em> operations. Here are the values of <code>v0</code> and <code>v1</code> (as defined in <code>sub_400816</code>) after each step.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl">                        <span class="c1">; rcx = c0,              rdx = d0</span>
+</span></span><span class="line"><span class="cl"><span class="nf">lea</span>  <span class="nb">rdx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rdx</span><span class="o">+</span><span class="nb">rdx</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span>   <span class="c1">; rcx = c0,              rdx = 3*d0</span>
+</span></span><span class="line"><span class="cl"><span class="nf">lea</span>  <span class="nb">rdx</span><span class="p">,</span> <span class="p">[</span><span class="nb">rdx</span><span class="o">+</span><span class="nb">rcx</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="c1">; rcx = c0,              rdx = 3*d0 + 2*c0 + 4</span>
+</span></span><span class="line"><span class="cl"><span class="nf">xchg</span> <span class="nb">rcx</span><span class="p">,</span> <span class="nb">rdx</span>           <span class="c1">; rcx = 3*d0 + 2*c0 + 4, rdx = c0</span>
+</span></span><span class="line"><span class="cl"><span class="nf">jmp</span>  <span class="nv">short</span> <span class="nv">loc_40082F</span>   <span class="c1">; rcx = 3*d0 + 2*c0 + 4, rdx = c0</span>
+</span></span></code></pre></div><p>With that said, it takes four instructions for a complete cycle inside the while loop. From the smaller $n$s, we see that the output format would be <code>p4{[rdx][rcx]}</code>. These are the starting values of <code>rcx</code> and <code>rdx</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl"> step | rdx              | rcx
+</span></span><span class="line"><span class="cl">------+------------------+------------------
+</span></span><span class="line"><span class="cl">    0 | 32b9b6bca55548ed | 82f96ac97429a68b
+</span></span><span class="line"><span class="cl">    1 | 32b9b6bca55548ed | 88ec405c5c7cf3a1 &lt;- output when n=0
+</span></span><span class="line"><span class="cl">    2 | 32b9b6bca55548ed | ee5fadd5a727857f
+</span></span><span class="line"><span class="cl">    3 | ee5fadd5a727857f | 32b9b6bca55548ed &lt;- output when n=1
+</span></span><span class="line"><span class="cl">    4 | ee5fadd5a727857f | 32b9b6bca55548ed    ...or this?
+</span></span><span class="line"><span class="cl">    5 | ee5fadd5a727857f | 982d2435efffdac7 &lt;- output when n=2
+</span></span><span class="line"><span class="cl">    6 | ee5fadd5a727857f | 74ec7fe13e4ee5c9
+</span></span><span class="line"><span class="cl">    7 | 74ec7fe13e4ee5c9 | ee5fadd5a727857f
+</span></span><span class="line"><span class="cl">    8 | 74ec7fe13e4ee5c9 | ee5fadd5a727857f
+</span></span><span class="line"><span class="cl">    9 | 74ec7fe13e4ee5c9 | cb1f0980f576907d
+</span></span><span class="line"><span class="cl">   10 | 74ec7fe13e4ee5c9 | b4f8094372145c13
+</span></span><span class="line"><span class="cl">   11 | b4f8094372145c13 | 74ec7fe13e4ee5c9
+</span></span><span class="line"><span class="cl">   12 | b4f8094372145c13 | 74ec7fe13e4ee5c9
+</span></span><span class="line"><span class="cl">   13 | b4f8094372145c13 | 5ec57fa3baecb15b
+</span></span><span class="line"><span class="cl">   14 | b4f8094372145c13 | c8b5922a9f156985
+</span></span><span class="line"><span class="cl">   15 | c8b5922a9f156985 | b4f8094372145c13 &lt;- output when n=3
+</span></span><span class="line"><span class="cl">   16 | c8b5922a9f156985 | b4f8094372145c13    ...or this?
+</span></span><span class="line"><span class="cl">   17 | c8b5922a9f156985 | 1ee81bca563d1439
+</span></span><span class="line"><span class="cl">   18 | c8b5922a9f156985 | b053401f9467e747
+</span></span><span class="line"><span class="cl">   19 | b053401f9467e747 | c8b5922a9f156985
+</span></span></code></pre></div><div class="alert info">
+  &#x1f4a1; <strong>Imagination.</strong> You have opened a process with <code>gdb</code> that has a breakpoint at the beginning of the function. You are given a set of something (<em>defined in <code>sub_40090D</code></em>) and checks if it has a given attribute (<em>defined in <code>sub_4009C4</code></em>). If so, you call <code>ni</code> to move to the next step. Finally, you print the registers, extract <code>edx</code> and <code>ecx</code>, and print them as the flag.
+</div>
+
+<p>So... what is the set of something? And what is the attribute it is checked against?</p>
+<h3 id="part-ii-collecting-the-pieces-for-the-puzzle">Part II: Collecting the pieces for the puzzle<a href="#part-ii-collecting-the-pieces-for-the-puzzle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>There are four functions that worth investigating: <code>sub_40090D</code> (the enumerator), <code>sub_4009C4</code> (the checker), <code>sub_400A59</code> (the constructor) and <code>sub_400840</code> (called from <code>sub_40090D</code>). We will first look into <code>sub_400840</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">_DWORD</span> <span class="o">*</span><span class="kr">__fastcall</span> <span class="nf">sub_400840</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="n">a1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+14h] [rbp-Ch]
+</span></span></span><span class="line"><span class="cl">  <span class="n">_DWORD</span> <span class="o">*</span><span class="n">v3</span><span class="p">;</span> <span class="c1">// [rsp+18h] [rbp-8h]
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">v3</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mh">0x20uLL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">v3</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Out of memory ;_;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">abort</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="n">v3</span> <span class="o">=</span> <span class="o">*</span><span class="n">a1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">*</span><span class="n">a1</span> <span class="o">&gt;</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="p">(</span><span class="n">_QWORD</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v3</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nf">sub_400840</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">_QWORD</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">v3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Since it is allocating 32 bytes, we can define a dummy struct:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">Dummy</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">x</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>Loading the struct into IDA, by redefining the types of <code>a1</code> and <code>v3</code> as <code>Dummy*</code>, we have:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">Dummy</span> <span class="o">*</span><span class="kr">__fastcall</span> <span class="nf">sub_400840</span><span class="p">(</span><span class="n">Dummy</span> <span class="o">*</span><span class="n">src</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+14h] [rbp-Ch]
+</span></span></span><span class="line"><span class="cl">  <span class="n">Dummy</span> <span class="o">*</span><span class="n">dest</span><span class="p">;</span> <span class="c1">// [rsp+18h] [rbp-8h]
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">dest</span> <span class="o">=</span> <span class="p">(</span><span class="n">Dummy</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="mh">0x20uLL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">dest</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Out of memory ;_;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">abort</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)</span><span class="n">dest</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)</span><span class="n">src</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)</span><span class="n">src</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="p">(</span><span class="n">_QWORD</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dest</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">[</span><span class="mi">8</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="nf">sub_400840</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">Dummy</span> <span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">src</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">[</span><span class="mi">8</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">dest</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>It is calling itself recursively. Would it be a <em>deep clone</em>? Moreover, we can further see that the first four bytes should be <code>size</code> and it would not be greater than 3. Otherwise <code>8*i+8 &gt;= 32</code>, overflowing the struct. After all, we think it is a node of the tree - and this is the final struct we have:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">Node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span> <span class="c1">// unknown
+</span></span></span><span class="line"><span class="cl">    <span class="n">Node</span> <span class="o">*</span><span class="n">child</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>More importantly, we can finally claim that <code>sub_400840</code> is fully reversed.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">Node</span> <span class="o">*</span><span class="kr">__fastcall</span> <span class="nf">clone</span><span class="p">(</span><span class="n">Node</span> <span class="o">*</span><span class="n">src</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+14h] [rbp-Ch]
+</span></span></span><span class="line"><span class="cl">  <span class="n">Node</span> <span class="o">*</span><span class="n">dest</span><span class="p">;</span> <span class="c1">// [rsp+18h] [rbp-8h]
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">dest</span> <span class="o">=</span> <span class="p">(</span><span class="n">Node</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="mh">0x20uLL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">dest</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Out of memory ;_;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">abort</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">dest</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="n">src</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">src</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dest</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nf">clone</span><span class="p">(</span><span class="n">src</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">dest</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Then we will be reversing <code>sub_400A59</code>. This function is simple, it is defining a path with length $n$. After the tree is constructed, it will be used by <code>sub_400BED</code> for enumeration. How? Let's see a baby example when $n = 2$:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  t0_0[shape=point]
+  t0_1[shape=point]
+  t0_2[shape=point]
+  t0_0 -&amp;gt; t0_1 [arrowhead=false]
+  t0_1 -&amp;gt; t0_2 [arrowhead=false]
+  
+  x0[shape=point,style=invis]
+  y0[shape=point,style=invis]
+  x0-&amp;gt;y0
+  
+  t1_0[shape=point]
+  t1_1[shape=point]
+  t1_2[shape=point]
+  t1_3[shape=point]
+  t1_0 -&amp;gt; t1_1 [arrowhead=false]
+  t1_1 -&amp;gt; t1_2 [arrowhead=false]
+  t1_1 -&amp;gt; t1_3 [arrowhead=false]
+  
+  x1[shape=point,style=invis]
+  y1[shape=point,style=invis]
+  x1-&amp;gt;y1
+  
+  t2_0[shape=point]
+  t2_1[shape=point]
+  t2_2[shape=point]
+  t2_3[shape=point]
+  t2_4[shape=point]
+  t2_0 -&amp;gt; t2_1 [arrowhead=false]
+  t2_1 -&amp;gt; t2_2 [arrowhead=false]
+  t2_1 -&amp;gt; t2_3 [arrowhead=false]
+  t2_1 -&amp;gt; t2_4 [arrowhead=false]
+  
+  x2[shape=point,style=invis]
+  y2[shape=point,style=invis]
+  x2-&amp;gt;y2
+  
+  t3_0[shape=point]
+  t3_1[shape=point]
+  t3_2[shape=point]
+  t3_3[shape=point]
+  t3_4[shape=point]
+  t3_0 -&amp;gt; t3_1 [arrowhead=false]
+  t3_0 -&amp;gt; t3_3 [arrowhead=false]
+  t3_1 -&amp;gt; t3_2 [arrowhead=false]
+  t3_3 -&amp;gt; t3_4 [arrowhead=false]
+  
+  x3[shape=point,style=invis]
+  y3[shape=point,style=invis]
+  x3-&amp;gt;y3
+    
+  u[label=&amp;#34;...&amp;#34;, shape=plaintext, fillcolor=&amp;#34;transparent&amp;#34;]
+  
+  x4[shape=point,style=invis]
+  y4[shape=point,style=invis]
+  x4-&amp;gt;y4
+  
+  t4_0[shape=point]
+  t4_1[shape=point]
+  t4_2[shape=point]
+  t4_3[shape=point]
+  t4_4[shape=point]
+  t4_5[shape=point]
+  t4_6[shape=point]
+  t4_7[shape=point]
+  t4_8[shape=point]
+  t4_9[shape=point]
+  t4_10[shape=point]
+  t4_11[shape=point]
+  t4_12[shape=point]
+  
+  t4_0 -&amp;gt; t4_1 [arrowhead=false]
+  t4_0 -&amp;gt; t4_2 [arrowhead=false]
+  t4_0 -&amp;gt; t4_3 [arrowhead=false]
+  t4_1 -&amp;gt; t4_4 [arrowhead=false]
+  t4_1 -&amp;gt; t4_5 [arrowhead=false]
+  t4_1 -&amp;gt; t4_6 [arrowhead=false]
+  t4_2 -&amp;gt; t4_7 [arrowhead=false]
+  t4_2 -&amp;gt; t4_8 [arrowhead=false]
+  t4_2 -&amp;gt; t4_9 [arrowhead=false]
+  t4_3 -&amp;gt; t4_10 [arrowhead=false]
+  t4_3 -&amp;gt; t4_11 [arrowhead=false]
+  t4_3 -&amp;gt; t4_12 [arrowhead=false]
+  
+  {rank=same; t0_1; u; x0; y0; x1; y1; x2; y2; x3; y3; x4; y4}
+
+  }
+  </div>
+</div>
+
+<p>Well... it is just enumerating all the ternary trees with depth $n$, where each of the leaf node is on level $n$.</p>
+<p>After that, we check the number of <em>good</em> trees. By <em>good</em> it is defined by (former) <code>sub_4009C4</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">signed</span> <span class="kr">__int64</span> <span class="kr">__fastcall</span> <span class="nf">is_good_tree</span><span class="p">(</span><span class="n">Node</span> <span class="o">*</span><span class="n">node</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">ka</span><span class="p">;</span> <span class="c1">// [rsp+4h] [rbp-1Ch]
+</span></span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">kb</span><span class="p">;</span> <span class="c1">// [rsp+4h] [rbp-1Ch]
+</span></span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+1Ch] [rbp-4h]
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">ka</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">k</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0LL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">k</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ka</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">kb</span> <span class="o">=</span> <span class="n">ka</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="n">kb</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">kb</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kr">__int8</span><span class="p">)</span><span class="nf">is_good_tree</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">child</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kb</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="mi">0LL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">1LL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>harrier has implemented a <em>good</em> tree checker <del>(himself)</del> in Discord for me to test with:</p>
+
+
+<figure>
+  <img src="/images/2020-09-08-confidencectf/harrier-checker.png" title="">
+  
+</figure>
+
+<p>After all, a tree is said to be <em>good</em> if both of the condition are satisfied:</p>
+<ol>
+<li>for each node with two children, every children should have at most one children, and</li>
+<li>for each node with three children, every children and their grandchildren should have at most one children.</li>
+</ol>
+<p>Cool. We have the pieces of the puzzle gathered. Define $g(n)$ to be the number of good trees of depth $n$. We are going to find $g(1337)$ and move the sequence forward by $g(1337)$ instructions.</p>
+<h3 id="part-iii-verifying-this-for-the-baby-cases">Part III: Verifying this for the baby cases<a href="#part-iii-verifying-this-for-the-baby-cases" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are double checking if our observation checks out for smaller $n$'s. From above, we have $g(0) = 1$, $g(1) = 3\ \text{or}\ 4$, $g(2) = 5$ and $g(3) = 15\ \text{or}\ 16$.</p>
+<p>For $n = 0$, the only tree would be:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+  
+  t0
+
+  }
+  </div>
+</div>
+
+<p>Yeah. It is a good tree. Thus $g(0) = 1$. Also, $g(1) = 3$ since the three trees are all good:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+  
+  t0_0 -&amp;gt; t0_1 
+  
+  t1_0 -&amp;gt; t1_1 
+  t1_0 -&amp;gt; t1_2 
+  
+  t2_0 -&amp;gt; t2_1 
+  t2_0 -&amp;gt; t2_2 
+  t2_0 -&amp;gt; t2_3
+
+  }
+  </div>
+</div>
+
+<p>For $n = 2$, we start rejecting trees. There are 39 trees, but there are only five being good. Hence $g(2) = 5$.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+  
+  t0_0 -&amp;gt; t0_1 
+  t0_1 -&amp;gt; t0_2 
+  
+  t3_0 -&amp;gt; t3_1 
+  t3_1 -&amp;gt; t3_2 
+  t3_1 -&amp;gt; t3_3 
+  
+  t4_0 -&amp;gt; t4_1 
+  t4_1 -&amp;gt; t4_2 
+  t4_1 -&amp;gt; t4_3 
+  t4_1 -&amp;gt; t4_4 
+  
+  t1_0 -&amp;gt; t1_1 
+  t1_0 -&amp;gt; t1_2 
+  t1_1 -&amp;gt; t1_3 
+  t1_2 -&amp;gt; t1_4 
+
+  t2_0 -&amp;gt; t2_1 
+  t2_0 -&amp;gt; t2_2 
+  t2_0 -&amp;gt; t2_3 
+  t2_1 -&amp;gt; t2_4 
+  t2_2 -&amp;gt; t2_5 
+  t2_3 -&amp;gt; t2_6 
+
+  }
+  </div>
+</div>
+
+<p>And $g(3) = 15$. They are:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+  
+  t0_0 -&amp;gt; t0_1 
+  t0_1 -&amp;gt; t0_2 
+  t0_2 -&amp;gt; t0_3 
+  
+  t5_0 -&amp;gt; t5_1 
+  t5_1 -&amp;gt; t5_2 
+  t5_2 -&amp;gt; t5_3 
+  t5_2 -&amp;gt; t5_4 
+  
+  t6_0 -&amp;gt; t6_1 
+  t6_1 -&amp;gt; t6_2 
+  t6_2 -&amp;gt; t6_3 
+  t6_2 -&amp;gt; t6_4 
+  t6_2 -&amp;gt; t6_5 
+  
+  t3_0 -&amp;gt; t3_1 
+  t3_1 -&amp;gt; t3_2 
+  t3_1 -&amp;gt; t3_3 
+  t3_2 -&amp;gt; t3_4 
+  t3_3 -&amp;gt; t3_5 
+  
+  t4_0 -&amp;gt; t4_1 
+  t4_1 -&amp;gt; t4_2 
+  t4_1 -&amp;gt; t4_3 
+  t4_1 -&amp;gt; t4_4 
+  t4_2 -&amp;gt; t4_5 
+  t4_3 -&amp;gt; t4_6 
+  t4_4 -&amp;gt; t4_7 
+  
+  t1_0 -&amp;gt; t1_1 
+  t1_0 -&amp;gt; t1_2 
+  t1_1 -&amp;gt; t1_3 
+  t1_2 -&amp;gt; t1_4 
+  t1_3 -&amp;gt; t1_5 
+  t1_4 -&amp;gt; t1_6 
+  
+  t7_0 -&amp;gt; t7_1 
+  t7_0 -&amp;gt; t7_2 
+  t7_1 -&amp;gt; t7_3 
+  t7_2 -&amp;gt; t7_4 
+  t7_3 -&amp;gt; t7_5 
+  t7_4 -&amp;gt; t7_6 
+  t7_4 -&amp;gt; t7_7 
+
+  }
+  </div>
+</div>
+
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+    
+  t8_0 -&amp;gt; t8_1 
+  t8_0 -&amp;gt; t8_2 
+  t8_1 -&amp;gt; t8_3 
+  t8_2 -&amp;gt; t8_4 
+  t8_3 -&amp;gt; t8_5 
+  t8_4 -&amp;gt; t8_6 
+  t8_4 -&amp;gt; t8_7 
+  t8_4 -&amp;gt; t8_8 
+
+  t9_0 -&amp;gt; t9_1 
+  t9_0 -&amp;gt; t9_2 
+  t9_1 -&amp;gt; t9_3 
+  t9_2 -&amp;gt; t9_4 
+  t9_3 -&amp;gt; t9_5 
+  t9_3 -&amp;gt; t9_6 
+  t9_4 -&amp;gt; t9_7
+  
+  t10_0 -&amp;gt; t10_1
+  t10_0 -&amp;gt; t10_2 
+  t10_1 -&amp;gt; t10_3 
+  t10_2 -&amp;gt; t10_4 
+  t10_3 -&amp;gt; t10_5 
+  t10_3 -&amp;gt; t10_6 
+  t10_4 -&amp;gt; t10_7 
+  t10_4 -&amp;gt; t10_8 
+  
+  t11_0 -&amp;gt; t11_1 
+  t11_0 -&amp;gt; t11_2 
+  t11_1 -&amp;gt; t11_3 
+  t11_2 -&amp;gt; t11_4 
+  t11_3 -&amp;gt; t11_5 
+  t11_3 -&amp;gt; t11_6 
+  t11_4 -&amp;gt; t11_7 
+  t11_4 -&amp;gt; t11_8 
+  t11_4 -&amp;gt; t11_9 
+
+  }
+  </div>
+</div>
+
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+  
+  t12_0 -&amp;gt; t12_1 
+  t12_0 -&amp;gt; t12_2 
+  t12_1 -&amp;gt; t12_3 
+  t12_2 -&amp;gt; t12_4 
+  t12_3 -&amp;gt; t12_5 
+  t12_3 -&amp;gt; t12_6 
+  t12_3 -&amp;gt; t12_7 
+  t12_4 -&amp;gt; t12_8 
+
+  t13_0 -&amp;gt; t13_1 
+  t13_0 -&amp;gt; t13_2 
+  t13_1 -&amp;gt; t13_3 
+  t13_2 -&amp;gt; t13_4 
+  t13_3 -&amp;gt; t13_5 
+  t13_3 -&amp;gt; t13_6 
+  t13_3 -&amp;gt; t13_7 
+  t13_4 -&amp;gt; t13_8 
+  t13_4 -&amp;gt; t13_9 
+ 
+  t14_0 -&amp;gt; t14_1 
+  t14_0 -&amp;gt; t14_2 
+  t14_1 -&amp;gt; t14_3 
+  t14_2 -&amp;gt; t14_4 
+  t14_3 -&amp;gt; t14_5 
+  t14_3 -&amp;gt; t14_6 
+  t14_3 -&amp;gt; t14_7 
+  t14_4 -&amp;gt; t14_8 
+  t14_4 -&amp;gt; t14_9 
+  t14_4 -&amp;gt; t14_10 
+
+  t2_0 -&amp;gt; t2_1 
+  t2_0 -&amp;gt; t2_2 
+  t2_0 -&amp;gt; t2_3 
+  t2_1 -&amp;gt; t2_4 
+  t2_2 -&amp;gt; t2_5 
+  t2_3 -&amp;gt; t2_6 
+  t2_4 -&amp;gt; t2_7 
+  t2_5 -&amp;gt; t2_8 
+  t2_6 -&amp;gt; t2_9 
+
+  }
+  </div>
+</div>
+
+<p>Cool! Everything checks out! Luckily the memory overflows when $n = 4$, otherwise our OCD would be forcing us to find $g(4)$ and the writeup will be flooded by a large forest.</p>
+<h3 id="part-iv-algorithms-algorithms-everywhere">Part IV: Algorithms, algorithms everywhere<a href="#part-iv-algorithms-algorithms-everywhere" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In this part, harrier and I work on a different topic:</p>
+<ul>
+<li>harrier's task: Find $g(1337)$.</li>
+<li>Mystiz's task: Find the flag if harrier has $g(1337)$ computed.</li>
+</ul>
+<h4 id="41-what-is-g1337">4.1. What is $g(1337)$?<a href="#41-what-is-g1337" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To find the number of <em>good</em> trees of height $h$, we define an auxiliary variable $k$ (interpret it as <em>cooldown</em>). Here we redefine <em>good</em> trees again:</p>
+<p>For a ternary tree, it is said to be <em>good</em> if for every node,</p>
+<ol>
+<li><strong>[Recovery]</strong> if $k &gt; 0$: there should be at most one child, and</li>
+<li><strong>[Fertility]</strong> if $k = 0$: if there are $c$ children, then each of them has cooldown $k = c-1$.</li>
+</ol>
+<p>Simply put, you need to <em>recover</em> to be <em>fertile</em>. For instance, the following is a good tree since each of the node with non-zero cooldown has only a child.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=rectangle, style=rounded]
+  
+  t0 [label=0]
+  t1 [label=1]
+  t2 [label=1]
+  t3 [label=0]
+  t4 [label=0]
+  
+  t0-&amp;gt;t1
+  t0-&amp;gt;t2
+  t1-&amp;gt;t3
+  t2-&amp;gt;t4
+
+  }
+  </div>
+</div>
+
+<p>However, this is not a <em>good</em> tree since the red node is too fertile:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=rectangle, style=rounded]
+  
+  t0 [label=0]
+  t1 [label=1, style=&amp;#34;filled, rounded&amp;#34;, fillcolor=&amp;#34;#ff000080&amp;#34;]
+  t2 [label=1]
+  t3 [label=0]
+  t4 [label=0]
+  t5 [label=0]
+  
+  t0-&amp;gt;t1
+  t0-&amp;gt;t2
+  t1-&amp;gt;t3
+  t1-&amp;gt;t4
+  t2-&amp;gt;t5
+
+  }
+  </div>
+</div>
+
+<p>Luckily, we don't need to count the <em>good</em> trees one by one. It can be solved by dynamic programming rather easily. Let's define the state <code>dp[h][k]</code> to be the number of <em>good</em> trees if the tree is of depth <code>h</code> and cooldown <code>k</code>. Then:</p>
+<ol>
+<li><strong>[Base case]</strong> <code>dp[0][k] == 1</code> for every <code>k</code>,</li>
+<li><strong>[Transition]</strong> <code>dp[h][k] == dp[h-1][k-1]</code> for <code>h, k &gt; 0</code>, and</li>
+<li><strong>[Transition]</strong> <code>dp[h][0] == dp[h-1][0] + dp[h-1][1]**2 + dp[h-1][2]**3</code> for <code>h &gt; 0</code>.</li>
+</ol>
+<p>The first condition is obvious - the only tree with depth 0 is the tree with the only root node. It is <em>good</em> no matter what the cooldown is.</p>
+<p>For the second condition, it is not difficult to imagine it as an tree that must cooldown. Hence, if $\text{GT}_{hk}$ is a <em>good</em> tree with height $h&gt;0$ and cooldown $k&gt;0$, then:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+  x-&amp;gt;st
+  subgraph cluster {
+    style=&amp;#34;filled&amp;#34;
+    color=&amp;#34;#55555c&amp;#34;
+    label=&amp;#34;GTₕ₋₁,ₖ₋₁&amp;#34;
+    labelloc=b
+    st[shape=triangle, height=2, label=&amp;#34;&amp;#34;]
+  }
+
+  }
+  </div>
+</div>
+
+<p>It is a little bit tricky for the third condition. Since it is in the <em>fertile</em> mode again, we can decide if there are one, two or three children. Then each of the following trees work:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node[shape=point]
+  edge[arrowhead=false]
+  x0-&amp;gt;st0
+  subgraph cluster0 {
+    style=&amp;#34;filled&amp;#34;
+    color=&amp;#34;#55555c&amp;#34;
+    label=&amp;#34;GTₕ₋₁,₀&amp;#34;
+    labelloc=b
+    st0[shape=triangle, height=2, label=&amp;#34;&amp;#34;]
+  }
+  
+  x1-&amp;gt;st1:n
+  x1-&amp;gt;st2:n
+  subgraph cluster1 {
+    style=&amp;#34;filled&amp;#34;
+    color=&amp;#34;#55555c&amp;#34;
+    label=&amp;#34;Each subtree is GTₕ₋₁,₁&amp;#34;
+    labelloc=b
+    st1[shape=triangle, height=2, label=&amp;#34;&amp;#34;]
+    st2[shape=triangle, height=2, label=&amp;#34;&amp;#34;]
+  }
+  
+  x2-&amp;gt;st3:n
+  x2-&amp;gt;st4:n
+  x2-&amp;gt;st5:n
+  subgraph cluster2 {
+    style=&amp;#34;filled&amp;#34;
+    color=&amp;#34;#55555c&amp;#34;
+    label=&amp;#34;Each subtree is GTₕ₋₁,₂&amp;#34;
+    labelloc=b
+    st3[shape=triangle, height=2, label=&amp;#34;&amp;#34;]
+    st4[shape=triangle, height=2, label=&amp;#34;&amp;#34;]
+    st5[shape=triangle, height=2, label=&amp;#34;&amp;#34;]
+  }
+
+  }
+  </div>
+</div>
+
+<p>Hence, if there are <code>k</code> children, then there are <code>dp[h-1][k-1]**k</code> choices. Since we can pick <code>k = 1, 2, 3</code>, we can simply sum them up for <code>dp[h][k]</code>. After all, this is the Python script to compute:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Base case</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Transition</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dp</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">sum</span><span class="p">([</span><span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]),</span> <span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span></code></pre></div><p>But the numbers is growing exponentially and finding $g(1337)$ takes eternally. What can we do? Nevermind, we will get back to this shortly.</p>
+<h4 id="42-fast-sequence-generation">4.2. Fast sequence generation<a href="#42-fast-sequence-generation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To compute the values of <code>ecx</code> and <code>edx</code>, we can find the number of executed instructions (denote it as $q$). Since the loop is completed every four steps, we can find $s_{\mathbf{floor}(q/4)}$ and $s_{\mathbf{floor}(q/4)+1}$ and perform the remainder of the instructions.</p>
+<p>Let's get back to the sequence $s_n$:</p>
+<ul>
+<li>$s_0 = \texttt{82F96AC97429A68B}_{16}$,</li>
+<li>$s_1 = \texttt{32B9B6BCA55548ED}_{16}$, and</li>
+<li>$s_k = 3 s_{k-2} + 2 s_{k-1} + 4\mod2^{64}$ for $k \geq 2$.</li>
+</ul>
+<p>To compute it efficiently, we can rewrite it as a matrix notation:</p>
+<p>$$
+\begin{bmatrix} s_{k+1} \\ s_k \\ 1 \end{bmatrix}
+= \begin{bmatrix} 2 &amp; 3 &amp; 4 \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1\end{bmatrix}
+\begin{bmatrix} s_k \\ s_{k-1} \\ 1 \end{bmatrix} \mod 2^{64}.
+$$</p>
+<p>Why? Try the multiplication by yourselves! Anyways, we can compute $s_m$ and $s_{m+1}$ efficiently since</p>
+<p>$$
+\begin{bmatrix} s_{m+1} \\ s_m \\ 1 \end{bmatrix}
+= \begin{bmatrix} 2 &amp; 3 &amp; 4 \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1\end{bmatrix}^m
+\begin{bmatrix} s_1 \\ s_0 \\ 1 \end{bmatrix} \mod 2^{64}.
+$$</p>
+<p>Moreover, since</p>
+<p>$$\begin{bmatrix} 2 &amp; 3 &amp; 4 \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1\end{bmatrix}^{2^{64}}
+= \begin{bmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1\end{bmatrix},
+$$</p>
+<p>the square matrix has order $2^{64}$. That said, we don't need to find the exact value for $g(1337)$. Instead, we can compute $g(1337)\mod (2^{64}\times4)$. Hereby we need to multiple the number by four, since there are 4 instructions per loop).</p>
+<h3 id="part-v-the-flagggggggggg">Part V: The flagggggggggg!<a href="#part-v-the-flagggggggggg" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>After all, we can modify the Python function we had to compute $g(k)\mod 2^{66}$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Base case</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Transition</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dp</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">sum</span><span class="p">([</span><span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">66</span><span class="p">,</span> <span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span></code></pre></div><p>And <code>g(1337) = 59988074356265869957</code> pops out at no time. Therefore, we can find $s_{14997018589066467489}$ and $s_{14997018589066467490}$ and proceed one instruction further. We have <code>rdx</code> being <code>0x62246322232ceabf</code> and <code>rcx</code> being <code>0xbf1d9826c054007</code>!</p>
+<p>Thus <code>p4{62246322232ceabfbf1d9826c054007}</code> would be the flag, right? NO!</p>
+<p>It was 4:40 am and we were very sleepy. It took us few minutes to figure out that <code>rcx</code> isn't composed of 16 hexchars. The correct flag should be <code>p4{62246322232ceabf0bf1d9826c054007}</code> (note that there is an <em>zero</em>). Yeah, &#x1f3c1; - and we are the first to capture this!</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          CONFidence 2020 CTF: Team Trees
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2020/2020-09-21-firebird-intro-ctf-rsa/">← Firebird Intro CTF: Rotten Secured Algorithm</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2020/2020-08-25-google-ctf-oracle/">Google CTF 2020: Oracle →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

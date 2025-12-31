@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2023 Postmortem (I): Easier Crypto Challenges | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2023 Postmortem (I): Easier Crypto Challenges</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2024-01-27T05:30:00&#43;08:00">2024-01-27</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>This is yet another moment that Black Bauhinia co-organizes HKCERT CTF. This year, I am slightly more productive than the previous years and wrote 13 challenges for the CTF. There are three blog posts in this series, where I will respectively cover the author's solutions to the easier crypto challenges, the harder crypto challenges and the remaining challenges.</p>
+<p>The below is the list of challenges:</p>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th style="width: 38%;">Challenge Name</th>
+            <th style="width: 15%;">Category</th>
+            <th style="width: 16%;">Difficulty</th>
+            <th style="width: 10%;">Score</th>
+            <th colspan="4">Solves</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-1/#the-art-of-embarrassment">The Art of Embarrassment</a></td>
+            <td>Crypto</td>
+            <td>⭐</td>
+            <td style="text-align: right;">150</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">-</td>
+            <td style="text-align: right;">-</td>
+            <td style="text-align: right;">-</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-1/#sign-me-a-flag-i">Sign me a Flag (I)</a></td>
+            <td>Crypto</td>
+            <td>👣</td>
+            <td style="text-align: right;">150</td>
+            <td style="text-align: right;">19</td>
+            <td style="text-align: right;">25</td>
+            <td style="text-align: right;">37</td>
+            <td style="text-align: right;">31</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-1/#sign-me-a-flag-ii">Sign me a Flag (II)</a></td>
+            <td>Crypto</td>
+            <td>⭐⭐</td>
+            <td style="text-align: right;">250</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">5</td>
+            <td style="text-align: right;">6</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-1/#solitude-solitude-solitude">Solitude, Solitude, Solitude</a></td>
+            <td>Crypto</td>
+            <td>⭐</td>
+            <td style="text-align: right;">150</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">5</td>
+            <td style="text-align: right;">10</td>
+            <td style="text-align: right;">17</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-2/#bades">baDES</a></td>
+            <td>Crypto</td>
+            <td>👣</td>
+            <td style="text-align: right;">200</td>
+            <td style="text-align: right;">5</td>
+            <td style="text-align: right;">20</td>
+            <td style="text-align: right;">20</td>
+            <td style="text-align: right;">15</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-2/#maybe-someday">Maybe Someday</a></td>
+            <td>Crypto</td>
+            <td>⭐⭐⭐</td>
+            <td style="text-align: right;">350</td>
+            <td style="text-align: right;">-</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">5</td>
+            <td style="text-align: right;">4</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-2/#cipher-bridging-service">Cipher Bridging Service</a></td>
+            <td>Crypto</td>
+            <td>⭐⭐⭐⭐</td>
+            <td style="text-align: right;">450</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">10</td>
+            <td style="text-align: right;">3</td>
+            <td style="text-align: right;">5</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-2/#rsa-triooo">RSA Triooo</a></td>
+            <td>Crypto</td>
+            <td>⭐⭐⭐⭐⭐</td>
+            <td style="text-align: right;">500</td>
+            <td style="text-align: right;">-</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">2</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-3/#hackforces">Hackforces</a></td>
+            <td>Misc</td>
+            <td>⭐⭐⭐</td>
+            <td style="text-align: right;">300</td>
+            <td style="text-align: right;">5</td>
+            <td style="text-align: right;">6</td>
+            <td style="text-align: right;">8</td>
+            <td style="text-align: right;">8</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-3/#isa-jump-scare">ISA Jump Scare</a></td>
+            <td>Pwn</td>
+            <td>👣</td>
+            <td style="text-align: right;">200</td>
+            <td style="text-align: right;">12</td>
+            <td style="text-align: right;">20</td>
+            <td style="text-align: right;">30</td>
+            <td style="text-align: right;">15</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-3/#isa-jogger">ISA Jogger</a></td>
+            <td>Pwn</td>
+            <td>⭐⭐</td>
+            <td style="text-align: right;">200</td>
+            <td style="text-align: right;">5</td>
+            <td style="text-align: right;">15</td>
+            <td style="text-align: right;">27</td>
+            <td style="text-align: right;">13</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-3/#the-flag-game">The Flag Game</a></td>
+            <td>Reverse</td>
+            <td>⭐⭐</td>
+            <td style="text-align: right;">200</td>
+            <td style="text-align: right;">8</td>
+            <td style="text-align: right;">10</td>
+            <td style="text-align: right;">19</td>
+            <td style="text-align: right;">8</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2024/2024-01-27-hkcert-ctf-3/#loot-and-scoot">Loot and Scoot</a></td>
+            <td>Reverse</td>
+            <td>⭐⭐⭐⭐⭐</td>
+            <td style="text-align: right;">500</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">3</td>
+            <td style="text-align: right;">3</td>
+        </tr>
+    </tbody>
+</table>
+<p>Step-by-step challenges are marked by 👣 in the &quot;Difficulty&quot; column. The numbers in the &quot;Solves&quot; column are the number of solves in the secondary, tertiary, open and international divisions respectively. For some challenges that are not released to that division, the solve count will be represented by <code>-</code>. Finally, there are 144, 102, 166 and 303 teams respectively in the four categories.</p>
+<div class="alert warning">
+  :clown: <strong>What difficulty?</strong> Apparently I have once again messed up the difficulty. There are less solves in a 2-star crypto challenge than a 4-star one.
+</div>
+
+<h2 id="the-art-of-embarrassment">The Art of Embarrassment<a href="#the-art-of-embarrassment" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I implemented the <em>ideal cipher model</em>. Would it be too wasteful if I am using that to encrypt the flag?</p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/ideal-cipher_d781f11df15309fecad53314983d36c9.zip"
+   
+   target="_blank" rel="noopener noreferrer" >ideal-cipher.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>In this challenge, we are given a block cipher, $\mathcal{E}$, implemented with the ideal cipher model. The trimmed flag are encrypted with $\mathcal{E}$ using cipher block chaining (CBC) mode with 13337 different keys. We are given the ciphertext of all the encrypted, trimmed flag. The objective is to recover the flag.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="what-is-the-ideal-cipher-model">What is the ideal cipher model?<a href="#what-is-the-ideal-cipher-model" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>When you receive a ciphertext that is encrypted by the ideal cipher model, it is impossible to know what the message is -- it is <em>equally likely</em> that the ciphertext is encrypted from a particular message in the message space (the set of all messages).</p>
+<p>Matthew Green<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> mentioned a way to encrypt messages with the ideal cipher model. We will maintain a table of three columns: $(m, c, k)$, which respectively represents the message, the ciphertext and the key. Suppose that we want to encrypt a message $m_0$ using the key $k_0$ and assume that there is a trusted party who will work on the steps below for us:</p>
+<ul>
+<li>If there is a row such that $m = m_0$ and $k = k_0$, extract $c$ from that row and that would be the ciphertext.</li>
+<li>Otherwise, generate a perfectly random $c_0$ until there are <em>no</em> rows with $c = c_0$ and $k = k_0$. Add $(m_0, c_0, k_0)$ to the table and return $c_0$ as the ciphertext.</li>
+</ul>
+<p>For example, we assume that there are only 4 plaintexts in the world: $\texttt{0}, \texttt{1}, \texttt{2}, \texttt{3}$. The message will always encrypt into &#x1f34e;, &#x1f34b;, :kiwi: and &#x1f347;.</p>
+<ul>
+<li>Someone wants to encrypt $\texttt{0}$ using &#x1f511;. The trusted party
+<ul>
+<li>generates a random ciphertext: :kiwi:,</li>
+<li>appends $(m, c, k) = (\texttt{0}, :kiwi:, &#x1f511;)$ to the table, and</li>
+<li>returns :kiwi: as the ciphertext.</li>
+</ul>
+</li>
+<li>Someone wants to encrypt $\texttt{2}$ using &#x1f511;. The trusted party
+<ul>
+<li>generates a random ciphertext: &#x1f34e;.</li>
+<li>appends $(m, c, k) = (\texttt{2}, &#x1f34e;, &#x1f511;)$ to the table, and</li>
+<li>returns &#x1f34e; as the ciphertext.</li>
+</ul>
+</li>
+<li>Someone wants to encrypt $\texttt{0}$ using &#x1f511;. The trusted party
+<ul>
+<li>finds that $(m, c, k) = (\texttt{0}, :kiwi:, &#x1f511;)$ satisfies $m = \texttt{0}$ and $k = &#x1f511;$, and</li>
+<li>returns :kiwi: as the ciphertext.</li>
+</ul>
+</li>
+<li>Someone wants to encrypt $\texttt{1}$ using &#x1f511;. The trusted party
+<ul>
+<li>generates a random ciphertext: &#x1f34e;,</li>
+<li>finds that $(m, c, k) = (\texttt{2}, &#x1f34e;, &#x1f511;)$ satisfies $c = &#x1f34e;$ and $k = &#x1f511;$,</li>
+<li>generates a random ciphertext: &#x1f34b;,</li>
+<li>appends $(m, c, k) = (\texttt{1}, &#x1f34b;, &#x1f511;)$ to the table, and</li>
+<li>returns &#x1f34b; as the ciphertext.</li>
+</ul>
+</li>
+<li>Someone wants to encrypt $\texttt{2}$ using &#x1f5dd;&#xfe0f;. The trusted party
+<ul>
+<li>generates a random ciphertext: :kiwi:,</li>
+<li>appends $(m, c, k) = (\texttt{2}, :kiwi:, $🗝️$)$ to the table, and</li>
+<li>returns :kiwi: as the ciphertext.</li>
+</ul>
+</li>
+</ul>
+<p>This is the final table after the above operations:</p>
+
+
+<figure>
+  <img src="/images/2024-01-27-hkcert-ctf/the-art-of-embrassment-table.png" title="">
+  
+</figure>
+
+<p>For a given key &#x1f511; in the toy example above, the ciphertexts of a cipher would be a permutation of &#x1f34e;, &#x1f34b;, :kiwi: and &#x1f347;. Since we have to exhaust the $4!$ possible settings in an ideal cipher, there will be at least $4!$ keys.</p>
+<p>It is surreal to implement the ideal cipher model. If there are $n$ plaintexts, there will be $n!$ keys. Effectively we will need a $\log_2 n!$-bit key for ideal ciphers. If we want to implement an ideal 128-bit block cipher, the key size should be $4.3 \times 10^{40}$ bits long. That is much longer than the keys in AES, which is at most 256-bit long.</p>
+<p>The block size in the ideal cipher for the challenge is only 16 bits long, thus the keys can be permutations of $\{\texttt{0000}_{16}, \texttt{0001}_{16}, ..., \texttt{ffff}_{16}\}$.</p>
+<h4 id="the-cbc-mode-of-operation">The CBC mode of operation<a href="#the-cbc-mode-of-operation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The block size of $\mathcal{E}$ is 2 bytes. To encrypt the message of arbitrary length, we will need a cipher mode of operation. This time we are using the CBC mode of operation, and this is how we encrypt a message of length $2n$ (given by $m_1m_2...m_{2n}$):</p>
+<ol>
+<li>Chop the message into blocks of 2 bytes, i.e., it will be separated into $n$ blocks: $M_1 := m_1m_2$, $M_2 := m_3m_4$, ..., $M_n := m_{2n-1}m_{2n}$.</li>
+<li>Generate a 2-byte IV, given by $C_0$.</li>
+<li>Compute $C_1 := \mathcal{E}(C_0 \oplus M_1)$, $C_2 := \mathcal{E}(C_1 \oplus M_2)$, ..., $C_n := \mathcal{E}(C_{n-1} \oplus M_n)$.</li>
+<li>Return $C_0, C_1, C_2, ..., C_n$ as the ciphertext.</li>
+</ol>
+<p>For instance, if we use a key such that $\mathcal{E}(\texttt{95c9}_{16}) = \texttt{0217}_{16}$ and $\mathcal{E}(\texttt{21f1}_{16}) = \texttt{1337}_{16}$, then one ciphertext of $\texttt{448223e6}_{16}$ could be $\texttt{d14b02171337}_{16}$, because</p>
+<ol>
+<li>$C_0 = \texttt{d14b}_{16}$,</li>
+<li>$C_1 = \mathcal{E}(C_0 \oplus M_1) = \mathcal{E}(\texttt{d14b}_{16} \oplus \texttt{4482}_{16}) = \mathcal{E}(\texttt{95c9}_{16}) = \texttt{0217}_{16}$, and</li>
+<li>$C_2 = \mathcal{E}(C_1 \oplus M_2) =\mathcal{E}(\texttt{0217}_{16} \oplus \texttt{23e6}_{16}) = \mathcal{E}(\texttt{21f1}_{16}) = \texttt{1337}_{16}$.</li>
+</ol>
+<h4 id="a-vulnerability">A vulnerability<a href="#a-vulnerability" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>If $C_i = C_j$ for some $i, j &gt; 0$ with $i \neq j$, we have $\mathcal{E}(C_{i-1} \oplus M_i) = \mathcal{E}(C_{j-1} \oplus M_j)$. Since $\mathcal{E}$ is injective (i.e., no two plaintexts encrypt to the same ciphertext), we then have $C_{i-1} \oplus M_i = C_{j-1} \oplus M_j$. Rearranging the terms, we have</p>
+<p>$${\color{red}M_i} \oplus {\color{red}M_j} = C_{i-1} \oplus C_{j-1}.$$</p>
+<p>For instance, there are 13337 encrypted flags from the transcript. On line 153, we have a ciphertext that satisfies $C_2 = C_{18}$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">5504c2087dd3e1a714cdceb53f020c7ba2052342b660db52de2d583f89f033f71802aa5c7dd3...
+</span></span><span class="line"><span class="cl">        ****                                                            ****
+</span></span></code></pre></div><p>From above, this yields $M_2 \oplus M_{18} = \texttt{c208}_{16} \oplus \texttt{aa5c}_{16} = \texttt{6854}_{16}$. These are a few more relations derived from the transcript:</p>
+<ol>
+<li>$M_{18} \oplus M_{21} = \texttt{5b55}_{16}$ (line 159),</li>
+<li>$M_{18} \oplus M_{27} = \texttt{0450}_{16}$ (line 615),</li>
+<li>$M_{25} \oplus M_{27} = \texttt{5f04}_{16}$ (line 762),</li>
+<li>$M_6 \oplus M_{18} = \texttt{063a}_{16}$ (line 887),</li>
+<li>$M_7 \oplus M_{11} = \texttt{1a46}_{16}$ (line 1318)...</li>
+</ol>
+<p>and so on. We have 67 relations like above to restrict $M_1, M_2, ..., M_{27}$. Eventually, we can express $M_2, M_3, ..., M_{27}$ in terms of $M_1$. We can exhaust $M_1$ and thus retrieve the flag, i.e., $(M_1, M_2, ..., M_{27})$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert23{1t_15_57111_vu1n3ra6l3_wh3n_c1ph3r7ext_bl0ck5_col1id35}
+</span></span></code></pre></div><h2 id="sign-me-a-flag-i">Sign me a Flag (I)<a href="#sign-me-a-flag-i" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>No gib flag? No flag!</p>
+<p><code>nc HOST PORT</code></p>
+<p><strong>Note:</strong> This is a easier version of the <em>Sign me a Flag (II)</em> challenge, and there is a guide for this challenge <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2023-i-en-a58d115f39feab46"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/sign-me-a-flag-i_65fda9e4c67e61ad322c158bf7d5ff9a.zip"
+   
+   target="_blank" rel="noopener noreferrer" >sign-me-a-flag-i.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>In this challenge, we are given a remote oracle and is allowed to perform the below operations:</p>
+<ol>
+<li><code>sign [key_client] [message]</code>: Signs an arbitrary message that does not contain the substring <code>flag</code>.</li>
+<li><code>verify [signature]</code>: Verifies the signature for the message <code>gib flag pls</code>.</li>
+</ol>
+<p>Let $k_\mathcal{C}$, $k_\mathcal{S}$ and $m$ be the client's key, the server's key and the message respectively. The signature of $m$ is given by</p>
+<p>$$\text{Sign}(k_\mathcal{C}, m) := \text{HMAC-SHA256}(k_\mathcal{C} \oplus k_\mathcal{S}, m).$$</p>
+<p>Note that $k_\mathcal{S}$ will not be given to the player. The goal is to recover the signature of the message <code>gib flag pls</code> while fixing $k_\mathcal{C}$ to be 16 null bytes.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-exclusive-or-xor-operator">The exclusive-or (XOR) operator<a href="#the-exclusive-or-xor-operator" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>In this challenge, the XOR operation of two operands, $a$ and $b$ (i.e., $a \oplus b$) is given below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">xor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">u</span><span class="o">^</span><span class="n">v</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</span></span></code></pre></div><p>Specifically, when the two strings are of different lengths, the output string has a length of the shorter input string. For example,</p>
+<p>$$\begin{aligned}
+\texttt{000102}_{16} \oplus \texttt{12345678}_{16} &amp;= \texttt{123554}_{16} \\
+\texttt{00010203}_{16} \oplus \texttt{123456}_{16} &amp;= \texttt{123554}_{16}
+\end{aligned}$$</p>
+<p>Now assume that $k$ is a 16-byte, secret value, and assume that</p>
+<p>$$k \oplus \texttt{00}_{16} = \texttt{40}_{16},$$</p>
+<p>then we know the first byte of $k$ would be $\texttt{40}_{16}$.</p>
+<h4 id="solving-the-challenge">Solving the challenge<a href="#solving-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>From the <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2023-i-en-a58d115f39feab46#%E6%B1%82%E6%97%97%E7%B0%BD%E5%90%8D-I--Sign-me-a-Flag-I-Crypto"
+   
+   target="_blank" rel="noopener noreferrer" >guide</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> provided to the players during the CTF, we are able to fully recover the secret in 16 oracle calls, one byte at a time. This is how we recover the first byte of the secret:</p>
+<ol>
+<li>Call $\text{Sign}(\texttt{00}, \text{hello world})$ and denote it by $\hat{s_1}$.</li>
+<li>Compute $\text{HMAC-SHA256}(\texttt{00}, \text{hello world})$, $\text{HMAC-SHA256}(\texttt{01}, \text{hello world})$, $\text{HMAC-SHA256}(\texttt{02}, \text{hello world})$, ....</li>
+<li>Eventually, there will be a $u_1$ such that $\text{HMAC-SHA256}(u_1, \text{hello world}) = \hat{s_1}$. In this case, the first byte of $k_\mathcal{S}$ would be $u_1$.</li>
+</ol>
+<p>We can slightly modify the above heuristic to recover two bytes at a time. To recover the first two bytes of the secret:</p>
+<ol>
+<li>Call $\text{Sign}(\texttt{0000}, \text{hello world})$ and denote it by $\hat{s_1}$.</li>
+<li>Compute $\text{HMAC-SHA256}(\texttt{0000}, \text{hello world})$, $\text{HMAC-SHA256}(\texttt{0001}, \text{hello world})$, ..., $\text{HMAC-SHA256}(\texttt{ffff}, \text{hello world})$.</li>
+<li>Eventually, there will be a $u_1$ such that $\text{HMAC-SHA256}(u_1, \text{hello world}) = \hat{s_1}$. In this case, the first two bytes of $k_\mathcal{S}$ would be $u_1$.</li>
+</ol>
+<p>With that, we can recover the server's key in 8 oracle calls. We then can create a valid signature and retrieve the flag: <code>hkcert23{l34k1n9_th3_k3y_b1t_6y_bi7_1s_fun}</code>.</p>
+<h2 id="sign-me-a-flag-ii">Sign me a Flag (II)<a href="#sign-me-a-flag-ii" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>No gib flag? No flag!</p>
+<p><code>nc HOST PORT</code></p>
+<p><strong>Note:</strong> This is a harder version of the <em>Sign me a Flag (I)</em> challenge.</p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/sign-me-a-flag-ii_ee9268d1310ede6d37cd4b5eda18457f.zip"
+   
+   target="_blank" rel="noopener noreferrer" >sign-me-a-flag-ii.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This challenge is similar to <em>Sign me a Flag (I)</em>, except that</p>
+<ol>
+<li>the <code>xor</code> implementation comes from <code>pwntools</code> this time,</li>
+<li>we have 65536 oracle calls, and</li>
+<li>let $\text{id}$ be the number of sequence number of the oracle call. The signature becomes</li>
+</ol>
+<p>$$\text{Sign}(k_\mathcal{C}, m) := \text{HMAC-SHA256}(k_\mathcal{C} \oplus k_\mathcal{S}, \text{id} \ ||\ m).$$</p>
+<p>For example, the signing $\text{Sign}(k_\mathcal{C}, \texttt{test})$ and $\text{Sign}(k_\mathcal{C}, \texttt{foo})$ at the first and second calls (sequence numbers being 0 and 1) would be respectively $\text{HMAC-SHA256}(k, \texttt{0test})$ and the second call is $\text{HMAC-SHA256}(k, \texttt{1foo})$. Hereby $k = k_\mathcal{C} \oplus k_\mathcal{S}$.</p>
+<p>The goal is unchanged. That is to recover the signature of the message <code>gib flag pls</code> while fixing $k_\mathcal{C}$ to be 16 null bytes.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-new-xor-operator">The new XOR operator<a href="#the-new-xor-operator" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The implementation of the <code>xor</code> method in <code>pwntools</code> is different: When the operands are two strings of different lengths, the shorter string will first be repeated until the lengths are equal. The resulting strings will be XOR-ed.</p>
+<p>For example,</p>
+<p>$$\begin{aligned}
+\texttt{000102}_{16} \oplus \texttt{12345678}_{16} &amp;= \texttt{00010200}_{16} \oplus \texttt{12345678}_{16} = \texttt{12355478}_{16} \\
+\texttt{00010203}_{16} \oplus \texttt{123456}_{16} &amp;= \texttt{00010203}_{16} \oplus \texttt{12345612}_{16} = \texttt{12355411}_{16}
+\end{aligned}$$</p>
+<p>With this change, we can guarantee that $k_\mathcal{C} \oplus k_\mathcal{S}$ is at least 16 bytes. We can no longer generate one byte keys by making $k_\mathcal{C}$ to be one-byte long.</p>
+<h4 id="the-hmac-framework">The HMAC framework<a href="#the-hmac-framework" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Firstly, if a HMAC key is shorter than 64 bytes, there will be a zero-padding. With the padding, the below HMAC functions have the same digest.</p>
+<p>$$\begin{aligned}
+&amp; \text{HMAC-SHA256}(\texttt{12}\ \texttt{34}, m) \\
+&amp; \quad= \text{HMAC-SHA256}(\texttt{12}\ \texttt{34}\ \texttt{00}, m) \\
+&amp; \quad= \text{HMAC-SHA256}(\texttt{12}\ \texttt{34}\ \texttt{00}\ \texttt{00}_{16}, m) \\
+&amp; \quad= \dots \\
+&amp; \quad= \text{HMAC-SHA256}(\texttt{12}\ \texttt{34}\ \underbrace{\texttt{00}\ \texttt{00} \ \dots \ \texttt{00}_{16}}_{\text{62 null bytes}}, m).
+\end{aligned}$$</p>
+<p>Assuming that the $\text{id}$ is not prepended to the message. We can leak the first byte of $k_\mathcal{S}$ with 257 calls:</p>
+<ol>
+<li>Call $\text{Sign}(\mathcal{O}, m)$ and denote it by $\hat{s}$, here $\mathcal{O}$ being 16 null bytes.</li>
+<li>Call $\text{Sign}(\mathcal{O} \ || \ \texttt{00}_{16}, m)$, $\text{Sign}(\mathcal{O} \ || \ \texttt{01}_{16}, m)$, ..., $\text{Sign}(\mathcal{O} \ || \ \texttt{ff}_{16}, m)$.</li>
+<li>Eventually, there will be a $u_1$ such that $\text{Sign}(\mathcal{O} \ || \ u_1, m) = \hat{s}$. In this case, the first byte of $k_\mathcal{S}$ would be $u_1$.</li>
+</ol>
+<p>To recover the second byte, we need an additional 256 oracle calls:</p>
+<ol>
+<li>Call $\text{Sign}(\mathcal{O} \ || \ u_1 \ || \ \texttt{00}_{16}, m)$, $\text{Sign}(\mathcal{O} \ || \ u_1 \ || \ \texttt{01}_{16}, m)$, ..., $\text{Sign}(\mathcal{O} \ || \ u_1 \ || \ \texttt{ff}_{16}, m)$.</li>
+<li>There will be a $u_2$ such that $\text{Sign}(\mathcal{O} \ || \ u_1 \ || \ u_2, m) = \hat{s}$, and the second byte of $k_\mathcal{S}$ would be $u_2$.</li>
+</ol>
+<p>With the above algorithm, we can fully recover $k_\mathcal{S}$ with 4097 calls. Unfortunately, we made an wrong assumption that $\text{id}$ is not prepended to the message. Now it is time to eliminate it.</p>
+<h4 id="what-is-being-said-is-not-what-being-meant">What is being said is not what being meant<a href="#what-is-being-said-is-not-what-being-meant" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Recall that a concatenated message is given by $\text{id} \ || \ m$, and we want to have multiple pairs of $(\text{id}, m)$s having the same concatenated message. We can do it by exploiting the ambiguity. For instance, when given the concatenated message <code>1337hello world</code>, we are unable to determine what the original $\text{id}$ and $m$ are. It might be intuitive to think that $\text{id}$ and $m$ are respectively <code>1337</code> and <code>hello world</code>, but there are actually three other possibilities:</p>
+<ol>
+<li>$\text{id}$ being <code>1</code> and $m$ being <code>337hello world</code>,</li>
+<li>$\text{id}$ being <code>13</code> and $m$ being <code>37hello world</code>, and</li>
+<li>$\text{id}$ being <code>133</code> and $m$ being <code>7hello world</code>.</li>
+</ol>
+<p>We can see that there is an ambiguity introduced -- there are multiple ways to parse the output. To solve the challenge, I partitioned the oracle calls into two groups:</p>
+<ol>
+<li><strong>[Check call]</strong> Condition: If $\text{id} &gt; 0$ and $\text{id} \equiv 0 \ (\text{mod}\ 10)$.<br>
+We can refer to an earlier oracle call to check whether one byte of $k_\mathcal{S}$ equals to a particular value.</li>
+<li><strong>[Reference call]</strong> Condition: Happens otherwise.<br>
+We can use this oracle call as a reference for the future.</li>
+</ol>
+<p>For instance, oracle #1 and #10 can respectively become a reference and a look up call. For the two oracles, if we set</p>
+<ul>
+<li>the message to be <code>0000</code> and the key to be 16 null bytes for oracle #1, and</li>
+<li>the message to be <code>000</code> and the key to be 17 null bytes for oracle #10,</li>
+</ul>
+<p>and if the first byte of $k_\mathcal{S}$ is $\texttt{00}$, the two oracle calls would yield the same digest.</p>
+<p>Additionally, we are using multiple zeroes in oracle #1 because it can also be used by oracles #100, #1000 and #10000. Also, for simplicity, I use a bunch of <code>0</code>s as the message and 16 null bytes as the key. The following table shows the first 21 oracle calls.</p>
+<table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        $\text{id}$
+      </th>
+      
+      <th>
+        Message
+      </th>
+      
+      <th>
+        Key
+      </th>
+      
+      <th>
+        Purpose
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        0
+      </td>
+      
+      <td>
+        <code>0000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        1
+      </td>
+      
+      <td>
+        <code>0000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        2
+      </td>
+      
+      <td>
+        <code>0000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        3
+      </td>
+      
+      <td>
+        <code>0000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        4
+      </td>
+      
+      <td>
+        <code>0000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        5
+      </td>
+      
+      <td>
+        <code>0000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        6
+      </td>
+      
+      <td>
+        <code>0000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        7
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        8
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        9
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        10
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00 00</code>
+      </td>
+      
+      <td>
+        Checks whether the 1st byte of $k_\mathcal{S}$ is $\texttt{00}$
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        11
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        12
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        13
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        14
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        15
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        16
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        17
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        18
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        19
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00</code>
+      </td>
+      
+      <td>
+        Serves as a reference for future calls
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        20
+      </td>
+      
+      <td>
+        <code>000</code>
+      </td>
+      
+      <td>
+        <code>0000...00 01</code>
+      </td>
+      
+      <td>
+        Checks whether the 1st byte of $k_\mathcal{S}$ is $\texttt{01}$
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<div class="alert info">
+  <strong>📜 Every oracle call?</strong> You can find the full list of 40961 calls <a href="https://gist.githubusercontent.com/samueltangz/ffc39a704d1c0c86790c33e9d3240864/raw/bf25db950f1d690899348c664315d321ec4572e9/hkcert-ctf-2023-smaf2-transcript.md"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.
+</div>
+
+<p>Since there is a 120-second limit in each connection and we are given 65536 oracle calls, I am often asked during the CTF if we can actually use up the calls before the timeout.</p>
+<p>The answer is yes -- we can do it in batch. In most of the time, we do not need an immediate response from the server and thus can group the requests. In this way, we do not need to complete 65536 round trips.</p>
+<p>We can send up to the 2561-th call in batch to find the first byte of $k_\mathcal{S}$, the subsequent 2560 calls to find the next byte, and so on. By sending all the 40691 calls in 16 batches, we will be getting the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert23{y0u_h4v3_t0_el1m1n4t3_am6igu17y_7o_m1tig4t3_4mb19ui7y_4t74ck5}
+</span></span></code></pre></div><h2 id="solitude-solitude-solitude">Solitude, Solitude, Solitude<a href="#solitude-solitude-solitude" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Yet another implementation of Shamir's Secret Sharing. Of course you don't have privileges and can only get one share.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/solitude_92b66a8882479819f0170a1efa4c8baf.zip"
+   
+   target="_blank" rel="noopener noreferrer" >solitude.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, an odd number of 1024 bits is generated as the modulus $p$. The server also created a degree-9 polynomial $\text{f}$ with coefficients being $[0, p)$ such that $\text{f}(0) = \text{secret}$. We are only given the value of $p$.</p>
+<p>The user is then asked to send an integer $x$ such that $x \not\equiv 0 \ (\text{mod}\ p)$, and the server will return the corresponding share (i.e., $\text{f}(x)\ \text{mod}\ p$). The goal is to recover $\text{secret}$.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>For Shamir's secret sharing, it is advised that $p$ to be a prime number. Well, this is not our case -- the $p$s generated are odd.</p>
+<div class="alert info">
+  &#x1f4d6; <strong>For advanced readers.</strong> We can use finite fields instead of prime moduli.
+</div>
+
+<p>To exploit, we can reconnect to the server until $p$ is a multiple of 3.</p>
+<p>Denote $\text{f}(x) = \text{secret} + a_1 x + a_2 x^2 + ... + a_9 x^9$. If we set $x = p/3$, the share we get is</p>
+<p>$$\begin{aligned}
+\text{f}(p/3) &amp;= \text{secret} + a_1 (p/3) + ... + a_9 (p/3)^9 \\
+&amp;= \text{secret} + (p/3) \left[a_1 + ... + a_9 (p/3)^8\right] \\
+&amp;= \text{secret} + \alpha,
+\end{aligned}$$</p>
+<p>where $\alpha \ \text{mod} \ p$ is either $0$, $p/3$ or $2p/3$. The probability of it being 0 is about 1/3. Thus, if we reconnect to the server until $p$ is a multiple of 3, we can send $p/3$ and there is a 1/3 chance for $y$ being the secret. All in all, there is a 1/9 chance to retrieve the flag in a single connection:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert23{th4ts_why_y0u_w4n7_a_pr1m3_m0du1u5_f0r_s5s}
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Matthew Green (2013): &quot;The Ideal Cipher Model (Wonky)&quot;<br /><a href="https://blog.cryptographyengineering.com/2013/04/11/wonkery-mailbag-ideal-ciphers/"
+   
+   target="_blank" rel="noopener noreferrer" >https://blog.cryptographyengineering.com/2013/04/11/wonkery-mailbag-ideal-ciphers/</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2023 Postmortem (I): Easier Crypto Challenges
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2024/2024-01-27-hkcert-ctf-2/">← HKCERT CTF 2023 Postmortem (II): Harder Crypto Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2024/2024-01-21-firebird-ctf/">Firebird CTF 2024: Goldilocks →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

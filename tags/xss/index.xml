@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xss on Mystify</title>
+    <link>https://mystiz.hk/tags/xss/</link>
+    <description>Recent content in Xss on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Feb 2024 00:00:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/xss/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intigriti&#39;s XSS Challenge (February 2024)</title>
+      <link>https://mystiz.hk/posts/2024/2024-02-23-intigriti-xss/</link>
+      <pubDate>Fri, 23 Feb 2024 00:00:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2024/2024-02-23-intigriti-xss/</guid>
+      <description>&lt;p&gt;I came across with &lt;a href=&#34;https://twitter.com/intigriti&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@intigriti&lt;/a&gt;&#39;s XSS challenge this month. This time we are given a love letter storage system which allow us to show our love to our hacking buddies.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;h2 id=&#34;solution&#34;&gt;Solution&lt;/h2&gt;&#xA;&lt;h3 id=&#34;part-i-cross-site-scripting-on-get-readtestletteruuid&#34;&gt;Part I: Cross-site scripting on &lt;code&gt;GET /readTestLetter/:uuid&lt;/code&gt;&lt;/h3&gt;&#xA;&lt;p&gt;From the source code, we can see that &lt;code&gt;GET /readTestLetter/:uuid&lt;/code&gt; is the &lt;em&gt;only&lt;/em&gt; endpoint that returns the user input with the content type &lt;code&gt;text/html&lt;/code&gt;. Let&#39;s see how is our data handled:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Intigriti&#39;s XSS Challenge (February 2022)</title>
+      <link>https://mystiz.hk/posts/2022/2022-02-14-intigriti-xss/</link>
+      <pubDate>Mon, 14 Feb 2022 10:00:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2022/2022-02-14-intigriti-xss/</guid>
+      <description>&lt;p&gt;This is another round of &lt;a href=&#34;https://twitter.com/intigriti&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@intigriti&lt;/a&gt;&#39;s XSS challenge, and this time it is written by &lt;a href=&#34;https://twitter.com/aszx87410&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@aszx87410&lt;/a&gt;. I spent around four hours solving it.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;p&gt;We are given a form that allows us a create a character. We are allowed to&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;choose a name (shorter than 24 characters), and&lt;/li&gt;&#xA;&lt;li&gt;inform if we have played the game.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;We will be redirected to &lt;code&gt;/challenge/xss.html?q=mystiz&amp;amp;first=yes&lt;/code&gt; (if you are &lt;code&gt;mystiz&lt;/code&gt; who is not a first-timer to the game). A modal containing the name will be popped.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Intigriti&#39;s XSS Challenge (January 2022)</title>
+      <link>https://mystiz.hk/posts/2022/2022-01-17-intigriti-xss/</link>
+      <pubDate>Mon, 17 Jan 2022 23:00:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2022/2022-01-17-intigriti-xss/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://twitter.com/intigriti&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@intigriti&lt;/a&gt; has a XSS challenge every month. The challenge is not hard this time and I am able to solve it in an hour or two. The best thing I learned is to recover source code using the &lt;em&gt;source map&lt;/em&gt; file.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;p&gt;We are given a &lt;em&gt;super secure HTML viewer&lt;/em&gt; - we can craft a HTML document and parse it. For example, we can send the below content and press the &amp;quot;Parse&amp;quot; button:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

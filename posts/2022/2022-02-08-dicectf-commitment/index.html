@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiceCTF 2022 (I): commitment-issues | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">DiceCTF 2022 (I): commitment-issues</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-02-08T04:30:00&#43;08:00">2022-02-08</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/dicectf/" class="text-muted text-decoration-none">#dicectf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/rsa/" class="text-muted text-decoration-none">#rsa</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/lll/" class="text-muted text-decoration-none">#lll</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>DiceCTF is an annual CTF competition prepared by <a href="https://twitter.com/dicegangctf" target="_blank" rel="nofollow">@dicegangctf</a>. The challenges are great and we had a lot of fun solving them. I might be compiling writeup for a number of them, which depends if I had time.</p>
+<div class="alert warning">
+  <strong>Deja vu?</strong> I said similar things <a href="/posts/2021/2021-02-15-dicectf-1/"
+   
+   >last year</a>. Until now, part 2 of my writeup series on DiceCTF 2021 does not exist.
+</div>
+
+<p>I will first cover on a crypto challenge called <em>commitment-issues</em>, which had 16 solves (out of 1127 participating teams). <a href="https://twitter.com/grhkm2023" target="_blank" rel="nofollow">@grhkm2023</a> and I spent a good 3 to 4 hours working on this challenge.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Define a commitment scheme $\mathcal{C}$ that uses a composite modulus $n$ (which is a product of two 1024-bit primes $p, q$ with $p, q \neq 1\ (\text{mod}\ 5)$). To commit a secret $s$:</p>
+<ol>
+<li>Generate a random number $r \in [0, n)$,</li>
+<li>Compute $c_1 := (s + r)\ \text{mod}\ n$ and $c_2 := r^5\ \text{mod}\ n$, and</li>
+<li>Return $(c_1, c_2)$ as the commitment.</li>
+</ol>
+<p>Suppose that $s$ is the RSA signature of the flag (i.e., $m^d\ \text{mod}\ n$, the $m$ is the flag and $n$ serves as the modulus for $\mathcal{C}$ as well). We are given the public key of RSA $(n, e)$ and a commitment $\mathcal{C}(s) = (c_1, c_2)$. The objective is to recover the flag $m$ (flag format being <code>dice{???????????????????????}</code>).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">e</span> <span class="o">=</span> <span class="mh">0xd4088c345ced64cbbf8444321ef2af8b</span>
+</span></span><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="mh">0xba8cb3257c0c83edf4f56f5b7e139d3d6ac8adf71618b5f16a02d61b63426c2c275ce631a0927b2725c6cc7bdbe30cd8a8494bc7c7f6601bcee5d005b86016e79919e22da4c431cec16be1ee72c056723fbbec1543c70bff8042630c5a9c23f390e2221bed075be6a6ac71ad89a3905f6c706b4fb6605c08f154ff8b8e28445a7be24cb184cb0f648db5c70dc3581419b165414395ae4282285c04d6a00a0ce8c06a678181c3a3c37b426824a5a5528ee532bdd90f1f28b7ec65e6658cb463e867eb5280bda80cbdb066cbdb4019a6a2305a03fd29825158ce32487651d9bfa675f2a6b31b7d05e7bd74d0f366cbfb0eb711a57e56e6db6d6f1969d52bf1b27b</span>
+</span></span><span class="line"><span class="cl"><span class="n">c1</span> <span class="o">=</span> <span class="mh">0x75240fcc256f1e2fc347f75bba11a271514dd6c4e58814e1cb20913195db3bd0440c2ca47a72efee41b0f9a2674f6f46a335fd7e54ba8cd1625daeaaaa45cc9550c566f6f302b7c4c3a4694c0f5bb05cd461b5ca9017f2eb0e5f60fb0c65e0a67f3a1674d74990fd594de692951d4eed32eac543f193b70777b14e86cf8fa1927fe27535e727613f9e4cd00acb8fab336894caa43ad40a99b222236afc219397620ca766cef2fe47d53b07e302410063eae3d0bf0a9d67793237281e0bfdd48255b58b2c1f8674a21754cf62fab0ba56557fa276241ce99140473483f3e5772fcb75b206b3e7dfb756005cec2c19a3cb7fa17a4d17f5edd10a8673607047a0d1</span>
+</span></span><span class="line"><span class="cl"><span class="n">c2</span> <span class="o">=</span> <span class="mh">0xdb8f645b98f71b93f248442cfc871f9410be7efee5cff548f2626d12a81ee58c1a65096a042db31a051904d7746a56147cc02958480f3b5d5234b738a1fb01dc8bf1dffad7f045cac803fa44f51cbf8abc74a17ee3d0b9ed59c844a23274345c16ba56d43f17d16d303bb1541ee1c15b9c984708a4a002d10188ccc5829940dd7f76107760550fac5c8ab532ff9f034f4fc6aab5ecc15d5512a84288d6fbe4b2d58ab6e326500c046580420d0a1b474deca052ebd93aaa2ef972aceba7e6fa75b3234463a68db78fff85c3a1673881dcb7452390a538dfa92e7ff61f57edf48662991b8dd251c0474b59c6f73d4a23fe9191ac8e52c8c409cf4902eeaa71714</span>
+</span></span></code></pre></div><h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We will first write the flag $m$ with $m = m_0 + 256 \cdot x$, where $m_0$ represents the known part (i.e., <code>dice{_________________________}</code> and each <code>_</code> is a null byte) and $x$ is the unknown part.</p>
+<p>Since $c_1 \equiv s + r\ (\text{mod}\ n)$ and $c_2 \equiv r^5\ (\text{mod}\ n)$, we can express $s^k$ in terms of $s$, $s^2$, $s^3$ and $s^4$. These are the $s^k$ for smaller values of $k$:</p>
+<p>$$\begin{aligned}
+&amp; c_2 \equiv r^5 \equiv (c_1 - s)^5 \equiv {c_1}^5 - 5 {c_1}^4 \cdot s + 10 {c_1}^3 \cdot s^2 - 10 {c_1}^2 \cdot s^3 + 5 {c_1} \cdot s^4 - s^5\ (\text{mod}\ n) \\
+&amp; \Longrightarrow s^5 \equiv 5 c_1 \cdot s^4 - 10 {c_1}^2 \cdot s^3 + 10 {c_1}^3 \cdot s^2 - 5 {c_1}^4 \cdot s + ({c_1}^5 - c_2)\ (\text{mod}\ n)
+\end{aligned}$$</p>
+<p>$$\begin{aligned}
+s^6 &amp;\equiv s \cdot \left[5 c_1 \cdot s^4 - 10 {c_1}^2 \cdot s^3 + 10 {c_1}^3 \cdot s^2 - 5 {c_1}^4 \cdot s + ({c_1}^5 - c_2)\right] \\
+&amp;\equiv 5 c_1 \cdot s^5 - 10 {c_1}^2 \cdot s^4 + 10 {c_1}^3 \cdot s^3 - 5 {c_1}^4 \cdot s^2 + ({c_1}^5 - c_2) \cdot s \\
+&amp;\equiv 5 c_1 \cdot \left[5 c_1 \cdot s^4 - 10 {c_1}^2 \cdot s^3 + 10 {c_1}^3 \cdot s^2 - 5 {c_1}^4 \cdot s + ({c_1}^5 - c_2)\right] \\
+&amp;\qquad\qquad - 10 {c_1}^2 \cdot s^4 + 10 {c_1}^3 \cdot s^3 - 5 {c_1}^4 \cdot s^2 + ({c_1}^5 - c_2) \cdot s \\
+&amp;\equiv 15 {c_1}^2 \cdot s^4 - 40 {c_1}^3 \cdot s^3 + 45 {c_1}^4 \cdot s^2 - (24 {c_1}^5 + c_2) \cdot s + 5 c_1 \cdot ({c_1}^5 - c_2)\ (\text{mod}\ n)
+\end{aligned}$$</p>
+<p>We can effectively compute $s^n$ in terms of $s$, $s^2$, $s^3$ and $s^4$ using matrix:</p>
+<p>$$\left[\begin{matrix}s^{n+4} \\ s^{n+3} \\ s^{n+2} \\ s^{n+1} \\ s^n \end{matrix}\right] = \left[\begin{matrix}
+5 c_1 &amp; -10 {c_1}^2 &amp; 10 {c_1}^3 &amp; -5 {c_1}^4 &amp; {c_1}^5 - c_2 \\
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0
+\end{matrix}\right]^n
+\left[\begin{matrix}s^4 \\ s^3 \\ s^2 \\ s^1 \\ 1 \end{matrix}\right]$$</p>
+<p>In particular, since $m = s^e\ \text{mod}\ n$, we have the below modular congruence:</p>
+<p>$$m \equiv A \cdot s^4 + B \cdot s^3 + C \cdot s^2 + D \cdot s + E\ (\text{mod}\ n)$$</p>
+<p>for some constants $A, B, C, D$ and $E$. Since $m = m_0 + 256 \cdot x$, we can easily write</p>
+<p>$$x \equiv A_1 \cdot s^4 + B_1 \cdot s^3 + C_1 \cdot s^2 + D_1 \cdot s + E_1\ (\text{mod}\ n), \quad [\dagger]$$</p>
+<p>for some constants $A_1, B_1, C_1, D_1$ and $E_1$ (can be computed with the matrix approach). Unfortunately, the equation has $200 + 4 \cdot 2048 = 8392$ bits of unknown while had only 2048 bits of information.</p>
+<div class="alert info">
+  <strong>How do we deduce that $200 + 4 \cdot 2048$?</strong> Each of $s, s^2, s^3$ and $s^4$ is a 2048-bit unknown and $m$ has 200 bits of unknown (it matches the regex <code>dice\{.{25}\}</code>).
+</div>
+
+<p>We can exploit the matrix to its extreme to squeeze more data. For example, we can write $x^2 \equiv A_2 \cdot s^4 + B_2 \cdot s^3 + C_2 \cdot s^2 + D_2 \cdot s + E_2\ (\text{mod}\ n)$ and that only adds 400 bits of unknown (which comes from $m^2$) when combining with $[\dagger]$. Essentially, we can add</p>
+<p>$$x^k \equiv A_k \cdot s^4 + B_k \cdot s^3 + C_k \cdot s^2 + D_k \cdot s + E_k\ (\text{mod}\ n)$$</p>
+<p>for all $k = 1, 2, ..., 10$ because the unknown size is only $200k &lt; 2048$ bits. After all, we have $(200 + 400 + ... + 2000) + 4 \cdot 2048 = 19192$ bits of unknown and $10 \cdot 2048 = 20480$ bits of information. We can recover the information via LLL on the below matrix:</p>
+<p>$$\left[\begin{matrix}
+A_1 &amp; A_2 &amp;         &amp; A_{10} &amp; 1 &amp; 0 &amp;        &amp; 0 \\
+B_1 &amp; B_2 &amp;         &amp; B_{10} &amp; 0 &amp; 1 &amp;        &amp; 0 \\
+C_1 &amp; C_2 &amp;  ...    &amp; C_{10} &amp; 0 &amp; 0 &amp; \ddots &amp; 0 \\
+D_1 &amp; D_2 &amp;         &amp; D_{10} &amp; 0 &amp; 0 &amp;        &amp; 0 \\
+E_1 &amp; E_2 &amp;         &amp; E_{10} &amp; 0 &amp; 0 &amp;        &amp; 1 \\
+n   &amp; 0   &amp;         &amp; 0      &amp; 0 &amp; 0 &amp;        &amp; 0 \\
+0   &amp; n   &amp;         &amp; 0      &amp; 0 &amp; 0 &amp;        &amp; 0 \\
+&amp;         &amp; \ddots  &amp;        &amp;   &amp;   &amp; \ddots &amp;   \\
+0   &amp; 0   &amp;         &amp; n      &amp; 0 &amp; 0 &amp;        &amp; 0 \\
+\end{matrix}\right]$$</p>
+<p>With that, we have the flag: <code>dice{wh4t!!-wh0_g4ve_u-thE-k3y}</code>.</p>
+<h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">e</span> <span class="o">=</span> <span class="mh">0xd4088c345ced64cbbf8444321ef2af8b</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">m0</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;dice{&#39;</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">25</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># m = m0 + 256*x, with 0 &lt;= x &lt; 2^200</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="mh">0xba8cb3257c0c83edf4f56f5b7e139d3d6ac8adf71618b5f16a02d61b63426c2c275ce631a0927b2725c6cc7bdbe30cd8a8494bc7c7f6601bcee5d005b86016e79919e22da4c431cec16be1ee72c056723fbbec1543c70bff8042630c5a9c23f390e2221bed075be6a6ac71ad89a3905f6c706b4fb6605c08f154ff8b8e28445a7be24cb184cb0f648db5c70dc3581419b165414395ae4282285c04d6a00a0ce8c06a678181c3a3c37b426824a5a5528ee532bdd90f1f28b7ec65e6658cb463e867eb5280bda80cbdb066cbdb4019a6a2305a03fd29825158ce32487651d9bfa675f2a6b31b7d05e7bd74d0f366cbfb0eb711a57e56e6db6d6f1969d52bf1b27b</span>
+</span></span><span class="line"><span class="cl"><span class="n">c1</span> <span class="o">=</span> <span class="mh">0x75240fcc256f1e2fc347f75bba11a271514dd6c4e58814e1cb20913195db3bd0440c2ca47a72efee41b0f9a2674f6f46a335fd7e54ba8cd1625daeaaaa45cc9550c566f6f302b7c4c3a4694c0f5bb05cd461b5ca9017f2eb0e5f60fb0c65e0a67f3a1674d74990fd594de692951d4eed32eac543f193b70777b14e86cf8fa1927fe27535e727613f9e4cd00acb8fab336894caa43ad40a99b222236afc219397620ca766cef2fe47d53b07e302410063eae3d0bf0a9d67793237281e0bfdd48255b58b2c1f8674a21754cf62fab0ba56557fa276241ce99140473483f3e5772fcb75b206b3e7dfb756005cec2c19a3cb7fa17a4d17f5edd10a8673607047a0d1</span>
+</span></span><span class="line"><span class="cl"><span class="n">c2</span> <span class="o">=</span> <span class="mh">0xdb8f645b98f71b93f248442cfc871f9410be7efee5cff548f2626d12a81ee58c1a65096a042db31a051904d7746a56147cc02958480f3b5d5234b738a1fb01dc8bf1dffad7f045cac803fa44f51cbf8abc74a17ee3d0b9ed59c844a23274345c16ba56d43f17d16d303bb1541ee1c15b9c984708a4a002d10188ccc5829940dd7f76107760550fac5c8ab532ff9f034f4fc6aab5ecc15d5512a84288d6fbe4b2d58ab6e326500c046580420d0a1b474deca052ebd93aaa2ef972aceba7e6fa75b3234463a68db78fff85c3a1673881dcb7452390a538dfa92e7ff61f57edf48662991b8dd251c0474b59c6f73d4a23fe9191ac8e52c8c409cf4902eeaa71714</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Zn</span> <span class="o">=</span> <span class="n">Zmod</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">P</span><span class="o">.&lt;</span><span class="n">s</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">PolynomialRing</span><span class="p">(</span><span class="n">Zn</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">c1</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span><span class="o">^</span><span class="mi">5</span> <span class="o">-</span> <span class="n">c2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">/=</span> <span class="n">p</span><span class="o">.</span><span class="n">leading_coefficient</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">_e</span><span class="p">,</span> <span class="n">_d</span><span class="p">,</span> <span class="n">_c</span><span class="p">,</span> <span class="n">_b</span><span class="p">,</span> <span class="n">_a</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">coefficients</span><span class="p">()</span> <span class="c1"># s^5 = _a s^4 + _b s^3 + _c s^2 + _d s + _e</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">Zn</span><span class="p">,</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">_a</span><span class="p">,</span> <span class="n">_b</span><span class="p">,</span> <span class="n">_c</span><span class="p">,</span> <span class="n">_d</span><span class="p">,</span> <span class="n">_e</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">b11</span><span class="p">,</span> <span class="n">b12</span><span class="p">,</span> <span class="n">b13</span><span class="p">,</span> <span class="n">b14</span><span class="p">,</span> <span class="n">b15</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="o">^</span><span class="n">e</span><span class="p">)[</span><span class="mi">4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">b11</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">b11</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">b12</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">b12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">b13</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">b13</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">b14</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">b14</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">b15</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">b15</span> <span class="o">-</span> <span class="n">m0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">b11</span> <span class="o">*</span> <span class="n">s</span><span class="o">^</span><span class="mi">4</span> <span class="o">+</span> <span class="n">b12</span> <span class="o">*</span> <span class="n">s</span><span class="o">^</span><span class="mi">3</span> <span class="o">+</span> <span class="n">b13</span> <span class="o">*</span> <span class="n">s</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b14</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">b15</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">weights</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">2048</span> <span class="o">-</span> <span class="mi">200</span><span class="o">*</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl"><span class="n">weights</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="mi">2048</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">coefficients</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">coefficients</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">coefficients</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">5</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">N</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Q</span> <span class="o">=</span> <span class="n">diagonal_matrix</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">*=</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">LLL</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">/=</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">B</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">row</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">x0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">x0</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          DiceCTF 2022 (I): commitment-issues
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-02-14-intigriti-xss/">← Intigriti&#39;s XSS Challenge (February 2022)</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-01-23-firebird-internal-ctf/">Firebird Internal CTF 2022 Writeup →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

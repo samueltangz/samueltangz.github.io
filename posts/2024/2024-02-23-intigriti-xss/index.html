@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intigriti&#39;s XSS Challenge (February 2024) | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Intigriti&#39;s XSS Challenge (February 2024)</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2024-02-23T00:00:00&#43;08:00">2024-02-23</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/xss/" class="text-muted text-decoration-none">#xss</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/intigriti-challenge/" class="text-muted text-decoration-none">#intigriti-challenge</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I came across with <a href="https://twitter.com/intigriti" target="_blank" rel="nofollow">@intigriti</a>'s XSS challenge this month. This time we are given a love letter storage system which allow us to show our love to our hacking buddies.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-cross-site-scripting-on-get-readtestletteruuid">Part I: Cross-site scripting on <code>GET /readTestLetter/:uuid</code><a href="#part-i-cross-site-scripting-on-get-readtestletteruuid" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>From the source code, we can see that <code>GET /readTestLetter/:uuid</code> is the <em>only</em> endpoint that returns the user input with the content type <code>text/html</code>. Let's see how is our data handled:</p>
+
+
+<figure>
+  <img src="/images/2024-02-23-intigriti-xss/debug-letter-flow.png" title="">
+  
+</figure>
+
+<p>The challenge uses the latest version of <em>DOMPurify</em> (v3.0.8). I don't think we are supposed to find 0-days in the package. Thus, we assumed that what <em>DOMPurify</em> has sanitized should be safe. If there is a XSS vulnerability, the insecure payload must be generated post-sanitization.</p>
+<p>These are the operations performed to the our message after DOMPurify:</p>
+<ul>
+<li><code>POST /setTestLetter</code>
+<ul>
+<li>converts into a buffer and encodes it in base64, and</li>
+<li>stores to the database as a varchar.</li>
+</ul>
+</li>
+<li><code>GET /readTestLetter/:uuid</code>
+<ul>
+<li>retrieves from the database,</li>
+<li>decodes in base64, and</li>
+<li>renders as a string in ascii encoding.</li>
+</ul>
+</li>
+</ul>
+<p>In short, the vulnerability comes from the conversion to ASCII string from buffer. According to the <a href="https://nodejs.org/docs/latest/api/buffer.html#buffers-and-character-encodings"
+   
+   target="_blank" rel="noopener noreferrer" >Node.js documentation</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, decoding the buffer into an ASCII string would unset the highest bit of each byte. For instance, the word <code>測試</code> is converted to <code>e6 b8 ac e8 a9 a6</code> in buffers. When casted to string using encoding <code>ascii</code>, it became <code>66 38 2c 68 29 26</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">testBuffer</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="s1">&#39;測試&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">testBuffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// &#39;測試&#39;
+</span></span></span><span class="line"><span class="cl"><span class="nx">testBuffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// &#39;f8,h)&amp;&#39;
+</span></span></span></code></pre></div><p>Of course, <em>DOMPurify</em> will consider the UTF-8 characters harmless and thus will do nothing to them. We can confess our loves by creating alerts to the recipients with the below message:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">偼script 偾alert(document.domain) //偼/script 偾
+</span></span></code></pre></div><div class="alert info">
+  🤔 <strong>Why an alert?</strong> <code>偼</code> and <code>偾</code> are respectively <code>e5 81 bc</code> and <code>e5 81 be</code> in UTF-8. They became <code>e.&lt;</code> (<code>65 01 3c</code>) and <code>e.&gt;</code> (<code>65 01 3e</code>) when decoded in ASCII. Thus it became <code>e.&lt;script e.&gt;alert(document.domain) //e.&lt;/script e.&gt;</code> when somemone retrieves the letter.
+</div>
+
+<h3 id="part-ii-stealing-admins-letter">Part II: Stealing admin's letter<a href="#part-ii-stealing-admins-letter" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now what is left is to craft a payload to steal admin's letter. Notably, there is a &quot;contact admin&quot; API, where the admin will perform a sequence of tasks with the link we supplied (which needs to be in <code>*.challenge-0224.intigriti.io</code>):</p>
+<ol>
+<li>The admin opens a browser and creates a new tab.</li>
+<li>The admin signs in to their own account.</li>
+<li>The admin visits the webpage we provided.</li>
+<li>The admin closes the page.</li>
+<li>The admin opens a new tab.</li>
+<li>The admin calls <code>GET /user</code> to check if the current user is the admin account. If not, the admin will terminate the session.</li>
+<li>The admin calls <code>GET /getLetterData</code> and see if the &quot;intigriti community letter&quot; they wrote still exists. If not, he will call <code>POST /storeLetter</code> to create the letter again.</li>
+<li>The admin closes the browser.</li>
+</ol>
+<p>Notably, <code>GET /getLetterData</code> does <em>not</em> contain the letters' content. To read the content of the letters, one has to call <code>POST /readLetterData</code> with their password. Unfortunately, the admin is not typing their password except at the beginning. There is no hope stealing their passwords.</p>
+<p>Another idea that I had is to remove a letter by <code>POST /unsetLetter</code> and make them call <code>POST /storeLetter</code> on our behalf. One thing that had in my mind is to make the admin sign in to our account <em>after</em> they called <code>GET /user</code>.</p>
+<p>Unfortunately, they are closing the tab we serve before they visit <code>GET /user</code>. It seemed that we are unable to defer the sign in process. However, I observed that the admin does <em>not</em> close the additional tabs created by us. If we create an additional tab that could sign in to our own account after a certain amount of time, we are able to let admin to see themselves at <code>GET /user</code>, while calling <code>POST /storeLetter</code> for us. After all, I created two letters and sent the second letter to the admin:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- https://api.challenge-0224.intigriti.io/readTestLetter/a --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;/unsetLetter&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;method&#34;</span><span class="o">:</span> <span class="s2">&#34;POST&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;body&#34;</span><span class="o">:</span> <span class="sb">`{&#34;letterId&#34;:&#34;3&#34;}`</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;headers&#34;</span><span class="o">:</span> <span class="p">{</span><span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;application/json&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;/login&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;method&#34;</span><span class="o">:</span> <span class="s2">&#34;POST&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;body&#34;</span><span class="o">:</span> <span class="sb">`{&#34;username&#34;:&#34;mystiz&#34;,&#34;password&#34;:&#34;asdasdasd&#34;}`</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;headers&#34;</span><span class="o">:</span> <span class="p">{</span><span class="s2">&#34;content-type&#34;</span><span class="o">:</span> <span class="s2">&#34;application/json&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}),</span> <span class="mi">4000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- https://api.challenge-0224.intigriti.io/readTestLetter/b --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&#34;https://api.challenge-0224.intigriti.io/readTestLetter/a&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&#34;_blank&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>After all, we are able to retrieve the admin's letter that confess their love to the community.</p>
+
+
+<figure>
+  <img src="/images/2024-02-23-intigriti-xss/intigriti-community-letter.png" title="">
+  
+</figure>
+
+<h2 id="the-after-story">The after story<a href="#the-after-story" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+
+
+<figure>
+  <img src="/images/2024-02-23-intigriti-xss/intigriti-issue.png" title="">
+  
+</figure>
+
+<p>I created a report to the Intigriti team after I retrieve the secret message. I almost became the first solver and could won the swags.</p>
+<p>More importantly, I was told that my solution was partially unintended. The intended solution is to set our authentication cookie with <code>Path=/storeLetter</code>. In this way, the token will <em>only</em> be used at the <code>POST /storeLetter</code> API by the admin. Cookies that activate on specific paths are sneakier since people are able to detect something malicious when the attackers are creating new tabs. Loved this solution!</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Intigriti's XSS Challenge (February 2024)
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2024/2024-06-24-google-ctf-1/">← Google CTF 2024 (I): Blinders</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2024/2024-02-03-tetctf-adapt/">TetCTF 2024: adapt →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

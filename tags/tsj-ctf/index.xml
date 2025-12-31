@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tsj-Ctf on Mystify</title>
+    <link>https://mystiz.hk/tags/tsj-ctf/</link>
+    <description>Recent content in Tsj-Ctf on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Mar 2022 00:38:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/tsj-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TSJ CTF 2022 (II): Signature</title>
+      <link>https://mystiz.hk/posts/2022/2022-03-02-tsjctf-2/</link>
+      <pubDate>Wed, 02 Mar 2022 00:38:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2022/2022-03-02-tsjctf-2/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Signature&lt;/em&gt; is a crypto challenge from TSJ CTF 2022, which ended up having two solves. From this challenge, we can see how ECDSA private keys can be recovered by having a (weak) deterministic ephemeral key, $k$.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;p&gt;Suppose that $d$ is the private key for ECDSA (over curve secp256k1). We are given six signatures signed with the above private key. However, $k$ is computed by $k = d \oplus z$ ($z$ is the hash of the message) rather than generated randomly.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>TSJ CTF 2022 (I): Cipher Switching Service</title>
+      <link>https://mystiz.hk/posts/2022/2022-03-01-tsjctf-1/</link>
+      <pubDate>Tue, 01 Mar 2022 00:23:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2022/2022-03-01-tsjctf-1/</guid>
+      <description>&lt;div class=&#34;alert warning&#34;&gt;&#xA;  &lt;strong&gt;Credits.&lt;/strong&gt; I stole the banner image from TSJ CTF. Thanks!&#xA;&lt;/div&gt;&#xA;&#xA;&lt;p&gt;&lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt; played &lt;em&gt;TSJ CTF&lt;/em&gt; and &lt;em&gt;CODEGATE CTF&lt;/em&gt; this weekend. Both of the CTFs had a bunch of epic (and hard-ish) crypto challenges, which made our head scratched for days.&lt;/p&gt;&#xA;&lt;p&gt;We were two points behind &lt;a href=&#34;https://twitter.com/balsnctf&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@balsnctf&lt;/a&gt; few minutes before the game ends and I found one more flag. It is proud to tell that we won &lt;em&gt;TSJ CTF&lt;/em&gt; &amp;#x1f389;!&lt;/p&gt;&#xA;&lt;p&gt;Anyway, I will compile writeups for (at least) three challenges for &lt;em&gt;TSJ CTF&lt;/em&gt;, namely &lt;em&gt;Cipher Switching Service&lt;/em&gt;, &lt;em&gt;Signature&lt;/em&gt; and &lt;em&gt;Genie&lt;/em&gt;. I will go through &lt;em&gt;Cipher Switching Service&lt;/em&gt; as the first part of the series.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

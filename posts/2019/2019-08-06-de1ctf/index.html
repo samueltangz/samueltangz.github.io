@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>De1CTF 2019 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">De1CTF 2019 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2019-08-06T10:20:00&#43;08:00">2019-08-06</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/de1ctf/" class="text-muted text-decoration-none">#de1ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/lfsr/" class="text-muted text-decoration-none">#lfsr</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/interpolation-attack/" class="text-muted text-decoration-none">#interpolation-attack</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>It has been a very long time that I've compiled a writeup. This time I have played on my own as <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a>. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup <em>too</em> math-intensive.</p>
+<p>The solution scripts will be committed to <a href="https://github.com/samueltangz/ctf-archive"
+   
+   target="_blank" rel="noopener noreferrer" >my Github repository</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> sooner or later, after I've managed to prettify them.</p>
+<h2 id="babylfsr-crypto-338points">Babylfsr (Crypto, 338 points)<a href="#babylfsr-crypto-338points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>This is an easy challenge. However I'll still document this as, surprisingly, I have never been able to play with LFSR before.</p>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To summarize, 504 bits generated from the LFSR is given. It is also known that the LFSR is 256 bits long. The goal is to find the mask and the initial states that is stay hidden from the miserable players.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It took me quite a while to summarize what I should do to obtain the initial states of the LFSR (<em>See how rusty I am when dealing with them...</em>). In general, we need these conditions to be satisfied:</p>
+<ol>
+<li>If we are able to obtain $n$ consecutive bits from the LFSR with a known mask, we could then obtain the prior states.</li>
+<li>If we are given $2n$ consecutive bits from the LFSR, we could obtain the mask by solving a system of linear equations (in the binary field).</li>
+</ol>
+<p>Now we are missing the last byte of the puzzle -- I am 8 bits short from getting the mask. After a long thought, I knew I could simply exhaust 8 bits and append to the given state. After all, we have 256 possible masks and thus 256 possible initial states.</p>
+<h2 id="obscured-crypto-500points">Obscured (Crypto, 500 points)<a href="#obscured-crypto-500points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  📝 <strong>Note.</strong> In this challenge, $+$ means $\oplus$, the exclusive OR operator.
+</div>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In the challenge, we are given an cipher that encrypts a message $A_0, B_0, C_0, D_0$ to a ciphertext $A_6, B_6, C_6, D_6$:</p>
+<p>$$
+\begin{cases}\begin{matrix}
+A_{i+1} &amp; = &amp; A_i &amp; + &amp; B_i &amp; &amp; &amp; &amp; &amp; + &amp; S_i \\
+B_{i+1} &amp; = &amp; A_i &amp; + &amp; B_i &amp; &amp; &amp; + &amp; D_i &amp; + &amp; S_i \\
+C_{i+1} &amp; = &amp; A_i &amp; &amp; &amp; + &amp; C_i &amp; + &amp; D_i &amp; &amp; \\
+D_{i+1} &amp; = &amp; &amp; &amp; &amp; &amp; C_i &amp; + &amp; D_i &amp; + &amp; S_i
+\end{matrix}\end{cases}\dots\dots(1),
+$$</p>
+<p>where $S_i := \text{S}(A_i + C_i)$ with $\text{S}$ being a black-box function. Given a ciphertext, recover the plaintext with the use of the encryption oracle within 20 queries.</p>
+<h3 id="pointer">Pointer<a href="#pointer" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>This challenge is more or less equivalent to <a href="https://nsucrypto.nsu.ru/archive/2017/round/2/task/2#data"
+   
+   target="_blank" rel="noopener noreferrer" >this problem</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> from NSUCRYPTO, with a simple transformation. If you are satisfied with the 18-query solution, please check out the solution in given by NSUCRYPTO 2017. I am presenting a solution that uses 7 queries.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-a-transformation-that-makes-our-lifes-easier">Part I: A transformation that makes our lifes easier<a href="#part-i-a-transformation-that-makes-our-lifes-easier" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>It turns out that I have the same transformation as the solution from NSUCRYPTO:</p>
+<p>$$
+\begin{cases}\begin{matrix}
+W_i &amp; = &amp; &amp; &amp; B_i &amp; &amp; &amp; + &amp; D_i &amp; &amp; \\
+X_i &amp; = &amp; A_i &amp; + &amp; B_i &amp; + &amp; C_i &amp; &amp; &amp; &amp; \\
+Y_i &amp; = &amp; A_i &amp; &amp; &amp; + &amp; C_i &amp; &amp; &amp; &amp; \\
+Z_i &amp; = &amp; &amp; &amp; B_i &amp; + &amp; C_i &amp; + &amp; D_i &amp; + &amp; S_i
+\end{matrix}\end{cases} \dots\dots (2).
+$$</p>
+<p>Why is that? Combining with (1), the iteration is much simpler:</p>
+<p>$$
+\begin{cases}\begin{aligned}
+W_{i+1} &amp;= X_i \\
+X_{i+1} &amp;= Y_i \\
+Y_{i+1} &amp;= Z_i \\
+Z_{i+1} &amp;= W_i + \text{S}(Z_i)
+\end{aligned}\end{cases}\dots\dots(3).
+$$</p>
+<div class="alert info">
+  <p>Not every transformation can be made in such a simpler way. $W, X, Y, Z$ are carefully picked. My approach was to observe how $A_i + C_i$ will iterate:</p>
+<ul>
+<li>$A_{i+1} + C_{i+1} = B_i + C_i + D_i + S_i$,</li>
+<li>$B_{i+1} + C_{i+1} + D_{i+1} = B_i + D_i$,</li>
+<li>$B_{i+1} + D_{i+1} = A_i + B_i + C_i$,</li>
+<li>$A_{i+1} + B_{i+1} + C_{i+1} = A_i + C_i$,</li>
+</ul>
+<p>and it completes a cycle of length 4 if we drop $S_i$.</p>
+</div>
+<p>Define a transformation function $\mathcal{F}: \mathbb{Z}_{2^{32}}^4\rightarrow\mathbb{Z}_{2^{32}}^4$ by:</p>
+<p>$$
+\mathcal{F}(A, B, C, D) := (B+C+D, B+D, A+B+C, A+C).
+$$</p>
+<p>Immediately we have</p>
+<p>$$
+\mathcal{F}^{-1}(W, X, Y, Z) = (W+X+Z, Y+Z, W+X, X+Y+Z).
+$$</p>
+<p>According to (2), this shows that $(W_{i-1}, X_{i-1}, Y_{i-1}, Z_{i-1}) = \mathcal{F}(A_i, B_i, C_i, D_i)$.
+We call $(W_{-1}, X_{-1}, Y_{-1}, Z_{-1})$ the <em>transformed plaintext</em> and $(W_5, X_5, Y_5, Z_5)$ the <em>transformed ciphertext</em>.</p>
+<p>If we define a sequence $t_0, t_1, ...$ by</p>
+<ul>
+<li>Base cases: $t_0 = W_{-1}, t_1 = X_{-1}, t_2 = Y_{-1}, t_3 = Z_{-1}$,</li>
+<li>Transition: $t_{i+4} = t_i + \text{S}(t_{i+3})\dots\dots(4)$.</li>
+</ul>
+<p>We have $(t_6, t_7, t_8, t_9) = (W_5, X_5, Y_5, Z_5)$ being the transformed ciphertext. This means that we could encrypt $(t_0, t_1, t_2, t_3)$ into $(t_6, t_7, t_8, t_9)$ in the transformed space.</p>
+<div class="alert success">
+  <strong>Meaning.</strong> If we are given the ciphertext $\overline{A_6}, \overline{B_6}, \overline{C_6}, \overline{D_6}$, we could obtain $\overline{W_5}, \overline{X_5}, \overline{Y_5}, \overline{Z_5}$. The goal is to compute $\overline{W_{-1}}, \overline{X_{-1}}, \overline{Y_{-1}}, \overline{Z_{-1}}$, that could be transformed inversely to the plaintext.
+</div>
+<h4 id="part-ii-inverse-iterating-the-ciphertext---substitution-for-the-win">Part II: Inverse iterating the ciphertext - Substitution for the win<a href="#part-ii-inverse-iterating-the-ciphertext---substitution-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>During the game, I was thinking if it is possible for us to obtain $t_i$ from $t_{i+1}, t_{i+2}, t_{i+3}, t_{i+4}$ -- which means that we could &quot;decrypt&quot; the message by one round (out of six). Turns out it is a solid <strong>yes</strong>!</p>
+<p>To achieve this, we must realize that the current blocker is the black-box function $\text{S}$. We could not find $\text{S}(x)$ for an arbitrarily given $x$ <em>easily</em>... Or could we?</p>
+<div class="alert info">
+  Recall on how $t_i$ is defined... and that the plaintext $(t_0, t_1, t_2, t_3)$ would be encrypted into the ciphertext $(t_6, t_7, t_8, t_9)$.
+In this section, we assume that we are <strong>in control of the plaintext</strong> and <strong>have knowledge on the ciphertext</strong>.
+</div>
+<p><strong>First substitution.</strong> Let $u_0 = u_1 = u_2 = u_3 = 0$ and $u_{i+4} = u_i + \text{S}(u_{i+3})$. We have the equations below:</p>
+<p>$$u_4 = \text{S}(0), u_5 = \text{S}(u_4), u_6 = \text{S}(u_5), u_7 = \text{S}(u_6), u_8 = u_4 + \text{S}(u_7), u_9 = u_5 + \text{S}(u_8).$$</p>
+<p>The fourth equation is particular interesting: $\text{S}(u_6) = u_7$. Since $u_6$ and $u_7$ is known, we knew a pair of $(x, y)$ with $S(x) = y$. Unfortunately we couldn't control what $x$ is. Yet, we can make use of this to make this happen.</p>
+<div class="alert info">
+  <p><strong>A bit of thinking.</strong> We need to guess $v_0, v_1, v_2, v_3$ for the second substitution smartly. Is it possible to exploit the fact $\text{S}(u_6) = u_7$ as much as possible?</p>
+<p>For example, as $v_4 = v_0 + \text{S}(v_3)$, we could make $v_0 = u_7$ and $v_3 = u_6$, thus $v_4 = 0$.</p>
+<p>But then $v_5 = v_1 + \text{S}(v_4)$. It would be better if $v_4 = u_6$. Let's make $v_0 = u_6 + u_7$ instead of $v_0 = u_7$. We then have $v_5 = v_1 + \text{S}(v_4) = v_1 + \text{S}(u_6) = v_1 + u_7$. What's the use?</p>
+<p>On the next equation, $v_6 = v_2 + \text{S}(v_5) = v_2 + \text{S}(v_1 + u_7)$. Note that we have control for $v_1$ and $v_2$. Let's see what we have by substituting $v_1 = u_7 + x$ and $v_2 = 0$...</p>
+</div>
+<p><strong>Second substitution.</strong> Let $v_0 = u_6 + u_7, v_1 = u_7 + x, v_2 = 0, v_3 = u_6$ and $v_{i+4} = v_i + \text{S}(v_{i+3})$. Here $x$ is an arbitrary element, and we have $\text{S}(x) = v_6$. We could compute $\text{S}(x)$ for given arbitrary $x$ now!</p>
+<p>Therefore, in such a way, we could decrypt the ciphertext with 7 oracle calls, one for knowing a pair of $\text{S}(x)=y$ and six for inverse iterating.</p>
+<h2 id="mini-purε-crypto-869points">Mini Purε (Crypto, 869 points)<a href="#mini-purε-crypto-869points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  <strong>Note:</strong> $+$ is once again the exclusive OR operator as we are discussing under $\text{GF}(2^{24})$.
+</div>
+<p>First of all, I could not believe that I can be one of the four teams solving the challenge.</p>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Under $\text{GF}(2^{24})$, define
+$$
+\begin{cases}\begin{aligned}
+L_{i+1} &amp;= R_i \\
+R_{i+1} &amp;= L_i + (K_i + R_i)^3.
+\end{aligned}\end{cases}
+$$</p>
+<p>The plaintext $(L_0, R_0)$ would be encrypted into $(L_6, R_6)$, i.e., 6 rounds. The primary goal is to compute $(K_0, K_1, ..., K_5)$, where each of the $K_i$'s has about 16 bit of entropy.</p>
+<p>There is an encryption oracle and we can encrypt approximately 3000 messages.</p>
+<h3 id="solution-in-a-simpler-setting">Solution in a Simpler Setting<a href="#solution-in-a-simpler-setting" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  🥴 I guess it will be too cumbersome to explain it in a 6-round setting, so let me explain my solution in a 3-round setting instead.
+</div>
+<p>First define $x_0 = L_0, x_1 = R_0$ and $x_{i+2} = x_i + (K_i + x_{i+1})^3$. This implies that $(x_0, x_1)$ is encrypting into $(x_3, x_4)$ (<em>Remember that we are in a 3-round game</em>).</p>
+<p>Let's write the transition explicitly:</p>
+<h4 id="from-x_0-x_1-and-beyond">From $x_0, x_1$ and beyond<a href="#from-x_0-x_1-and-beyond" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>$$
+\begin{aligned}
+x_2 &amp;= x_0 + (K_0 + x_1)^3 \\
+\   &amp;= x_0 + K_0^3 + K_0^2 x_1 + K_0 x_1^2 + x_1^3 \\
+x_3 &amp;= x_1 + (K_1 + x_2)^3 \\
+\   &amp;= x_1 + (K_1 + x_0 + K_0^3 + K_0^2 x_1 + K_0 x_1^2 + x_1^3)^3 \\
+\   &amp;= x_1^9 + x_1^8K_0 + x_1K_0^8 + K_0^9 + x_0x_1^6 + x_0x_1^4K_0^2 + x_0x_1^2K_0^4 + \dots
+\end{aligned}
+$$</p>
+<p>(╯‵□′)╯︵┴─┴</p>
+<div class="alert danger">
+  🖐️ <strong>Wait, no! You are wrong!</strong> $(x + y)^3$ should be $x^3 + 3x^2y + 3xy^2 + 3y^3$!
+You are correct... but we are talking on $\text{GF}(2^{24})$, where $3 = 1+1+1 = 1$.
+</div>
+<p>It would be very painful to express $x_4$ in terms of $x_0$ and $x_1$. But as we know $x_3$ and $x_4$, can we find $K_0, K_1, K_2$ via a meet-in-the-middle approach?</p>
+<h4 id="from-x_4-x_3-and-within">From $x_4, x_3$ and within<a href="#from-x_4-x_3-and-within" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>$$
+\begin{aligned}
+x_2 &amp;= x_4 + (K_2 + x_3)^3 \\
+\   &amp;= x_4 + K_2^3 + K_2^2 x_3 + K_2 x_3^2 + x_3^3 \\
+x_1 &amp;= x_3 + (K_1 + x_2)^3 \\
+\   &amp;= \dots
+\end{aligned}
+$$</p>
+<p>From the two ends, we knew that</p>
+<p>$$
+\begin{aligned}
+x_0 + K_0^3 + K_0^2 x_1 + K_0 x_1^2 + x_1^3 &amp;= x_2 \\
+&amp;= x_4 + K_2^3 + K_2^2 x_3 + K_2 x_3^2 + x_3^3,
+\end{aligned}
+$$</p>
+<p>and end up having</p>
+<p>$$
+x_0 + K_0^3 + K_0^2 x_1 + K_0 x_1^2 + x_1^3 + x_4 + K_2^3 + K_2^2 x_3 + K_2 x_3^2 + x_3^3 = 0 \dots\dots(5).
+$$</p>
+<p>As I am very lazy, I would need about 10 plaintext-ciphertext pairs to find $K_0$ and $K_2$ by transforming it into a system of linear equations. How?</p>
+<h4 id="the-system-of-linear-equation">The system of linear equation<a href="#the-system-of-linear-equation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Suppose that we have ten plaintext-ciphertext pairs, given by</p>
+<p>$$
+(x_{0,0}, x_{0,1}, x_{0,3}, x_{0,4}), (x_{1,0}, x_{1,1}, x_{1,3}, x_{1,4}), \dots, (x_{9,0}, x_{9,1}, x_{9,3}, x_{9,4}).
+$$</p>
+<p>Define the following matrix:</p>
+<p>$$
+A := \begin{bmatrix}
+x_{0,0} &amp; 1 &amp; x_{0,1} &amp; x_{0,1}^2 &amp; x_{0,1}^3 &amp; x_{0,4} &amp; 1 &amp; x_{0,3} &amp; x_{0,3}^2 &amp; x_{0,3}^3 \\
+x_{1,0} &amp; 1 &amp; x_{1,1} &amp; x_{1,1}^2 &amp; x_{1,1}^3 &amp; x_{1,4} &amp; 1 &amp; x_{1,3} &amp; x_{1,3}^2 &amp; x_{1,3}^3 \\
+&amp;&amp;&amp;&amp;&amp; \vdots &amp;&amp;&amp;&amp; \\
+x_{9,0} &amp; 1 &amp; x_{9,1} &amp; x_{9,1}^2 &amp; x_{9,1}^3 &amp; x_{9,4} &amp; 1 &amp; x_{9,3} &amp; x_{9,3}^2 &amp; x_{9,3}^3
+\end{bmatrix}.
+$$</p>
+<p>Suppose that $A'$ is the reduced row echelon form for $A$, then you should be able to find $K_0$ and $K_2$ on columns 4 and 9 (one-indexed). It is easy to find $K_1$ afterwards.</p>
+<h3 id="expanding-the-idea-to-six-rounds">Expanding the Idea to Six Rounds<a href="#expanding-the-idea-to-six-rounds" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In short, the challenge could be solved by the following steps in a 6-round setting:</p>
+<ol>
+<li>Use meet-in-the-middle approach to figure out the two equations of $x_3$ (in terms of $x_0$ and $x_1$, and in terms of $x_6$ and $x_7$).</li>
+<li>Collect 200 plaintext-ciphertext pair.</li>
+<li>Plug $x_0, x_1, x_6$ and $x_7$ by the plaintext-ciphertext pairs into the equations.</li>
+<li>Solve for $k_0, k_1, \dots, k_5.$</li>
+<li>Profit!</li>
+</ol>
+<p>I encrypted about 200 messages to find the $k$'s.</p>
+<h3 id="the-intended-solution">The Intended Solution<a href="#the-intended-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>I had a short chat with the author in Telegram afterwards. He said that the intended solution is <a href="https://en.wikipedia.org/wiki/Interpolation_attack"
+   
+   target="_blank" rel="noopener noreferrer" >interpolation attack</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, which is new to me. I should have looked into that soon...</p>
+<h2 id="the-last-words">The Last Words<a href="#the-last-words" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>For sure I have went into numerous dead-ends to come up with the correct solution. Yet, the idea is also valuable and I think I shall document it someday. Probably after DEFCON finals.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          De1CTF 2019 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2020/2020-04-21-plaidctf-puzzle/">← PlaidCTF 2020: A Plaid Puzzle</a>
+        
+
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2024 Quals Writeup (IV): The Reverse Challenges | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2024 Quals Writeup (IV): The Reverse Challenges</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2025-06-29T15:30:03&#43;08:00">2025-06-29</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/reverse/" class="text-muted text-decoration-none">#reverse</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I also wrote some reverse challenges this year: <em>Void</em>, <em>Cyp.ress</em> and <em>Bashed!</em>. We will cover them all in the last part of the blog post.</p>
+<h2 id="void">Void<a href="#void" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I made a simple webpage that checks whether the flag is correct... Wait, where are the flag-checking functions?</p>
+</blockquote>
+<p>We are given a static webpage (source code <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges/blob/main/09-void/env/chall/files/index.html"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>), where it asks us for the flag:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<video autoplay loop  style="width: 100%; margin: 12px auto; display: block;">
+  <source src="/images/2025-06-29-hkcert-ctf/void-fail.webm" type="video/webm">
+</video>
+<p>The goal is to provide a legit flag.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>There is a bunch of whitespaces inside the <code>with</code> block. They are not the regular whitespace (U+0020), but the Hangul filler (<code>ㅤ</code>, U+3164). They are replaced with <code>_</code> below for visibility:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">with</span> <span class="p">(</span><span class="nx">ㅤ</span><span class="sb">``</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nx">_______</span>
+</span></span><span class="line"><span class="cl"><span class="nx">____</span>
+</span></span><span class="line"><span class="cl"><span class="nx">_______</span>
+</span></span><span class="line"><span class="cl"><span class="nx">________________</span>
+</span></span><span class="line"><span class="cl"><span class="nx">_______</span>
+</span></span><span class="line"><span class="cl"><span class="nx">_______________</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="nx">snipped</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The below snippet written by <a href="https://twitter.com/aemkei" target="_blank" rel="nofollow">@aemkei</a> is why the invisible code block works:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">\u3164</span><span class="p">(){</span><span class="k">return</span> <span class="nx">f</span><span class="o">=</span><span class="s2">&#34;&#34;</span><span class="p">,</span><span class="nx">p</span><span class="o">=</span><span class="p">[]</span>  
+</span></span><span class="line"><span class="cl"><span class="p">,</span><span class="k">new</span> <span class="nb">Proxy</span><span class="p">({},{</span><span class="nx">has</span><span class="o">:</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span><span class="nx">n</span><span class="p">)=&gt;(</span><span class="nx">p</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl"><span class="nx">n</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="mi">2</span><span class="o">==</span><span class="nx">p</span><span class="p">.</span><span class="nx">length</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="nx">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">||</span><span class="nx">p</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl"><span class="mi">1</span><span class="p">]</span><span class="o">||</span><span class="nb">eval</span><span class="p">(</span><span class="nx">f</span><span class="p">),</span><span class="nx">f</span><span class="o">+=</span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="nx">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="o">|</span><span class="nx">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nx">p</span><span class="o">=</span><span class="p">[]),</span><span class="o">!</span><span class="mi">0</span><span class="p">)})}</span><span class="c1">//aem1k
+</span></span></span></code></pre></div><p>To generate one byte, the function reads two lines from the &quot;code block&quot; and let there be $s+1$ and $t+1$ whitespaces on the two lines. It will append the character with ASCII value $16s + t$ to <code>p</code>. After <code>p</code> is ready, it will be evaluated by the <code>eval</code> function. Thus we can inject the functions in this way.</p>
+<p>We can extract the <code>with</code> block and parse it manually to retrieve the <em>actual</em> code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">flag</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;flag&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">flag</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">handleKeyPress</span> <span class="o">=</span> <span class="nx">event</span> <span class="p">=&gt;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;Enter&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">check</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">check</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">flag</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;hkcert24{j4v4scr1p7_1s_n0w_alm0s7_y3t_4n0th3r_wh173sp4c3_pr09r4mm1n9_l4ngu4g3}&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">flag</span><span class="p">.</span><span class="nx">disabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">flag</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;correct&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">flag</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;wrong&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="nx">flag</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s1">&#39;wrong&#39;</span><span class="p">),</span> <span class="mi">500</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/void-success.png" title="">
+  
+</figure>
+
+
+
+<figure>
+  <img src="/images/2025-06-29-hkcert-ctf/void-success.png" title="">
+  
+</figure>
+
+<div class="alert info">
+  <p><strong>Alternative solutions.</strong> There are some simpler solutions provided by the contestants, which I found interesting:</p>
+<ul>
+<li><em>@wyli</em> downloaded the source code and changed <code>eval</code> to <code>console.log</code>. The source code is then logged into the console.</li>
+<li><em>@jas</em> typed <code>alert(f)</code> into the console and the source code pops up. This is because <code>f</code> is the variable that stores the code inside the function <code>\u3164</code>.</li>
+</ul>
+</div>
+
+<h2 id="cypress">Cyp.ress<a href="#cypress" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>You will get sser.pyc when you reverse the title. Now reverse it back for me.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/cypress_5788c6411dc79b08e280746a07306538.zip"
+   
+   target="_blank" rel="noopener noreferrer" >cypress_5788c6411dc79b08e280746a07306538.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a <code>.pyc</code> file.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We can throw the <code>.pyc</code> file to the online decompilers. Most of the existing decompilers do not support Python 3.12. While <a href="http://tool.lu/en_US/pyc"
+   
+   target="_blank" rel="noopener noreferrer" >tool.lu</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> is accepting Python 3.12, it fails to decompile the entire binary file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># visit https://tool.lu/pyc/ for more information</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Version: Python 3.12</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">hashlib</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># WARNING: Decompyle incomplete</span>
+</span></span></code></pre></div><p>We are hinted, however, that it uses the <code>os</code>, <code>requests</code>, <code>Crypto</code> and <code>hashlib</code> packages. We can override these packages to guess the program's logic.</p>
+<div class="alert danger">
+  ⚠️ <strong>Warning!</strong> Do this only if you trust the author, or work in an isolated environment. Running unknown code on your own machine is dangerous.
+</div>
+
+<p>To do this, we will create multiple files along with the <code>.pyc</code> file:</p>
+<pre tabindex="0"><code class="language-treeview" data-lang="treeview">./
+|-- sser.cpython-312.pyc
+|-- Crypto/
+|   |-- __init__.py
+|   `-- Cipher.py
+|-- hashlib.py
+|-- os.py
+`-- requests.py
+</code></pre><p>This is a sample transcript by running the program with <code>python3.12 sser.cpython-312.pyc</code>:</p>
+<pre class='language-bash command-line' data-output='2-4' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">python3.12 sser.cpython-312.pyc
+Traceback (most recent call last):
+  File &#34;sser.py&#34;, line -1, in &lt;module&gt;
+ImportError: cannot import name &#39;AES&#39; from &#39;Crypto.Cipher&#39; (/[omitted]/Crypto/Cipher.py)</code>
+</pre>
+
+<p>We will create a placeholder class in <code>Crypto/Cipher.py</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">AES</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;AES(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Re-running the program, we are asked to provide <code>hashlib.sha256</code>, as shown below. Let's update <code>hashlib.py</code> in a similar fashion.</p>
+<pre class='language-bash command-line' data-output='2-7' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">python3.12 sser.cpython-312.pyc
+&#39;What is the flag?&gt; &#39;
+hkcert24{test}
+Traceback (most recent call last):
+  File &#34;sser.py&#34;, line -1, in &lt;module&gt;
+  File &#34;sser.py&#34;, line 9, in get_nonce
+AttributeError: module &#39;hashlib&#39; has no attribute &#39;sha256&#39;</code>
+</pre>
+
+<p>Now we have the class implemented. Let's re-run the binary:</p>
+<pre class='language-bash command-line' data-output='2-8' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">python3.12 sser.cpython-312.pyc
+&#39;What is the flag?&gt; &#39;
+hkcert24{test}
+hashlib.sha256((b&#39;pow/yB8T$D@\x05\x89\\\xc7\xa2n\x99\x03\xbd&#39;,), {})
+Traceback (most recent call last):
+  File &#34;sser.py&#34;, line -1, in &lt;module&gt;
+  File &#34;sser.py&#34;, line 9, in get_nonce
+AttributeError: &#39;sha256&#39; object has no attribute &#39;digest&#39;</code>
+</pre>
+
+<p>Turns out they are using the <code>.digest</code> method of the <code>sha256</code> class. Let's add that as well:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">sha256</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;hashlib.sha256(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">digest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;0&#39;</span><span class="o">*</span><span class="mi">256</span>
+</span></span></code></pre></div><p>However, the program does not seem to terminate when we re-run the binary. Let's update <code>hashlib.py</code> to</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">sha256</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;hashlib.sha256(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">) := </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">res</span> <span class="o">=</span> <span class="n">res</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">digest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">res</span>
+</span></span></code></pre></div><div class="alert warning">
+  &#x1f615; <strong>Why isn't <code>os.py</code> taken effect?</strong> Turns out that we are using a different importer when importing <code>os</code> -- it does not use the <code>SourceFileLoader</code> but the <code>FrozenImporter</code>. This hints that <code>os.py</code> might not be overridden.
+</div>
+
+<p>Now the program finally terminates:</p>
+<pre class='language-bash command-line' data-output='2-10' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">python3.12 sser.cpython-312.pyc
+&#39;What is the flag?&gt; &#39;
+hkcert24{test}
+hashlib.sha256((b&#39;pow/D\xa5\xbb\x85u\xb2~~\xb7\xae\xb2/\x97\xf4\xc9\x02&#39;,), {}) := b&#39;\x9b\xfcR\xd0\xea\\L&lt;\x0c&#34;\xb6u&#34;\xdc\x85\xbc@\x90\xf1\x06&amp;\xf5\xe5\xb7\xd9&#43;6_\xd5[\xbe$&#39;
+[...omitted...]
+hashlib.sha256((b&#39;pow/\x8f?j\xbc\xc7\xbd\x85\xfb\x88\x90\xee,\xd7~\xba\x05&#39;,), {}) := b&#39;Q\xc4\xf6\xf9\x9c\xe7\x91_\x99 &lt;%i\xa8\x8c\xfb\xad\x9c\xdf\xe7&gt;L\x19\xa7.\x8c\x1eN\n\xcc\xae-&#39;
+hashlib.sha256((b&#39;pow/\x94Py\xed\xeb}\xce6q\xacx\xfbw.\xe4\xd2&#39;,), {}) := b&#39;\x00\x00\x00\x92A\x85\xcfl\x88\x16\x81L\x1b\x10Y\xa9kP\xd2DT\x1f\xc7&lt;\x0b2:\x96v^\xbb\x9e&#39;
+Traceback (most recent call last):
+  File &#34;sser.py&#34;, line -1, in &lt;module&gt;
+AttributeError: module &#39;requests&#39; has no attribute &#39;post&#39;</code>
+</pre>
+
+<p>Running the program multiple times and collect the last line:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hashlib.sha256((b&#39;pow/\xf9\x1a\xdf\xb9@u\xcf*W\x9a\x9d\x94F\xcbg\xe3&#39;,), {}) := b&#39;\x00\x00\x00\x99\xa7-\xd0\x04\x89\x1e^\xf6\xf2O2\x1d^\x11/\x9esg\nk\x1a\xda\x12\xadL\xe7\xda\x13&#39;
+</span></span><span class="line"><span class="cl">hashlib.sha256((b&#39;pow/zg\xe6\x8c\xeea\x8aw\x8bT\x93\x96&gt;\x97\xd0\x0c&#39;,), {}) := b&#39;\x00\x00\x00E\xa9\xaa\xa3~=\xe0\x1fv\xd2\xc9Z\xfdW\xa1\x89#\xe7\xcdq\xc2\xdb\x06\x0c\xbc&lt;\xbc\xedc&#39;
+</span></span></code></pre></div><p>The first three bytes of the digest are always $\texttt{000000}$. We will update <code>hashlib.py</code> to always return three leading null bytes. Also, we will create <code>requests.py</code> and define as well <code>self.text</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">post</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;post(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span></code></pre></div><p>After that, we got <code>AttributeError: type object 'AES' has no attribute 'new'</code>. Let's work on some changes on <code>Crypto/Cipher.py</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Updated Crypto/Cipher.py</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">AES</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MODE_CFB</span> <span class="o">=</span> <span class="mi">1337</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">class</span> <span class="nc">cipher</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cipher.encrypt(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;ciphertext&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;AES.new(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">cipher</span><span class="p">()</span>
+</span></span></code></pre></div><p>Now we have a full transcript that doesn't fail:</p>
+<pre class='language-bash command-line' data-output='2-10' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">python3.12 sser.cpython-312.pyc
+&#39;What is the flag?&gt; &#39;
+hkcert24{test}
+hashlib.sha256((b&#39;pow/\xb6n&lt;\xba\xcb\x89\xf4\\\x0b\xb6G\x9d\xea\x98\xd3M&#39;,), {}) := b&#39;\x00\x00\x00\x1b\xfayjX\xf6\x7f-\xb5i\x1a\x07\xb4\x96@\x979\x8a8\x9c\xde=NV|\xd5i&gt;5&#39;
+post((&#39;https://c12-cypress.hkcert24.pwnable.hk/&#39;,), {&#39;json&#39;: {&#39;nonce&#39;: &#39;b66e3cbacb89f45c0bb6479dea98d34d&#39;}})
+hashlib.sha256((b&#39;key/\xb6n&lt;\xba\xcb\x89\xf4\\\x0b\xb6G\x9d\xea\x98\xd3M&#39;,), {}) := b&#39;\x00\x00\x00\xdfa\xcaf\x82%\xf5\xd6p*O(\x99\x9d\xe9/6\x82JT\x05\xf5#\x028\x07\x01\xc9\xe5&#39;
+hashlib.sha256((b&#39;iv/\xb6n&lt;\xba\xcb\x89\xf4\\\x0b\xb6G\x9d\xea\x98\xd3M&#39;,), {}) := b&#39;\x00\x00\x00,\xfe\x18IS\xbafZ\x80|&amp;S\xc1\xc4/\x86\x96\xed\xb5\x9f\xed\xee|,\x1f\xaa\x80\xa1\xb0&#39;
+AES.new((b&#39;\x00\x00\x00\xdfa\xcaf\x82%\xf5\xd6p*O(\x99&#39;, 1337, b&#39;\x00\x00\x00,\xfe\x18IS\xbafZ\x80|&amp;S\xc1&#39;), {})
+cipher.encrypt((b&#39;hkcert24{test}&#39;,), {})
+🙅</code>
+</pre>
+
+<p>Additionally, when sending a POST request to the remote endpoint with a proper nonce (i.e., its hash has leading null bytes), it will return a hexstring. Maybe this is the ciphertext that we want to compare? We can have a rough guess on the flow:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=box]
+n1 -&amp;gt; n2
+n2 -&amp;gt; n3
+n3 -&amp;gt; n4
+n4 -&amp;gt; n5
+
+n1[label=&amp;#34;Generate nonce with three leading null bytes in its hash&amp;#34;, margin=&amp;#34;0.2,0&amp;#34;]
+n2[label=&amp;#34;Request \&amp;#34;something\&amp;#34; from the remote challenge server&amp;#34;, margin=&amp;#34;0.2,0&amp;#34;]
+n3[label=&amp;#34;Derive a key and an IV from the nonce&amp;#34;, margin=&amp;#34;0.2,0&amp;#34;]
+n4[label=&amp;#34;Encrypt the message using AES-CFB&amp;#34;, margin=&amp;#34;0.2,0&amp;#34;]
+n5[label=&amp;#34;Print 🙅 when the ciphertext doesn&amp;#39;t match with the HTTP response&amp;#34;, margin=&amp;#34;0.2,0&amp;#34;]
+
+  }
+  </div>
+</div>
+
+<p>We can reverse the process -- by generating a proper nonce, we can ask the server for the encrypted flag. Since we have the key and the IV, we are able to decrypt the flag on our own:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{y0u_c4n_h00k_func710ns_t0_35c4p3_fr0m_r3v3r5e_3n9e3r1n9}
+</span></span></code></pre></div><h4 id="zoomers-solution">Zoomer's solution<a href="#zoomers-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Turns out <em>ChatGPT</em> is able to rebuild 80% of the code -- below is the reconstructed code with <code>GPT-4o</code>. We will provide a diff to the actual source code (the red lines are the incorrect ones):</p>
+<pre tabindex="0"><code class="language-diff-python" data-lang="diff-python">  import os
+  import requests
+  from Crypto.Cipher import AES
+  import hashlib
+
+  def get_nonce():
+      while True:
+          nonce = os.urandom(16)
+          h = hashlib.sha256(b&#39;pow/&#39; + nonce).digest()
+-         if h[0] &lt; 3:
++         if h[:3] == b&#39;\0\0\0&#39;:
+              return nonce
+
+
+  flag = input(&#34;What is the flag?&gt; &#34;)
+  nonce = get_nonce()
+
+  r = requests.post(
+      &#34;https://c12-cypress.hkcert24.pwnable.hk/&#34;,
+      json={
+-         &#34;key&#34;: hashlib.sha256(flag.encode()).digest().hex(),
+-         &#34;iv&#34;: hashlib.sha256(nonce).digest().hex(),
++         &#34;nonce&#34;: nonce.hex(),
+      },
+  )
+
+- c0 = bytes.fromhex(r.text[:32])
+- c1 = bytes.fromhex(r.text[32:])
++ c0 = bytes.fromhex(r.text)
+
+  cipher = AES.new(
+-     hashlib.sha256(flag.encode()).digest(),
++     hashlib.sha256(b&#34;key/&#34; + nonce&#34;).digest()[:16],
+      AES.MODE_CFB,
+-     hashlib.sha256(nonce).digest()
++     hashlib.sha256(b&#34;iv/&#34; + nonce&#34;).digest()[:16]
+  )
+
+- decrypted = cipher.decrypt(c1)
++ c1 = cipher.encrypt(flag)
+
+- if decrypted == b&#34;🙆🙅&#34;:
+-     print(&#34;Correct!&#34;)
+- else:
+-     print(&#34;Wrong!&#34;)
++ print(&#39;🙆🙅&#39;[c0 != c1])
+</code></pre><h2 id="bashed">Bashed!<a href="#bashed" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>The program has only one meaningful function, and the function is less than 500 bytes long. What's hard understanding it?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">./out.sh ***FLAG***
+</span></span><span class="line"><span class="cl">❤️
+</span></span></code></pre></div><p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/bashed_89d984b177c984086cf3a5db1cb30adf.zip"
+   
+   target="_blank" rel="noopener noreferrer" >bashed_89d984b177c984086cf3a5db1cb30adf.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>The contestants are given <code>❤️.sh</code>, which has a lot of emojis. The below is a snippet of the bash file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">FLAG</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GALF</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> ! <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$FLAG</span><span class="s2">&#34;</span> <span class="o">=</span>~ ^<span class="o">[</span>0-9A-Za-z_<span class="o">{}]{</span>87<span class="o">}</span>$ <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="nb">echo</span> 💔<span class="p">;</span> <span class="nb">exit</span> 0<span class="p">;</span> <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 🌚<span class="o">()</span> <span class="o">{</span> <span class="nb">echo</span> <span class="k">$(</span><span class="nb">printf</span> <span class="s2">&#34;%d&#34;</span> <span class="s2">&#34;&#39;</span><span class="nv">$1</span><span class="s2">&#34;</span><span class="k">)</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 🌝<span class="o">()</span> <span class="o">{</span> <span class="nb">echo</span> <span class="k">$(</span><span class="nb">printf</span> <span class="s2">&#34;%x&#34;</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span><span class="k">)</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 🍋<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">u</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="si">${</span><span class="nv">FLAG</span><span class="p">:</span><span class="k">$(($(</span>🌚 <span class="nv">$1</span><span class="k">)</span><span class="o">-</span><span class="k">$(</span>🌚 👂<span class="k">)))</span><span class="p">:</span><span class="k">$(($(</span>🌚 <span class="nv">$2</span><span class="k">)</span><span class="o">-</span><span class="k">$(</span>🌚 👂<span class="k">)))</span><span class="si">}</span> <span class="p">|</span> sha1sum<span class="k">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">u</span><span class="p">:</span><span class="nv">1</span><span class="p">:</span><span class="nv">1</span><span class="si">}</span> <span class="o">==</span> <span class="k">$(</span>🌝 <span class="k">$(($(</span>🌚 <span class="nv">$3</span><span class="k">)</span><span class="o">-</span><span class="k">$(</span>🌚 👂<span class="k">))))</span> <span class="o">]]</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">then</span> wget https://c22-bashed.hkcert24.pwnable.hk/<span class="nv">$4</span>.sh -O <span class="k">$(</span>basename <span class="nv">$0</span><span class="k">)</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span>1<span class="p">;</span> <span class="nv">GALF</span><span class="o">=</span><span class="k">$((</span>GALF*<span class="k">$(</span>🌚 <span class="nv">$6</span><span class="k">)))</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> wget https://c22-bashed.hkcert24.pwnable.hk/<span class="nv">$5</span>.sh -O <span class="k">$(</span>basename <span class="nv">$0</span><span class="k">)</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span>1<span class="p">;</span> <span class="nv">GALF</span><span class="o">=</span><span class="k">$((</span>GALF*<span class="k">$(</span>🌚 <span class="nv">$7</span><span class="k">)))</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 👂<span class="o">()</span> <span class="o">{</span> 🍋 <span class="nv">$1</span> <span class="nv">$5</span> <span class="nv">$2</span> <span class="nv">$3</span> <span class="nv">$7</span> <span class="nv">$6</span> <span class="nv">$4</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 👃<span class="o">()</span> <span class="o">{</span> 🍋 <span class="nv">$5</span> <span class="nv">$6</span> <span class="nv">$4</span> <span class="nv">$7</span> <span class="nv">$3</span> <span class="nv">$2</span> <span class="nv">$1</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 👄<span class="o">()</span> <span class="o">{</span> 🍋 <span class="nv">$5</span> <span class="nv">$6</span> <span class="nv">$2</span> <span class="nv">$4</span> <span class="nv">$3</span> <span class="nv">$1</span> <span class="nv">$7</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">👚 👣 👺 👅 👳 👱 👄 👂  
+</span></span><span class="line"><span class="cl">👢 👄 💅 👂 👣 👲 👅 👋  
+</span></span><span class="line"><span class="cl">👥 👈 💐 💁 👄 👞 👒 👧 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👄 💇 👥 💁 👒 💀 👅 👂 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👞 👆 💅 👂 💄 👅 👽 💓  
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$GALF</span><span class="s2">&#34;</span> -ne <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="nb">echo</span> ❤️<span class="p">;</span> <span class="k">else</span> <span class="nb">echo</span> 💔<span class="p">;</span> <span class="k">fi</span>
+</span></span></code></pre></div><p>The goal is to execute <code>./out.sh **FLAG**</code> and make it output <code>❤️</code>.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-engine-self-updating-script-files">The engine: Self-updating script files<a href="#the-engine-self-updating-script-files" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Suppose that you have a file called <code>foo.sh</code> with the below content:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">wget https://mystiz.hk/fun -O <span class="k">$(</span>basename <span class="nv">$0</span><span class="k">)</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> :<span class="o">)</span>
+</span></span></code></pre></div><p>Guess what will be printed? You can try it if you are interested. In short, <em>I don't know</em>. It depends on what is hosted on <code>https://mystiz.hk/fun</code>.</p>
+<p>Assume that below is the content on the <code>/fun</code> endpoint:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">wget https://mystiz.hk/fun -O <span class="k">$(</span>basename <span class="nv">$0</span><span class="k">)</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> :<span class="o">(</span>
+</span></span></code></pre></div><p>In that case, running <code>./foo.sh</code> in your terminal would print <code>:(</code>.</p>
+<p>The idea, in short, is that Bash keeps track of the &quot;pointer&quot; of the script - after each command, it proceeds to read the next command and executes it.</p>
+<p>The first command is <code>wget ...</code>, and the next instruction will be at the beginning of <code>echo :)</code>. When the command is executed, the file is overwritten. It then reads the next command, which is overwritten to <code>echo :(</code>.</p>
+<p>This is the heart of the challenge, and let's proceed with reverse engineering the given script.</p>
+<h4 id="understanding-the-functions-in-the-challenge-file">Understanding the functions in the challenge file<a href="#understanding-the-functions-in-the-challenge-file" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">function</span> 🌚<span class="o">()</span> <span class="o">{</span> <span class="nb">echo</span> <span class="k">$(</span><span class="nb">printf</span> <span class="s2">&#34;%d&#34;</span> <span class="s2">&#34;&#39;</span><span class="nv">$1</span><span class="s2">&#34;</span><span class="k">)</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 🌝<span class="o">()</span> <span class="o">{</span> <span class="nb">echo</span> <span class="k">$(</span><span class="nb">printf</span> <span class="s2">&#34;%x&#34;</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span><span class="k">)</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 🍋<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">u</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="si">${</span><span class="nv">FLAG</span><span class="p">:</span><span class="k">$(($(</span>🌚 <span class="nv">$1</span><span class="k">)</span><span class="o">-</span><span class="k">$(</span>🌚 👂<span class="k">)))</span><span class="p">:</span><span class="k">$(($(</span>🌚 <span class="nv">$2</span><span class="k">)</span><span class="o">-</span><span class="k">$(</span>🌚 👂<span class="k">)))</span><span class="si">}</span> <span class="p">|</span> sha1sum<span class="k">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">u</span><span class="p">:</span><span class="nv">1</span><span class="p">:</span><span class="nv">1</span><span class="si">}</span> <span class="o">==</span> <span class="k">$(</span>🌝 <span class="k">$(($(</span>🌚 <span class="nv">$3</span><span class="k">)</span><span class="o">-</span><span class="k">$(</span>🌚 👂<span class="k">))))</span> <span class="o">]]</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">then</span> wget https://c22-bashed.hkcert24.pwnable.hk/<span class="nv">$4</span>.sh -O <span class="k">$(</span>basename <span class="nv">$0</span><span class="k">)</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span>1<span class="p">;</span> <span class="nv">GALF</span><span class="o">=</span><span class="k">$((</span>GALF*<span class="k">$(</span>🌚 <span class="nv">$6</span><span class="k">)))</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> wget https://c22-bashed.hkcert24.pwnable.hk/<span class="nv">$5</span>.sh -O <span class="k">$(</span>basename <span class="nv">$0</span><span class="k">)</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span>1<span class="p">;</span> <span class="nv">GALF</span><span class="o">=</span><span class="k">$((</span>GALF*<span class="k">$(</span>🌚 <span class="nv">$7</span><span class="k">)))</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 👂<span class="o">()</span> <span class="o">{</span> 🍋 <span class="nv">$1</span> <span class="nv">$5</span> <span class="nv">$2</span> <span class="nv">$3</span> <span class="nv">$7</span> <span class="nv">$6</span> <span class="nv">$4</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> 👃<span class="o">()</span> <span class="o">{</span> 🍋 <span class="nv">$5</span> <span class="nv">$6</span> <span class="nv">$4</span> <span class="nv">$7</span> <span class="nv">$3</span> <span class="nv">$2</span> <span class="nv">$1</span><span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span></code></pre></div><p>There are a number of functions in the Bash file, namely, <code>🌚</code>, <code>🌝</code>, <code>🍋</code>, <code>👂</code> and so on.</p>
+<p>We can see that</p>
+<ul>
+<li><code>🌚(x)</code> returns the ASCII value of the character <code>x</code>,</li>
+<li><code>🌝(x)</code> returns the number <code>x</code> in hex, and</li>
+<li><code>👂</code>, <code>👃</code>, ... are calling <code>🍋</code> with the parameters shuffled.</li>
+</ul>
+<p><code>🍋</code> is the most complicated function. There are seven parameters in the function (we will use <code>x1</code> up to <code>x7</code>), and it performs the following procedures:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="err">🍋</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">x4</span><span class="p">,</span> <span class="n">x5</span><span class="p">,</span> <span class="n">x6</span><span class="p">,</span> <span class="n">x7</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">X</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;👂&#39;</span><span class="p">)</span> <span class="c1"># 128066</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">u</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">FLAG</span><span class="p">[</span><span class="n">x1</span><span class="o">-</span><span class="n">X</span><span class="p">:(</span><span class="n">x1</span><span class="o">-</span><span class="n">X</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">X</span><span class="p">)])</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="nb">format</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">x3</span><span class="o">-</span><span class="n">X</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">download_and_replace</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://c22-bashed.hkcert24.pwnable.hk/</span><span class="si">{</span><span class="n">x4</span><span class="si">}</span><span class="s1">.sh&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">GALF</span> <span class="o">*=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">x6</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">download_and_replace</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://c22-bashed.hkcert24.pwnable.hk/</span><span class="si">{</span><span class="n">x5</span><span class="si">}</span><span class="s1">.sh&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">GALF</span> <span class="o">*=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">x7</span><span class="p">)</span>
+</span></span></code></pre></div><p>Here <code>download_and_replace</code> is a function that downloads and replaces the current Bash file.</p>
+<p>Finally, <code>GALF</code> starts at <code>1</code> and the goal is to make <code>GALF != 0</code> after a series of &quot;emojis&quot;:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">👚 👣 👺 👅 👳 👱 👄 👂  
+</span></span><span class="line"><span class="cl">👢 👄 💅 👂 👣 👲 👅 👋  
+</span></span><span class="line"><span class="cl">👥 👈 💐 💁 👄 👞 👒 👧 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👄 💇 👥 💁 👒 💀 👅 👂 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👞 👆 💅 👂 💄 👅 👽 💓  
+</span></span><span class="line"><span class="cl">👋 👈 💌 👢 👱 👂 👛 👅  
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span></code></pre></div><p>Since the numbers are 64 bits in Bash on a 64-bit OS, we will eventually get a $0$ if we have multiplied 64 $2$'s. Therefore, we must find a path that multiplies less than 64 $2$'s to keep <code>GALF</code> nonzero.</p>
+<div class="alert warning">
+  🙏 <strong>Apologies!</strong> Sorry if you are using a 32-bit operating system - I haven't considered it enough to support that. However, please consider getting a 64-bit one.
+</div>
+
+<h4 id="call-sequence-of-the-functions">Call sequence of the functions<a href="#call-sequence-of-the-functions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>As an example, the third instruction is</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">👥 👈 💐 💁 👄 👞 👒 👧 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👄 💇 👥 💁 👒 💀 👅 👂 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👞 👆 💅 👂 💄 👅 👽 💓  
+</span></span></code></pre></div><p>This is equivalent to the instruction <code>🍋 👞 👄 👈 👧 👒 💁 💐</code> because of how <code>👥</code> is defined:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">function</span> 👥<span class="o">()</span> <span class="o">{</span> 🍋 <span class="nv">$5</span> <span class="nv">$4</span> <span class="nv">$1</span> <span class="nv">$7</span> <span class="nv">$6</span> <span class="nv">$3</span> <span class="nv">$2</span><span class="p">;</span> <span class="o">}</span>
+</span></span></code></pre></div><p>The eighth parameter onwards is dropped. Also, the below shows the ASCII values of the parameters:</p>
+<ul>
+<li>👞 (ASCII value: $128094 = 128066 + 28$)</li>
+<li>👄 (ASCII value: $128068 = 128066 + 2$)</li>
+<li>👈 (ASCII value: $128072 = 128066 + 6$)</li>
+<li>👧 (ASCII value: $128103 = 128066 + 37$)</li>
+<li>👒 (ASCII value: $128082 = 128066 + 16$)</li>
+<li>💁 (ASCII value: $128129 = 128066 + 63$)</li>
+<li>💐 (ASCII value: $128144 = 128066 + 78$)</li>
+</ul>
+<p>Therefore the actual logic for this line would be:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 👥 👈 💐 💁 👄 👞 👒 👧</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># --&gt; 🍋 👞 👄 👈 👧 👒 💁 💐</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">FLAG</span><span class="p">[</span><span class="mi">28</span><span class="p">:</span><span class="mi">30</span><span class="p">])</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="c1"># 👞 = 128066 + 28, 👄 = 128066 + 2 </span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="c1"># 👈 = 128066 + 6</span>
+</span></span><span class="line"><span class="cl">    <span class="n">download_and_replace</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://c22-bashed.hkcert24.pwnable.hk/👧.sh&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">GALF</span> <span class="o">*=</span> <span class="mi">128129</span> <span class="c1"># 💁 = 128129</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">download_and_replace</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://c22-bashed.hkcert24.pwnable.hk/👒.sh&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">GALF</span> <span class="o">*=</span> <span class="mi">128144</span> <span class="c1"># 💐 = 128144</span>
+</span></span></code></pre></div><p>If <code>u[1:2] == '6'</code>, it will proceed and call the next instruction from <code>👧.sh</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">👋 👈 💌 👢 👱 👂 👛 👅 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👶 💉 👯 💍 👃 💅 👗 👂 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👌 💏 👃 👟 💔 💌 👤 👵 <span class="se">\
+</span></span></span><span class="line"><span class="cl">👋 👵 👚 👣 💈 👈 💃 👃
+</span></span></code></pre></div><p>Otherwise, it would call the below instruction from <code>👒.sh</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">👋 👈 💌 👢 👱 👂 👛 👅
+</span></span></code></pre></div><p>We can see that the next instruction depends on the file downloaded. There is only one path that makes <code>GALF</code> nonzero, and these are the conditions:</p>
+<p>$$
+\begin{aligned}
+f(\text{flag}_{1} \ \| \ \text{flag}_{2}) &amp;= \texttt{0a}_{16} \\
+f(\text{flag}_{2} \ \| \ \text{flag}_{3}) &amp;= \texttt{17}_{16} \\
+\vdots &amp; \\
+f(\text{flag}_{2} \ \| \ \text{flag}_{3}) &amp;= \texttt{17}_{16}
+\end{aligned}
+$$</p>
+<p>Here $f(x)$ is the second hexadecimal character of $\texttt{SHA1}(x)$. There is a unique solution for this, too:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{s33m1n9ly_b3g19n_b4sh_scr1p7s_c0u1d_b3_d4n93r0us_wh3n_7h3y_4r3_s3lf_m0d1fy1n9}
+</span></span></code></pre></div><div class="alert info">
+  <strong>🧀 Cheese!</strong> There are much more solves than I anticipated. Turns out that there is an unintended solution -- @desp mentioned that he <em>englished</em> through. On the other hand, <em>@Aali</em> cheesed in a way by checking whether <code>0 &lt;= x3 &lt; 16</code>, since this is the only way to get the hash check passing.
+</div>
+
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2024 Quals Writeup (IV): The Reverse Challenges
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2025/2025-06-30-google-ctf/">← Google CTF 2025 Quals Writeup</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2025/2025-06-29-hkcert-ctf-3/">HKCERT CTF 2024 Quals Writeup (III): The Web Challenges →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

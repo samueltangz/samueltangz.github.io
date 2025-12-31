@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web on Mystify</title>
+    <link>https://mystiz.hk/tags/web/</link>
+    <description>Recent content in Web on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 29 Jun 2025 15:30:02 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HKCERT CTF 2024 Quals Writeup (III): The Web Challenges</title>
+      <link>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/</link>
+      <pubDate>Sun, 29 Jun 2025 15:30:02 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2025/2025-06-29-hkcert-ctf-3/</guid>
+      <description>&lt;p&gt;Surprisingly, I also wrote three series of web challenges this year: &lt;em&gt;Custom Web Server&lt;/em&gt;, &lt;em&gt;Mystiz&#39;s Mini CTF&lt;/em&gt; and &lt;em&gt;⚡&lt;/em&gt;. They are all inspired from the real-life -- either from security reviews or the bugs I came across while developing web apps.&lt;/p&gt;&#xA;&lt;h2 id=&#34;custom-web-server-1&#34;&gt;Custom Web Server (1)&lt;/h2&gt;&#xA;&lt;h3 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Someone said: &#39;One advantage of having a homemade server is that it becomes much harder to hack.&#39; Do you agree? Give reasons.&lt;/p&gt;&#xA;&lt;p&gt;Note: The files in &lt;code&gt;src/public&lt;/code&gt; are unrelated for the challenge.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>NuttyShell CTF 2025: memo-ry</title>
+      <link>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</link>
+      <pubDate>Mon, 05 May 2025 01:27:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</guid>
+      <description>&lt;p&gt;I played NuttyShell CTF 2025 organized by the Hong Kong Polytechnic University, and came across @siunam&#39;s web challenges. In particular, &lt;em&gt;memo-ry&lt;/em&gt; is a hard challenge that required players to chain multiple vulnerabilities to retrieve the flag. I found it really fun and decided to compile a writeup for this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Memo-ry is a 90% finished web application that allows users to read, create, and edit different memos. For security reasons, this web application has 3 roles, which are &amp;quot;Guest&amp;quot;, &amp;quot;Author&amp;quot;, and &amp;quot;Administrator&amp;quot;. It also has the following features:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>ACSC 2023 Quals (I): Gotion and easySSTI</title>
+      <link>https://mystiz.hk/posts/2023/2023-03-29-acsc-1/</link>
+      <pubDate>Wed, 29 Mar 2023 00:50:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2023/2023-03-29-acsc-1/</guid>
+      <description>&lt;p&gt;Asian Cyber Security Challenge (ACSC) is an annual CTF where players are competing individually, and the best young Asians will be selected form a team to represent Asia to compete with others. I ended up winning the competition among 450+ players. Unfortunately, I am unable to qualify because of the age and nationality conditions.&lt;/p&gt;&#xA;&lt;p&gt;In this blog post, I will cover two web challenges, &lt;a href=&#34;https://twitter.com/t0nk42&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@t0nk42&lt;/a&gt;&#39;s &lt;em&gt;easySSTI&lt;/em&gt; (43 solves) and &lt;a href=&#34;https://twitter.com/tyage&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@tyage&lt;/a&gt;&#39;s &lt;em&gt;Gotion&lt;/em&gt; (9 solves).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</title>
+      <link>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-4/</link>
+      <pubDate>Thu, 18 Nov 2021 16:05:03 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-4/</guid>
+      <description>&lt;p&gt;We will cover the remaining challenges I wrote in this part: &lt;em&gt;Flag Checker™&lt;/em&gt;, &lt;em&gt;The Wilderness&lt;/em&gt; and &lt;em&gt;Potion of Ciphermath&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;幫緊你幫緊你--flag-checker-pwn&#34;&gt;幫緊你！幫緊你！ / Flag Checker™ (Pwn)&lt;/h2&gt;&#xA;&lt;h3 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;em&gt;幫緊你 幫緊你&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;當無力 堅持集氣幫你&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;等風向轉天氣&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;請相信你不死&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;組隊會撐得起&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;You will be Ok&lt;/em&gt;&lt;br&gt;&#xA;&lt;em&gt;You will be Ok&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;We are here to help validating your flag! Come use our Flag Checker™!&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;nc HOST PORT&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;Attachments: &lt;a href=&#34;https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/flag-checker-tm/public/service.c&#34;&#xA;   &#xA;   target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34; &gt;service.c&lt;/a&gt;&lt;svg t=&#34;1713426496023&#34; style=&#34;margin: 0 0 0 5px;&#34; class=&#34;icon&#34; viewBox=&#34;0 0 1024 1024&#34; version=&#34;1.1&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; p-id=&#34;8864&#34; width=&#34;10&#34; height=&#34;10&#34;&gt;&#xA;    &lt;path d=&#34;M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z&#34; fill=&#34;#666666&#34; p-id=&#34;8865&#34;&gt;&lt;/path&gt;&#xA;&lt;/svg&gt;, &lt;a href=&#34;https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/flag-checker-tm/public/service&#34;&#xA;   &#xA;   target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34; &gt;service&lt;/a&gt;&lt;svg t=&#34;1713426496023&#34; style=&#34;margin: 0 0 0 5px;&#34; class=&#34;icon&#34; viewBox=&#34;0 0 1024 1024&#34; version=&#34;1.1&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; p-id=&#34;8864&#34; width=&#34;10&#34; height=&#34;10&#34;&gt;&#xA;    &lt;path d=&#34;M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z&#34; fill=&#34;#666666&#34; p-id=&#34;8865&#34;&gt;&lt;/path&gt;&#xA;&lt;/svg&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>ångstromCTF 2021: Cache Money</title>
+      <link>https://mystiz.hk/posts/2021/2021-04-08-angstromctf-2021/</link>
+      <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-04-08-angstromctf-2021/</guid>
+      <description>&lt;p&gt;I played ångstromCTF 2021 for &lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt; to spend my Easter holiday. I solved most of the reverse and cryptography challenges alone. In particular, &lt;em&gt;Cache Money&lt;/em&gt; is one of the harder crypto challenges that I spent more than one day tackling. It is very rewarding, and eventually four teams ended up solving it.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;p&gt;This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 and 256-bit keys. The encryptor is equipped with caches and we are given a service to encrypt (or decrypt) our messages. In short, there are four oracles provided by the service ($k_0$ is the fixed secret key and $b \in \{128, 192, 256\}$).&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

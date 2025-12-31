@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Balsn CTF 2021: dlog | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Balsn CTF 2021: dlog</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-11-27T15:55:00&#43;08:00">2021-11-27</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/balsn-ctf/" class="text-muted text-decoration-none">#balsn-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/timing-attack/" class="text-muted text-decoration-none">#timing-attack</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/statistics/" class="text-muted text-decoration-none">#statistics</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p><a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> played Balsn CTF 2021 last weekend. There are three crypto challenges, and they are all pretty hard. In this blog post we will cover the <em>dlog</em> challenge, which is a timing attack on the CPython's <code>pow</code> method. <a href="https://twitter.com/grhkm2023" target="_blank" rel="nofollow">@grhkm2023</a> and I spent a lot of time working on this challenge. Although we did not solve it, we actually learned a lot from the challenge and lost a pile of hair (maybe it is just me).</p>
+<p>By the way, I am still solving the challenge (and making the attack stable) while compiling the writeup and meanwhile there were many questions arose. Would it be fun or troublesome reading through? I genuinely don't know.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Suppose that $p = 2q+1$ where $p, q$ are primes. Let also $s$ be an exponent. Given that $0 &lt; p &lt; 2^{1025}$ and $0 &lt; s &lt; 2^{100}$. We are also given three APIs:</p>
+<ul>
+<li><code>/oracle</code> receives $x$ and returns $x^s\ \text{mod}\ p$,</li>
+<li><code>/flag</code> receives $x$. If $x^s\ \text{mod}\ p = 1337$ the flag will be returned,</li>
+<li><code>/metrics</code> returns metrics including the total number of calls and the total time on processing <code>/oracle</code> and <code>/flag</code>.</li>
+</ul>
+<p>The objective is to retrieve the flag.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-recovering-modulus-p">Part I: Recovering modulus $p$<a href="#part-i-recovering-modulus-p" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is easy to recover $p$. We can simply send $x = -1$ to <code>/oracle</code>. If $s$ is odd, then</p>
+<p>$$x^s\ \text{mod}\ p = (-1)^s\ \text{mod}\ p = p - 1.$$</p>
+<p>The prime $p$ they used is a safe prime, i.e., $p = 2q+1$ for another prime $q$. That said, the order of the subgroups could either be $1$, $2$, $q$ or $2q$.</p>
+<div class="alert warning">
+  <strong>What if $s$ is even?</strong> Not sure. We don't need to consider it this time anyways.
+</div>
+
+<h3 id="part-ii-timing-attacking-in-disguise">Part II: Timing attacking in disguise<a href="#part-ii-timing-attacking-in-disguise" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The <code>/metrics</code> API immediately suggested us that this challenge is a timing attack because we can see <code>oracle_processing_seconds_sum</code> being the total time processing all the <code>/oracle</code> calls. To be exact, we can compute the time to compute <code>pow(1337, s, p)</code> with the following steps:</p>
+<ol>
+<li>Call <code>/metrics</code> and get the values of <code>oracle_processing_seconds_count</code> (denoted as $n_1$) and <code>oracle_processing_seconds_sum</code> (denoted as $t_1$).</li>
+<li>Call <code>/oracle?x=1337</code>.</li>
+<li>Call <code>/metrics</code> and get the values of <code>oracle_processing_seconds_count</code> (denoted as $n_2$) and <code>oracle_processing_seconds_sum</code> (denoted as $t_2$).
+<ul>
+<li>If $n_2 = n_1 + 1$ (i.e., there are no oracle calls triggered by others), then the time to compute <code>pow(1337, s, p)</code> is $t_2 - t_1$.</li>
+<li>Otherwise set $n_1 \leftarrow n_2$ and $t_1 \leftarrow t_2$ and go back to step 2.</li>
+</ul>
+</li>
+</ol>
+<p>As an example, the sampled times to compute <code>pow(1, s, p)</code>, <code>pow(1337, s, p)</code> and <code>pow(2**1024, s, p)</code> are respectively 0.12ms, 0.50ms and 0.77ms.</p>
+<h3 id="part-iii-understanding-cpythons-pow-function">Part III: Understanding CPython's <code>pow</code> function<a href="#part-iii-understanding-cpythons-pow-function" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To explain the difference in the computing time, we need to read <a href="https://github.com/python/cpython/blob/3.9/Objects/longobject.c#L4224"
+   
+   target="_blank" rel="noopener noreferrer" >code for <code>pow</code> for CPython 3.9</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. If the exponent <code>s</code> does not exceed 240 bits, it would use the below algorithm to compute <code>pow(x, s, p)</code><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. This is the case for this challenge:</p>
+<ol>
+<li>Denote $z \leftarrow 1$ and let $k \in \mathbb{N}$ such that $2^{30(k-1)} \leq s &lt; 2^{30k}$.</li>
+<li>For each $b = 30k-1, 30k-2, ..., 1, 0$,
+<ul>
+<li>Compute $z \leftarrow z \cdot z\ \text{mod}\ p$.</li>
+<li>If $s \land b \neq 0$, then compute $z \leftarrow z \cdot a\ \text{mod}\ p$.</li>
+</ul>
+</li>
+<li>Return $z$.</li>
+</ol>
+<p>Python uses <em>Karatsuba algorithm</em> for multiplication. If we are multiplying two $n$-bit numbers, the time complexity would be $\mathcal{O}(n^{\log_23}) \approx \mathcal{O}(n^{1.585})$. On the other hand, the time complexity to compute $a\ \text{mod}\ p$ (where $a$ and $p$ are $n$-bit long) is $\mathcal{O}(n^2)$, unless $\left|a\right| &lt; \left|p\right|$ - which would be $\mathcal{O}(n)$ (for copying the digits).</p>
+<div class="alert info">
+  <strong>🥺 An accident during the CTF:</strong> We read CPython 3.10's source code (instead of 3.9) while we were attacking the problem... Luckily there are not much changes between the two versions.
+</div>
+
+<h3 id="part-iv-taking-the-first-step-to-recover-s">Part IV: Taking the first step to recover <code>s</code><a href="#part-iv-taking-the-first-step-to-recover-s" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>Why didn't we win the flag in the game?</strong> This is the approach we have during the contest. This did not lead us to the flag owing to two reasons: (1) We made a small yet critical mistake, and (2) the approach is not reliable. We will be discussing them in the remaining of the writeup.
+</div>
+
+<p>Let $\overline{s_1 s_2 ... s_b}$ be the binary representation of $s$ ($s_1 = 1$). With the algorithm stated above, we have the below graph those record the intermediate values of $z$:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
+
+{ rank=same; r0; 0 }
+{ rank=same; r1; 1 }
+{ rank=same; r2; 2 }
+{ rank=same; r3; 3 }
+{ rank=same; r4; 4; 6 }
+{ rank=same; r5; 5; 7 }
+{ rank=same; r6; 8; 10; 12; 14 }
+{ rank=same; r7; 9; 11; 13; 15 }
+{ rank=same; r8; 16; 20; 24; 28 }
+{ rank=same; r9; 18; 22; 26; 30 }
+
+r0-&amp;gt;r1-&amp;gt;r2-&amp;gt;r3-&amp;gt;r4-&amp;gt;r5-&amp;gt;r6-&amp;gt;r7-&amp;gt;r8-&amp;gt;r9[style=invis, arrowhead=false]
+
+4-&amp;gt;6[style=invis]
+5-&amp;gt;7[style=invis]
+8-&amp;gt;10-&amp;gt;12-&amp;gt;14[style=invis]
+9-&amp;gt;11-&amp;gt;13-&amp;gt;15[style=invis]
+16-&amp;gt;20-&amp;gt;24-&amp;gt;28[style=invis]
+
+r0[style=invis, shape=point]
+r1[style=invis, shape=point]
+r2[style=invis, shape=point]
+r3[style=invis, shape=point]
+r4[style=invis, shape=point]
+r5[style=invis, shape=point]
+r6[style=invis, shape=point]
+r7[style=invis, shape=point]
+r8[style=invis, shape=point]
+r9[style=invis, shape=point]
+
+0[label=&amp;#34;z = 1&amp;#34;]
+1[label=&amp;#34;z = a&amp;#34;]
+2[label=&amp;#34;z = a²&amp;#34;]
+3[label=&amp;#34;z = a³&amp;#34;]
+4[label=&amp;#34;z = a⁴&amp;#34;]
+5[label=&amp;#34;z = a⁵&amp;#34;]
+6[label=&amp;#34;z = a⁶&amp;#34;]
+7[label=&amp;#34;z = a⁷&amp;#34;]
+8[label=&amp;#34;z = a⁸&amp;#34;]
+9[label=&amp;#34;z = a⁹&amp;#34;]
+10[label=&amp;#34;z = a¹⁰&amp;#34;]
+11[label=&amp;#34;z = a¹¹&amp;#34;]
+12[label=&amp;#34;z = a¹²&amp;#34;]
+13[label=&amp;#34;z = a¹³&amp;#34;]
+14[label=&amp;#34;z = a¹⁴&amp;#34;]
+15[label=&amp;#34;z = a¹⁵&amp;#34;]
+
+0 -&amp;gt; 1 [style=dashed; label = &amp;#34;s₁ = 1&amp;#34;]
+
+1 -&amp;gt; 2
+2 -&amp;gt; 3 [style=dashed; label = &amp;#34;s₂ = 1&amp;#34;]
+
+2 -&amp;gt; 4
+4 -&amp;gt; 5 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;]
+
+3 -&amp;gt; 6
+6 -&amp;gt; 7 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;]
+
+4 -&amp;gt; 8
+8 -&amp;gt; 9 [style=dashed; label = &amp;#34;s₄ = 1&amp;#34;]
+
+5 -&amp;gt; 10
+10 -&amp;gt; 11 [style=dashed; label = &amp;#34;s₄ = 1&amp;#34;]
+
+6 -&amp;gt; 12
+12 -&amp;gt; 13 [style=dashed; label = &amp;#34;s₄ = 1&amp;#34;]
+
+7 -&amp;gt; 14
+14 -&amp;gt; 15 [style=dashed; label = &amp;#34;s₄ = 1&amp;#34;]
+
+8 -&amp;gt; 16
+9 -&amp;gt; 18
+10 -&amp;gt; 20
+11 -&amp;gt; 22
+12 -&amp;gt; 24
+13 -&amp;gt; 26
+14 -&amp;gt; 28
+15 -&amp;gt; 30
+
+16 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+18 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+20 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+22 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+24 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+26 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+28 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+30 [shape=plaintext; label=&amp;#34;...&amp;#34;]
+
+  }
+  </div>
+</div>
+
+<p>Since the time to take a reduction (i.e., perform modulo $p$) is $\mathcal{O}(n^2)$ whenever the number is larger than $p$, we expected that we could detect whether a reduction is taken place.</p>
+<p>For example, if we have $a_1$ such that ${a_1}^2\ \text{mod}\ p$ is small enough, then $z \leftarrow z \cdot z\ \text{mod}\ p$ would take the fast path when $z \leftarrow z \cdot z\ \text{mod}\ p$. In the below graph, the path with ✨ will be taken when $s_2 = 0$. Since it takes one less reduction, it is faster. On the other hand, the fast path is not triggered when $s_2 = 0$.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
+
+{ rank=same; r1; 1 }
+{ rank=same; r2; 2 }
+{ rank=same; r3; 3 }
+{ rank=same; r4; 4; 6 }
+{ rank=same; r5; 5; 7 }
+{ rank=same; r6; 8; 10; 12; 14 }
+
+r1-&amp;gt;r2-&amp;gt;r3-&amp;gt;r4-&amp;gt;r5-&amp;gt;r6[style=invis, arrowhead=false]
+
+4-&amp;gt;6[style=invis]
+5-&amp;gt;7[style=invis]
+8-&amp;gt;10-&amp;gt;12-&amp;gt;14[style=invis]
+
+r1[style=invis, shape=point]
+r2[style=invis, shape=point]
+r3[style=invis, shape=point]
+r4[style=invis, shape=point]
+r5[style=invis, shape=point]
+r6[style=invis, shape=point]
+
+1[shape=plaintext; label=&amp;#34;...&amp;#34;]
+2[label=&amp;#34;z = a²&amp;#34;]
+3[label=&amp;#34;z = a³&amp;#34;]
+4[label=&amp;#34;z = a⁴&amp;#34;]
+5[label=&amp;#34;z = a⁵&amp;#34;]
+6[label=&amp;#34;z = a⁶&amp;#34;]
+7[label=&amp;#34;z = a⁷&amp;#34;]
+8[shape=plaintext; label=&amp;#34;...&amp;#34;]
+10[shape=plaintext; label=&amp;#34;...&amp;#34;]
+12[shape=plaintext; label=&amp;#34;...&amp;#34;]
+14[shape=plaintext; label=&amp;#34;...&amp;#34;]
+
+1 -&amp;gt; 2
+2 -&amp;gt; 3 [style=dashed; label = &amp;#34;s₂ = 1&amp;#34;]
+2 -&amp;gt; 4 [color=&amp;#34;gold&amp;#34;; penwidth=2; label=&amp;#34;✨&amp;#34;]
+4 -&amp;gt; 5 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;]
+4 -&amp;gt; 8
+5 -&amp;gt; 10
+
+3 -&amp;gt; 6
+6 -&amp;gt; 7 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;]
+6 -&amp;gt; 12
+7 -&amp;gt; 14
+
+  }
+  </div>
+</div>
+
+<p>We could detect whether $s_2 = 0$ by checking if the fast path is taken. We thought it is hard to determine if a single fast path is triggered, since it could only affect less than 1% of the total time. We tried it nonetheless as we were out of ideas. On the other hand, we also look for $a_2$ such that $z = {a_2}^2\ \text{mod}\ p$ is small. In that way, another path (labeled with ✨) will be triggered - and it is a fast path.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
+
+{ rank=same; r1; 1 }
+{ rank=same; r2; 2 }
+{ rank=same; r3; 3 }
+{ rank=same; r4; 4; 6 }
+{ rank=same; r5; 5; 7 }
+{ rank=same; r6; 8; 10; 12; 14 }
+
+r1-&amp;gt;r2-&amp;gt;r3-&amp;gt;r4-&amp;gt;r5-&amp;gt;r6[style=invis, arrowhead=false]
+
+4-&amp;gt;6[style=invis]
+5-&amp;gt;7[style=invis]
+8-&amp;gt;10-&amp;gt;12-&amp;gt;14[style=invis]
+
+r1[style=invis, shape=point]
+r2[style=invis, shape=point]
+r3[style=invis, shape=point]
+r4[style=invis, shape=point]
+r5[style=invis, shape=point]
+r6[style=invis, shape=point]
+
+1[shape=plaintext; label=&amp;#34;...&amp;#34;]
+2[label=&amp;#34;z = a²&amp;#34;]
+3[label=&amp;#34;z = a³&amp;#34;]
+4[label=&amp;#34;z = a⁴&amp;#34;]
+5[label=&amp;#34;z = a⁵&amp;#34;]
+6[label=&amp;#34;z = a⁶&amp;#34;]
+7[label=&amp;#34;z = a⁷&amp;#34;]
+8[shape=plaintext; label=&amp;#34;...&amp;#34;]
+10[shape=plaintext; label=&amp;#34;...&amp;#34;]
+12[shape=plaintext; label=&amp;#34;...&amp;#34;]
+14[shape=plaintext; label=&amp;#34;...&amp;#34;]
+
+1 -&amp;gt; 2
+2 -&amp;gt; 3 [style=dashed; label = &amp;#34;s₂ = 1&amp;#34;]
+2 -&amp;gt; 4
+4 -&amp;gt; 5 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;]
+4 -&amp;gt; 8
+5 -&amp;gt; 10
+
+3 -&amp;gt; 6 [color=&amp;#34;gold&amp;#34;; penwidth=2; label=&amp;#34;✨&amp;#34;]
+6 -&amp;gt; 7 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;]
+6 -&amp;gt; 12
+7 -&amp;gt; 14
+
+  }
+  </div>
+</div>
+
+<p>Define $\mathcal{T}(x)$ be the time to compute <code>pow(x, s, p)</code>. Now let's draft the algorithm $\mathcal{A}$ to determine if $s_2 = 0$ or $s_2 = 1$:</p>
+<ol>
+<li>Denote $c_1 \leftarrow 0$ and $c_2 \leftarrow 0$.</li>
+<li>Repeat 500 times:
+<ul>
+<li>Generate random $a_1, a_2 \in \mathbb{Z}_p$ such that ${a_1}^2\ \text{mod}\ p$ and ${a_2}^3\ \text{mod}\ p$ are small.</li>
+<li>Let $t_1 = \mathcal{T}(a_1)$ and $t_2 = \mathcal{T}(a_2)$.</li>
+<li>If $t_1 &lt; t_2$ then assign $c_1 \leftarrow c_1 + 1$, otherwise assign $c_2 \leftarrow c_2 + 1$.</li>
+</ul>
+</li>
+<li>If $c_1 \gg c_2$, then we know that $s_2 = 0$. If $c_1 \ll c_2$, then $s_2 = 1$. Otherwise we cannot tell (statistically) what $s_2$ is.</li>
+</ol>
+<div class="alert danger">
+  <p><strong>An epic fail.</strong> During the CTF, we find $a_1$ and $a_2$ with ${a_1}^4\ \text{mod}\ p$ and ${a_2}^6\ \text{mod}\ p$ are small. However it would not help us to determine $s_2$.</p>
+<ul>
+<li>$({a_1}^4) \cdot ({a_1}^4)$ would not take a reduction only if $s_2 = 0$ and $s_3 = 0$; and</li>
+<li>$({a_2}^6) \cdot ({a_2}^6)$ would not take a reduction only if $s_2 = 1$ and $s_3 = 0$.</li>
+</ul>
+<p>That said, $s_3 = 0$ is necessary for us to determine $s_2 = 0$ or $s_2 = 1$ with $a_1$ and $a_2$. Otherwise, the distributions would expected to be the same.</p>
+
+</div>
+
+<p>After all, the below histograms show the distribution for the sampled computation times of 10K different sets of $a_1, a_2, a_3 \in \mathbb{Z}_p$, where</p>
+<ul>
+<li>${a_1}^2\ \text{mod}\ p &lt; 2^{512}$,</li>
+<li>${a_2}^3\ \text{mod}\ p &lt; 2^{512}$, and</li>
+<li>$a_3$ is not constrainted (as the control group).</li>
+</ul>
+
+
+<figure>
+  <img src="/images/2021-11-27-balsn-dlog/computing-time-histograms-1.png" title="We collected 10,000 samples locally. No Balsn&#39;s servers are harmed.">
+  
+  <figcaption>We collected 10,000 samples locally. No Balsn&#39;s servers are harmed.</figcaption>
+  
+</figure>
+
+<p>As seen from the histograms, it is faster to compute <code>pow(a1, s, p)</code> than to compute <code>pow(a2, s, p)</code>. That said, the second most significant bit, $s_2$, would be a zero.</p>
+<div class="alert warning">
+  <strong>Why are we using different $a_1$ and $a_2$ each time?</strong> This is to avoid caching (I guess) which made the timing inaccurate. The following histograms show the distribution if the same sets of $a_1, a_2, a_3$ are used.
+</div>
+
+
+
+<figure>
+  <img src="/images/2021-11-27-balsn-dlog/computing-time-histograms-2.png" title="The distribution of computation times for $a_1, a_2, a_3$ are fixed. I cannot explain this however.">
+  
+  <figcaption>The distribution of computation times for $a_1, a_2, a_3$ are fixed. I cannot explain this however.</figcaption>
+  
+</figure>
+
+<h3 id="part-v-completing-the-attack">Part V: Completing the attack<a href="#part-v-completing-the-attack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now we have $s_2 = 0$. To proceed further, we can find $a_1, a_2 \in \mathbb{Z}_p$ such that ${a_1}^4\ \text{mod}\ p$ and ${a_2}^5\ \text{mod}\ p$ are both small. The <span style='color: red;'>red</span> path will be taken if $s_3 = 0$ and otherwise the <span style='color: blue;'>blue</span> path. We can use the times to compute <code>pow(a1, s, p)</code> and <code>pow(a2, s, p)</code> to identify whether the red or the blue path is triggered.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded&amp;#34;]
+
+{ rank=same; r1; 1 }
+{ rank=same; r2; 2 }
+{ rank=same; r3; 3 }
+{ rank=same; r4; 4; 6 }
+{ rank=same; r5; 5; 7 }
+{ rank=same; r6; 8; 10; 12; 14 }
+
+r1-&amp;gt;r2-&amp;gt;r3-&amp;gt;r4-&amp;gt;r5-&amp;gt;r6[style=invis, arrowhead=false]
+
+4-&amp;gt;6[style=invis]
+5-&amp;gt;7[style=invis]
+8-&amp;gt;10-&amp;gt;12-&amp;gt;14[style=invis]
+
+r1[style=invis, shape=point]
+r2[style=invis, shape=point]
+r3[style=invis, shape=point]
+r4[style=invis, shape=point]
+r5[style=invis, shape=point]
+r6[style=invis, shape=point]
+
+1[shape=plaintext; label=&amp;#34;...&amp;#34;]
+2[label=&amp;#34;z = a²&amp;#34;]
+3[label=&amp;#34;z = a³&amp;#34;, color=&amp;#34;#7f7270&amp;#34;, fontcolor=&amp;#34;#7f7270&amp;#34;]
+4[label=&amp;#34;z = a⁴&amp;#34;]
+5[label=&amp;#34;z = a⁵&amp;#34;]
+6[label=&amp;#34;z = a⁶&amp;#34;, color=&amp;#34;#7f7270&amp;#34;, fontcolor=&amp;#34;#7f7270&amp;#34;]
+7[label=&amp;#34;z = a⁷&amp;#34;, color=&amp;#34;#7f7270&amp;#34;, fontcolor=&amp;#34;#7f7270&amp;#34;]
+8[shape=plaintext; label=&amp;#34;...&amp;#34;]
+10[shape=plaintext; label=&amp;#34;...&amp;#34;]
+12[shape=plaintext; label=&amp;#34;...&amp;#34;, color=&amp;#34;#7f7270&amp;#34;, fontcolor=&amp;#34;#7f7270&amp;#34;]
+14[shape=plaintext; label=&amp;#34;...&amp;#34;, color=&amp;#34;#7f7270&amp;#34;, fontcolor=&amp;#34;#7f7270&amp;#34;]
+
+1 -&amp;gt; 2
+2 -&amp;gt; 3 [style=dashed; label = &amp;#34;s₂ = 1&amp;#34;, color=&amp;#34;#7f7270&amp;#34;, fontcolor=&amp;#34;#7f7270&amp;#34;]
+2 -&amp;gt; 4
+4 -&amp;gt; 5 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;]
+4 -&amp;gt; 8 [color=&amp;#34;red&amp;#34;; penwidth=2]
+5 -&amp;gt; 10 [color=&amp;#34;blue&amp;#34;; penwidth=2]
+
+3 -&amp;gt; 6 [color=&amp;#34;#ffe4e140&amp;#34;]
+6 -&amp;gt; 7 [style=dashed; label = &amp;#34;s₃ = 1&amp;#34;, color=&amp;#34;#7f7270&amp;#34;, fontcolor=&amp;#34;#7f7270&amp;#34;]
+6 -&amp;gt; 12 [color=&amp;#34;#ffe4e140&amp;#34;]
+7 -&amp;gt; 14 [color=&amp;#34;#ffe4e140&amp;#34;]
+
+  }
+  </div>
+</div>
+
+<p>In general, suppose that the prefix of $s$ being $s_\text{prefix} = \overline{s_1s_2...s_k}$, we can identify $s_{k+1}$ by finding $a_1, a_2 \in \mathbb{Z}_p$ such that</p>
+<p>$${a_1}^{2s_\text{prefix}}\ \text{mod}\ p\quad\text{and}\quad{a_2}^{2s_\text{prefix} + 1}\ \text{mod}\ p$$</p>
+<p>are both small. To minimize the remote calls, I tried to find the remaining bits via the <em>baby-step giant-step algorithm</em> after I recovered 60 bits of $s$. Anyway this is my script for recovering 60 bits:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">challenge</span> <span class="o">=</span> <span class="n">Challenge</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">challenge</span><span class="o">.</span><span class="n">oracle</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">s_prefix</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="n">s_prefix</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">e1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">s_prefix</span>
+</span></span><span class="line"><span class="cl">    <span class="n">e2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">s_prefix</span> <span class="o">+</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">d1</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">d2</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">b1</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a1</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">pow</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="n">b1</span><span class="p">:</span> <span class="k">break</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">b2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a2</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">b2</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">pow</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="n">b2</span><span class="p">:</span> <span class="k">break</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">t1</span> <span class="o">=</span> <span class="n">challenge</span><span class="o">.</span><span class="n">oracle</span><span class="p">(</span><span class="n">a1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t2</span> <span class="o">=</span> <span class="n">challenge</span><span class="o">.</span><span class="n">oracle</span><span class="p">(</span><span class="n">a2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">s_prefix</span> <span class="o">*=</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">t1</span> <span class="o">&gt;</span> <span class="n">t2</span><span class="p">:</span> <span class="n">s_prefix</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="nb">bin</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">s_prefix</span><span class="p">))</span>
+</span></span></code></pre></div><h2 id="final-words">Final words<a href="#final-words" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The attack largely depends on the fluctuation of the measured times, which made the attack <em>very</em> unstable. There's something to do with statistics on this part, but I do not have a workaround just yet. Anyway, there are chances to win the flag with the idea, but unfortunately the variance lowers the probability a lot.</p>
+<p>We found some papers like <a href="https://www.cs.jhu.edu/~fabian/courses/CS600.624/Timing-full.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >&quot;A practical implementation of the timing attack&quot;</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> by J.-F. Dhem, F. Koeune, P.-A. Leroux, P. Mestré, J.-J. Quisquater and J.-L. Willems. Maybe I should take it a look later, too.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Python Software Foundation (2021) &quot;CPython source code for <code>long_pow</code>&quot;<br><a href="https://github.com/python/cpython/blob/3.9/Objects/longobject.c#L4370-L4382"
+   
+   target="_blank" rel="noopener noreferrer" >https://github.com/python/cpython/blob/3.9/Objects/longobject.c#L4370-L4382</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Balsn CTF 2021: dlog
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-11-29-dragonctf-crc/">← Dragon CTF 2021: CRC Recursive Challenge (Warmup)</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-11-18-hkcert-ctf-4/">HKCERT CTF 2021 Postmortem (IV): The Remaining Ones →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

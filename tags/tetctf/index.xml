@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tetctf on Mystify</title>
+    <link>https://mystiz.hk/tags/tetctf/</link>
+    <description>Recent content in Tetctf on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 03 Feb 2024 16:25:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/tetctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TetCTF 2024: adapt</title>
+      <link>https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/</link>
+      <pubDate>Sat, 03 Feb 2024 16:25:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2024/2024-02-03-tetctf-adapt/</guid>
+      <description>&lt;p&gt;TetCTF comes back with their great crypto challenges. I played with &lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt; and we ended up securing the 🥉 third place. In this blog post, I will walk through &lt;em&gt;adapt&lt;/em&gt;, a challenge which required us to make fake proofs in an IAVL tree implementation. There are only three solves during the contest period.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;p&gt;We are started with an empty immutable AVL (IAVL) tree every connection. We can send up to 2024 messages and it will store the key-value pair &lt;code&gt;(message, &amp;quot;&amp;quot;)&lt;/code&gt; to the tree. In this stage, we have to set the message to $m_0$ at least once. After that, we are asked to provide a proof that $m_0$ is not on the tree.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>TetCTF 2021: unevaluated</title>
+      <link>https://mystiz.hk/posts/2021/2021-01-03-tetctf-unevaluated/</link>
+      <pubDate>Sun, 03 Jan 2021 13:39:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-01-03-tetctf-unevaluated/</guid>
+      <description>&lt;p&gt;TetCTF is the first CTF I have played in 2021. I recalled from last year that they have cool challenges. This year, there are three crypto challenges. In particular, &lt;em&gt;unevaluated&lt;/em&gt; is the hardest among them. Although I did not solve them, I dug into rabbit holes and had a lot of struggle, uh, fun.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;p&gt;There is a 128-bit prime $p$. Define $\cdot: \mathbb{Z}_{p^2}^2\times\mathbb{Z}_{p^2}^2\rightarrow\mathbb{Z}_{p^2}^2$ by&lt;/p&gt;&#xA;&lt;p&gt;$$(x_1, y_1)\cdot(x_2, y_2) := \left(\left(x_1x_2-y_1y_2\right)\ \text{mod}\ p^2, \left(x_1y_2+y_1x_2\right)\ \text{mod}\ p^2\right),$$&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

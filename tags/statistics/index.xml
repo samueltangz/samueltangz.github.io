@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Statistics on Mystify</title>
+    <link>https://mystiz.hk/tags/statistics/</link>
+    <description>Recent content in Statistics on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 27 Nov 2021 15:55:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Balsn CTF 2021: dlog</title>
+      <link>https://mystiz.hk/posts/2021/2021-11-27-balsn-dlog/</link>
+      <pubDate>Sat, 27 Nov 2021 15:55:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-11-27-balsn-dlog/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt; played Balsn CTF 2021 last weekend. There are three crypto challenges, and they are all pretty hard. In this blog post we will cover the &lt;em&gt;dlog&lt;/em&gt; challenge, which is a timing attack on the CPython&#39;s &lt;code&gt;pow&lt;/code&gt; method. &lt;a href=&#34;https://twitter.com/grhkm2023&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@grhkm2023&lt;/a&gt; and I spent a lot of time working on this challenge. Although we did not solve it, we actually learned a lot from the challenge and lost a pile of hair (maybe it is just me).&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dragon CTF 2021: CRC Recursive Challenge (Warmup) | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Dragon CTF 2021: CRC Recursive Challenge (Warmup)</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-11-29T23:30:00&#43;08:00">2021-11-29</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/dragonctf/" class="text-muted text-decoration-none">#dragonctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crc/" class="text-muted text-decoration-none">#crc</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p><a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> played Dragon CTF 2021 last weekend and I spent most of the time solving the CRC duo. They are very fun but unfortunately that we were close enough while unable to get the second flag.</p>
+<div class="alert warning">
+  <strong>Warmup edition only.</strong> If you are interested to learn the harder edition that involves a 128-bit CRC, you may want to look at <a href="https://affine.group/writeup/2021-11-DragonCTF-CRC-recursive-hard"
+   
+   target="_blank" rel="noopener noreferrer" >hellman's writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. I would only cover a solution of the easier edition with some unsuccessful attempts of the harder one.
+</div>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The objective is to find a message which correctly depicts its CRC-64 digest.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">crc64</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">crc</span><span class="o">=</span><span class="mh">0xffffffffffffffff</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">crc</span> <span class="o">^=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">56</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">crc</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">crc</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">64</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">crc</span> <span class="o">^=</span> <span class="mh">0x1ad93d23594c935a9</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">crc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">crc</span> <span class="o">=</span> <span class="n">crc64</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="sa">f</span><span class="s1">&#39;My crc64 is 0x</span><span class="si">{</span><span class="n">crc</span><span class="si">:</span><span class="s1">016x</span><span class="si">}</span><span class="s1">! Cool, isn</span><span class="se">\&#39;</span><span class="s1">t it?&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nope!&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The crypto challenges in Dragon CTF are often easy to understand but turns out hard to solve. The <a href="/posts/2020/2020-11-23-dragonctf/#bit-flip-crypto-155324343-points"
+   
+   >Bit Flip trio</a> last year is one of them. During the contest, we thought that we could easily write an algorithm solving the harder problem. Turns out we did not solve the harder challenge in time.</p>
+<h3 id="part-i-pay-to-win-with-an-mathcalo2n2-algorithm">Part I: Pay to win with an $\mathcal{O}(2^{n/2})$ algorithm<a href="#part-i-pay-to-win-with-an-mathcalo2n2-algorithm" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To start with, I will include the affine property of CRC. That is the most important property that I used to attack the challenge.</p>
+<div class="alert success">
+  <p><strong>CRC's affine property.</strong> For any messages $m_1, m_2, m_3$,</p>
+<p>$$\text{CRC}(m_1 \oplus m_2 \oplus m_3) = \text{CRC}(m_1) \oplus \text{CRC}(m_2) \oplus \text{CRC}(m_3).$$</p>
+
+</div>
+
+<p>Let's define some bytestrings in Python and rewrite the objective mathematically. Note that we will use <code>_</code> to represent a null byte simply because it looks better.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Note: This is not the final value</span>
+</span></span><span class="line"><span class="cl"><span class="n">ks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">m0</span>         <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;My crc64 is 0x________________! Cool, isn&#39;t it?&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________0_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________1_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________f_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">1</span><span class="p">][</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;____________________________0__________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">1</span><span class="p">][</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;____________________________f__________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span><span class="mi">15</span><span class="p">][</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;______________0________________________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span><span class="mi">15</span><span class="p">][</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;______________f________________________________&#34;</span>
+</span></span></code></pre></div><p>Let $m_0$ be <code>m0</code>, $k_i$ be <code>ks[i]</code>, $\Delta m_{i, j}$ be <code>dm[i][j]</code>. Our goal is to find $k_i$'s with</p>
+<p>$$\text{CRC}(m_0 \oplus \Delta m_{0, k_0} \oplus \Delta m_{1, k_1} \oplus ... \oplus \Delta m_{15, k_{15}}) = k_0 \oplus 16 k_1 \oplus ... \oplus 16^{15} k_{15}.$$</p>
+<p>With the affine property, we can show that</p>
+<p>$$\begin{aligned}
+&amp; k_0 \oplus 16 k_1 \oplus ... \oplus 16^{15} k_{15} \\
+&amp; \qquad = \text{CRC}(m_0 \oplus \Delta m_{0, k_0} \oplus \Delta m_{1, k_1} \oplus ... \oplus \Delta m_{15, k_{15}}) \\
+&amp; \qquad = \text{CRC}(m_0) \oplus \text{CRC}(\Delta m_{0, k_0}) \oplus \text{CRC}(\Delta m_{1, k_1}) \oplus ... \oplus \text{CRC}(\Delta m_{15, k_{15}})
+\end{aligned}$$</p>
+<p>We can rearrange the terms on the both sides to see my intention:</p>
+<p>$$\begin{aligned}
+&amp; \text{CRC}(m_0) \oplus \left(k_0 \oplus \text{CRC}(\Delta m_{0, k_0})\right) \oplus ... \oplus \left(16^7 k_7 \oplus \text{CRC}(\Delta m_{7, k_7})\right) \\
+&amp; \qquad = \left(16^8 k_8 \oplus \text{CRC}(\Delta m_{8, k_8})\right) \oplus ... \oplus \left(16^{15} k_{15} \oplus \text{CRC}(\Delta m_{15, k_{15}})\right)
+\end{aligned}$$</p>
+<p>In that way, $k_0, ..., k_7$ are on the left hand side and the rest are on the right. We can perform meet-in-the-middle attack. In that way we need to precompute and store every output from the left, hence maintaining $16^{8}$ entries. After precomputing, we perform $16^{8}$ queries to check if an entry from the right has its corresponding entries from the left... Well, we need around 256GB of memory to store the results in a map. Is this even feasible? Anyway, if we do not have too much memory, we can sacrifice time for space:</p>
+<p>$$\begin{aligned}
+&amp; \text{CRC}(m_0) \oplus \left(k_0 \oplus \text{CRC}(\Delta m_{0, k_0})\right) \oplus ... \oplus \left(16^4 k_4 \oplus \text{CRC}(\Delta m_{4, k_4})\right) \\
+&amp; \qquad = \left(16^5 k_5 \oplus \text{CRC}(\Delta m_{5, k_5})\right) \oplus ... \oplus \left(16^{15} k_{15} \oplus \text{CRC}(\Delta m_{15, k_{15}})\right).
+\end{aligned}$$</p>
+<p>We only have to precompute and store $16^5$ entries. It is now a matter of time as we need $16^{11}$ queries. Let's use $u + v$ to represent the setting that precomputes and stores the entries using $k_1, k_2, ..., k_u$ and generates queries with the remaining $v$ variables. The two settings we mentioned are $8 + 8$ and $5 + 11$.</p>
+<p>I estimated that $u + v$ requires $16^{u-6}$ GB of memory and takes $3 \cdot (16^{u-8} + 16^{v-8})$ hours to finish. The following table summarizes the memory and time:</p>
+<table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        Setting
+      </th>
+      
+      <th>
+        Estimated Memory
+      </th>
+      
+      <th>
+        Estimated Time
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        $5 + 11$
+      </td>
+      
+      <td>
+        64MB
+      </td>
+      
+      <td>
+        1 year
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $6 + 10$
+      </td>
+      
+      <td>
+        1GB
+      </td>
+      
+      <td>
+        1 month
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $7 + 9$
+      </td>
+      
+      <td>
+        16GB
+      </td>
+      
+      <td>
+        2 days
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $8 + 8$
+      </td>
+      
+      <td>
+        256GB
+      </td>
+      
+      <td>
+        6 hours
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $9 + 7$
+      </td>
+      
+      <td>
+        4TB
+      </td>
+      
+      <td>
+        2 days
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $10 + 6$
+      </td>
+      
+      <td>
+        64TB
+      </td>
+      
+      <td>
+        1 month
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $11 + 5$
+      </td>
+      
+      <td>
+        <em>too much</em>
+      </td>
+      
+      <td>
+        1 year
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<p>My laptop can share 1GB memory but I don't have a month running the program for the flag. It seemed impossible, right? <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> has the best laptop among us and can deploy $7 + 9$ on his laptop - but it still require two days to complete. Here comes the two things we learned:</p>
+<h4 id="one-can-use-multiple-threads-to-speed-up">One can use multiple threads to speed up<a href="#one-can-use-multiple-threads-to-speed-up" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To speed up the whole process, we used multithreading during the lookup phase. If we have $t$ threads, then the expected running time is $3 \cdot (16^{u-8} + 16^{v-8}/t)$ hours. Running a $7 + 9$ with 16 threads would take around 3 hours. Regrettably it is not a good idea to freeze <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a>'s laptop for a couple hours.</p>
+<div class="alert warning">
+  <strong>Why not multithreading for precompute as well?</strong> Map insert is not <em>thread-safe</em> and some entries may not be successfully inserted to the map.
+</div>
+
+<h4 id="one-can-do-many-things-with-money">One can do many things with money<a href="#one-can-do-many-things-with-money" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Eventually, we spun up a 48-core machine (<code>r6g.12xlarge</code>) on Amazon EC2. We streamed the process on our Discord server <em>at 6AM</em> and everyone is watching.</p>
+
+
+<figure>
+  <img src="/images/2021-11-29-dragonctf/so-much-cores.png" title="Burn money burn. Screenshot taken by @grhkm2023.">
+  
+  <figcaption>Burn money burn. Screenshot taken by @grhkm2023.</figcaption>
+  
+</figure>
+
+<p>It took around 30 minutes for the program to print a candidate <code>0x7a8abd9a85eed3b9</code>. After ten hours we finally get ourselves warmed up, yay! The <a href="#the-meetinthemiddle-approach"
+   
+   >solve script</a> is at the end of the post.</p>
+<pre class='language-bash command-line' data-output='2-3' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">nc crc.hackable.software 1337
+My crc64 is 0x7a8abd9a85eed3b9! Cool, isn&#39;t it?
+DrgnS{0x5d9f900f6564617b}</code>
+</pre>
+
+
+
+<figure>
+  <img src="/images/2021-11-29-dragonctf/achievement.png" title="">
+  
+</figure>
+
+<h3 id="part-ii-when-in-doubt-use-lll-and-led-to-more-doubts">Part II: When in doubt use LLL (and led to more doubts)<a href="#part-ii-when-in-doubt-use-lll-and-led-to-more-doubts" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>Ideas only.</strong> We will be discussing unsuccessful attempts to tickle the harder challenge from this part onwards.
+</div>
+
+<p>With a similar idea adopted in <a href="/posts/2021/2021-11-18-hkcert-ctf-2/#solving-linear-equations"
+   
+   ><em>Tenet: The Plagarism</em></a> in HKCERT CTF 2021, I converted the 16 unknowns $k_0, k_1, ..., k_{15} \in \mathbb{Z}_{16}$ to 256 unknowns $x_{0,0}, x_{0,1}, ..., x_{0,15}, x_{1,0}, ..., x_{15,15} \in \{0, 1\}$. We can see that the below equation</p>
+<p>$$k_0 \oplus 16 k_1 \oplus ... \oplus 16^{15} k_{15} = \text{CRC}(m_0) \oplus \text{CRC}(\Delta m_{0, k_0}) \oplus \text{CRC}(\Delta m_{1, k_1}) \oplus ... \oplus \text{CRC}(\Delta m_{15, k_{15}})$$</p>
+<p>is equivalent to the below equation when $x_{i, j} = 1$ if $k_i = j$ ($x_{i, j} = 0$ otherwise):</p>
+<p>$$\bigoplus_{i=0}^{15} \bigoplus_{j=0}^{15}\ 16^i j \cdot x_{i,j} = \text{CRC}(m_0) \oplus \bigoplus_{i=0}^{15} \bigoplus_{j=0}^{15}\ x_{i,j} \text{CRC}(\Delta m_{i,j})$$</p>
+<p>Rearranging the terms:</p>
+<p>$$\bigoplus_{i=0}^{15} \bigoplus_{j=0}^{15}\ \left(16^i j \oplus \text{CRC}(\Delta m_{i,j})\right) \cdot x_{i,j} = \text{CRC}(m_0)$$</p>
+<p>We now have 64 linear equations under $\mathbb{Z}_2$ when looking at the equation bit-by-bit. Since the system is largely underdetermined, it is not feasible to solve the linear system. We tried LLL instead. Define the $257 \times 64$ matrix $B$ (zero-indexed):</p>
+<p>$$B_{p, q} = \begin{cases}
+q^\text{th}\ \text{bit of}\ \left(16^i j \oplus \text{CRC}(\Delta m_{i,j})\right) &amp; \text{for}\ p = 16i + j\ \text{and}\ 0 \leq i, j &lt; 16 \\
+q^\text{th}\ \text{bit of}\ \text{CRC}(m_0) &amp; \text{for}\ p = 256
+\end{cases}.$$</p>
+<p>We further define the matrix $A$ which we will use for LLL:</p>
+<p>$$A = \left[\begin{matrix}
+I_{257} &amp; B \\
+O &amp; 2 \cdot I_{64}
+\end{matrix}\right].$$</p>
+<p>It is evident that $(x_{0,0}, x_{0,1}, ..., x_{15,15}, 1, 0, ..., 0)$ is spanned by the lattice. Sadly, the vector did not appear. Since we did not have high expectations on this approach, we did not investigate this any further.</p>
+<h3 id="part-iii-an-approach-with-time-complexity-mathcalo2n4">Part III: An approach with time complexity $\mathcal{O}(2^{n/4})$<a href="#part-iii-an-approach-with-time-complexity-mathcalo2n4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  <strong>TL;DR.</strong> We will discuss a solution that works on a modest computer... Only for the CRC64 challenge though.
+</div>
+
+<p>The largest hurdle of this challenge is the non-affinity between ASCII characters and numbers. Although there are chances that the XOR value matches, such as:</p>
+<p><code>b&quot;1337&quot; xor b&quot;2345&quot; xor b&quot;2021&quot; == b&quot;1053&quot;</code> and <code>0x1337 ^ 0x2345 ^ 0x2021 == 0x1053</code>.</p>
+<p>There are counter examples like:</p>
+<p><code>b&quot;9123&quot; xor b&quot;1204&quot; xor b&quot;3054&quot; == b&quot;;373&quot;</code> and <code>0x9123 ^ 0x1204 ^ 0x3054 == 0xb373</code>.</p>
+<p>To handle this, we are going to redefine almost everything in the first path. Let's forget them and look (<code>_</code> still represents the null byte, however):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Note: This is not the final value</span>
+</span></span><span class="line"><span class="cl"><span class="n">ks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">m0</span>         <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;My crc64 is 0x                ! Cool, isn&#39;t it?&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 1, 2, 4, 8, G and @ respectively represent</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     b&#39;\x01&#39;, b&#39;\x02&#39;, b&#39;\x04&#39;, b&#39;\x08&#39;, b&#39;\x10&#39; and b&#39;\x40&#39;.</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________1_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________2_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________4_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________8_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________G_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">0</span><span class="p">][</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;_____________________________@_________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span> <span class="mi">1</span><span class="p">][</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;____________________________1__________________&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl"><span class="n">dm</span><span class="p">[</span><span class="mi">15</span><span class="p">][</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;______________@________________________________&#34;</span>
+</span></span></code></pre></div><p>We are going to introduce 160 unknowns: $x_{ip}, y_{iq} \in \{0, 1\}$ for $0 \leq i \lt 16$, $0 \leq p \leq 5$ and $0 \leq q \leq 3$. We have the first equation (the right hand side is shown in its binary representation):</p>
+<p>$$\begin{aligned}
+&amp; \text{CRC}(m_0 \oplus x_{0,0} \Delta m_{0,0} \oplus x_{0,1} \Delta m_{0,1} \oplus ... \oplus x_{15,5} \Delta m_{15,5}) \\
+&amp; \qquad = \overline{y_{15,3}y_{15,2}y_{15,1}y_{15,0}y_{14,4}...y_{0,1}y_{0,0}} \qquad\qquad\qquad\qquad[\dagger]
+\end{aligned}$$</p>
+<p>An intuitive meaning for $x_{ip}$ and $y_{iq}$ are respectly the bits of the ASCII value and the bits of the number itself. Two questions, however:</p>
+<ol>
+<li>Why we are skipping the fifth bit and the seventh bit when defining $\Delta m_{i, j}$?</li>
+<li>Why did we change $m_0$ from <code>0x________________</code> to <code>0x                </code>?</li>
+</ol>
+<p>We are using the set <code>0123456789abcdef</code> to represent the hexadecimal characters. The following table shows their ASCII values in binary and we can see that bits 5 and 7 are respectively always 1 and 0. That said, we can put bit 5, <code>\x20</code>, into $m_0$ and drop those bits from unknown.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">       | Digits     Letters
+</span></span><span class="line"><span class="cl">       | 0123456789 abcdef
+</span></span><span class="line"><span class="cl">-------+-------------------
+</span></span><span class="line"><span class="cl"> Bit 0 | 0101010101 101010
+</span></span><span class="line"><span class="cl"> Bit 1 | 0011001100 011001
+</span></span><span class="line"><span class="cl"> Bit 2 | 0000111100 000111
+</span></span><span class="line"><span class="cl"> Bit 3 | 0000000011 000000
+</span></span><span class="line"><span class="cl"> Bit 4 | 1111111111 000000
+</span></span><span class="line"><span class="cl"> Bit 5 | 1111111111 111111  👈 All of the entries are 1
+</span></span><span class="line"><span class="cl"> Bit 6 | 0000000000 111111
+</span></span><span class="line"><span class="cl"> Bit 7 | 0000000000 000000  👈 All of the entries are 0
+</span></span></code></pre></div><p>Anyway, we can recover 64 equations in $\mathbb{Z}_2$ if we consider $[\dagger]$ bit-by-bit. Since there are 160 unknowns, there are still 96 free variables (possibly $2^{96}$ solutions). How to eliminate them? Let's take a look at the $\spadesuit$-th character and relate $x_{\spadesuit p}$'s and $y_{\spadesuit q}$'s. There are two cases:</p>
+<ul>
+<li>
+<p>If the $\spadesuit$-th hex character is a digit...</p>
+<ul>
+<li>$x_{\spadesuit 0} \oplus y_{\spadesuit 0} = 0$</li>
+<li>$x_{\spadesuit 1} \oplus y_{\spadesuit 1} = 0$</li>
+<li>$x_{\spadesuit 2} \oplus y_{\spadesuit 2} = 0$</li>
+<li>$x_{\spadesuit 3} \oplus y_{\spadesuit 3} = 0$</li>
+<li>$x_{\spadesuit 4} = 1$</li>
+<li>$x_{\spadesuit 5} = 0$ (note that this represents the <strong>6-th</strong> bit)</li>
+</ul>
+</li>
+<li>
+<p>If the $\spadesuit$-th hex character is a letter...</p>
+<ul>
+<li>$x_{\spadesuit 0} \oplus y_{\spadesuit 0} = 1$</li>
+<li>$x_{\spadesuit 1} \oplus y_{\spadesuit 0} \oplus y_{\spadesuit 1} = 1$</li>
+<li>$x_{\spadesuit 3} = 0$</li>
+<li>$x_{\spadesuit 4} = 0$</li>
+<li>$x_{\spadesuit 5} = 1$</li>
+<li>$y_{\spadesuit 3} = 1$</li>
+</ul>
+</li>
+</ul>
+<p>From above, we can obtain 6 equations if we know whether a hex character is a digit or a letter. After all, assuming that we know if each of the hex characters are a digit or a letter, we have 160 equations and 160 unknowns. Therefore we are able to determine $x_{ip}$'s and $y_{iq}$'s by solving a linear system.</p>
+<p>We don't know if the characters are digits or letters. We can simply guess them - there are 16 hex characters and we can exhaust all of the $2^{16}$ cases. I have written the <a href="#the-solvingthelinearsystem-approach"
+   
+   >solve script</a> in Sagemath. It takes only 6 minutes to solve the easier version.</p>
+<p>Now we have devised a nice algorithm that takes only $2^{32}$ Gaussian elimination for the harder part. Maybe we can try running that?</p>
+
+
+<figure>
+  <img src="/images/2021-11-29-dragonctf/too-long-didnt-run.png" title="We can win the flag in Jul 2023! 🐢">
+  
+  <figcaption>We can win the flag in Jul 2023! 🐢</figcaption>
+  
+</figure>
+
+<div class="alert info">
+  <strong>Just optimize it.</strong> After the contest, we learned that the author's solution is to solve $2^{32}$ linear systems (with optimized C++ implementation and smaller matrices though). So I am not that far from the flag...
+</div>
+
+<h2 id="solve-script">Solve script<a href="#solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="the-meet-in-the-middle-approach">The meet-in-the-middle approach<a href="#the-meet-in-the-middle-approach" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ull unsigned long long
+</span></span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ull</span> <span class="nf">crc64</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ull</span> <span class="n">res</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">^=</span> <span class="p">(</span><span class="n">ull</span><span class="p">)</span> <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">56</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">&amp;</span> <span class="mh">0x8000000000000000</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span> <span class="o">^=</span> <span class="mh">0xad93d23594c935a9LL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ull</span> <span class="n">h0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ull</span> <span class="n">progress</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ull</span> <span class="n">res</span><span class="p">[</span><span class="mi">16</span><span class="p">][</span><span class="mi">16</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">map</span><span class="o">&lt;</span><span class="n">ull</span><span class="p">,</span> <span class="n">ull</span><span class="o">&gt;</span> <span class="n">lhs</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">fill_lhs</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">ull</span> <span class="n">state</span><span class="p">,</span> <span class="n">ull</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// progress
+</span></span></span><span class="line"><span class="cl">        <span class="n">progress</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">progress</span> <span class="o">&amp;</span> <span class="mh">0xfffff</span><span class="p">))</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;[ ] Filling left hand side... %07llx</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">progress</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">lhs</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fill_lhs</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">state</span> <span class="o">^</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="mi">16</span><span class="o">*</span><span class="n">r</span><span class="o">+</span><span class="n">j</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">exhaust_rhs</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">ull</span> <span class="n">state</span><span class="p">,</span> <span class="n">ull</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">9</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">lhs</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">!=</span> <span class="n">lhs</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ull</span> <span class="n">l</span> <span class="o">=</span> <span class="n">lhs</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">printf</span><span class="p">(</span><span class="s">&#34;[!] Found! %016llx %016llx</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">exhaust_rhs</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">state</span> <span class="o">^</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">7</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="mi">16</span><span class="o">*</span><span class="n">r</span><span class="o">+</span><span class="n">j</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">rhs_entry</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ull</span> <span class="o">*</span><span class="n">id</span> <span class="o">=</span> <span class="p">(</span><span class="n">ull</span> <span class="o">*</span><span class="p">)</span> <span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">exhaust_rhs</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="o">*</span><span class="n">id</span> <span class="o">/</span> <span class="mi">16</span><span class="p">]</span> <span class="o">^</span> <span class="n">res</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="o">*</span><span class="n">id</span> <span class="o">%</span> <span class="mi">16</span><span class="p">],</span> <span class="o">*</span><span class="n">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pthread_t</span> <span class="n">threads</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ull</span> <span class="n">args</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">ull</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">_IONBF</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">u</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&#34;My crc64 is 0x0000000000000000! Cool, isn&#39;t it?&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">h0</span> <span class="o">=</span> <span class="n">crc64</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">47</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">memset</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">hexchars</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&#34;0123456789abcdef&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">memset</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">47</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">u</span><span class="p">[</span><span class="mi">14</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hexchars</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">crc64</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">47</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="n">ull</span><span class="p">)</span> <span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">15</span><span class="o">-</span><span class="n">i</span><span class="p">)));</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;[*] Precomputing...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fill_lhs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;[*] Looking up...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">threads</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rhs_entry</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">pthread_join</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="the-solving-the-linear-system-approach">The solving-the-linear-system approach<a href="#the-solving-the-linear-system-approach" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">itertools</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_crc64</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">crc</span><span class="o">=</span><span class="mh">0xffffffffffffffff</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">crc</span> <span class="o">^^=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">56</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">crc</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">crc</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">64</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">crc</span> <span class="o">^^=</span> <span class="mh">0x1ad93d23594c935a9</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">crc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_crc128</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">crc</span><span class="o">=</span><span class="mh">0xffffffffffffffffffffffffffffffff</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">crc</span> <span class="o">^^=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">120</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">crc</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">crc</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">128</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">crc</span> <span class="o">^^=</span> <span class="mh">0x14caa61b0d7fe5fa54189d46709eaba2d</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">crc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># SOLUTION</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">64</span> <span class="c1"># Change this to 128 for the harder version.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">m_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;My crc</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1"> is 0x&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">m_suffix</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;! Cool, isn</span><span class="se">\&#39;</span><span class="s1">t it?&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">m_hidden</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">crc</span> <span class="o">=</span> <span class="p">{</span><span class="mi">64</span><span class="p">:</span> <span class="n">_crc64</span><span class="p">,</span> <span class="mi">128</span><span class="p">:</span> <span class="n">_crc128</span><span class="p">}[</span><span class="n">n</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">h0</span> <span class="o">=</span> <span class="n">crc</span><span class="p">(</span><span class="n">m_prefix</span> <span class="o">+</span> <span class="n">m_hidden</span> <span class="o">+</span> <span class="n">m_suffix</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">h1</span> <span class="o">=</span> <span class="n">crc</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">m_prefix</span> <span class="o">+</span> <span class="n">m_hidden</span> <span class="o">+</span> <span class="n">m_suffix</span><span class="p">))</span> <span class="c1"># A parity for affinity</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">dms</span><span class="p">,</span> <span class="n">dhs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Consider each hex char each</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Bits 0 and 2 are skipped because they are always 0 and 1, respectively.</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">block</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="nb">bytes</span><span class="p">([</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">j</span><span class="p">])</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dm</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">m_prefix</span><span class="p">)</span> <span class="o">+</span> <span class="n">block</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">m_suffix</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dh</span> <span class="o">=</span> <span class="n">crc</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">dms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dhs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dh</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">GF</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">GF</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>       <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">dhs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">&gt;&gt;</span><span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>  <span class="o">=</span> <span class="n">h1</span><span class="o">&gt;&gt;</span><span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>          <span class="o">=</span> <span class="n">h0</span><span class="o">&gt;&gt;</span><span class="n">i</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Add more known equations</span>
+</span></span><span class="line"><span class="cl"><span class="n">m</span> <span class="o">=</span> <span class="n">n</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># x4 + x5 = 1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># x0 + x4 + y0 = 1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>     <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Parity for CRC</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>    <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>            <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">m0</span> <span class="o">=</span> <span class="n">m</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="p">)),</span> <span class="n">total</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="p">))):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="n">m0</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">:</span><span class="n">m</span><span class="o">+</span><span class="mi">4</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="p">):</span>    
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># x1 + y1 = 0</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span>     <span class="mi">4</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># x2 + y2 = 0</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>     <span class="mi">4</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># x3 + y3 = 0</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>     <span class="mi">4</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># x4 = 1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># x1 + y0 + y1 = 1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span>     <span class="mi">4</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span>     <span class="mi">4</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># y3 = 1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>     <span class="mi">4</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># x3 = 0</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># x4 = 0</span>
+</span></span><span class="line"><span class="cl">            <span class="n">A</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span><span class="p">[</span><span class="n">m</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>              <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">+=</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x0</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">solve_right</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">dx</span> <span class="ow">in</span> <span class="n">A</span><span class="o">.</span><span class="n">right_kernel</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">dx</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">])])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_m</span> <span class="o">=</span> <span class="n">m_prefix</span> <span class="o">+</span> <span class="nb">format</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">n</span><span class="o">//</span><span class="mi">4</span><span class="si">}</span><span class="s1">x&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="n">m_suffix</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_h</span> <span class="o">=</span> <span class="n">crc</span><span class="p">(</span><span class="n">_m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">_h</span> <span class="o">==</span> <span class="n">res</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Found - </span><span class="si">{</span><span class="n">_m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Dragon CTF 2021: CRC Recursive Challenge (Warmup)
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-01-17-intigriti-xss/">← Intigriti&#39;s XSS Challenge (January 2022)</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-11-27-balsn-dlog/">Balsn CTF 2021: dlog →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

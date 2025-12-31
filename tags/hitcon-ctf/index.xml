@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hitcon-Ctf on Mystify</title>
+    <link>https://mystiz.hk/tags/hitcon-ctf/</link>
+    <description>Recent content in Hitcon-Ctf on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 20 Jul 2024 20:10:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/hitcon-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HITCON CTF 2024 Writeup</title>
+      <link>https://mystiz.hk/posts/2024/2024-07-20-hitcon-ctf/</link>
+      <pubDate>Sat, 20 Jul 2024 20:10:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2024/2024-07-20-hitcon-ctf/</guid>
+      <description>&lt;p&gt;The crypto challenge authors in HITCON 2024, &lt;a href=&#34;https://twitter.com/maple3142&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@maple3142&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/_bronson113&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@_bronson113&lt;/a&gt; prepared a set of exciting and difficult challenges.&lt;/p&gt;&#xA;&lt;p&gt;I collaborated with &lt;a href=&#34;https://twitter.com/thehackerscrew1&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@thehackerscrew1&lt;/a&gt; as a guest player this time. In this blog post, we will cover three challenges: ZKPoF, PCBC Revenge and Hyper512.&lt;/p&gt;&#xA;&lt;h2 id=&#34;zkpof&#34;&gt;ZKPoF&lt;/h2&gt;&#xA;&lt;h3 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h3&gt;&#xA;&lt;p&gt;This challenge implements the proof-of-knowledge protocol for factoring specified in Poupard and Stern&#39;s paper&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, where the server and us take turn being the verifier.&lt;/p&gt;&#xA;&#xA;&#xA;&lt;figure&gt;&#xA;  &lt;img src=&#34;https://mystiz.hk/images/2024-07-20-hitcon-ctf/zkpof-protocol.png&#34; title=&#34;&#34;&gt;&#xA;  &#xA;&lt;/figure&gt;&#xA;&#xA;&lt;p&gt;In the challenge, we have $A = 2^{1000}$ and $B = 2^{80}$. We are the verifier and the server is the prover on the first part of the connection. We can ask for up to 311 proofs:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

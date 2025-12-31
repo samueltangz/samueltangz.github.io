@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aero CTF 2021 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Aero CTF 2021 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-02-28T19:35:00&#43;08:00">2021-02-28</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/aero-ctf/" class="text-muted text-decoration-none">#aero-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>This time I am playing alone for <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> and had all the crypto challenges solved (and nothing else). I found the crypto challenges in many of the CTFs this year are worth-trying, and these are no exceptions. I ended up at the 9th place. By the way, <a href="https://twitter.com/SuperGuesser" target="_blank" rel="nofollow">@SuperGuesser</a> is the first to solve for <em>all</em> of the crypto challenges. Can we nerf <a href="https://twitter.com/RBTree_" target="_blank" rel="nofollow">@RBTree_</a> and <a href="https://twitter.com/rkm0959" target="_blank" rel="nofollow">@rkm0959</a>?</p>
+<p>Additionally, <em>phoenix</em> had seven solves and while <em>horcrux</em> and <em>boggart</em> had two. I think they deserved more solves. You can read a better writeup by the super guessers on <a href="https://rkm0959.tistory.com/211"
+   
+   target="_blank" rel="noopener noreferrer" >rkm0959's blog</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+<h2 id="horcrux">horcrux<a href="#horcrux" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Imagine that you are a dark wizard (as dark as Voldemort). And you want to reach immortality.</p>
+<p>What could be your plan?</p>
+<p>Author: keltecc (Discord)</p>
+</blockquote>
+<p>We are given <code>horcrux.py</code> and <code>output.txt</code>. Suppose that there is a 3000-bit prime $p$ and three points on the elliptic curve $\mathcal{C}$ over $\text{GF}(p)$, namely, $G, P=(x_P, y_P)$ and $Q=(x_Q, y_Q)$. Let's denote $\tilde{P}=(\tilde{x}_P, \tilde{y}_P)$ and $\tilde{Q}=(\tilde{x}_Q, \tilde{y}_Q)$ and the errors $0 \leq \varepsilon_i &lt; 2^{32}$ for $i = 1, 2, 3, 4$ by</p>
+<p>$$\varepsilon_1 = \tilde{x}_P\oplus x_P, \varepsilon_2 = \tilde{y}_P\oplus y_P, \varepsilon_3 = \tilde{x}_Q\oplus x_Q, \varepsilon_4 = \tilde{y}_Q\oplus y_Q.$$</p>
+<p>In the challenge, we are given the prime $p, G, \tilde{P}$ and $\tilde{Q}$. The objective is to find $\varepsilon_i$'s which are used as a key to encrypt the flag.</p>
+<p>In short, we are given three points on an elliptic curve $\mathcal{C}$. However there are <em>small</em> errors on two of them, making them not lying on the curve. The objective is to fix the errors for these points.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-working-on-the-math-part">Part I: Working on the math part<a href="#part-i-working-on-the-math-part" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert info">
+  <strong>Note.</strong> The operations are done over $\text{GF}(p)$. I won't mention mod <em>p</em> for simplicity.
+</div>
+
+<p>My approach is <em>really</em> tedious. Suppose that $\mathcal{C}: y^2 = x^3 + ax + b$. Then by definition,</p>
+<p>$$
+\begin{cases}\begin{aligned}
+{y_G}^2 = {x_G}^3 + a{x_G} + b \\
+{y_P}^2 = {x_P}^3 + a{x_P} + b \\
+{y_Q}^2 = {x_Q}^3 + a{x_Q} + b \\
+\end{aligned}\end{cases}
+$$</p>
+<p>To begin, let's define $e_1 = x_P - \tilde{x}_P$, $e_2 = y_P - \tilde{y}_P$, $e_3 = x_Q - \tilde{x}_Q$ and $e_4 = y_Q - \tilde{y}_Q$.</p>
+<div class="alert warning">
+  <strong>Why using $e_i$'s but not $\varepsilon_i$'s those we defined?</strong> We would not use $\varepsilon_i$'s since they involve <em>xor</em> operations. We don't know how to do it on elliptic curves.
+</div>
+
+<p>We can first eliminate $a$ and $b$ by combining the three equations like below. You can refer to <a href="/posts/2020/2020-07-22-uiuctf-nookcrypt/#part-i-recovering-the-curve-parameters-in-a-stupid-way"
+   
+   >my writeup</a> for nookcrypt in UIUCTF for more details.</p>
+<p>$$(y_G^2 - y_P^2 - x_G^3 + x_P^3)(x_G - x_Q) = (y_G^2 - y_Q^2 - x_G^3 + x_Q^3)(x_G - x_P).$$</p>
+<p>Furthermore, we can substitute the $e_i$'s:</p>
+<p>$$\begin{aligned}
+&amp; \left[y_G^2 - (\tilde{y}_P + e_2)^2 - x_G^3 + (\tilde{x}_P + e_1)^3\right]\left[x_G - (\tilde{x}_Q + e_3)\right] \\
+&amp; = \left[y_G^2 - (\tilde{y}_P + e_4)^2 - x_G^3 + (\tilde{x}_Q + e_3)^3\right]\left[x_G - (\tilde{x}_P + e_1)\right].
+\end{aligned}$$</p>
+<div class="alert info">
+  <strong>What was my motivation?</strong> I tried to minimize the <em>entropy</em> by eliminating the 3000-bit unknowns, i.e., $a, b, x_P, y_P, x_Q$ and $y_Q$. I am either removing them by combining equations, or reducing the entropy by replacing them with smaller ones.
+</div>
+
+<h4 id="part-ii-retrieving-e_is-via-lll">Part II: Retrieving $e_i$'s via LLL<a href="#part-ii-retrieving-e_is-via-lll" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I have to stress again that my approach is pretty tedious. What I did is to expand everything. The <em>unknowns</em> are marked in yellow. Also, the overbraces and the underbraces are their entropies.</p>
+<p>$$\begin{aligned}
+&amp; [(y_G^2 - {\tilde{y}_P}^2 - x_G^3 + {\tilde{x}_P}^3) - \overbrace{2{\tilde{y}_P}\htmlStyle{color: yellow;}{e_2}}^{\text{32b}} - \overbrace{\htmlStyle{color: yellow;}{e_2}^2}^{\text{64b}} + \overbrace{3{\tilde{x}_P}^2\htmlStyle{color: yellow;}{e_1}}^{\text{32b}} + \overbrace{3{\tilde{x}_P}\htmlStyle{color: yellow;}{e_1}^2}^{\text{64b}} + \overbrace{\htmlStyle{color: yellow;}{e_1}^3}^{\text{96b}}][(x_G - \tilde{x}_Q) - \overbrace{\htmlStyle{color: yellow;}{e_3}}^{\text{32b}}] \\
+&amp; = [(y_G^2 - {\tilde{y}_Q}^2 - x_G^3 + {\tilde{x}_Q}^3) - \underbrace{2{\tilde{y}_Q}\htmlStyle{color: yellow;}{e_4}}_{\text{32b}} - \underbrace{\htmlStyle{color: yellow;}{e_4}^2}_{\text{64b}} + \underbrace{3{\tilde{x}_Q}^2\htmlStyle{color: yellow;}{e_3}}_{\text{32b}} + \underbrace{3{\tilde{x}_Q}\htmlStyle{color: yellow;}{e_3}^2}_{\text{64b}} + \underbrace{\htmlStyle{color: yellow;}{e_3}^3}_{\text{96b}}][(x_G - \tilde{x}_P) - \underbrace{\htmlStyle{color: yellow;}{e_1}}_{\text{32b}}].
+\end{aligned}$$</p>
+<p>Well, I am not done. Please bear with me. There are 12 terms on the both sides if they are expanded while grouped by $e_i$'s. The number of bits of entropy on one side is $(0 + 32 + 64 + 32 + 64 + 96) + (32 + 64 + 96 + 64 + 96 + 128) = 768$. Since the total entropy is $768 \times 2 = 1536 &lt; 3000$ bits, we can recover the whole thing with LLL.</p>
+<p>We can construct a $25\times 25$ matrix. This is how I do it in Sagemath.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">multiplier</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">128</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">128</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">128</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="o">=</span> <span class="n">diagonal_matrix</span><span class="p">(</span><span class="n">multiplier</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aPy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aPy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">aPy</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">aPy</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aQy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aQy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">aQy</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">aQy</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">T</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">LLL</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">B</span> <span class="o">/</span> <span class="n">T</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">B</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">row</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">dPx</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="c1"># e1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dPy</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># e2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dQx</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># e3</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dQy</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="c1"># e4</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dP =&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">dPx</span><span class="p">,</span> <span class="n">dPy</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dQ =&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">dQx</span><span class="p">,</span> <span class="n">dQy</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># dP = (1155305281, 62177711)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># dQ = (1076744709, 30259545)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">()</span>
+</span></span></code></pre></div><p>However, I have the parity messed up. Trying $(e_1, e_2, e_3, e_4)$, $(e_1, e_2, e_3, -e_4)$, ... and compute for the respective $a$ and $b$, we have a correct value for $e_i$'s:</p>
+<p>$$(e_1, e_2, e_3, e_4) = (1155305281, -62177711, 1076744709, -30259545).$$</p>
+<p>After all, we can derive $\varepsilon_i$'s</p>
+<p>$$(\varepsilon_1, \varepsilon_2, \varepsilon_3, \varepsilon_4) = (3168768961, 2085996465, 3254637063, 36849519)$$</p>
+<p>and thus have the key to decrypt the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Aero{&#34;Voldemort,&#34; said Riddle softly, &#34;is my past, present, and future, Harry Potter....&#34;}
+</span></span></code></pre></div><h3 id="addendum">Addendum<a href="#addendum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><a href="https://twitter.com/keltecc" target="_blank" rel="nofollow">@keltecc</a> (the challenge author) and <a href="https://twitter.com/hellman1908" target="_blank" rel="nofollow">@hellman1908</a> had a similar approach as above. Meanwhile they need not to expand the polynomial by themselves.</p>
+<ul>
+<li>@keltecc wrote a function to handles the monomials. <a href="https://github.com/AeroCTF/aero-ctf-2021/blob/main/ideas/crypto/horcrux/solver.sage#L122"
+   
+   target="_blank" rel="noopener noreferrer" >Link here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</li>
+<li>@hellman used resultants to deal with it. From his write-up, the size of unknown is 1408 bits. Since I have not group the terms, the unknown size is larger (1536 bits). <a href="https://nbviewer.jupyter.org/gist/hellman/a8c9a09b1ce6959226f9d75cf94b805f"
+   
+   target="_blank" rel="noopener noreferrer" >Link here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</li>
+</ul>
+<p>Thanks to @vishiswoz who pointed out that the mistakes that I made when defining the <em>multipliers</em>. Since the amount of unknown bits are small (1536 bits) relatively to the size of the known bits (3000 bits), they did not affect the results. This is the patched lattice (with parity fixed, too):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">multiplier</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">128</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">128</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">128</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">multiplier</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">96</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">T</span> <span class="o">=</span> <span class="n">diagonal_matrix</span><span class="p">(</span><span class="n">multiplier</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aPy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aPy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">aPy</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">aPy</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span><span class="o">^</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aPx</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aQx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aQy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">Gy</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">aQy</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Gx</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">aQy</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">aQy</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span><span class="o">^</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span> <span class="o">*</span> <span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">aQx</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">Gx</span> <span class="o">-</span> <span class="n">aPx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">T</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">LLL</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">B</span> <span class="o">/</span> <span class="n">T</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">B</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">row</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">dPx</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="c1"># e1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dPy</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># e2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dQx</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># e3</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dQy</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="c1"># e4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dP =&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">dPx</span><span class="p">,</span> <span class="n">dPy</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dQ =&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">dQx</span><span class="p">,</span> <span class="n">dQy</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># dP = (1155305281, -62177711)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># dQ = (1076744709, -30259545)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">()</span>
+</span></span></code></pre></div><h2 id="phoenix">phoenix<a href="#phoenix" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>If you want to become a member of the Order of the Phoenix, you need to:</p>
+<ul>
+<li>be able to perfectly control the magic wand</li>
+<li>be able to crack the following cipher</li>
+</ul>
+<p>...but maybe some of this is not needed</p>
+<p>Author: keltecc (Discord)</p>
+</blockquote>
+<div class="alert info">
+  <strong>Note:</strong> This time, we are working on $\text{GF}(2^{256})$. $+$ is equivalent to XOR now.
+</div>
+<p>We are given two polynomials over $A(x)$ and $B(x)$ over $\text{GF}(2^{256})$ with the polynomial $x^{256} + x^{10} + x^5 + x^2 + 1$. A key $\kappa(x)$ is also generated while kept secret. Suppose that we want to encrypt a message $(m_1, m_2, ..., m_l) \in \mathbb{Z}_2^l$. To encrypt the $i$-th bit, we</p>
+<ul>
+<li>compute $R_i(x)$ given by</li>
+</ul>
+<p>$$R_i(x) := [A(x)]^k \kappa(x) + B(x) = r_{i0} + r_{i1}x + r_{i2}x^2 + ... + r_{i,255}x^{255},$$</p>
+<ul>
+<li>then, compute the $i$-th bit of ciphertext, $c_i$, by</li>
+</ul>
+<p>$$c_i := m_i + (r_{i0} + r_{i2} + r_{i4} + r_{i6} + r_{i8}) + r_{i1} r_{i3} r_{i5} r_{i7} r_{i9}.$$</p>
+<p>The objective is to find the key $\kappa(x)$, given a ciphertext $(c_1, c_2, ..., c_{1024})$ and knowing that $m_1 = m_2 = ... = m_{768} = 0$.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>$m_1 = m_2 = ... = m_{768} = 0$ is pretty suspicious. We know that for $i = 1, 2, ..., 768$,</p>
+<p>$$c_i = r_{i0} + r_{i2} + r_{i4} + r_{i6} + r_{i8} + r_{i1} r_{i3} r_{i5} r_{i7} r_{i9}.$$</p>
+<p>Since the probability for $r_{i1} r_{i3} r_{i5} r_{i7} r_{i9} = 1$ is only 1/32, we can approximate $c_i$ with</p>
+<p>$$\tilde{c_i} = r_{i0} + r_{i2} + r_{i4} + r_{i6} + r_{i8}.$$</p>
+<p>It is expected that $c_i = \tilde{c_i}$ for most of the cases. If we can express $R_i(x)$ in terms of $\kappa(x) := k_0 + k_1 x + ... + k_{255}x^{255}$, we have a set of simultaneous linear equations in terms of $k_i$'s, while around 24 of the equations are incorrect. Since there are 256 unknowns (i.e., $k_0, k_1, ..., k_{255}$), I am picking 256 equations from $c_i = \tilde{c_i}$ and hoped all of them are correct. The chances are not that low - it is $\left(\frac{31}{32}\right)^{256} \approx 0.000295$, which is around one in 3400. We can identify the correct solution by checking the number of equations with $c_i = \tilde{c_i}$. If it is correct, then there will be around 744 $i$'s satisfying the condition. Otherwise, there are only about 512. Eventually I have the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Aero{n1c3_ISD_4tt4ck_g00d_j0b!!}
+</span></span></code></pre></div><h2 id="boggart">boggart<a href="#boggart" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Welcome to another Defence Against the Dark Arts lesson.</p>
+<p>Today I will show you a new powerful charm — Riddikulus. Enjoy!</p>
+<p><code>nc 151.236.114.211 17101</code></p>
+<p>Author: keltecc (Discord)</p>
+</blockquote>
+<p>There is a netcat service available in this challenge. We can get four numbers each time we connect: a modulus $n$, a mask $\sigma$, and a pair of ciphertexts $c_1$ and $c_2$. $c_1$ is the ciphertext for the message <code>the boy who lived</code>, while $c_2$ is the encrypted flag. The modulus is a product of two primes $p := \text{NextPrime}(\sigma\ |\ \Delta p)$ and $q := \text{NextPrime}(\sigma\ |\ \Delta q)$.</p>
+<p>However, it performs 16 rounds of encryption algorithm $\mathcal{E}$. $\mathcal{E}$ looks man-made, which is a combination of <em>RSA</em> and <em>Lucas sequence</em>. Let's annotate the attachment <code>boggart.py</code> a bit.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Wardrobe</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@staticmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">create_boggarts</span><span class="p">(</span><span class="n">fear</span><span class="p">,</span> <span class="n">danger</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Return an array of public exponents</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="n">danger</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fear</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">fear</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">getrandbits</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">yield</span> <span class="n">fear</span>
+</span></span><span class="line"><span class="cl">                <span class="n">danger</span> <span class="o">-=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Wizard</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magic</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">experience</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">magic</span> <span class="o">=</span> <span class="n">magic</span>           <span class="c1"># self.magic = n, the public modulus</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">knowledge</span> <span class="o">=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">1</span>    <span class="c1"># self.knowledge = 2</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">experience</span> <span class="o">=</span> <span class="n">experience</span> <span class="c1"># self.experience = message</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">cast_riddikulus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boggart</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Encrypt the message, m, with the public exponent.</span>
+</span></span><span class="line"><span class="cl">        <span class="n">knowledge</span><span class="p">,</span> <span class="n">experience</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">knowledge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experience</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="n">boggart</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">knowledge</span><span class="p">,</span> <span class="n">experience</span> <span class="o">=</span> <span class="n">experience</span><span class="p">,</span> <span class="p">(</span><span class="n">experience</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">experience</span> <span class="o">-</span> <span class="n">knowledge</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">magic</span>
+</span></span><span class="line"><span class="cl">            <span class="n">boggart</span> <span class="o">-=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">experience</span> <span class="o">=</span> <span class="n">experience</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ...omitted</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">harry_potter</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="n">magic</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">bytes_to_long</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;the boy who lived&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">you</span> <span class="o">=</span> <span class="n">Wizard</span><span class="p">(</span><span class="n">magic</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">bytes_to_long</span><span class="p">(</span><span class="n">flag</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Perform 16 rounds of encryption</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">boggart</span> <span class="ow">in</span> <span class="n">Wardrobe</span><span class="o">.</span><span class="n">create_boggarts</span><span class="p">(</span><span class="n">boggart_fear</span><span class="p">,</span> <span class="n">boggart_danger</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">harry_potter</span><span class="o">.</span><span class="n">cast_riddikulus</span><span class="p">(</span><span class="n">boggart</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">you</span><span class="o">.</span><span class="n">cast_riddikulus</span><span class="p">(</span><span class="n">boggart</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># ...omitted</span>
+</span></span></code></pre></div><h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-factoring-n-with-sigma">Part I: Factoring $n$ with $\sigma$<a href="#part-i-factoring-n-with-sigma" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I don't have any directions to begin with. Let's try to factorize $n$ first. Since there is a netcat service this time, we can be more picky on the numbers. For instance, we can find $\sigma$ such that their set bits are evenly spaced. Also, we can assume that the set bits for $\sigma$ are also set for $p$ and $q$ (except the least 20 bits). Denote $S = (s_1, s_2, ..., s_k)$ with $s_1 &lt; s_2 &lt; ... &lt; s_k$ are the set bits of $\sigma$, i.e., we have $\sigma = 2^{s_1} + 2^{s_2} + ... + 2^{s_k}$. Let's look at the algorithm I could think of.</p>
+<p><strong>[Initialize]</strong> Let's pick the smallest $j$ such that $s_j \geq 20$. Initialize the set $F_j$ by</p>
+<p>$$F_j := \left\{(p, q) \in \mathbb{Z}^2\ |\ pq \equiv n\ (\text{mod}\ 2^{s_j}) \right\}$$</p>
+<p>What is this $F_j$? Ideally, I would like to ensure that $(p, q) \in F_j$ satisfies $pq \equiv 1\ (\text{mod}\ 2^s)$ (for a given $s$), while $p$ and $q$ having the set bits $\sigma$ had.</p>
+<div class="alert info">
+  <strong>Why $s_j \geq 20$?</strong> The set bits for $\sigma$ may not be set in $\text{NextPrime}(\sigma\ | \Delta p)$ because of carrying. In this case, I assumed that the carrying did not go too far.
+</div>
+
+<p><strong>[Update]</strong> We can define $F_i$ for $i = j+1, j+2, ..., k$ with the below algorithm.</p>
+<ol>
+<li>Initialize $F_i = \phi$, the empty set.</li>
+<li>For each $(p_1, q_1) \in \mathbb{Z}^2$:
+<ul>
+<li>Exhaust $0 \leq u, v \le 2^{s_i}$ with $2^{s_{i-1}+1}\ |\ u$ and $2^{s_{i-1}+1}\ |\ v$.</li>
+<li>Write $p_2 = p_1 + u + 2^{s_i}$ and $q_2 = q_1 + v + 2^{s_i}$ (Note: they have the $s_i$^th^ bit set).</li>
+<li>If $n \equiv p_2q_2\ (\text{mod}\ 2^{s_i})$, then update $F_i \leftarrow F_i \cup {(p_2, q_2)}$.</li>
+</ul>
+</li>
+</ol>
+<p><strong>[Finalize]</strong> For each $(p_1, q_1)$ in $F_k$,</p>
+<ol>
+<li>Exhaust $0 \leq u, v &lt; 2^{512}$ with $2^{s_k+1}\ |\ u$ and $2^{s_k+1}\ |\ v$.</li>
+<li>Write $p_2 = p_1 + u + 2^{s_k}$ and $q_2 = q_1 + v + 2^{s_k}$.</li>
+<li>If $n = p_2q_2$, then $p_2$ and $q_2$ are the prime factors for $n$.</li>
+</ol>
+<p>If you are interested, just have a look at <a href="https://gist.github.com/samueltangz/0f1da2de136bb89ef79858f590d9a8f4"
+   
+   target="_blank" rel="noopener noreferrer" >the gist</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> on factoring $n$. Below is the $n$ I retrieved and the corresponding $p$ and $q$. There is a paper<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> (and its corresponding slides<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>) more tricks to factor $n$ given partial information.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">n = 40740327153595270257184780086389953086261120133330698714430641164791044793765728073225136444807495004396268705143115221155717342774153766221474052678956440685995627998728286518422095251317829948639280532042852083900018149268443333895256994879066082385467247811575697036554762935124165948190148187259065768291
+</span></span><span class="line"><span class="cl">p = 6599104293714145478554177176803578568990396482282918390864510364381920295952993884789163942979610791954293100727323403846729255137773392428824686146334083
+</span></span><span class="line"><span class="cl">q = 6173614681677589793159076464182384333359578951775387735487730852029780858970587865352547693301144847551051384110518957280217521699817523617984210590793377
+</span></span></code></pre></div><div class="alert warning">
+  <strong>An afterthought.</strong> My algorithm is pretty slow, and it could be sped up by computing $q_2$ from $p_2$ (instead of iterating them) on <em>update</em> and <em>finalize</em>. The complexity for each set update would be $\mathcal{O}(2^{s_{i+1} - s_i})$ instead of $\mathcal{O}(4^{s_{i+1} - s_i})$.
+</div>
+
+<h4 id="part-ii-identifying-the-cryptosystem-and-solving-for-the-flag">Part II: Identifying the cryptosystem and solving for the flag<a href="#part-ii-identifying-the-cryptosystem-and-solving-for-the-flag" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I don't know how the factors are useful even I have $n$ factorized. Maybe we shall investigate how $\mathcal{E}$ works. Let's look at the <code>Wizard</code> class, where <code>cast_riddikulus</code> is essentially the encryption function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Wizard</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magic</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">experience</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">magic</span> <span class="o">=</span> <span class="n">magic</span>           <span class="c1"># self.magic = n, the public modulus</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">knowledge</span> <span class="o">=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">1</span>    <span class="c1"># self.knowledge = 2</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">experience</span> <span class="o">=</span> <span class="n">experience</span> <span class="c1"># self.experience = message</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">cast_riddikulus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boggart</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Encrypt the message, m, with the public exponent.</span>
+</span></span><span class="line"><span class="cl">        <span class="n">knowledge</span><span class="p">,</span> <span class="n">experience</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">knowledge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experience</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="n">boggart</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">knowledge</span><span class="p">,</span> <span class="n">experience</span> <span class="o">=</span> <span class="n">experience</span><span class="p">,</span> <span class="p">(</span><span class="n">experience</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">experience</span> <span class="o">-</span> <span class="n">knowledge</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">magic</span>
+</span></span><span class="line"><span class="cl">            <span class="n">boggart</span> <span class="o">-=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">experience</span> <span class="o">=</span> <span class="n">experience</span>
+</span></span></code></pre></div><p>It can be expressed in a formula. Suppose that we have the message $m$, with the public key $(n, e)$. The ciphertext $c$ is computed as</p>
+<p>$$
+\begin{bmatrix}? \\ c\end{bmatrix} \equiv \begin{bmatrix}0 &amp; 1 \\ -1 &amp; m\end{bmatrix}^{e-1}\begin{bmatrix}2 \\ m\end{bmatrix}\ (\text{mod}\ n).
+$$</p>
+<p>It looked weird to me, since I did not expect that $m$ is also included in the transition matrix. However, learning from so much CTFs in the history, I think this cryptosystem is not designed solely for this CTF. I searched with the keywords <em>RSA</em>, <em>Lucas sequence</em> and <em>cryptosystem</em>, and found a paper on LUC cryptosystem<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>. To decrypt a message, we need to derive the private key from the ciphertext $c$ and the factorization of $n$. Now what we have done on the first part is useful. Since the public exponents are generated by the <code>Wardrobe</code>, let's look at how it works.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Wardrobe</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@staticmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">create_boggarts</span><span class="p">(</span><span class="n">fear</span><span class="p">,</span> <span class="n">danger</span><span class="p">):</span> <span class="c1"># fear = 31337 and danger = 16</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Return an array of public exponents</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="n">danger</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fear</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">fear</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">getrandbits</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">yield</span> <span class="n">fear</span>
+</span></span><span class="line"><span class="cl">                <span class="n">danger</span> <span class="o">-=</span> <span class="mi">1</span>
+</span></span></code></pre></div><p>In short, 16 public exponents $e_1, e_2, ..., e_{16}$ such that $e_1 &lt; e_2 &lt; ... &lt; e_{16}$ are generated. It is computed as a subsequence of the prime sequence $(31357, 31379, 31387, 31391, ...)$.</p>
+<p>Since we are given a pair of $(m_1, c_1)$, I used the <em>meet-in-the-middle</em> approach to find the $e_i$'s. Since each round of the encryption is independent, I can encrypt $m_1$ with $e_1, e_2, ..., e_{10}$ for middletexts. On the other hand, I will decrypt $c_1$ with the private exponents derived from $e_{16}, e_{15}, ..., e_{11}$ for middletexts, too. If they are equal, then $(e_1, e_2, ..., e_{16})$ is the chain of public exponents I want. To speed up, I am working under modulo $p$ instead of modulo $n$. Not only the modulus is smaller, the private exponents are also smaller.</p>
+<div class="alert info">
+  <strong>Why 10+6 but not 8+8 for MITM?</strong> The decryption is considerably slower (owing to large $d$'s) and I think we should be encrypting more.
+</div>
+
+<p>After I finish writing the program, I went to bed. The flag is sitting nicely when I am awake. Nice!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Aero{Do_you_know_Peter_Pettigrew?}
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="https://eprint.iacr.org/2020/1506.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >IACR 2020/1506: Recovering cryptographic keys from partial information, by example</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="https://www.kangacrypt.info/files/NH.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >Kangacrypt 2018: How to recover cryptographic keysfrom partial information</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p><a href="https://thescipub.com/pdf/jcssp.2008.1056.1060.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >A New Computation Algorithm for a Cryptosystem Based on Lucas Functions</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Aero CTF 2021 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-03-28-hkcert-ctf/">← HKCERT CTF 2020 Postmortem</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-02-27-union-ctf-committee/">Union CTF 2021 (II): committee →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlaidCTF 2021: Leaky Block Cipher | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">PlaidCTF 2021: Leaky Block Cipher</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-04-19T12:07:00&#43;08:00">2021-04-19</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/plaidctf/" class="text-muted text-decoration-none">#plaidctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>PlaidCTF this year had <em>very</em> insane challenges. Although I have spent a lot of time working on those crypto challenges, I was only able to solve <em>leaky block cipher</em>.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>This completely legitimate™ block cipher looks a bit like GCM, but my computer plumber keeps complaining about water residue. Can you help me spot the leak?</p>
+</blockquote>
+<p>The challenge has a hand-crafted AEAD scheme. We are required to go through 20 rounds of challenges, and this is how each round proceeds:</p>
+<ol>
+<li>The service sends you an <em>IV</em> that is used in this round.</li>
+<li>You send a plaintext (with ≥ 7 blocks) for encryption.</li>
+<li>The service encrypts your plaintext and returns the <em>tag</em> and 15.5 bytes of the encrypted <em>IV</em> ($\mathcal{C}_\text{IV}$).</li>
+<li>If you are able to provide the remaining 0.5 bytes of $\mathcal{C}_\text{IV}$, you won this round.</li>
+</ol>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-understanding-the-scheme">Part I: Understanding the scheme<a href="#part-i-understanding-the-scheme" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To begin, let's have a look on the <code>LeakyBlockCipher</code> class, where most of the things are happening.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">LeakyBlockCipher</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">key</span> <span class="o">=</span> <span class="n">secrets</span><span class="o">.</span><span class="n">token_bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">aes</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aes</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">iv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span> <span class="o">==</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ivi</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">iv</span><span class="p">,</span> <span class="s2">&#34;big&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cip</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tag</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span><span class="mi">16</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cntr</span> <span class="o">=</span> <span class="p">((</span><span class="n">ivi</span> <span class="o">+</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">16</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s2">&#34;big&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">block</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">16</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">enced</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aes</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">xor</span><span class="p">(</span><span class="n">cntr</span><span class="p">,</span> <span class="n">block</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cip</span> <span class="o">+=</span> <span class="n">enced</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tag</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">enced</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tag</span> <span class="o">=</span> <span class="n">gf128</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">)</span> <span class="c1"># multiplication under GF(2^128)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tag</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aes</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">iv</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">cip</span><span class="p">,</span> <span class="n">tag</span>
+</span></span></code></pre></div><p>As mentioned in the summary, we are only given the <em>tag</em> for the plaintext we send. This is how the tag, $T$, for a $n$-block ciphertext $(c_1, c_2, ..., c_n)$ defined:</p>
+<p>$$T := c_1 {\mathcal{C}_0}^n + c_2 {\mathcal{C}_0}^{n-1} + ... + c_n {\mathcal{C}_0} + {\mathcal{C}_\text{IV}},$$</p>
+<p>here ${\mathcal{C}_0}$ is the encrypted block of null bytes and ${\mathcal{C}_\text{IV}}$ is the encrypted IV.</p>
+<p>From above, here are two ciphertext blocks we are interested: ${\mathcal{C}_0}$ and ${\mathcal{C}_\text{IV}}$. We should pick those $c_i$'s such that $c_i \in \{{\mathcal{C}_0}, {\mathcal{C}_\text{IV}}\}$, or otherwise we are actually introducing more unknowns, which is not desired.</p>
+<h3 id="part-ii-testing-around-and-observing-patterns">Part II: Testing around and observing patterns<a href="#part-ii-testing-around-and-observing-patterns" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>One interesting way to set $c_i$'s is to set all of them as ${\mathcal{C}_\text{IV}}$. In that way, the tag we have is</p>
+<p>$$T := {\mathcal{C}_\text{IV}}({\mathcal{C}_0}^n + {\mathcal{C}_0}^{n-1} + ... + 1).$$</p>
+<p>It is very easy for us to exhaust ${\mathcal{C}_\text{IV}}$ since we already have 15.5 bytes of it, where there are only 16 possible cases. With that, ${\mathcal{C}_0}$ is the only unknown and its terms form an geometric series:</p>
+<p>$${\mathcal{C}_0}^n + {\mathcal{C}_0}^{n-1} + ... + 1 = \frac{T}{\mathcal{C}_\text{IV}}.$$</p>
+<p>I was expecting that the above equation has roots in ${\mathcal{C}_0}$ only if ${\mathcal{C}_\text{IV}}$ is correct. I was wrong. In average, there are ~12 out of 16 candidate ${\mathcal{C}_\text{IV}}$'s has roots for ${\mathcal{C}_0}$. Although I am able to filter a few candidates away, I am never lucky to picking one in twelve correctly for 20 times in a row.</p>
+<p>While I was messing around with $n$, I found the number of ${\mathcal{C}_\text{IV}}$'s that the equation has roots is dropped suddenly when $n = 15$. There are only one or two candidates in most of the cases. I've executed an experiment with the below code snippet to estimate the number of possible ${\mathcal{C}_\text{IV}}$'s.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">R</span><span class="o">.&lt;</span><span class="n">x</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">GF</span><span class="p">(</span><span class="mi">2</span><span class="p">)[]</span>
+</span></span><span class="line"><span class="cl"><span class="n">F</span> <span class="o">=</span> <span class="n">GF</span><span class="p">(</span><span class="mi">2</span><span class="o">^</span><span class="mi">128</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">modulus</span><span class="o">=</span><span class="n">x</span><span class="o">^</span><span class="mi">128</span><span class="o">+</span><span class="n">x</span><span class="o">^</span><span class="mi">7</span><span class="o">+</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="o">+</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">counts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">17</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k0</span> <span class="o">=</span> <span class="n">getrandbits</span><span class="p">(</span><span class="mi">124</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k1</span> <span class="o">=</span> <span class="n">getrandbits</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">K</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">fetch_int</span><span class="p">(</span><span class="mi">16</span><span class="o">*</span><span class="n">k0</span> <span class="o">+</span> <span class="n">k1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">H</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">fetch_int</span><span class="p">(</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">H</span><span class="o">^</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">K</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">fetch_int</span><span class="p">(</span><span class="mi">16</span><span class="o">*</span><span class="n">k0</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">rs</span> <span class="o">=</span> <span class="p">(</span><span class="n">K</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">roots</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">rs</span><span class="p">:</span> <span class="c1"># H</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="n">H</span><span class="p">:</span> <span class="n">f</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">f</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">counts</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">17</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">counts</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+</span></span></code></pre></div><p>From the results, there are one or two ${\mathcal{C}_\text{IV}}$'s in 80% of the cases. There is a 70% chance to solve a round of the challenge. Hence, we are able to get the flag in around 1250 attempts (with winning probability $0.7^{20}$). Although this is decent, I would like to investigate why is the equation $x^{15} + x^{14} + ... + 1 = K$ (where $K$ is a constant) is less likely to have roots compared with others.</p>
+<h3 id="part-iii-we-need-to-go-deeper">Part III: We need to go deeper<a href="#part-iii-we-need-to-go-deeper" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>...or not.</strong> It is still possible for someone to solve the challenge from the above results. I am just curious. Anyway, we will be speaking mathematics now!
+</div>
+
+<p>Suppose that $g \in \text{GF}(2^{128})$ is a generator. Then the order of $g$ is $2^{128}-1$. Since 15 is a factor of $2^{128}-1$, $g^{15}$ has an order $(2^{128}-1)/15$. This said, there is $1/15$ chance for $x^{15} = h$ to have solutions if we pick $h \in \text{GF}(2^{128})$ randomly. On the other hand, we have an interesting fact that happens on $\text{GF}(2^{128})$:</p>
+<p>$$x^{15} + x^{14} + ... + 1 = (x + 1)^{15}.$$</p>
+<p>The probability for $x^n + x^{n-1} + ... + 1 = h$, where $h$ is randomly picked from $\text{GF}(2^{128})$, to be solvable is $1/n$ if $n \in \mathbb{N}$ satifies:</p>
+<ol>
+<li>$x^n + x^{n-1} + ... + 1 = (x + 1)^n$, and</li>
+<li>$2^{128}-1$ is divisible by $n$.</li>
+</ol>
+<p>We want to find a larger $n$ to reduce the above probability, since it is correlated to the number of unwanted candidates for ${\mathcal{C}_\text{IV}}$. However $n$ should not be <em>too</em> large because this is the number of plaintext blocks we are sending to the server. For the first condition, it suffices to find $n$ such that $n \choose r$ are all odd for $r = 0, 1, ..., n$. This happens if and only if $n = 2^k - 1$ for some $k \in \mathbb{Z}_{\geq 0}$. In particular, $n = 255$ sounds a good pick - the probability is small enough, yet it is still reasonable to send 255 plaintext blocks for interaction. On the other hand, instead of finding the roots for $(x + 1)^{255} = K$, we can simply check if $K^{(2^{128}-1)/255}$ equals one. To summarize, this is how we solve one round of the challenge:</p>
+<ol>
+<li>Send $m_1, m_2, ..., m_{255}$ to the server, where $m_1 = m_2 = ... = m_{255} = (\text{IV}+k) \oplus \text{IV}$. We then have $c_1 = c_2 = ... = c_k = \mathcal{C}_\text{IV}$.</li>
+<li>Receive $T$ and 15.5 bytes of $\mathcal{C}_\text{IV}$.</li>
+<li>For each candidate $C'$ of $\mathcal{C}_\text{IV}$ (there are only sixteen),
+<ul>
+<li>Compute $A := T/C'$.</li>
+<li>Compute $B := A^{(2^{128}-1)/255}$.</li>
+<li>If $B = 1$, assume that $\mathcal{C}_\text{IV} = C'$.</li>
+</ul>
+</li>
+</ol>
+<p>After solving 20 rounds of challenge from the server, we have the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">PCTF{you_found_the_residues!_db2f6ade22d73a90b15e8d1b06167393}
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          PlaidCTF 2021: Leaky Block Cipher
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-05-04-defcon-quals-1/">← DEF CON CTF Quals 2021: Day 1</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-04-08-angstromctf-2021/">ångstromCTF 2021: Cache Money →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

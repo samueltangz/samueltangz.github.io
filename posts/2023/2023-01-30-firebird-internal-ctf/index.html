@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firebird Internal CTF 2023 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Firebird Internal CTF 2023 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2023-01-30T16:40:00&#43;08:00">2023-01-30</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/firebird-training/" class="text-muted text-decoration-none">#firebird-training</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>Like in 2021 and 2022, I contributed some challenges for Firebird's internal CTF, which are from <a href="https://hkust.edu.hk/"
+   
+   target="_blank" rel="noopener noreferrer" >the Hong Kong University of Science and Technology</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. This time I wrote three crypto challenges: <em>Randomsum</em>, <em>Shelter</em> and <em>Threerider</em>.</p>
+<p>There were 24 teams participating. There were three solves for <em>Randomsum</em>, while <em>Shelter</em> and <em>Threerider</em> were unsolved during the CTF.</p>
+<div class="alert success">
+  &#x1f389; <strong>Thank you!</strong> Kudos to <em>@LifeIsHard</em> for reading the write-up and giving me comments (including those erratas) so that I could improve the blog post!
+</div>
+
+<h2 id="randomsum">Randomsum<a href="#randomsum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I am leaking random bits of the RSA factors. Who doesn't like leaks?</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/randomsum/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/randomsum/public/output.txt"
+   
+   target="_blank" rel="noopener noreferrer" >output.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a 2048-bit RSA modulus $n$, a public exponent $e = 65537$ and an encrypted flag $c$. We are also given $t$, which consists of 2048 bits (1318 distinct bits) from the factors, $p$ and $q$. The objective is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1337</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">t</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key</span><span class="o">.</span><span class="n">p</span><span class="o">&gt;&gt;</span><span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">1</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">q</span><span class="o">&gt;&gt;</span><span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="o">&amp;</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2048</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl"><span class="n">t</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2048</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">e</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">e</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">t</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">c</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># n = 23972924803656725645946104612288180239254366533835447570211958435888835149024704127730216635918366064642338427956144263722073485986182242950506562077115261972266819566896991605805331175926336936623727858956342095970617971414648408199255433214266089182676417304576439449775708611349397255997892478936263800821533938404508818638694040349742659681140030800595271768949111564030020912493782604042297523251856213731597666043107228963973074577037344345426025975807448211052650699923918471883180836394144595630503970610793789138051476548955355193194759840128264687246565426588680843522246453634852078525991710060236523993541</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># e = 65537</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># t = 14000066433047292246448752794201977165563733655047203575867121262166187560566711892325594792129845153282249633931642143973215540568376319171334159461972160877466256238242152503653373908684017280676080125004854850332445723153614845802146395899581463896936557611606222767193353523987995818833578861773617167644193038121558267674251210114195760011821306729346761634659759967871454608623374306270379642305886119902085577927092579512468263725679201030921437666386689058685094677660425920780030296995254804923997961573399239884517270135267952236745232513979074599714453057660939074051865674834210296195715452442772175320306</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># c = 6629119219609628910262885521069144816410786299451464969111007624958603576922839074850618464009859754669933262329186876226112761547177882680972685257697161919090897947135355903504454390331332951864051787079151186147963687429869735814443602986151345233136170388603746969296411646714158233418888611277576374237710204734229716394950713361265013458346462648487382316305877942127752214474859094795859454295294490880154326380500685914654596927550241665243599892940472157748432105831205326132442653659482947911799058715375236555903827420335782334212566356002880715361572706447898027515949713485430213701388248011598192532689</span>
+</span></span></code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since we are given $t$ (i.e., 1318 distinct bits of $p$ and $q$), we can immediately apply from section 4.3.1<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> to factorize $n$. In short, $p$ and $q$ can be obtained with branch-and-prune algorithm by checking $n\ \text{mod}\ 2$, $n\ \text{mod}\ 2^2$ and so on.</p>
+<div class="alert info">
+  🙋 <strong>Alternate solution.</strong> <em>Mushroom1</em> used z3 to recover $p$ and $q$. I am surprised that the challenge can be solved with z3.
+</div>
+
+<h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">MASKS</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1024</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">guess</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_ps</span><span class="p">,</span> <span class="n">_qs</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">*</span> <span class="n">q0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">n0</span><span class="p">:</span> <span class="k">return</span> <span class="n">p0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">n0</span><span class="p">:</span> <span class="k">return</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">pb</span> <span class="ow">in</span> <span class="n">_ps</span><span class="p">[</span><span class="n">bits</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p1</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">|</span> <span class="p">(</span><span class="n">pb</span><span class="o">&lt;&lt;</span><span class="n">bits</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">qb</span> <span class="ow">in</span> <span class="n">_qs</span><span class="p">[</span><span class="n">bits</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">q1</span> <span class="o">=</span> <span class="n">q0</span> <span class="o">|</span> <span class="p">(</span><span class="n">qb</span><span class="o">&lt;&lt;</span><span class="n">bits</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">p1</span><span class="o">*</span><span class="n">q1</span> <span class="o">&amp;</span> <span class="n">MASKS</span><span class="p">[</span><span class="n">bits</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n</span> <span class="o">&amp;</span> <span class="n">MASKS</span><span class="p">[</span><span class="n">bits</span><span class="p">]:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span> <span class="o">=</span> <span class="n">guess</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_ps</span><span class="p">,</span> <span class="n">_qs</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">bits</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">res</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">1027</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">23972924803656725645946104612288180239254366533835447570211958435888835149024704127730216635918366064642338427956144263722073485986182242950506562077115261972266819566896991605805331175926336936623727858956342095970617971414648408199255433214266089182676417304576439449775708611349397255997892478936263800821533938404508818638694040349742659681140030800595271768949111564030020912493782604042297523251856213731597666043107228963973074577037344345426025975807448211052650699923918471883180836394144595630503970610793789138051476548955355193194759840128264687246565426588680843522246453634852078525991710060236523993541</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span> <span class="o">=</span> <span class="mi">65537</span>
+</span></span><span class="line"><span class="cl"><span class="n">t</span> <span class="o">=</span> <span class="mi">14000066433047292246448752794201977165563733655047203575867121262166187560566711892325594792129845153282249633931642143973215540568376319171334159461972160877466256238242152503653373908684017280676080125004854850332445723153614845802146395899581463896936557611606222767193353523987995818833578861773617167644193038121558267674251210114195760011821306729346761634659759967871454608623374306270379642305886119902085577927092579512468263725679201030921437666386689058685094677660425920780030296995254804923997961573399239884517270135267952236745232513979074599714453057660939074051865674834210296195715452442772175320306</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="mi">6629119219609628910262885521069144816410786299451464969111007624958603576922839074850618464009859754669933262329186876226112761547177882680972685257697161919090897947135355903504454390331332951864051787079151186147963687429869735814443602986151345233136170388603746969296411646714158233418888611277576374237710204734229716394950713361265013458346462648487382316305877942127752214474859094795859454295294490880154326380500685914654596927550241665243599892940472157748432105831205326132442653659482947911799058715375236555903827420335782334212566356002880715361572706447898027515949713485430213701388248011598192532689</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Known bits</span>
+</span></span><span class="line"><span class="cl"><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1337</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">bs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2048</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">_ps</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1024</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl"><span class="n">_qs</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1024</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">&gt;&gt;</span><span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">assert</span> <span class="n">_ps</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[[</span><span class="n">v</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_ps</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">assert</span> <span class="n">_qs</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[[</span><span class="n">v</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_qs</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">guess</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_ps</span><span class="p">,</span> <span class="n">_qs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="n">n</span> <span class="o">%</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">p</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">phi_n</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">d</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi_n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">m</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">flag</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">2048</span><span class="o">//</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">flag</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="shelter">Shelter<a href="#shelter" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I hope my account is intact under the hackers' attack!</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/auth.py"
+   
+   target="_blank" rel="noopener noreferrer" >auth.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/shelter/public/hacker.py"
+   
+   target="_blank" rel="noopener noreferrer" >hacker.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given an authentication service which allows us to</p>
+<ol>
+<li><strong>[register]</strong> create a new user with a given username and password,</li>
+<li><strong>[sign in]</strong> sign in to a user with a set of credentials by returning a token,</li>
+<li><strong>[auth]</strong> retrieve the username from the token.</li>
+</ol>
+<p>Remarkably, the token is a ciphertext of <code>username=[USERMAME]&amp;password=[PASSWORD]</code>, using AES-CBC with a fixed key and a random IV. It is notable that the <em>auth</em> endpoint is vulnerable to the padding oracle attack.</p>
+<p>On the other hand, we are also given a hacker's exploit which attempts to steal the username and password from a given token. The goal is to create a valid token such that the hacker is unable to retrieve its credentials with the <code>crack</code> function.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Hacker</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srv</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># The function to check if the padding is correct</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">srv</span> <span class="o">=</span> <span class="n">srv</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__oracle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">srv</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s1">&#39;Padding is incorrect.&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s1">&#39;PKCS#7 padding is incorrect.&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__recover_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext_block</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">iv</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="n">iv</span><span class="p">[</span><span class="mi">15</span><span class="o">-</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">                <span class="n">crafted_iv</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">iv</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)]))</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__oracle</span><span class="p">(</span><span class="n">crafted_iv</span> <span class="o">+</span> <span class="n">ciphertext_block</span><span class="p">):</span> <span class="k">break</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">iv</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__recover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">            <span class="n">xor</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">16</span><span class="p">:</span><span class="n">i</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">__recover_block</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">16</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">),</span> <span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">])</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">token</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__recover</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">=</span> <span class="n">unpad</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">username</span><span class="p">,</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">password</span><span class="p">,</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span>
+</span></span></code></pre></div><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-padding-oracle-and-its-attacks">The padding oracle and its attacks<a href="#the-padding-oracle-and-its-attacks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Suppose that we are given a function $\mathcal{O}$ that tells us whether a ciphertext $c$ has a valid PKCS#7 padding, i.e.,</p>
+<p>$$\mathcal{O}(c) = \begin{cases}
+\color{green}{\checkmark} &amp; \text{if}\ c\ \text{has a valid padding} \\
+\color{red}{✗} &amp; \text{otherwise}
+\end{cases}.$$</p>
+<p>There are a lot of instances vulnerable to the padding oracle attack. It affected multiple frameworks like <em>Ruby on Rails</em><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>, <em>ASP.NET</em> and so on.</p>
+<p>Let's get to the details of the padding oracle attack, which happens in the cipher block chaining (CBC) mod of operation. If we let $m_1$, $c_0$ and $c_1$ being respectively a plaintext, an IV and a ciphertext (all of them are 16-byte long), then the below relation holds:</p>
+<p>$$m_1 = c_0 \oplus \text{Decrypt}_k(c_1).$$</p>
+<p>The general idea for the padding oracle attack is to change $c_0$ and keep $c_1$ fixed. We can recover $\text{Decrypt}_k(c_1)$ by checking whether $m_1$ has a valid padding. For example, we want to recover the below ciphertext:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">000102030405060708090a0b0c0d0e0f 1d53a4e415b0893fc386fbea776b7198
+</span></span></code></pre></div><p>Assuming that the ciphertext decrypts to <code>68656c6c6f20776f726c642104040404</code>. Passing the ciphertext to $\mathcal{O}$ would return $\color{green}{\checkmark}$ because it has a valid padding (the message ends with four <code>04</code>s).</p>
+<p>Of course, as the hacker we do not have the access to the plaintext. We have to use $\mathcal{O}$ to recover the plaintext byte-by-byte. Let's follow the algorithm given from <code>__recover_block</code> and see how $\mathcal{O}$ recovers the plaintext. To begin, it sets</p>
+<p>$$\begin{aligned}
+&amp; c_0 = \texttt{01010101010101010101010101010101} \quad \text{and} \\
+&amp; c_1 = \texttt{1d53a4e415b0893fc386fbea776b7198}.
+\end{aligned}$$</p>
+<div class="alert info">
+  &#x1f914; <strong>Why $\texttt{0101...0101}$?</strong> I think it is more elegant to define $c_0$ with $\hat{c_0}$ and the padding. $\hat{c_0}$ is a counter and it would eventually be $\text{Decrypt}_k(c_1)$, and is initially defined to be $\texttt{0000...0000}$. On the other hand, when we are recovering the last character of $\text{Decrypt}_k(c_1)$, we make the padding to be $\texttt{0101...0101}$ (which will be changed to $\texttt{0202...0202}$, $\texttt{0303...0303}$ when we try to recover the second last character onwards)... In short, the code to recover $\text{Decrypt}_k(c_1)$ (thus $m_1$) will look prettier.
+</div>
+
+<p>The ciphertext decrypts to <code>69656f6e6a2470697b646f2b09080b0a</code>, and it does <em>not</em> have a valid padding, i.e., $\mathcal{O}(c_0 \ || \ c_1) = \color{red}{✗}$. We then send $\mathcal{O}(c_0' \ || \ c_1)$, where</p>
+<p>$$\begin{aligned}
+c_0' &amp;= \texttt{00000000000000000000000000000001} \oplus \texttt{01010101010101010101010101010101} \\
+&amp;= \texttt{01010101010101010101010101010100}.
+\end{aligned}$$</p>
+<p>The corresponding plaintext is <code>69656f6e6a2470697b646f2b09080b0b</code>, which also imply that $\mathcal{O}(c_0' \ || \ c_1) = \color{red}{✗}$. The below figure shows the results of the 256 possible attempts:</p>
+
+
+<figure>
+  <img src="/images/2023-01-30-firebird/shelter-oracle-1.png" title="The 256 attempts to recover the last byte of $m_1$.">
+  
+  <figcaption>The 256 attempts to recover the last byte of $m_1$.</figcaption>
+  
+</figure>
+
+<p>Eventually, we will send $\mathcal{O}(c_0'' \ || \ c_1)$ with</p>
+<p>$$\begin{aligned}
+c_0'' &amp;= \texttt{0000000000000000000000000000000b} \oplus \texttt{01010101010101010101010101010101} \\
+&amp;= \texttt{0101010101010101010101010101010a}.
+\end{aligned}$$</p>
+<p>The plaintext is now <code>69656f6e6a2470697b646f2b09080b01</code> and it has a valid PKCS#7 padding, i.e., $\mathcal{O}(c_0'' \ || \ c_1) = \color{green}{\checkmark}$. Knowing this as a valid plaintext, we immediately know that the last byte of the plaintext (denoted by $m_1''$) is a <code>01</code>. Therefore, we know that the last byte of $\text{Decrypt}_k(c_1)$ is $\texttt{0a} \oplus \texttt{01} = \texttt{0b}$, using the relation</p>
+<p>$$\begin{aligned}
+&amp; m_1'' = c_0'' \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \texttt{{\color{gray}[15 bytes]}01} = \texttt{{\color{gray}[15 bytes]}0a} \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \text{Decrypt}_k(c_1) = \texttt{{\color{gray}[15 bytes]}01} \oplus \texttt{{\color{gray}[15 bytes]}0a} = \texttt{{\color{gray}[15 bytes]}0b}.
+\end{aligned}$$</p>
+<p>Subsequently, we can recover the second last byte. Define $c_0^{(3)}$ by</p>
+<p>$$\begin{aligned}
+c_0^{(3)} &amp;= \texttt{0000000000000000000000000000000b} \oplus \texttt{02020202020202020202020202020202} \\
+&amp;= \texttt{02020202020202020202020202020209}.
+\end{aligned}$$</p>
+<p>The plaintext for $c_0^{(3)} \ || \ c_1$ is <code>6a666c6d6927736a78676c280a0b0802</code>, thus $\mathcal{O}(c_0^{(3)} \ || \ c_1) = \color{red}{✗}$. We can keep increasing the counter for the second-last byte. Eventually, the counter will be increased to $\texttt{0a}$... and this is its corresponding $c_0^{(4)}$:</p>
+<p>$$\begin{aligned}
+c_0^{(4)} &amp;= \texttt{00000000000000000000000000000a0b} \oplus \texttt{02020202020202020202020202020202} \\
+&amp;= \texttt{02020202020202020202020202020809}.
+\end{aligned}$$</p>
+<p>The plaintext for $c_0^{(4)} \ || \ c_1$ is <code>6a666c6d6927736a78676c280a0b0202</code>, thus $\mathcal{O}(c_0^{(4)} \ || \ c_1) = \color{green}{\checkmark}$. Thus the last two bytes of $\text{Decrypt}_k(c_1)$ is $\texttt{0a0b}$, since</p>
+<p>$$\begin{aligned}
+&amp; m_1^{(4)} = c_0^{(4)} \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \texttt{{\color{gray}[14 bytes]}0202} = \texttt{{\color{gray}[14 bytes]}0a0b} \oplus \text{Decrypt}_k(c_1) \\
+\Longrightarrow \quad &amp; \text{Decrypt}_k(c_1) = \texttt{{\color{gray}[14 bytes]}0202} \oplus \texttt{{\color{gray}[14 bytes]}0809} = \texttt{{\color{gray}[14 bytes]}0a0b}.
+\end{aligned}$$</p>
+
+
+<figure>
+  <img src="/images/2023-01-30-firebird/shelter-oracle-2.png" title="The 256 attempts to recover the second last byte of $m_1$.">
+  
+  <figcaption>The 256 attempts to recover the second last byte of $m_1$.</figcaption>
+  
+</figure>
+
+<p>We can repeat the process to recover $\text{Decrypt}_k(c_1)$. With that, we can easily obtain $m_1$ by the identity we mentioned at the very beginning:</p>
+<p>$$m_1 = c_0 \oplus \text{Decrypt}_k(c_1).$$</p>
+<p>By the way, since we will be getting the error message from the <em>auth</em> endpoint, it could tell us if the padding is correct. With that said, this endpoint has a padding oracle and thus cannot escape from the padding oracle vulnerability.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">&gt; auth 204094b9bec1ea6b9473d345130699d2de1c31278bda8b9f4695bc8fac7116735f78bb7509cd5add82abcdca9bf7989d 
+</span></span><span class="line"><span class="cl">🖥️ The token is correct for foo!
+</span></span><span class="line"><span class="cl">&gt; auth 204094b9bec1ea6b9473d345130699d2de1c31278bda8b9f4695bc8fac7116735f78bb7509cd5add82abcdca9bf7989e 
+</span></span><span class="line"><span class="cl">🖥️ Invalid token: Padding is incorrect..
+</span></span></code></pre></div><h4 id="a-corner-case">A corner case<a href="#a-corner-case" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I was not entirely correct in the previous section. When recovering the last byte, the trailing byte may not be <code>01</code> for the padding to be PKCS#7-compliant. Instead, it could end with <code>0202</code> (or <code>030303</code>, <code>04040404</code>, ...).</p>
+<p>For instance, let's look at the case $m_1 = \texttt{{\color{gray}[14 bytes]}0201}$ and $c_0 = \texttt{{\color{gray}[14 bytes]}017a}$. The below are the 256 oracle calls that recovers the last byte of $m_1$. Note that $c_1$ below is kept constant in the attempts.</p>
+
+
+<figure>
+  <img src="/images/2023-01-30-firebird/shelter-corner-case.png" title="The 256 attempts to recover the last byte of $m_1$.">
+  
+  <figcaption>The 256 attempts to recover the last byte of $m_1$.</figcaption>
+  
+</figure>
+
+<p>We can see that attempts #123 and #124 have valid paddings, i.e.,</p>
+<p>$$\mathcal{O}(\texttt{{\color{gray}[14 bytes]}017b{\color{gray}[16 bytes]}}) = \mathcal{O}(\texttt{{\color{gray}[14 bytes]}017a{\color{gray}[16 bytes]}}) = \color{green}{\checkmark}.$$</p>
+<p>However, the function stops at the first successful attempt, it assumed that the ciphertext $\texttt{{\color{gray}[14 bytes]}017b{\color{gray}[16 bytes]}}$ would decrypt to $\texttt{{\color{gray}[15 bytes]}01}$, which is wrong. Thus it fails to recover the correct $m_1$.</p>
+<p>Notably, there are some message-ciphertext pairs that the hacker fails to handle, and one of them being $m_1 = \texttt{{\color{gray}[14 bytes]}0201}$ and $c_1 = \texttt{{\color{gray}[14 bytes]}01}c^*$ with $(c^* \oplus 3) &lt; c^*$.</p>
+<h4 id="applying-to-the-challenge">Applying to the challenge<a href="#applying-to-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I used the username <code>foo</code> and password <code>xxxxxxxx[02]</code> (<code>[02]</code> is the byte with ASCII value 2). In that way, the plaintext would be <code>username=foo&amp;password=xxxxxxxx\x02</code>, which is 31 bytes long and a <code>[01]</code> will be appended as a padding due to PKCS#7. We can generate ciphertexts repeatedly using the <code>signin</code> command until the ciphertext ends with <code>0102</code>, <code>0103</code>, <code>0106</code>, ..., <code>01fe</code>, <code>01ff</code> (all of them satisfy $c^* \oplus 3 &lt; c^*$).</p>
+<p>There are, in average, one out of 512 tokens that the hacker fails to decrypt.</p>
+<h4 id="how-do-we-fix-the-attack-script">How do we fix the attack script?<a href="#how-do-we-fix-the-attack-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To handle the corner case, we need to check the plaintext so that it does not end with <code>0202</code>, <code>030303</code> and so on. We will change the second last byte of $c_0$ to a different value. In that way, the second last byte of $m_1$ will be changed as well. If $m_1$ is still PKCS#7-compliant, then that means that $m_1$ ends with a <code>01</code>. In the below figure, attempts #123+ and #124+ are the additional checks imposed.</p>
+
+
+<figure>
+  <img src="/images/2023-01-30-firebird/shelter-corner-case-fix.png" title="Fixing the corner case.">
+  
+  <figcaption>Fixing the corner case.</figcaption>
+  
+</figure>
+
+<h3 id="solution-script-1">Solution script<a href="#solution-script-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s1">&#39;carbon-chal.firebird.sh&#39;</span><span class="p">,</span> <span class="mi">36013</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;register foo xxxxxxxx</span><span class="se">\x02</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># username=foo&amp;password=xxxxxxxx\x02</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Create 1024 tokens at once to save time</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1024</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;signin foo xxxxxxxx</span><span class="se">\x02</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1024</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Signed in as foo with token &#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">token</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">^</span><span class="mh">0x1</span><span class="o">^</span><span class="mh">0x2</span> <span class="o">&gt;</span> <span class="n">token</span><span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">token</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;hack </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;WHY? &#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></div><h2 id="threerider">Threerider<a href="#threerider" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert danger">
+  🤯 Who could ever expect that I am plagiarizing the same challenge twice?
+</div>
+
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>The deadline for writing challenges is coming again!</p>
+<p>Mystiz, who claimed himself <a href="https://mystiz.hk/posts/2021-03-28-hkcert-ctf/#interesting-flag-submissions-osint-master"
+   
+   target="_blank" rel="noopener noreferrer" >not well-known reusing challenges</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, decided to free-ride and plagarize challenges from HKCERT CTF 2020. Uh, I mean, <a href="https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-2/#freerider--tenet-the-plagarism-crypto"
+   
+   target="_blank" rel="noopener noreferrer" >HKCERT CTF 2021</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. Maybe you can reuse the solve script last year for the flag.</p>
+<p>Ciphertext:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">f84bf7049cb55a0e1457d977e6cfbc0cc49ee1102da505e10aa3c32e619180446617ae2270cba3629b0851ae627236f19bb9cbfcadcd010eb923d170cbc2a7
+</span></span></code></pre></div><p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230127-firebird-internal-ctf/threerider/public/challenge.py"
+   
+   target="_blank" rel="noopener noreferrer" >challenge.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>Suppose that the flag matches the regular expression <code>firebird\{\w{53}\}</code>. We define an encryption algorithm, $\mathcal{E}$, with a 16-byte key $k_1k_2...k_{16}$. Let $m$ be the message we would like to encrypt (all of the counters are set to zero):</p>
+<ol>
+<li>Encrypt $m$ with AES-CTR using the key <code>k1 00 00 00 ... 00</code> ($k_1$ followed by 15 null bytes) and denote it by $t_1$.</li>
+<li>Encrypt $t_1$ with AES-CTR using the key <code>k2 00 00 00 ... 00</code> and denote it by $t_2$.</li>
+<li>...</li>
+<li>Encrypt $t_{15}$ with AES-CTR using the key <code>k16 00 00 00 ... 00</code> and denote it by $t_{16}$.</li>
+<li>Return $t_{16}$ as the ciphertext.</li>
+</ol>
+<p>$\mathcal{E}$ is used to encrypt the flag and we are given its ciphertext. The objective is to recover the flag. Notably, the challenge is highly referenced from <a href="https://github.com/hkcert-ctf/CTF-Challenges/blob/main/CTF-2020/1.%20%20Cryptography/5.%20Tenet/Challenge/enc.py"
+   
+   target="_blank" rel="noopener noreferrer" >Tenet</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and <a href="https://mystiz.hk/posts/2021/2021-11-18-hkcert-ctf-2/#freerider--tenet-the-plagarism-crypto"
+   
+   target="_blank" rel="noopener noreferrer" >Tenet: The plagarism</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> in HKCERT CTF 2020 and 2021 respectively.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>FreeRider vs Threerider.</strong> We only know 133 bits of information. If we use the intended solution for FreeRider, there are at least $2^{123}$ possible solutions and it is obviously infeasible to find the correct one in time.
+</div>
+
+<p>We can borrow the idea from <em>FreeRider</em>. To get started, we can build a $133 \times 256$ matrix $A$ and a $133 \times 1$ matrix $b$, with entries being 0 or 1:</p>
+<p>$$
+A = \left[\begin{matrix}
+b_{0, j_1} &amp; b_{1, j_1} &amp; b_{2, j_1} &amp; ... &amp; b_{255, j_1} \\
+b_{0, j_2} &amp; b_{1, j_2} &amp; b_{2, j_2} &amp; ... &amp; b_{255, j_2} \\
+&amp;&amp; \vdots \\
+b_{0, j_{133}} &amp; b_{1, j_{133}} &amp; b_{2, j_{133}} &amp; ... &amp; b_{255, j_{133}} \\
+\end{matrix}\right],
+b = \left[\begin{matrix}
+m_{j_1} + c_{j_1} \\
+m_{j_2} + c_{j_2} \\
+\vdots \\
+m_{j_{133}} + c_{j_{133}}
+\end{matrix}\right]
+$$</p>
+<p>Similar to <em>FreeRider</em>, there is a $256 \times 1$ matrix $x$ such that $A \cdot x = b\ (\text{mod}\ 2)$. In particular, if $x = (x_0, x_1, ..., x_{255})$ then $x_j = 1$ if and only if the byte $j$ occurs in the key for an odd number of times.</p>
+<p>For example, if the key is <code>00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0e</code>, then</p>
+<p>$$\begin{cases}
+x_j = 1 &amp; \text{if}\ j = 0, 1, ..., 13 \\
+x_j = 0 &amp; \text{otherwise}
+\end{cases}.$$</p>
+<p>It is remarkable that there are at most sixteen from $x_0, x_1, ..., x_{255}$ such that $x_j = 1$. For simplicity, let's assume that there are exactly sixteen $x_j$'s such that $x_j = 1$. In that case, if we pick $m$ entries $x_{j_1}, x_{j_2}, ..., x_{j_m}$ randomly, then the probability of $x_{j_1} = x_{j_2} = ... = x_{j_m} = 0$ would be</p>
+<p>$$\frac{240}{256} \cdot \frac{239}{255} \cdot ... \cdot \frac{240-m+1}{256-m+1}.$$</p>
+<p>Since we have 133 equations and 256 unknowns, we will just randomly pick 123 $x_j$'s and assumed that to be zero. From above, the probability for them to actually be zero is around 1 in 56000.</p>
+<p>Eventually, we can just repeatedly assume some of the unknowns to be zero and solve the equations. If there are less than or equal to 16 non-zero $x_j$'s, then that is very likely to be the vector we are looking for.</p>
+<div class="alert warning">
+  🤨 <strong>Why?</strong> We assume that those incorrect $x$'s such that $A \cdot x = b$ is sampled randomly. Since there are 123 equations, then it is expected that there are 62 1's ($123/2 \approx 62$). It is really rare that there are only 16 1's.
+</div>
+
+<h3 id="solution-script-2">Solution script<a href="#solution-script-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util</span> <span class="kn">import</span> <span class="n">Counter</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">mul</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#                      f i r e b i r d {                                                                                                           }</span>
+</span></span><span class="line"><span class="cl"><span class="n">known</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;ffffffffffffffffff8080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080ff&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">m</span> <span class="o">=</span>     <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;66697265626972647b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007d&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span>     <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;f84bf7049cb55a0e1457d977e6cfbc0cc49ee1102da505e10aa3c32e619180446617ae2270cba3629b0851ae627236f19bb9cbfcadcd010eb923d170cbc2a7&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">xor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">u</span><span class="o">^^</span><span class="n">v</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">keystreams</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="n">k</span><span class="p">])</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CTR</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="n">Counter</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">initial_value</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">keystreams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># The number of entries I guessed that they are zeroes</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Suggested: sampled_zeroes + number_of_equations &gt;= 256 (or add some more to avoid less false positives...)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">number_of_equations</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">known</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sampled_zeroes</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">-</span> <span class="n">number_of_equations</span>
+</span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="n">sampled_zeroes</span> <span class="o">&lt;=</span> <span class="mi">256</span><span class="o">-</span><span class="mi">16</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sampled_zeroes</span> <span class="o">+</span> <span class="n">number_of_equations</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">rc</span><span class="p">,</span> <span class="n">mc</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">known</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">c</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">rc</span><span class="o">&gt;&gt;</span><span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mb</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc</span><span class="o">&gt;&gt;</span><span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cb</span> <span class="o">=</span> <span class="p">(</span><span class="n">cc</span><span class="o">&gt;&gt;</span><span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">row</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;&gt;</span><span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keystreams</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">A</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mb</span><span class="o">^^</span><span class="n">cb</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">F</span> <span class="o">=</span> <span class="n">GF</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">hit_frequency</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="p">[(</span><span class="mi">256</span><span class="o">-</span><span class="mi">16</span><span class="o">-</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">256</span><span class="o">-</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sampled_zeroes</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">number_of_equations</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sampled_zeroes</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expecting a hit every </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">hit_frequency</span><span class="p">)</span><span class="si">}</span><span class="s1"> times&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">attempt</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># The 128 entries &#34;I&#34; guessed it is non-zero</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">256</span><span class="o">-</span><span class="n">sampled_zeroes</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">_A</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">v</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x0</span> <span class="o">=</span> <span class="n">_A</span><span class="o">.</span><span class="n">solve_right</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">dx</span> <span class="ow">in</span> <span class="n">_A</span><span class="o">.</span><span class="n">right_kernel</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">            <span class="n">flag</span> <span class="o">=</span> <span class="n">c</span>
+</span></span><span class="line"><span class="cl">            <span class="n">set_bits_count</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="o">-</span><span class="n">sampled_zeroes</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">x0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">dx</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">                <span class="n">set_bits_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">                <span class="n">flag</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">keystreams</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">flag</span> <span class="o">=</span> <span class="n">flag</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;firebird\{\w+\}&#39;</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">set_bits_count</span> <span class="o">&gt;</span> <span class="mi">16</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[*] Flag recovered at attempt #</span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;done!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">KeyboardInterrupt</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">err</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Gabrielle de Micheli, Nadia Heninger (2020) &quot;Recovering cryptographic keys from partial information, by example&quot;<br>
+<a href="https://hal.science/hal-03045663/document"
+   
+   target="_blank" rel="noopener noreferrer" >https://hal.science/hal-03045663/document</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Juliano Rizzo, Thai Duong (2010) &quot;Practical Padding Oracle Attacks&quot;<br>
+<a href="https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >https://www.usenix.org/legacy/event/woot10/tech/full_papers/Rizzo.pdf</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Firebird Internal CTF 2023 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2023/2023-03-06-mocsctf/">← MOCSCTF 2023 Postmortem</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-12-31-retrospective/">Retrospective 2022 →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

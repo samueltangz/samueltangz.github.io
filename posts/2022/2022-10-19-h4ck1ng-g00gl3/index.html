@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-10-19T00:02:00&#43;08:00">2022-10-19</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/google-ctf/" class="text-muted text-decoration-none">#google-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/rsa/" class="text-muted text-decoration-none">#rsa</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/bleichenbacher/" class="text-muted text-decoration-none">#bleichenbacher</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p><a href="https://www.youtube.com/watch?v=5nEyjYn9_LI&amp;list=PL590L5WQmH8dsxxz7ooJAgmijwOz0lh2H"
+   
+   target="_blank" rel="noopener noreferrer" >HACKING GOOGLE</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> is a documentary of Google's cybersecurity teams and <a href="https://h4ck1ng.google/"
+   
+   target="_blank" rel="noopener noreferrer" >H4CK1NG G00GL3</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> is it's CTF counterpart. <em>Project Zero Adventure</em> is a cryptography challenge I wrote.</p>
+<p>In the game, the players control the <a href="https://twitter.com/laparisa"
+   
+   target="_blank" rel="noopener noreferrer" >Security Princess</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> to dodge the obstacles and catch the bugs (a variant of Google Chrome's dinosaur game). After that, the server will sign messages consisting of the players' name and the score via the <code>/sign</code> API. The players will then submit it to the <code>/highscore</code> API. If the score submitted to the highscore API is negative, they will be given the flag.</p>
+<p>However, there is one catch: The server is only willing to sign the results with non-negative scores.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>It is given that the server signs messages using a RSA key with a 2048-bit public modulus $n$ and $e = 3$. The messages are signed with PKCS#1 v1.5. The <code>verify</code> method below is how a signature <code>s</code>, correspond to the message <code>m</code>, is being verified. The goal is to forge a signature for messages indicating that the player has a negative score (one example of the message being <code>[&quot;pzero-adventures&quot;, &quot;MYZ&quot;, -1]</code>).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">VerifyingKey</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="mi">2048</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">e</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># https://datatracker.ietf.org/doc/html/rfc2313#section-10.2</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Note: The only hash algorithm we accept is SHA256.</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="o">//</span><span class="mi">8</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;incorrect signature length&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">k</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="o">//</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;incorrect prefix&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mh">0x01</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;incorrect prefix&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">padding</span><span class="p">,</span> <span class="n">digest_info</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;invalid padding length&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">padding</span> <span class="o">!=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xff</span><span class="s1">&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">padding</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;invalid padding content&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span> <span class="o">=</span> <span class="n">DerSequence</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">digest_info</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_digest_algorithm_identifier</span><span class="p">,</span> <span class="n">_digest</span> <span class="o">=</span> <span class="n">sequence</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span> <span class="o">=</span> <span class="n">DerSequence</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_digest_algorithm_identifier</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_digest_algorithm_identifier</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">object_id</span> <span class="o">=</span> <span class="n">DerObjectId</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">object_id</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_digest_algorithm_identifier</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">digest_algorithm_identifier</span> <span class="o">=</span> <span class="n">object_id</span><span class="o">.</span><span class="n">value</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">digest_algorithm_identifier</span> <span class="o">!=</span> <span class="s1">&#39;2.16.840.1.101.3.4.2.1&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;invalid digest algorithm identifier&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">_null</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">null</span> <span class="o">=</span> <span class="n">DerNull</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">null</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">octet_string</span> <span class="o">=</span> <span class="n">DerOctetString</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">octet_string</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_digest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">digest</span> <span class="o">=</span> <span class="n">octet_string</span><span class="o">.</span><span class="n">payload</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">digest</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;mismatch digest&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">True</span>
+</span></span></code></pre></div><h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  📖 <strong>Alternative Writeups (which are usually better).</strong> Of course you would like to read the solutions from our players and our fellow Googlers! <a href="https://github.com/44670/writeups/blob/main/2022-h4ck1ng.google/main.md"
+   
+   target="_blank" rel="noopener noreferrer" >Writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> by <em>@44670</em>, <a href="https://github.com/Dvd848/CTFs/blob/master/2022_H4CK1NG_G00GL3/e05c02.md"
+   
+   target="_blank" rel="noopener noreferrer" >writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> by <em>@Dvd848</em>, <a href="https://dguerri.github.io/random-tech-stuff/H4CK1NG%20G00GL3%20Main%20challenges%20write-up/#challenge-02-5"
+   
+   target="_blank" rel="noopener noreferrer" >writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> by <em>@dguerri</em> and <a href="https://medium.com/@paulsc/hacking-google-ep05ch2-bleichenbacher-82f231830928"
+   
+   target="_blank" rel="noopener noreferrer" >writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> by <em>@paulsc</em>.
+</div>
+
+<div class="alert warning">
+  ⏩ <strong>Fast forward?</strong> If you are interested <em>only</em> in the solution, you can start reading from <a href="#part-iii-and-it-constantly-strikes-back"
+   
+   >part III</a>. I will begin with a literature review.
+</div>
+
+<h3 id="part-i-how-pkcs1-v15-signature-scheme-works">Part I: How PKCS#1 v1.5 signature scheme works?<a href="#part-i-how-pkcs1-v15-signature-scheme-works" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is well-known that RSA sign messages by &quot;decrypting&quot; them. Assuming that the RSA key is of 256 bytes, the PKCS#1 v1.5 payload to be signed is given below:</p>
+
+
+<figure>
+  <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-1.png" title="">
+  
+</figure>
+
+<p>Suppose that <code>DATA</code> is of length $l$. According to <a href="https://datatracker.ietf.org/doc/html/rfc2313#section-8.1"
+   
+   target="_blank" rel="noopener noreferrer" >RFC 2313</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <code>PADDING</code> consists of $253 - l$ bytes which are all <code>0xFF</code>. Also, the data are encoded using <em>Distinguished Encoding Rules (DER)</em>. Below is an example of DER-encoded data indicating that:</p>
+<ul>
+<li>the hash algorithm being SHA-256, and</li>
+<li>the digest being <code>0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">└─┬ 30 31                                  Sequence type (length 0x31)
+</span></span><span class="line"><span class="cl">  ├─┬ 30 0d                                Sequence type (length 0x0D)
+</span></span><span class="line"><span class="cl">  │ ├─┬ 06 09                              Object identifier type (length 0x09)
+</span></span><span class="line"><span class="cl">  │ │ └── 608648016503040201               Object identifier content (decoded
+</span></span><span class="line"><span class="cl">  │ │                                        2.16.840.1.101.3.4.2.1, SHA-256&#39;s OID)
+</span></span><span class="line"><span class="cl">  │ └── 05 00                              Null type (length 0x00)
+</span></span><span class="line"><span class="cl">  └─┬ 04 20                                Octet string type (length 0x20)
+</span></span><span class="line"><span class="cl">    └── 0424974c68530290458c8d58674e2637   Octet string content
+</span></span><span class="line"><span class="cl">        f65abc127057957d7b3acbd24c208f93
+</span></span></code></pre></div><p>Let $m$ denote the PKCS#1 v1.5 payload. Then the signature is given by $s = m^d \ \text{mod}\ n$.</p>
+<h3 id="part-ii-bleichenbachers-signature-forgery-attack-in-2006">Part II: Bleichenbacher's signature forgery attack in 2006<a href="#part-ii-bleichenbachers-signature-forgery-attack-in-2006" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In 2006, Bleichenbacher shared on CRYPTO'06 (<a href="https://mailarchive.ietf.org/arch/msg/openpgp/5rnE9ZRN1AokBVj3VqblGlP63QE/"
+   
+   target="_blank" rel="noopener noreferrer" >Hal Finney's summary</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>) a way to easily forge RSA signatures when $e$ is small and the verify function is poorly implemented.</p>
+<p>Suppose that the signature is validated by unpadding, retrieving <code>ALGORITHM</code> and <code>DIGEST</code> from <code>DATA</code> and discarding remaining bytes. This is an ideal message:</p>
+
+
+<figure>
+  <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-1.png" title="">
+  
+</figure>
+
+<p>However, as long as the <code>ALGORITHM</code> and <code>DIGEST</code> are correct, messages in the below format are considered valid as well:</p>
+
+
+<figure>
+  <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-2.png" title="">
+  
+</figure>
+
+<p>Yes -- this is not properly validated. This is disastrous, why?</p>
+<p>Let $e = 3$ and suppose we want to forge a signature for a message with its SHA-256 digest being <code>0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93</code>.</p>
+<p>Equivalently, we want to find $s$ with $s^3 \equiv m\ (\text{mod}\ n)$. Hereby $m$ begins with $m_0$ (which is 61 bytes long) below, i.e., $m = {256}^{195} m_0 + x$ for some &quot;garbage&quot; $x \in [0, {256}^{195})$.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">m0 = 0x00 01 ffffffffffffffff 30 31 30 3d 06 09 608648016503040201 50 00 04 20 0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93
+</span></span><span class="line"><span class="cl">             [PADDING       ] [DATA                                                                                                           ]
+</span></span><span class="line"><span class="cl">                                    [ALGORITHM                         ] [DIGEST                                                              ]
+</span></span></code></pre></div><p>It is difficult to work on modulo arithmetic, so let's lift the modulo away and look for $s$ such that $s^3 = m = {256}^{165} m_0 + x$. It is easy to find a $s$ such that</p>
+<p>$${256}^{165} m_0 \leq s^3 &lt; {256}^{165} (m_0 + 1).$$</p>
+<p>In short, any of the integer between $\sqrt[3]{{256}^{165} m_0}$ and $\sqrt[3]{{265}^{165} (m_0 + 1)}$ would fit -- and that is basically Bleichenbacher's attack in 2006.</p>
+<h3 id="part-iii-and-it-constantly-strikes-back">Part III: ...and it constantly strikes back<a href="#part-iii-and-it-constantly-strikes-back" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is still hard to validate PKCS#1 v1.5 signatures properly after a decade.</p>
+<p>In 2016, <em>Filippo Valsorda</em> (<a href="https://twitter.com/filosottile" target="_blank" rel="nofollow">@filosottile</a>) wrote a <a href="https://words.filippo.io/bleichenbacher-06-signature-forgery-in-python-rsa/"
+   
+   target="_blank" rel="noopener noreferrer" >blog post</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> on a flaw on such message being validated. In short, it is the <code>PADDING</code> which is not properly validated. You can read the source code of the vulnerable function <a href="https://github.com/sybrenstuvel/python-rsa/blob/version-3.2/rsa/pkcs1.py#L279"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+
+
+<figure>
+  <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-3.png" title="">
+  
+</figure>
+
+<p>This is not the end. In 2019, Sze Yiu Chau shared on Black Hat USA that the PKCS#1 v1.5 signatures are <em>still</em> not validated correctly (<a href="https://www.youtube.com/watch?v=2xspZfXI_nY"
+   
+   target="_blank" rel="noopener noreferrer" >video</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and <a href="https://i.blackhat.com/USA-19/Wednesday/us-19-Chau-A-Decade-After-Bleichenbacher-06-RSA-Signature-Forgery-Still-Works-wp.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >white paper</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> here). This yields six CVEs to their research team from various TLS and IPSec libraries.</p>
+<p>It is slightly different from BB'06. Instead of stuffing garbage as the suffix, we are putting random bytes in the middle. Mathematically, we are looking for $x$ with</p>
+<p>$$s^3 = m = 256^{l_1} \cdot \text{prefix} + 256^{l_2} \cdot x + \text{suffix}$$</p>
+<p>for a given $\text{prefix}$, $\text{suffix}$, $l_1$ and $l_2$.</p>
+<p>This is harder than stuffing garbage at the very end, because we have to solve the below inequalities and congruences at the same time:</p>
+<ul>
+<li>$256^{l_1} \cdot \text{prefix} \leq s^3 &lt; 256^{l_1} \cdot (\text{prefix} + 1)$, and</li>
+<li>$s^3 \equiv \text{suffix}\ (\text{mod}\ 256^{l_2}).$</li>
+</ul>
+<p>Fortunately this is solvable when $l_1 - l_2$ is large (we can stuff more garbage in between) and $e$ is small. Let's leave this as an exercise to the readers.</p>
+<h3 id="part-iv-again-in-h4ck1ng-g00gl3">Part IV: ...again in H4CK1NG G00GL3<a href="#part-iv-again-in-h4ck1ng-g00gl3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now back to the challenge. The <code>verify</code> function at the very beginning seems to be implemented correctly. But there is one problem in the following snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">VerifyingKey</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ...SKIPPED...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># ...SKIPPED...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span> <span class="o">=</span> <span class="n">DerSequence</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sequence</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_digest_algorithm_identifier</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_digest_algorithm_identifier</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">object_id</span> <span class="o">=</span> <span class="n">DerObjectId</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">object_id</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_digest_algorithm_identifier</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">digest_algorithm_identifier</span> <span class="o">=</span> <span class="n">object_id</span><span class="o">.</span><span class="n">value</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">digest_algorithm_identifier</span> <span class="o">!=</span> <span class="s1">&#39;2.16.840.1.101.3.4.2.1&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;invalid digest algorithm identifier&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">_null</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">null</span> <span class="o">=</span> <span class="n">DerNull</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">null</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">octet_string</span> <span class="o">=</span> <span class="n">DerOctetString</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">octet_string</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_digest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">digest</span> <span class="o">=</span> <span class="n">octet_string</span><span class="o">.</span><span class="n">payload</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">digest</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;mismatch digest&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">True</span>
+</span></span></code></pre></div><p>In the snippet, it checks if</p>
+<ul>
+<li>the first item in the sequence is an <em>object identifier</em> being SHA-256's OID, and</li>
+<li>the second item in the sequence (i.e., the parameter) is a <em>null</em> object.</li>
+</ul>
+
+
+<figure>
+  <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-4.png" title="">
+  
+</figure>
+
+<p>Unfortunately, the method did not check if the sequence has <em>exactly</em> two items. An adversary can insert garbage and pretend that being the third item in the sequence. We then can reduce this to the math problem mentioned in part III.</p>
+
+
+<figure>
+  <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-5.png" title="">
+  
+</figure>
+
+<h3 id="part-v-and-again-unexpectedly">Part V: ...and again, unexpectedly<a href="#part-v-and-again-unexpectedly" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  🤯 <strong>Unintended solution?</strong> I was carefully enough to make one mistake, but I was <em>not</em> carefully enough to make <em>only</em> one mistake. This part is dedicated to <em>@XMPPwocky</em>, who found an unintended solution and I was super surprised.
+</div>
+
+<p>Finally, let's patch the vulnerability. It is intuitive to check if the sequence of <code>ALGORITHM</code> has exactly two items:</p>
+<pre tabindex="0"><code class="language-diff-python&nbsp;diff-highlight" data-lang="diff-python&nbsp;diff-highlight">class VerifyingKey:
+    # ...SKIPPED...
+
+    def verify(self, m, s):
+        # ...SKIPPED...
+
+        sequence = DerSequence()
+        sequence.decode(digest_info)
+        _digest_algorithm_identifier, _digest = sequence
+
+        sequence = DerSequence()
+        sequence.decode(_digest_algorithm_identifier)
+
++       if len(sequence) != 2:
++           raise Exception(&#39;invalid sequence length&#39;)
+
+        _digest_algorithm_identifier = sequence[0]
+
+        object_id = DerObjectId()
+        object_id.decode(_digest_algorithm_identifier)
+        digest_algorithm_identifier = object_id.value
+        if digest_algorithm_identifier != &#39;2.16.840.1.101.3.4.2.1&#39;:
+            raise Exception(&#39;invalid digest algorithm identifier&#39;)
+
+        _null = sequence[1]
+        null = DerNull()
+        null.decode(_null)
+
+        octet_string = DerOctetString()
+        octet_string.decode(_digest)
+        digest = octet_string.payload
+
+        if hashlib.sha256(m).digest() != digest:
+            raise Exception(&#39;mismatch digest&#39;)
+        return True
+</code></pre><p>Is it sufficient? Surprisingly no. <a href="https://twitter.com/XMPPwocky" target="_blank" rel="nofollow">@XMPPwocky</a> found a problem when decoding for <code>DerNull</code> -- the latest version of pycryptodome (v3.15.0) does not raise an exception if it contains a non-empty payload!</p>
+<p>Normally, a <code>DerNull</code> object consists of two bytes: <code>05 00</code>. However, the below bytes are considered valid a <code>DerNull</code> object:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">05 27 64696420796f75206c6f6f6b20757020666f7220746865206861736820696e207061727420493f
+</span></span></code></pre></div><p>We can experiment this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.asn1</span> <span class="kn">import</span> <span class="n">DerNull</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">_null</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;05 27 64696420796f75206c6f6f6b20757020666f7220746865206861736820696e207061727420493f&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">null</span> <span class="o">=</span> <span class="n">DerNull</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">null</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">_null</span><span class="p">)</span> <span class="c1"># This does not raise an exception!</span>
+</span></span></code></pre></div><p>With that said, we can actually stuff garbage in the parameter field. Once again it became the math puzzle in part III.</p>
+
+
+<figure>
+  <img src="/images/2022-10-19-h4ck1ng-g00gl3/pkcsv1-15-6.png" title="">
+  
+</figure>
+
+<p>I tried my best to verify everything except the intended issue while implementing. The unintended solution is definitely a lesson for me. 🤩 <strong>VERY NICE CATCH!</strong> &#x1f389;</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-12-24-hkcert-ctf-1/">← HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-09-05-balsn/">BalsnCTF 2022 Writeup →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

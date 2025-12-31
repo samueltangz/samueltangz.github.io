@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crypto | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      
+
+      
+      
+      
+
+      
+      <div class="card my-2">
+        <img src="/images/2021-11-18-hkcert-ctf/thumbnail-1.png" class="post-banner">
+        <div class="card-body">
+          <h5 class="card-title post-title">
+            <a href="/posts/2021/2021-11-18-hkcert-ctf-1/">HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</a>
+          </h5>
+          
+          <div class="text-muted pb-3">
+            
+              
+              
+              <time datetime="2021-11-18T16:05:00&#43;08:00">2021-11-18</time>
+            
+            
+            <span class="px-1">::</span>
+            
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+              </span>
+            
+          </div>
+          
+          <p class="card-text">Black Bauhinia coorganized HKCERT CTF 2021 and helped 95% of the technical stuffs, including challenge setting, platform development, infrastructure and etc. I will be writing a series of blog posts talking about the contest, and the first four would be the writeups of the challenges those I wrote.
+
+In the first blog post, we will be going through four easier crypto challenges: A Joke Cipher, Cipher Mode Picker, Key Backup Service 1 and Key Backup Service 2.</p>
+          <a href="/posts/2021/2021-11-18-hkcert-ctf-1/" class="btn btn-text">Read More →</a>
+        </div>
+      </div>
+      
+      <div class="card my-2">
+        <img src="/images/2021-11-07-bsides-ahmedabad/intermediate-scoreboard.png" class="post-banner">
+        <div class="card-body">
+          <h5 class="card-title post-title">
+            <a href="/posts/2021/2021-11-07-bsides-ahmedabad/">BSides Ahmedabad CTF 2021 Writeup</a>
+          </h5>
+          
+          <div class="text-muted pb-3">
+            
+              
+              
+              <time datetime="2021-11-07T11:02:00&#43;08:00">2021-11-07</time>
+            
+            
+            <span class="px-1">::</span>
+            
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/bsides-ahmedabad/" class="text-muted text-decoration-none">#bsides-ahmedabad</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/algorithms/" class="text-muted text-decoration-none">#algorithms</a>
+              </span>
+            
+          </div>
+          
+          <p class="card-text">No, we did not win. I see that coming and took a screenshot during the game.
+
+BSides Ahmedabad CTF 2021 is organized by @zer0pts. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I&#39;ll go through the harder crypto challenges and the reversing challenge called Collapsed License in this blog post.</p>
+          <a href="/posts/2021/2021-11-07-bsides-ahmedabad/" class="btn btn-text">Read More →</a>
+        </div>
+      </div>
+      
+      <div class="card my-2">
+        <img src="/images/2021-10-11-pbctf/intended.png" class="post-banner">
+        <div class="card-body">
+          <h5 class="card-title post-title">
+            <a href="/posts/2021/2021-10-11-pbctf/">pbctf 2021: Seed Me &amp; Yet Another RSA</a>
+          </h5>
+          
+          <div class="text-muted pb-3">
+            
+              
+              
+              <time datetime="2021-10-11T20:26:00&#43;08:00">2021-10-11</time>
+            
+            
+            <span class="px-1">::</span>
+            
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/pbctf/" class="text-muted text-decoration-none">#pbctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/lll/" class="text-muted text-decoration-none">#lll</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/boneh-durfee/" class="text-muted text-decoration-none">#boneh-durfee</a>
+              </span>
+            
+          </div>
+          
+          <p class="card-text">I am playing as a part of @blackb6a this time for perfect blue&#39;s annual pbctf. This time there are six crypto challenges and I first blooded 🩸 half of them. I solved five of them, and collaborated with @TWY (who made 99% of the process) for Seed Me. In this blog post, I will cover Seed Me and Yet Another RSA. I tried to make the whole post beginner friendly, hence included more details than necessary.
+
+I was originally going to discuss all of the crypto challenges, but I found it is too demanding and tiring.</p>
+          <a href="/posts/2021/2021-10-11-pbctf/" class="btn btn-text">Read More →</a>
+        </div>
+      </div>
+      
+      <div class="card my-2">
+        <img src="/images/2021-07-24-googlectf/final-scoreboard.png" class="post-banner">
+        <div class="card-body">
+          <h5 class="card-title post-title">
+            <a href="/posts/2021/2021-07-24-google-ctf/">Google CTF 2021 Quals Writeup</a>
+          </h5>
+          
+          <div class="text-muted pb-3">
+            
+              
+              
+              <time datetime="2021-07-24T14:42:00&#43;08:00">2021-07-24</time>
+            
+            
+            <span class="px-1">::</span>
+            
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/google-ctf/" class="text-muted text-decoration-none">#google-ctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+              </span>
+            
+          </div>
+          
+          <p class="card-text">This is me playing another Google CTF with @blackb6a, ending up on the 25th place. I aced the crypto challenges and solved some challenges with my teammates. I have a strong feeling that Black Bauhinia grown a lot between the two Google CTFs and I am often backed by my teammates this time. Anyway, I will be covering all of the crypto challenges in this blog post.</p>
+          <a href="/posts/2021/2021-07-24-google-ctf/" class="btn btn-text">Read More →</a>
+        </div>
+      </div>
+      
+      <div class="card my-2">
+        <img src="/images/2021-04-19-plaidctf/leaky.png" class="post-banner">
+        <div class="card-body">
+          <h5 class="card-title post-title">
+            <a href="/posts/2021/2021-04-19-plaidctf-leaky-block-cipher/">PlaidCTF 2021: Leaky Block Cipher</a>
+          </h5>
+          
+          <div class="text-muted pb-3">
+            
+              
+              
+              <time datetime="2021-04-19T12:07:00&#43;08:00">2021-04-19</time>
+            
+            
+            <span class="px-1">::</span>
+            
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/plaidctf/" class="text-muted text-decoration-none">#plaidctf</a>
+              </span>
+            
+              <span class="badge rounded-pill bg-secondary">
+                <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+              </span>
+            
+          </div>
+          
+          <p class="card-text">PlaidCTF this year had very insane challenges. Although I have spent a lot of time working on those crypto challenges, I was only able to solve leaky block cipher.
+
+This completely legitimate™ block cipher looks a bit like GCM, but my computer plumber keeps complaining about water residue. Can you help me spot the leak? The challenge has a hand-crafted AEAD scheme. We are required to go through 20 rounds of challenges, and this is how each round proceeds...</p>
+          <a href="/posts/2021/2021-04-19-plaidctf-leaky-block-cipher/" class="btn btn-text">Read More →</a>
+        </div>
+      </div>
+      
+
+
+      
+        <a href="/tags/crypto/page/5/" class="btn">← Younger Posts</a>
+      
+
+      
+        <a href="/tags/crypto/page/7/" class="btn float-end">Older Posts →</a>
+      
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UIUCTF 2020: nookcrypt | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">UIUCTF 2020: nookcrypt</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2020-07-22T18:55:00&#43;08:00">2020-07-22</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/uiuctf/" class="text-muted text-decoration-none">#uiuctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/elliptic-curve/" class="text-muted text-decoration-none">#elliptic-curve</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/parameter-recovery/" class="text-muted text-decoration-none">#parameter-recovery</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>Tom Nook is testing a new encryption scheme for nookphones, but it seems to be a bit faulty... can you break it?</p>
+</blockquote>
+<p><em>nookcrypt</em> is a netcat service that have no source code released. There are two functions exposed:</p>
+<ol>
+<li>Gets an encrypted copy of the flag (and the message <code>hello world</code>).</li>
+<li>Encrypts an arbitrary message.</li>
+</ol>
+<p>For example, this is what I had when trying out the options:</p>
+<pre class='language-bash command-line' data-output='2-8' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">nc chal.uiuc.tf 2006
+Option: 1
+enc(FLAG) = (0xf31ce7cb1f2c6e7107318d76bdda50c5, 0x02d979fc3122bbaffcc1111953bc184f)
+enc(&#39;hello world&#39;) = (0x4cf5afcc9bc1db0118172129b713d86a, 0xe41d8761370768aa9694b164c843dde9)
+
+Option: 2
+msg: hello world
+enc(0x68656c6c6f20776f726c64) = (0x4cf5afcc9bc1db0118172129b713d86a, 0xe41d8761370768aa9694b164c843dde9)&lt;/code&gt;</code>
+</pre>
+
+<p>Since the response is consistent after reconnecting to the netcat service for multiple times, I assume that the parameters are constant.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-recovering-the-curve-parameters-in-a-stupid-way">Part I: Recovering the curve parameters in a stupid way<a href="#part-i-recovering-the-curve-parameters-in-a-stupid-way" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since it is mentioning elliptic curves in its services, the first thing I was doing is to recover the parameters, namely, $a$, $b$ and $p$ for the elliptic curve $y^2 \equiv x^3 + ax + b\ (\text{mod}\ p)$.</p>
+<p>My attempt is to encrypt a bunch of messages:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">msg: a
+</span></span><span class="line"><span class="cl">enc(0x61) = (0xb2d6c27a99b52aec6e243d4e4f67cb71, 0x9dfa2bd87ea1e09388493137132cc534)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">msg: b
+</span></span><span class="line"><span class="cl">enc(0x62) = (0x99b8150ebf23c69ee1056f0e329496ae, 0xe1febe35a5877f00f3876c2a24fb9164)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">msg: c
+</span></span><span class="line"><span class="cl">enc(0x63) = (0x3e7ef6d1106382119a0fa8c966f6d1df, 0x89d81b9fab5336a227414491881bbee8)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">msg: d
+</span></span><span class="line"><span class="cl">enc(0x64) = (0x985dbb38a65f4e69bfc602d7e114cad9, 0xcad1cb62a3d30b05093575f3a22f7e3c)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></div><p>Let $C_i = (x_i, y_i)$ be the ciphertext of a message $m_i$. By direct substitution, we have $y_i^2 \equiv x_i^3 + ax_i + b\ (\text{mod}\ p)$ for all $i$. Since we have three ciphertexts, we can deduce that</p>
+<ol>
+<li>$a(x_1 - x_2) \equiv y_1^2 - y_2^2 - x_1^3 + x_2^3 \ (\text{mod}\ p)$ and</li>
+<li>$a(x_2 - x_3) \equiv y_2^2 - y_3^2 - x_2^3 + x_3^3 \ (\text{mod}\ p)$.</li>
+</ol>
+<p>From above, we know $(y_1^2 - y_2^2 - x_1^3 + x_2^3)(x_2 - x_3) - (y_2^2 - y_3^2 - x_2^3 + x_3^3)(x_1 - x_2)$ is a multiple of $p$.</p>
+<p>We collected a bunch of &quot;multiples of $p$&quot; and take their gcd. We can recover that $p = 340282366762482138434845932244680310783$.</p>
+<p>Then it is rather obvious to recover $a = 284470887156368047300405921324061011681$ and $b = 126188322377389722996253562430093625949$.</p>
+<div class="alert info">
+  <strong>Question.</strong> What if it is not defined on a prime field? Well... I didn't think of that. But who cares? I could probably observe this if my approach doesn't work out.
+</div>
+<h3 id="part-ii-a-reflection-on-the-after-math">Part II: A reflection on the &quot;after-math&quot;<a href="#part-ii-a-reflection-on-the-after-math" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>Note.</strong> I did not think of this during the game. Stupid me.
+</div>
+<p>Knowing that the ciphertext $C$ is a multiple of a message $m$, i.e., $C = mG$, we can simply encrypt $m = 1$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">[+] Opening connection to chal.uiuc.tf on port 2006: Done
+</span></span><span class="line"><span class="cl">[DEBUG] Received 0x123 bytes:
+</span></span><span class="line"><span class="cl">    b&#39;\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;========================================\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;Welcome to NookCrypt! Here we use fancy\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;elliptic curve encryption to keep your \n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;messages safe! Try it out!\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;========================================\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;1. get (encrypted) flag\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;2. encrypt message\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;3. quit\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;========================================\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;Option: &#39;
+</span></span><span class="line"><span class="cl">[DEBUG] Sent 0x2 bytes:
+</span></span><span class="line"><span class="cl">    b&#39;2\n&#39;
+</span></span><span class="line"><span class="cl">[DEBUG] Received 0x5 bytes:
+</span></span><span class="line"><span class="cl">    b&#39;msg: &#39;
+</span></span><span class="line"><span class="cl">[DEBUG] Sent 0x2 bytes:
+</span></span><span class="line"><span class="cl">    00000000  01 0a                                               │··│
+</span></span><span class="line"><span class="cl">    00000002
+</span></span><span class="line"><span class="cl">[DEBUG] Received 0x178 bytes:
+</span></span><span class="line"><span class="cl">    b&#39;enc(0x01) = (0x7b6aa5d85e572983e6fb32a7cdebc140, 0x27b6916a894d3aee7106fe805fc34b44)\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;========================================\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;Welcome to NookCrypt! Here we use fancy\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;elliptic curve encryption to keep your \n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;messages safe! Try it out!\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;========================================\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;1. get (encrypted) flag\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;2. encrypt message\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;3. quit\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;========================================\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;\n&#39;
+</span></span><span class="line"><span class="cl">    b&#39;Option: &#39;
+</span></span></code></pre></div><p>What can we do? We can simply search the generator $G$ on Google:</p>
+
+
+<figure>
+  <img src="/images/2020-07-22-uiuctf/secp128r2.png" title="">
+  
+</figure>
+
+<p>Ta-da &#x1f389; - it is the generator for curve <em>secp128r2</em>. You would think this is a ta-da moment, I would say that this is a facepalm moment. I could spent much less time on recovering the parameters in such a way.</p>
+<p>Well, I was even more confused to notice that is a secure curve. I personally don't have a backdoor of <em>secp128r2</em> (I am much appreciated if you tell me if you do) and thought the challenge isn't doable.</p>
+<h3 id="part-iii-hint-for-nookcrypt-crypto-500">Part III: &quot;Hint for nookcrypt (crypto 500)&quot;<a href="#part-iii-hint-for-nookcrypt-crypto-500" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Fours hours later the organizers released a hint in the Discord server:</p>
+
+
+<figure>
+  <img src="/images/2020-07-22-uiuctf/announcement.png" title="">
+  
+</figure>
+
+<p>When I was <del>being played</del> writing an interactor with the service, I observed that there was a strange behaviour regarding to the flag encryption method:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">========================================
+</span></span><span class="line"><span class="cl">Welcome to NookCrypt! Here we use fancy
+</span></span><span class="line"><span class="cl">elliptic curve encryption to keep your 
+</span></span><span class="line"><span class="cl">messages safe! Try it out!
+</span></span><span class="line"><span class="cl">========================================
+</span></span><span class="line"><span class="cl">1. get (encrypted) flag
+</span></span><span class="line"><span class="cl">2. encrypt message
+</span></span><span class="line"><span class="cl">3. quit
+</span></span><span class="line"><span class="cl">========================================
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Option: 1
+</span></span><span class="line"><span class="cl">err
+</span></span></code></pre></div><p>Oh. So the error was caused by the cosmic ray. Okay.</p>
+<div class="alert info">
+  <strong>Did you really get it instantly when the hint is announced?</strong> No.
+</div>
+<h3 id="part-iv-somebody-made-a-breakthrough">Part IV: Somebody made a breakthrough<a href="#part-iv-somebody-made-a-breakthrough" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Ten hours later, <em>somebody</em> from Discord claimed that he has a strange observation:</p>
+
+
+<figure>
+  <img src="/images/2020-07-22-uiuctf/breakthrough.png" title="">
+  
+</figure>
+
+<div class="alert info">
+  <strong>Who was the somebody?</strong> Me.
+</div>
+<p>We made a bunch of assumptions. Cutting the crap, we assumed that the same generator $G = (x_G, y_G)$ is being multipled in a same way, except that the curve is operated on new modulo $p'$. This matches the author's statement regarding on the prime being corrupted.</p>
+<p>However, obviously, it is very likely that $G$ may not be a point the above curve. Luckily (or unluckily), we can assume that it is operating on another curve $y^2 \equiv x^3 + ax + b'\ (\text{mod}\ p')$, such that $G$ is on it.</p>
+<p>For now, we are given two points on this curve (the ciphertexts of the flag $F = (x_F, y_F)$ and the message <code>hello world</code> $M = (x_M, y_M)$). Since $a$ is known we can easily recover $p'$ by:</p>
+<p>$$\begin{aligned}
+p' = \text{gcd}( &amp;(y_F^2 - x_F^3 - ax_F - b') - (y_G^2 - x_G^3 - ax_G - b'), \\
+&amp; (y_M^2 - x_M^3 - ax_M - b') - (y_G^2 - x_G^3 - ax_G - b'))
+\end{aligned}
+$$</p>
+<p>The order of the generator should be a large prime for an elliptic curve to be secure. Clearly this property may not hold on those new modulos struck by the cosmic ray. For instance, suppose that we have $p' = 340282366762482138434845932242512471141$. Since 67 is a factor of $p'$, we are indeed working on the curve $y^2 \equiv x^3 + ax + b'\ (\text{mod}\ 67)$. Now $G$ has a order 74. Having $F = fG = 21G$ would imply that $f \equiv 21\ (\text{mod}\ 74)$.</p>
+<p>By collecting a bunch of linear congruences, we can find $f$ by the Chinese Remainder Theorem. Eventually we have the flag: <code>uiuctf{th4t_5ur3_w4s_f4ulty_huh?}</code>.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          UIUCTF 2020: nookcrypt
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2020/2020-08-25-google-ctf-oracle/">← Google CTF 2020: Oracle</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2020/2020-05-05-de1ctf/">De1CTF 2020 Writeup →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

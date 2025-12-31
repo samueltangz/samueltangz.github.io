@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Factoring a special RSA modulus from ASIS CTF 2021 Quals | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Factoring a special RSA modulus from ASIS CTF 2021 Quals</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-10-25T23:35:00&#43;08:00">2021-10-25</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/asis-ctf/" class="text-muted text-decoration-none">#asis-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/factor/" class="text-muted text-decoration-none">#factor</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p><em>LagLeg</em> is a crypto challenge in <em>ASIS CTF Quals 2021</em>. We are asked to factor a given modulus $n$ such that $n = (r^5 + s)(r + s)$. Hereby $r$ and $s$ are respectively 256 and 64 bits long. I think my approach used is very unique - and definitely worth mentioning. It does not mean that it is a good approach, however.</p>
+<p>I will record the exact steps I solved the challenge. However, I will update the bounds and prove the whole thing so that it <em>looked</em> more rigorous. The full code will be attached at the end of the blog post, too.</p>
+<div class="alert warning">
+  <strong>The sizes of $r$ and $s$ are wrong!</strong> The organizers have reiterated that $r$ and $s$ should be 128 and 32 bits long. I was too late to notice the announcement and solved the harder version (i.e., the one with larger parameters). The nerfed one can be factorized by brute-forcing $s$, which is not fun.
+</div>
+
+<h2 id="problem-statement">Problem Statement<a href="#problem-statement" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Suppose that $r \in [2^{255}, 2^{256})$ and $s \in [2^{63}, 2^{64})$. Suppose also $p = r^5 + s$ and $q = r + s$ are primes. Factorize $n := pq$.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  <p>We will denote $\hat{r_k}$ be an estimate of $r$ and $\Delta r_k := r - \hat{r_k}$. As an example, we will use the below parameters freshly generated from the challenge script:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="mi">113998029782126404385159208354017152656462126437187882248430209727665881104644</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="mi">11008047941767198067</span>
+</span></span></code></pre></div>
+</div>
+
+<h3 id="part-i-estimating-r-with-a-64-bit-error">Part I: Estimating $r$ with a 64-bit error<a href="#part-i-estimating-r-with-a-64-bit-error" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We can easily spot that $r \approx n^{1/6}$ since $n = r^6 + r^5s + rs + s^2 \approx r^6$. Hence, let's denote $\hat{r_1} = \lfloor n^{1/6} \rfloor$ be an estimate of $r$.</p>
+<hr>
+<p><strong>Theorem 1.</strong> $-2^{64} \leq \Delta r_1 \leq 0$.</p>
+<p><strong>Proof.</strong></p>
+<p>$$\begin{aligned}
+&amp; n = (r^5 + s)(r + s) \\
+\Longrightarrow &amp;\ r^6 = r^5 \cdot r &lt; n &lt; (r + s)^5 (r + s) = (r + s)^6 &lt; (r + 2^{64})^6 \\
+\Longrightarrow &amp;\ r &lt; n^{1/6} &lt; r + 2^{64} \\
+\Longrightarrow &amp;\ r \leq \hat{r_1} \leq r + 2^{64} \\
+\Longrightarrow &amp;\ r \leq r - \Delta r_1 \leq r + 2^{64} \\
+\Longrightarrow &amp;\ -2^{64} \leq \Delta r_1 \leq 0 \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad \blacksquare
+\end{aligned}$$</p>
+<hr>
+<div class="alert info">
+  <strong>Current progress for the example.</strong> $\Delta r_1 = -1834674656961199677 \approx -2^{61}$.
+</div>
+
+<h3 id="part-ii-reducing-the-error-of-r-to-38-bits">Part II: Reducing the error of $r$ to 38 bits<a href="#part-ii-reducing-the-error-of-r-to-38-bits" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We could also show that $n\ \text{mod}\ r = s^2$. Since $s^2$ is 128-bit long but $r$ itself is of 256 bits, this got me thinking: Could we detect that our estimate $\hat{r}$ is close to $r$? Turns out we can. Under modulo $\hat{r}$, we have</p>
+<p>$$n \equiv [(\hat{r} + \Delta r)^5 + s] [(\hat{r} + \Delta r) + s] \equiv (\Delta r^5 + s)(\Delta r + s) \equiv \Delta r^6 + \Delta r^5 s + \Delta r s + s^2 \ (\text{mod}\ \hat{r}).$$</p>
+<hr>
+<p><strong>Theorem 2A.</strong> Suppose that $s \in [0, 2^{64})$. If $\Delta r \in [-s^{1/5}, 2^{38})$, then the below equation holds (note that this is <em>not</em> a modular equation):</p>
+<p>$$n\ \text{mod}\ \hat{r} = \Delta r^6 + \Delta r^5 s + \Delta r s + s^2.$$</p>
+<p><strong>Proof.</strong></p>
+<p><em>(1) Lower Bound</em></p>
+<p>$$\Delta r^6 + \Delta r^5 s + \Delta r s + s^2 = (\Delta r^5 + s)(\Delta r + s) \geq [(-s^{1/5})^5 + s][-s^{1/5} + s] = 0$$</p>
+<p><em>(2) Upper Bound</em></p>
+<p>$$\begin{aligned}
+\Delta r^6 + \Delta r^5 s + \Delta r s + s^2 &amp;&lt; (2^{38})^6 + (2^{38})^5 \cdot 2^{64} + 2^{38} \cdot 2^{64} + (2^{64})^2 \\
+&amp; = 2^{228} + 2^{254} + 2^{102} + 2^{128} = 2^{254} + (2^{228} + 2^{128} + 2^{102}) \\
+&amp; &lt; 2^{254} + 2^{254} = 2^{255} \leq \hat{r}
+\end{aligned}$$</p>
+<p>Therefore $0 \leq \Delta r^6 + \Delta r^5 s + \Delta r s + s^2 &lt; \hat{r}$. Also $n \equiv \Delta r^6 + \Delta r^5 s + \Delta r s + s^2 \ (\text{mod}\ \hat{r})$, thus</p>
+<p>$$n\ \text{mod}\ \hat{r} = \Delta r^6 + \Delta r^5 s + \Delta r s + s^2. \qquad \blacksquare$$</p>
+<hr>
+<p><strong>Theorem 2B.</strong> Suppose that $s \in [0, 2^{64})$. If $\Delta r \in [-2^{38}, -s^{1/5})$, then:</p>
+<p>$$n\ \text{mod}\ \hat{r} = \Delta r^6 + \Delta r^5 s + \Delta r s + s^2 + \hat{r}.$$</p>
+<p><strong>Proof.</strong></p>
+<p><em>(1) Lower Bound</em></p>
+<p>$$\begin{aligned}
+\Delta r^6 + \Delta r^5 s + \Delta r s + s^2 &amp;= (\Delta r^5 + s)(\Delta r + s) &gt; [(-2^{38})^5 + s](-2^{38} + s) \\
+&amp; = -(2^{190} - s)(s - 2^{38}) &gt; -2^{190} \cdot (2^{64} - 2^{38}) \\
+&amp; &gt; -2^{190} \cdot 2^{64} = -2^{254} &gt; -\hat{r}
+\end{aligned}$$</p>
+<p><em>(2) Upper Bound</em></p>
+<p>$$\Delta r^6 + \Delta r^5 s + \Delta r s + s^2 = (\Delta r^5 + s)(\Delta r + s) &lt; [(-s^{1/5})^5 + s][-s^{1/5} + s] = 0$$</p>
+<p>Thus $-\hat{r} \leq \Delta r^6 + \Delta r^5 s + \Delta r s + s^2 &lt; 0$. Using a similar argument as <em>Theorem 2A</em>, we have</p>
+<p>$$n\ \text{mod}\ \hat{r} = \Delta r^6 + \Delta r^5 s + \Delta r s + s^2. \qquad \blacksquare$$</p>
+<hr>
+<p><strong>Theorem 3.</strong></p>
+<p>If $\Delta r \in [2^{38}, -s^{1/5}-1) \cup [-s^{1/5}, 2^{38}-1)$, then</p>
+<p>$$[n\ \text{mod}\ \hat{r}] - [n\ \text{mod}\ (\hat{r} + 1)] \approx 5 \Delta r^4 s.$$</p>
+<p><strong>Proof.</strong></p>
+<p>From <em>Theorem 2A</em>, if $\Delta r \in [-s^{1/5}, 2^{38}-1)$, we can compute</p>
+<p>$$\begin{aligned}
+&amp; [n\ \text{mod}\ \hat{r}] - [n\ \text{mod}\ (\hat{r} + 1)] \\
+&amp; = [\Delta r^6 + \Delta r^5 s + \Delta r s + s^2] - [(\Delta r - 1)^6 + (\Delta r - 1)^5 s + (\Delta r - 1)s + s^2] \\
+&amp; = -\sum_{k=0}^5 {6 \choose k} (-1)^{6 - k} \Delta r^k - \sum_{k=0}^4 {5 \choose k} (-1)^{6 - k} \Delta r^k s - s \\
+&amp; \approx 6 \Delta r^5 + 5 \Delta r^4 s - s \\
+&amp; \approx 5 \Delta r^4 s
+\end{aligned}$$</p>
+<p>Similarly, we could apply <em>Theorem 2B</em> on the interval $[2^{38}, -s^{1/5}-1)$ and obtain the same result. Omitted for brevity. $\blacksquare$</p>
+<hr>
+<p>The above quantity would be approximately 216 bits long if $\Delta r$ is 38 bits long. This is significantly smaller than $\hat{r}$. That said, we could exhaust $k \in [0, 2^{25})$ and define $\hat{r_2} := \hat{r_1} - 2^{39} k$. There exists a $k$ such that $\Delta r_2 \in [-2^{38}, 2^{38})$.</p>
+<div class="alert info">
+  <strong>Current progress for the example.</strong> $\Delta r_2 = -131959783875 \approx -2^{37}$.
+</div>
+
+<h3 id="part-iii-reducing-the-error-of-r-to-13-bits">Part III: Reducing the error of $r$ to 13 bits<a href="#part-iii-reducing-the-error-of-r-to-13-bits" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  <strong>Mystiz' postmortem.</strong> This part is my motivation to compile the entire blog post. While I am writing the blog post, I thought of some different ways (to be verified!) which might look better.
+</div>
+
+<p>When $r \in [-s^{1/5}, 2^{38})$, it is not hard to show that either $n\ \text{mod}\ \hat{r}$ is either dominated by the term $\Delta r^5 s$ or $s^2$. The below chart shows a relationship between the average number of bits for $n\ \text{mod}\ \hat{r}$ (the $y$-axis) with respect to the number of bits of $\Delta r$ (the $x$ axis). When $x &lt; 0$, the number of bits for $\Delta r &lt; 0$ would be $-x$ bits instead.</p>
+
+
+<figure>
+  <img src="/images/2021-10-25-asisctf/convex.png" title="Average number of bits for $n\ \text{mod}\ \hat{r}$ ($y$) when $\Delta r$ is $x$ bits long.">
+  
+  <figcaption>Average number of bits for $n\ \text{mod}\ \hat{r}$ ($y$) when $\Delta r$ is $x$ bits long.</figcaption>
+  
+</figure>
+
+<p>We can see that the curve is somehow convex. In particular, the minimum is reached (128 bits) when $\left| \Delta r \right| &lt; 2^{13}$. I used <em>ternary search</em>, an algorithm to find a minimum in a convex function (resp. a maximum in a concave function), to find a smaller $\Delta r$.</p>
+<div class="alert info">
+  <strong>Current progress for the example.</strong> $\Delta r_3 = 6426 \approx 2^{13}$.
+</div>
+
+<h3 id="part-iv-recovering-the-r">Part IV: Recovering the $r$<a href="#part-iv-recovering-the-r" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since $r \in [\hat{r_3} - 2^{13}, \hat{r_3} + 2^{13}]$, we can exhaust them. Since $n\ \text{mod}\ r = s^2$, for each $\hat{r_4}$ compute $s := \sqrt{n\ \text{mod}\ \hat{r_4}}$. We can simply skip it if $s$ is not integral. We can check $n = (\hat{r_4}^5 + s)(\hat{r_4} + s)$ and this is the factorization if that holds.</p>
+<div class="alert info">
+  <strong>Current progress for the example.</strong> $\Delta r_4 = 0$. &#x1f389;
+</div>
+
+<h2 id="full-script-of-demo">Full Script of Demo<a href="#full-script-of-demo" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># You could supply us a set of r, s and we will show you the difference to the real r between rounds</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span> <span class="o">=</span> <span class="mi">113998029782126404385159208354017152656462126437187882248430209727665881104644</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="mi">11008047941767198067</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">**</span><span class="mi">5</span> <span class="o">+</span> <span class="n">s</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">s</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="n">q</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ...or simply supply a n and factorize!</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n</span> <span class="o">=</span> <span class="mi">2194745024596516930061246071521532383749440430915141363754761092243619425670778331059219910671541483862140532961743221108780498988042304929562381481533407394601822343368834886452526191822249795788174976999385462863764483817025176363119720182456801645579673261861976948637579703389499297187098811992421871026864635570228942497268726757914152423140637424251871294427010392263487971250800024725318581331293235687094301490549921462929374203575935128381396777573430901</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ===</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># PART I</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">iroot</span>
+</span></span><span class="line"><span class="cl"><span class="n">r1_hat</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">iroot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r1_hat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">r1_hat</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;r1_hat = </span><span class="si">{</span><span class="n">r1_hat</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delta_r1</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">r1_hat</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r1 = </span><span class="si">{</span><span class="n">delta_r1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r1.bit_length() = </span><span class="si">{</span><span class="n">delta_r1</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># PART II</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</span></span><span class="line"><span class="cl"><span class="n">min_y</span><span class="p">,</span> <span class="n">min_k</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">W</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">39</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">25</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r2_hat</span> <span class="o">=</span> <span class="n">r1_hat</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**</span><span class="mi">39</span> <span class="o">*</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">r2_hat</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="p">(</span><span class="n">r2_hat</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">min_y</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">min_y</span><span class="p">,</span> <span class="n">min_k</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl"><span class="n">r2_hat</span> <span class="o">=</span> <span class="n">r1_hat</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**</span><span class="mi">39</span> <span class="o">*</span> <span class="n">min_k</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;r2_hat = </span><span class="si">{</span><span class="n">r2_hat</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delta_r2</span> <span class="o">=</span> <span class="n">r2_hat</span> <span class="o">-</span> <span class="n">r</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r2 = </span><span class="si">{</span><span class="n">delta_r2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r2.bit_length() = </span><span class="si">{</span><span class="n">delta_r2</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># PART III</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">lb</span><span class="p">,</span> <span class="n">ub</span> <span class="o">=</span> <span class="n">r2_hat</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**</span><span class="mi">38</span><span class="p">,</span> <span class="n">r2_hat</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="mi">38</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="n">lb</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">&lt;</span> <span class="n">ub</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">llb</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">lb</span> <span class="o">+</span> <span class="n">ub</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uub</span> <span class="o">=</span> <span class="p">(</span><span class="n">lb</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">ub</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">llb</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="o">%</span> <span class="n">uub</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">lb</span> <span class="o">=</span> <span class="n">llb</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ub</span> <span class="o">=</span> <span class="n">uub</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r3_hat</span> <span class="o">=</span> <span class="n">lb</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;r3_hat = </span><span class="si">{</span><span class="n">r3_hat</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delta_r3</span> <span class="o">=</span> <span class="n">r3_hat</span> <span class="o">-</span> <span class="n">r</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r3 = </span><span class="si">{</span><span class="n">delta_r3</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r3.bit_length() = </span><span class="si">{</span><span class="n">delta_r3</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># PART IV</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">iroot</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">**</span><span class="mi">13</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">13</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r4_hat</span> <span class="o">=</span> <span class="n">r3_hat</span> <span class="o">+</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">iroot</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">r4_hat</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="p">(</span><span class="n">r4_hat</span><span class="o">**</span><span class="mi">5</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">r4_hat</span> <span class="o">+</span> <span class="n">s</span><span class="p">):</span> <span class="k">break</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&#34;cannot factor n&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;r4_hat = </span><span class="si">{</span><span class="n">r4_hat</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delta_r4</span> <span class="o">=</span> <span class="n">r4_hat</span> <span class="o">-</span> <span class="n">r</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r4 = </span><span class="si">{</span><span class="n">delta_r4</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;delta_r4.bit_length() = </span><span class="si">{</span><span class="n">delta_r4</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Factoring a special RSA modulus from ASIS CTF 2021 Quals
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-11-07-bsides-ahmedabad/">← BSides Ahmedabad CTF 2021 Writeup</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-10-11-pbctf/">pbctf 2021: Seed Me &amp; Yet Another RSA →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

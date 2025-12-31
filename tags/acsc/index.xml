@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Acsc on Mystify</title>
+    <link>https://mystiz.hk/tags/acsc/</link>
+    <description>Recent content in Acsc on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 Mar 2023 00:50:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/acsc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ACSC 2023 Quals (I): Gotion and easySSTI</title>
+      <link>https://mystiz.hk/posts/2023/2023-03-29-acsc-1/</link>
+      <pubDate>Wed, 29 Mar 2023 00:50:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2023/2023-03-29-acsc-1/</guid>
+      <description>&lt;p&gt;Asian Cyber Security Challenge (ACSC) is an annual CTF where players are competing individually, and the best young Asians will be selected form a team to represent Asia to compete with others. I ended up winning the competition among 450+ players. Unfortunately, I am unable to qualify because of the age and nationality conditions.&lt;/p&gt;&#xA;&lt;p&gt;In this blog post, I will cover two web challenges, &lt;a href=&#34;https://twitter.com/t0nk42&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@t0nk42&lt;/a&gt;&#39;s &lt;em&gt;easySSTI&lt;/em&gt; (43 solves) and &lt;a href=&#34;https://twitter.com/tyage&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@tyage&lt;/a&gt;&#39;s &lt;em&gt;Gotion&lt;/em&gt; (9 solves).&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

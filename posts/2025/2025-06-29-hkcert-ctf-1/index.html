@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2024 Quals Writeup (I): RSA LCG and Pigeon Post | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2024 Quals Writeup (I): RSA LCG and Pigeon Post</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2025-06-29T15:30:00&#43;08:00">2025-06-29</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>Black Bauhinia co-organizes the HKCERT CTF for the fifth year. I wrote 18 challenges (in 11 series) this year and here is a series of blog posts covering all of them. I will cover two cryptography series in the first part: <em>RSA LCG</em> and <em>Pigeon Post</em>.</p>
+<div class="alert info">
+  :clown: <strong>What this year?</strong> It should be &quot;last year&quot; at the time I upload the blog post. I have been procrastinating the writeup and I am sorry about that.
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th style="width: 38%;">Challenge Name</th>
+            <th style="width: 15%;">Category</th>
+            <th style="width: 16%;">Difficulty</th>
+            <th style="width: 10%;">Score</th>
+            <th colspan="4">Solves</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-1/#rsa-lcg-0">RSA LCG (0)</a> 🔰</td>
+            <td>Crypto</td>
+            <td>🌶️</td>
+            <td style="text-align: right;">100</td>
+            <td style="text-align: right;">22</td>
+            <td style="text-align: right;">28</td>
+            <td style="text-align: right;">18</td>
+            <td style="text-align: right;">78</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-1/#rsa-lcg-1">RSA LCG (1)</a></td>
+            <td>Crypto</td>
+            <td>🌶️🌶️🌶️</td>
+            <td style="text-align: right;">300</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">4</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">23</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-1/#rsa-lcg-2">RSA LCG (2)</a></td>
+            <td>Crypto</td>
+            <td>🌶️🌶️🌶️🌶️</td>
+            <td style="text-align: right;">400</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">2</td>
+            <td style="text-align: right;">2</td>
+            <td style="text-align: right;">11</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-1/#rsa-lcg-3">RSA LCG (3)</a></td>
+            <td>Crypto</td>
+            <td>🌶️🌶️</td>
+            <td style="text-align: right;">200</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">3</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">14</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-1/#pigeon-post-1">Pigeon Post (1)</a> 🔰</td>
+            <td>Crypto</td>
+            <td>🌶️</td>
+            <td style="text-align: right;">100</td>
+            <td style="text-align: right;">19</td>
+            <td style="text-align: right;">28</td>
+            <td style="text-align: right;">21</td>
+            <td style="text-align: right;">58</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-1/#pigeon-post-2">Pigeon Post (2)</a></td>
+            <td>Crypto</td>
+            <td>🌶️🌶️🌶️</td>
+            <td style="text-align: right;">250</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">3</td>
+            <td style="text-align: right;">2</td>
+            <td style="text-align: right;">18</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-2/#almost-dsa">Almost DSA</a></td>
+            <td>Crypto</td>
+            <td>🌶️</td>
+            <td style="text-align: right;">100</td>
+            <td style="text-align: right;">7</td>
+            <td style="text-align: right;">18</td>
+            <td style="text-align: right;">9</td>
+            <td style="text-align: right;">54</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-2/#maestro-1-sample">mAEStro (1): Sample</a></td>
+            <td>Crypto</td>
+            <td>🌶️🌶️🌶️</td>
+            <td style="text-align: right;">250</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">8</td>
+            <td style="text-align: right;">3</td>
+            <td style="text-align: right;">13</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-2/#maestro-2-shuffle">mAEStro (2): Shuffle</a></td>
+            <td>Crypto</td>
+            <td>🌶️🌶️🌶️🌶️</td>
+            <td style="text-align: right;">350</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">8</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-2/#mask-mask-rsa">Mask-mask-RSA</a></td>
+            <td>Crypto</td>
+            <td>🌶️🌶️🌶️🌶️🌶️</td>
+            <td style="text-align: right;">500</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">2</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-3/#custom-web-server-1">Custom Web Server (1)</a></td>
+            <td>Web</td>
+            <td>🌶️🌶️</td>
+            <td style="text-align: right;">150</td>
+            <td style="text-align: right;">4</td>
+            <td style="text-align: right;">10</td>
+            <td style="text-align: right;">14</td>
+            <td style="text-align: right;">67</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-3/#custom-web-server-2">Custom Web Server (2)</a></td>
+            <td>Web</td>
+            <td>🌶️🌶️🌶️</td>
+            <td style="text-align: right;">300</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">12</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-3/#mystizs-mini-ctf-1">Mystiz's Mini CTF (1)</a></td>
+            <td>Web</td>
+            <td>🌶️🌶️</td>
+            <td style="text-align: right;">200</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">6</td>
+            <td style="text-align: right;">8</td>
+            <td style="text-align: right;">33</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-3/#mystizs-mini-ctf-2">Mystiz's Mini CTF (2)</a></td>
+            <td>Web</td>
+            <td>🌶️</td>
+            <td style="text-align: right;">100</td>
+            <td style="text-align: right;">4</td>
+            <td style="text-align: right;">9</td>
+            <td style="text-align: right;">15</td>
+            <td style="text-align: right;">44</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-3/#heading">⚡</a></td>
+            <td>Web</td>
+            <td>🌶️🌶️🌶️🌶️🌶️</td>
+            <td style="text-align: right;">450</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">5</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-4/#void">Void</a></td>
+            <td>Reverse</td>
+            <td>🌶️</td>
+            <td style="text-align: right;">100</td>
+            <td style="text-align: right;">18</td>
+            <td style="text-align: right;">24</td>
+            <td style="text-align: right;">28</td>
+            <td style="text-align: right;">77</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-4/#cypress">Cyp.ress</a></td>
+            <td>Reverse</td>
+            <td>🌶️🌶️</td>
+            <td style="text-align: right;">200</td>
+            <td style="text-align: right;">4</td>
+            <td style="text-align: right;">12</td>
+            <td style="text-align: right;">9</td>
+            <td style="text-align: right;">56</td>
+        </tr>
+        <tr>
+            <td><a href="/posts/2025/2025-06-29-hkcert-ctf-4/#bashed">Bashed!</a></td>
+            <td>Reverse</td>
+            <td>🌶️🌶️🌶️🌶️🌶️</td>
+            <td style="text-align: right;">500</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;">2</td>
+            <td style="text-align: right;">2</td>
+            <td style="text-align: right;">11</td>
+        </tr>
+    </tbody>
+</table>
+<p>The numbers in the &quot;Solves&quot; column are the number of solves in the secondary, tertiary, open and international divisions respectively. There are 165, 75, 131 and 817 teams respectively in the four categories.</p>
+<h2 id="rsa-lcg-0">RSA LCG (0)<a href="#rsa-lcg-0" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Mandela once said, &quot;Don't generate RSA primes with insecure PRNGs&quot;. As a LCG-holic, I am not going to listen to him. What will go wrong?</p>
+<p>Note: There is a <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2024-ii-en-07128acbc80dd0a4"
+   
+   target="_blank" rel="noopener noreferrer" >step-by-step guide</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> to the challenge.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/rsalcg-0_da1eb1b1ce5e8a986adab74b60656f81.zip"
+   
+   target="_blank" rel="noopener noreferrer" >rsalcg-0_da1eb1b1ce5e8a986adab74b60656f81.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given the RSA public key $(n, e)$ and an encrypted flag encrypted by the key. The primes for the public modulus $n$ are generated by a LCG (linear congruential generator) with the below function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_prime</span><span class="p">(</span><span class="n">lcg</span><span class="p">,</span> <span class="n">bits</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bits</span><span class="o">//</span><span class="n">lcg</span><span class="o">.</span><span class="n">bits</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">p</span> <span class="o">&lt;&lt;=</span> <span class="n">lcg</span><span class="o">.</span><span class="n">bits</span>
+</span></span><span class="line"><span class="cl">            <span class="n">p</span> <span class="o">|=</span> <span class="n">lcg</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">!=</span> <span class="n">bits</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">p</span><span class="p">):</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">p</span>
+</span></span></code></pre></div><p>In this challenge, a LCG is given by $x_{i+1} = (a x_i + c) \ \text{mod}\ 2^b$, and we are given $a, c, b$. Additionally, we are also given that $x_0$ (the seed) is odd and $0 &lt; x_0 &lt; 2^{16}$. The goal is to recover the flag.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We know that the seed is at most 16-bit long, and it is odd. Therefore the possible seeds are 1, 3, 5, ..., 65535.</p>
+<div class="alert info">
+  🤔 <strong>Why is the seed an odd number of 16 bits?</strong> <code>seed = secrets.randbits(16) | 1</code> is the line that generates the seed. <code>secrets.randbits(16)</code> returns a non-negative integer with 16 random bits, and <code>| 1</code> adds one to the generated number if it is even.
+</div>
+
+<p>There is a solve script in the attachment, which enumerates all the possible seeds and checks whether the generated $n$ is correct. If so, we will simply compute $\phi(n)$ and also the private modulus $d$. The given solve script takes approximately 8 hours to finish because <code>get_prime(lcg, bits=1024)</code> is slow.</p>
+<p>The solution provided in the walkthrough suggested generating one prime (namely $p$) per seed. If $n$ is a multiple of $p$, then the seed is <em>the</em> seed used to generate the outputs. In that case, we can retrieve the flag in about two hours:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{0k4y_th1s_1s_n0t_ev3n_vu1n3r4b1e_b3c4u5e_0f_1cgs}
+</span></span></code></pre></div><p>Although it works, <code>is_prime</code> is time-consuming and we don't have to check whether a number generated is prime. If the generated $p$ is a factor of $n$, we can claim also that the seed generated is correct. The running time is then reduced to two minutes.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">lcgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">LCG</span><span class="p">(</span><span class="n">bits</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">181525535962623036141846439269075744717</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">115518761677956575882056543847720910703</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span> <span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n</span> <span class="o">=</span> <span class="n">SNIPPED</span> <span class="c1"># 4811...8689</span>
+</span></span><span class="line"><span class="cl">    <span class="n">e</span> <span class="o">=</span> <span class="n">SNIPPED</span> <span class="c1"># 65537</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c</span> <span class="o">=</span> <span class="n">SNIPPED</span> <span class="c1"># 3459...2291</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">lcg</span> <span class="ow">in</span> <span class="n">track</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">lcgs</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span> <span class="o">=</span> <span class="n">generate_number</span><span class="p">(</span><span class="n">lcg</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1024</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">p</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">get_prime</span><span class="p">(</span><span class="n">lcg</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">d</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span><span class="o">+</span><span class="mi">7</span><span class="p">)</span><span class="o">//</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">flag</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="rsa-lcg-1">RSA LCG (1)<a href="#rsa-lcg-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Lu Xun once said, &quot;Don't generate RSA primes with insecure PRNGs&quot;. As a LCG-holic, I am not going to listen to him. What will go wrong?</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/rsalcg-1_4ac18c5a078fd5f5df7a11f16a47a919.zip"
+   
+   target="_blank" rel="noopener noreferrer" >rsalcg-1_4ac18c5a078fd5f5df7a11f16a47a919.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This challenge is similar to RSA LCG (0). We are still given $a, c, b$, but $c = 0$ and $x_0$ is 256 bits long. The goal is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">lcg</span> <span class="o">=</span> <span class="n">LCG</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="n">bits</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">a</span><span class="o">=</span><span class="mi">102197201962123846389438942955101245465045811321520032783251514372432272871077</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">c</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Suppose that $x_0$ is the unknown seed of the LCG. Let $x_1, x_2, ...$ be its outputs, and $p_1, p_2, p_3, p_4$ be the prime factors of the public modulus $n$.</p>
+<p>Here $p_i = 2^{768} x_{4k_i+1} + 2^{512} x_{4k_i+2} + 2^{256} x_{4k_i+3} + x_{4k_i+4}$ for $i = 1, 2, 3, 4$.</p>
+<p>In this challenge, we have $x_n = a^n x_0\ \text{mod}\ 2^{256}$ since $c = 0$.</p>
+<p>$$
+\begin{aligned}
+n &amp; \equiv p_1 \cdot p_2 \cdot p_3 \cdot p_4 \\
+&amp; \equiv x_{4k_1+4} \cdot x_{4k_2+4} \cdot x_{4k_3+4} \cdot x_{4k_4+4} \\
+&amp; \equiv a^{4k_1+4} x_0 \cdot a^{4k_2+4} x_0 \cdot a^{4k_3+4} x_0 \cdot a^{4k_4+4} x_0 \\
+&amp; \equiv a^{4k_1+4k_2+4k_3+4k_4+16} x_0^4 \ (\text{mod}\ 2^{256})
+\end{aligned}
+$$</p>
+<p>We can exhaust $k := 4k_1+4k_2+4k_3+4k_4+16$ and solve the quartic polynomial</p>
+<p>$$x_0^4 \equiv a^{-k} \cdot n \ (\text{mod}\ 2^{256})$$</p>
+<p>for the possible seeds. For each candidate, we can simply generate the primes with that seed and see if the resulting $n$ is the given public modulus.</p>
+<h2 id="rsa-lcg-2">RSA LCG (2)<a href="#rsa-lcg-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Einstein once said, &quot;Don't generate RSA primes with insecure PRNGs&quot;. As a LCG-holic, I am not going to listen to him. What will go wrong?</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/rsalcg-2_e3e055ff4893dcc6392f71b1e6adfbeb.zip"
+   
+   target="_blank" rel="noopener noreferrer" >rsalcg-2_e3e055ff4893dcc6392f71b1e6adfbeb.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This challenge is similar to RSA LCG (0) and (1), except that $a = 1$. The goal is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">lcg</span> <span class="o">=</span> <span class="n">LCG</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="n">bits</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">c</span><span class="o">=</span><span class="mi">14258939715516539295587731120991968901228171455016001595761489750577784177213</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="finding-the-possible-values-for-p_i-under-a-modulus">Finding the possible values for $p_i$ under a modulus<a href="#finding-the-possible-values-for-p_i-under-a-modulus" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>In this challenge, $a = 1$. Thus $x_k = x_0 + kc\ (\text{mod}\ 2^{256})$.</p>
+<p>Remarkably, $x_{k+1}$ would either be $x_k + c$ or $x_k + c - 2^{256}$. We can denote that by $x_{k+1} = x_k + c - 2^{256} \cdot y_k$, with $y_k \in {0, 1}$.</p>
+<p>We take a closer look to</p>
+<p>$$
+\begin{aligned}
+p_i &amp;= 2^{768} x_{4k_i + 1} + 2^{512} x_{4k_i + 2} + 2^{256} x_{4k_i + 3} + x_{4k_i + 4} \\
+&amp;= 2^{768} x_{4k_i + 1} + 2^{512} (x_{4k_i + 1} + c - 2^{256} y_{4k_i + 1}) \\
+&amp;\qquad + 2^{256} [x_{4k_i + 1} + 2c - 2^{256} (y_{4k_i + 1} + y_{4k_i + 2})] \\
+&amp;\qquad + [x_{4k_i + 1} + 3c - 2^{256} (y_{4k_i + 1} + y_{4k_i + 2} + y_{4k_i + 3})] \\
+&amp;= (2^{768} + 2^{512} + 2^{256} + 1) x_{4k_i + 1} + (2^{512} + 2 \cdot 2^{256} + 3)c \\
+&amp;\qquad - (2^{768} + 2^{512} + 2^{256})y_{4k_i+1} - (2^{512} + 2^{256})y_{4k_i+2} - 2^{256}y_{4k_i+3}
+\end{aligned}
+$$</p>
+<p>We can eliminate $x_{4k_i + 1}$ by taking modulo $q := 2^{768} + 2^{512} + 2^{256} + 1$:</p>
+<p>$$
+\begin{aligned}
+p_i \equiv (2^{512} + 2 \cdot 2^{256} + 3) c- (2^{768} + 2^{512} + 2^{256})y_{4k_i + 1} - (2^{512} + 2^{256})y_{4k_i + 2} - 2^{256}y_{4k_i + 3} \ (\text{mod}\ q).
+\end{aligned}
+$$</p>
+<p>The only unknowns here would be $y_{4k_i + 1}, y_{4k_i + 2}, y_{4k_i + 3} \in {0, 1}$, and this implies that there are only 8 possible values for $p_i \ \text{mod}\ q$.</p>
+<p>By exhausing all of the $y_{4k_i + j}$'s ($i = 1, 2, 3, 4$ and $j = 1, 2, 3$) and checking against $n \equiv p_1 \cdot p_2 \cdot p_3 \cdot p_4\ (\text{mod}\ q)$, we can filter out a list of possible $p_i$'s such that $p_i\ \text{mod}\ q$.</p>
+<h4 id="finding-the-gaps">Finding the gaps<a href="#finding-the-gaps" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let $a_i = p_i \ \text{mod}\ q$. We would like to find $k_1, k_2, k_3$ and $k_4$.</p>
+<p>$$
+p_i = x_{4k_i + 1}q + a_i = (x_1 + 4k_ic - 2^{256} z_i) \cdot q + a_i.
+$$</p>
+<p>Here $0 \leq z_i \leq 4k_i$.</p>
+<p>Taking modulo $q^2$ on $n = p_1 \cdot p_2 \cdot p_3 \cdot p_4$, we have a linear congruence</p>
+<p>$$
+b_1q \cdot x_1 + b_2q \cdot z_1 + \dots + b_5q \cdot z_4 + b_6q \cdot k_1 + \dots + b_9q \cdot k_4 + b_{10}q \ \equiv 0 \ (\text{mod}\ q^2)
+$$</p>
+<p>where $x_1, z_1, z_4, k_1, ..., k_4$ are unknowns defined above and $b_1, b_2, ..., b_{10}$ are constants (not computed for simplicity). We can divide the whole equation by $q$ and obtain</p>
+<p>$$
+b_1 \cdot x_1 + b_2 \cdot z_1 + ... + b_5 \cdot z_4 + b_6 \cdot k_1 + ... + b_9 \cdot k_4 + b_{10} \ \equiv 0 \ (\text{mod}\ q)
+$$</p>
+<p>We estimate that $z_i, k_i \approx 2^{10}$ with the prime number theorem. The above linear congruence has 768 bits of information and $256 + 10 \cdot 8 = 336$ bits of unknown. We then can use LLL to recover the unknowns.</p>
+<p>$$
+\left[\begin{matrix}
+b_1    &amp; 1 &amp;   &amp;        &amp;   \\
+b_2    &amp;   &amp; 1 &amp;        &amp;   \\
+\vdots &amp;   &amp;   &amp; \ddots &amp;   \\
+b_{10} &amp;   &amp;   &amp;        &amp; 1 \\
+q      &amp;   &amp;   &amp;        &amp;   \\
+\end{matrix}\right]
+$$</p>
+<p>The target vector would be $[0, x_1, z_1, z_2, z_3, z_4, k_1, k_2, k_3, k_4, 1]$.</p>
+<h3 id="post-mortem-solving-some-variants">Post-mortem: Solving some variants<a href="#post-mortem-solving-some-variants" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>After the competition, <em>grhkm</em> mentioned that brute-force is doable. We discussed some variants and checked which would be solvable by the two approaches.</p>
+<p>Denote the three parameters by $\alpha$, $\beta$, $\gamma$, defined by:</p>
+<ul>
+<li>$\alpha$ is the number of bits of each of the primes,</li>
+<li>$\beta$ is the number of bits of the LCG outputs, and</li>
+<li>$\gamma$ is the number of primes used for the RSA modulus</li>
+</ul>
+<p>The three parameters would appear below in the source code of the challenge:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FLAG</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;FLAG&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;hkcert24{***REDACTED***}&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">lcg</span> <span class="o">=</span> <span class="n">LCG</span><span class="p">(</span><span class="n">bits</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 👈 β</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">lcg</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_prime</span><span class="p">(</span><span class="n">lcg</span><span class="p">,</span> <span class="n">bits</span><span class="o">=</span><span class="n">α</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">γ</span><span class="p">)]</span> <span class="c1"># 👈 α and γ</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">ps</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">e</span> <span class="o">=</span> <span class="mh">0x10001</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">FLAG</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">e</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">c</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>LLL worked in all of the below variants:</p>
+<ol>
+<li>$\alpha = 1024$, $\beta = 256$, $\gamma = 4$ (the original setting).</li>
+<li>$\alpha = 2048$, $\beta = 512$, $\gamma = 4$.</li>
+<li>$\alpha = 1024$, $\beta = 256$, $\gamma = 8$.</li>
+<li>$\alpha = 1024$, $\beta = 128$, $\gamma = 4$.</li>
+</ol>
+<h2 id="rsa-lcg-3">RSA LCG (3)<a href="#rsa-lcg-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Mona Lisa once said, &quot;Don't generate RSA primes with insecure PRNGs&quot;. As a LCG-holic, I am not going to listen to her. What will go wrong?</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/rsalcg-3_2650a0f5d36a4474c939126200e68849.zip"
+   
+   target="_blank" rel="noopener noreferrer" >rsalcg-3_2650a0f5d36a4474c939126200e68849.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This challenge is similar to RSA LCG (0), (1) and (2), except that $x_0 \equiv 1 \ (\text{mod}\ 2^{128})$. The goal is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">lcg</span> <span class="o">=</span> <span class="n">LCG</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="n">bits</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">a</span><span class="o">=</span><span class="mi">14766004292360945258404852367497617471774948936126805425073927394403062559771</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">c</span><span class="o">=</span><span class="mi">101392444572529008969348961056906071660419768871029068095780498478077435335658</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="finding-the-gaps-1">Finding the gaps<a href="#finding-the-gaps-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since $x_0 \equiv 1 \ (\text{mod}\ 2^{128})$ and $x_k \equiv a^k x_0 + (1 + a + \dots + a^{k-1}) \cdot c \ (\text{mod}\ 2^{256})$, we have</p>
+<p>$$
+x_k \equiv a^k + (1 + a + \dots + a^{k-1}) \cdot c\ (\text{mod}\ 2^{128}).
+$$</p>
+<p>Let $p_i \equiv 5^{d_i} \ (\text{mod}\ 2^{128})$ and $n \equiv 5^d\ (\text{mod}\ 2^{128})$ for some $d, d_1, d_2, d_3, d_4$. Also, $5$ has order $2^{126}$, so we have</p>
+<p>$$
+\begin{aligned}
+&amp; 5^d \equiv n \equiv p_1 \cdot p_2 \cdot p_3 \cdot p_4 \equiv 5^{d_1} \cdot 5^{d_2} \cdot 5^{d_3} \cdot 5^{d_4} \equiv 5^{d_1 + d_2 + d_3 + d_4} \ (\text{mod}\ 2^{128}). \\
+&amp; \qquad \Longrightarrow d \equiv d_1 + d_2 + d_3 + d_4 \ (\text{mod}\ 2^{126})
+\end{aligned}
+$$</p>
+<p>We can also explicitly find $0 \leq d &lt; 2^{126}$ such that $5^d \equiv n \ (\text{mod}\ 2^{128})$. Now only $d_1$, $d_2$, $d_3$ and $d_4$ are unknown.</p>
+<p>Additionally, as $p_i = 2^{768} x_{4k_i+1} + 2^{512} x_{4k_i+2} + 2^{256} x_{4k_i+3} + x_{4k_i+4}$,</p>
+<p>$$
+5^{d_i} \equiv p_i \equiv x_{4k_i + 4} \ (\text{mod}\ 2^{128}) \Longrightarrow d_i \equiv \log x_{4k_i + 4}\ (\text{mod}\ 2^{126}).
+$$</p>
+<p>Also, $k_i$'s should be small ($\approx 4 \cdot 2^{10}$) according again to the prime number theorem. We can rearrange the terms such that there are two unknowns per side:</p>
+<p>$$
+d - d_1 - d_2 \equiv d_3 + d_4\ (\text{mod}\ 2^{126}).
+$$</p>
+<p>We thus can recover $(k_1, k_2, k_3, k_4) = (595, 1597, 2848, 3158)$ with the meet-in-the-middle approach -- this reduces the time complexity to $\mathcal{O}(k^4)$ to $\mathcal{O}(k^2)$. With $d_i$'s, we can recover $p_i\ \text{mod}\ 2^{128}$.</p>
+<h4 id="recovering-the-seed">Recovering the seed<a href="#recovering-the-seed" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>After that, we want to recover $x_0$ from the $k_i$'s. The relation below is a degree four polynomial with $x_0$ being its only unknown:</p>
+<p>$$
+n \equiv \prod_{i=1}^4 x_{4k_i + 4} \equiv \prod_{i=1}^4 [a^{4k_i+4} \cdot x_0 + (1 + a + \dots + a^{4k_i+3}) \cdot c]\ (\text{mod}\ 2^{256}).
+$$</p>
+<p>Thus, we can solve for $x_0$ under modulo $2^{256}$. There are multiple possible $x_0$, but only one of them is the correct seed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x0</span> <span class="o">=</span> <span class="mh">0xd3e29c8b17c4aafe25d58c16003611a300000000000000000000000000000001</span>
+</span></span></code></pre></div><p>We are able to recover all the $p_i$'s with the correct seed. Finally, we can compute the private exponent, $d$, and decrypt the ciphertext:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{i5_th1s_y3t_4n0th3r_l33tc0d3_f0ur_sum_qu3s71on?}
+</span></span></code></pre></div><h2 id="pigeon-post-1">Pigeon Post (1)<a href="#pigeon-post-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-4">Challenge Summary<a href="#challenge-summary-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>In 1860, our antagonists Alice and Byron are trying to communicate. As the pigeon, you are the one who carry the messages between. To prevent that the message being eavesdropped, they were running a key exchange protocol and communicate encrypted afterwards.</p>
+<p>You are convinced by our protagonist, Ozetta to get the secret message from their communication. Isn't the secret encrypted?</p>
+<p>Note: There is a <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2024-ii-en-07128acbc80dd0a4"
+   
+   target="_blank" rel="noopener noreferrer" >step-by-step guide</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> to the challenge.</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/pigeon-1_8223e865166251a956801a7112fe3dad.zip"
+   
+   target="_blank" rel="noopener noreferrer" >pigeon-1_8223e865166251a956801a7112fe3dad.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We act as the pigeon-in-the-middle between Alice and Byron. They will run a handshake protocol (using the Diffie-Hellman key exchange algorithm) and establish secure communication (using AES-CTR). As the pigeon, our objective is to intercept the communication and retrieve the flag.</p>
+<h3 id="solution-4">Solution<a href="#solution-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>As a pigeon in the middle, we can interrupt the handshake process. Instead of sending Alice's public key to Byron, and Byron's public key to Alice, we can send our public key, $P := g^p\ \text{mod}\ p$ to them (here $P$ and $p$ are our public and private key).</p>
+<p>With that, the shared key between Alice and us would be</p>
+<p>$$
+s_\text{AP} \equiv g^{ap} \ (\text{mod}\ p).
+$$</p>
+<p>More importantly, we can derive the shared key ourselves. Thus we can decrypt the messages from Alice, and encrypt the messages back. This also happens in the communication between Byron and us.</p>
+<p>While Alice thinks she is talking to Byron securely, her messages are actively eavesdropped by us. We can decrypt the message from Alice using the key $s_\text{AP}$, encrypt it with $s_\text{BP}$ and send it to Byron (and the other way round). With that, we can decrypt the second message from Alice for the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{y0u_n33d_t0_4u7h3n71a73_th3_0th3r_p4r7y_s3cur31y_t0_4v01d_7h3_p1ge0n_1n_th3_m1dd13}
+</span></span></code></pre></div><h2 id="pigeon-post-2">Pigeon Post (2)<a href="#pigeon-post-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-5">Challenge Summary<a href="#challenge-summary-5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>In 1861, our antagonists Alice and Byron noticed that Ozetta is actively sniffing their messages. They decided to look for you for transmitting their messages, but this time they have already come up with a key beforehand.</p>
+<p>Can you retrieve their secret this time?</p>
+<p>Attachment: <a href="https://github.com/blackb6a/hkcert-ctf-2024-challenges-public/releases/download/v1.0.0/pigeon-2_89c2d274e99f6ce5f776b691869a83ad.zip"
+   
+   target="_blank" rel="noopener noreferrer" >pigeon-2_89c2d274e99f6ce5f776b691869a83ad.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This challenge is similar to the last part, except that the handshake is already initiated. In this case, we are no longer able to impersonate ourselves as Alice to Byron, nor Byron to Alice.</p>
+<h3 id="solution-5">Solution<a href="#solution-5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We can intercept the messages between Alice and Byron. If the pigeon in the middle is benign, this is what Alice and Byron communicate:</p>
+<p>Byron → Alice: <code>what is the flag? I have the secret [SECRET]</code><br>
+Alice → Byron: <code>the flag is hkcert24{...}</code><br>
+Byron → Alice: <code>nice flag!</code><br>
+Alice → Byron: <code>:)</code></p>
+<p>On the other hand, below is the conversation if Alice sends a corrupted flag:</p>
+<p>Alice → Byron: <code>the flag is [CORRUPTED]</code><br>
+Byron → Alice: <code>too bad...</code><br>
+Alice → Byron: <code>what happened?</code></p>
+<p>As the pigeon, we can distinguish the encrypted <code>what happened?</code> from <code>:)</code> by looking at the length of its ciphertext. The lengths would respectively be 22 and 10.</p>
+<p>Notably, the nonce for the CTR mode is used to generate keystreams deterministicly. Additionally, if we have a ciphertext $c_1$ which corresponds to the message $m_1$, we can change $m_1$ to $m_2 := m_1 \oplus d$ by xorring $d$ on the 9th byte and onwards. Mathematically:</p>
+<p>$$
+\left\{\begin{aligned}
+&amp; c_1 = \text{nonce} \ \| \ (m \oplus k) \\
+&amp; c_2 = \text{nonce} \ \| \ (m \oplus d \oplus k)
+\end{aligned}\right.
+$$</p>
+<p>For instance, if the ciphertext $c_1$ below corresponds to the message <code>hkcert24{X</code>, then $c_2$ would decrypt into <code>hkcert24{}</code>, as $\texttt{58} \oplus \texttt{7d} = \texttt{25}$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">c1</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;0000000000000000 000000000000000000 00&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">c2</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;0000000000000000 000000000000000000 25&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>When Byron receives the ciphertexts, he will respond <code>too bad...</code> and <code>nice flag!</code> respectively. We then can replay the messages to Alice to deduce whether this is a valid flag.</p>
+<p>To recover the first byte of the flag, we can truncate the ciphertext to 18 bytes and exhaust the last byte of the ciphertext.</p>
+<p>As an example, assume that a ciphertext for the flag is $\texttt{000000}\dots\texttt{00}$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;0000000000000000 000000000000000000 00&#39;</span><span class="p">)</span> <span class="c1"># hkcert24{0 - ❌</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;0000000000000000 000000000000000000 01&#39;</span><span class="p">)</span> <span class="c1"># hkcert24{1 - ❌</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;0000000000000000 000000000000000000 4d&#39;</span><span class="p">)</span> <span class="c1"># hkcert24{} - ✅</span>
+</span></span></code></pre></div><p>After that, we can truncate the ciphertext to 19 bytes, and exhaust the last byte to retrieve the second byte. Repeating the process, we will receive the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert24{0n3_c4n_4ls0_l34k_1nf0rm4710n_fr0m_th3_l3n9th}
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2024 Quals Writeup (I): RSA LCG and Pigeon Post
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2025/2025-06-29-hkcert-ctf-2/">← HKCERT CTF 2024 Quals Writeup (II): Other Crypto Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2025/2025-05-05-puctf-memo-ry/">NuttyShell CTF 2025: memo-ry →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

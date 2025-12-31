@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOCSCTF 2022 Postmortem | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">MOCSCTF 2022 Postmortem</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-02-19T17:50:00&#43;08:00">2022-02-19</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/mocsctf/" class="text-muted text-decoration-none">#mocsctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p><a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> helped preparing some challenges for MOCSCTF, a 8.5-hour long CTF in Macau. This time I wrote nine challenges and <a href="https://twitter.com/hoifanrd" target="_blank" rel="nofollow">@hoifanrd</a> made one of them (3-AES). This blog post covers the intended solution for all of them.</p>
+<p>These are the summary of the challenges:</p>
+<table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        Challenge Name
+      </th>
+      
+      <th>
+        Category
+      </th>
+      
+      <th>
+        Solves
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        RSA Trio
+      </td>
+      
+      <td>
+        Crypto
+      </td>
+      
+      <td>
+        2/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Slightly Informative
+      </td>
+      
+      <td>
+        Crypto
+      </td>
+      
+      <td>
+        2/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        NP-SHA256
+      </td>
+      
+      <td>
+        Crypto
+      </td>
+      
+      <td>
+        1/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HMAC-SHA256
+      </td>
+      
+      <td>
+        Crypto
+      </td>
+      
+      <td>
+        2/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        RC4
+      </td>
+      
+      <td>
+        Crypto
+      </td>
+      
+      <td>
+        0/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HashTable
+      </td>
+      
+      <td>
+        Misc
+      </td>
+      
+      <td>
+        3/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Wordle
+      </td>
+      
+      <td>
+        Crypto, Misc
+      </td>
+      
+      <td>
+        0/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        3-AES
+      </td>
+      
+      <td>
+        Crypto, Misc
+      </td>
+      
+      <td>
+        0/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Elementary
+      </td>
+      
+      <td>
+        Reverse
+      </td>
+      
+      <td>
+        0/43
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Redactor
+      </td>
+      
+      <td>
+        Reverse
+      </td>
+      
+      <td>
+        1/43
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<h2 id="rsa-trio-crypto">RSA Trio (Crypto)<a href="#rsa-trio-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>RSA is difficult. What if Rivest, Shamir and Adleman encrypt your message together?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/rsa-trio/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated. Let $n_1 = pq$, $n_2 = qr$ and $n_3 = rp$ and there are three RSA public keys $(n_1, e)$, $(n_2, e)$, $(n_3, e)$ are constructed (here <code>e = 0b10001</code> and $q &lt; p &lt; r$, i.e., $n_1 &lt; n_2 &lt; n_3$).</p>
+<p>Let $\mathcal{E}(m)$ be the encryption function that returns the ciphertext $c$:</p>
+<p>$$\begin{aligned}
+&amp; t_1 = m^e\ \text{mod}\ n_1 \\
+&amp; t_2 = {t_1}^e\ \text{mod}\ n_2 \\
+&amp; c = {t_2}^e\ \text{mod}\ n_3.
+\end{aligned}$$</p>
+<p>Long story short: the message is encrypted with the RSA public keys in order. Also, if $m \not\in [0, n_1)$, $t_1 \not\in [0, n_2)$ or $t_2 \not\in [0, n_3)$, nothing will be returned.</p>
+<p>We are allowed to call the encryption function $\mathcal{E}$ for an arbitrary amount of times and are given $\mathcal{E}(\text{flag})$ at the very beginning. The goal is to recover the flag.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="recovering-n_1">Recovering $n_1$<a href="#recovering-n_1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since $t_1 = m^e\ \text{mod}\ n_1 \in [0, n_1) \subset [0, n_2)$, it is impossible that $t_1 \not\in [0, n_2)$. Likewise it is always true that $t_2 \in [0, n_3)$. That said, we can get a ciphertext of $m$ if and only if $m \in [0, n_1)$. Since $0 \leq n_1 &lt; 2^{2048}$, we can recover $n_1$ via binary search calling $\mathcal{E}$ 2048 times.</p>
+<h4 id="recovering-n_3">Recovering $n_3$<a href="#recovering-n_3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>This part is easier. We must observe that <code>e = 0b10001</code> (instead of <code>e = 0x10001</code>), which makes $e = 17$. For we send $m$ with $0 \leq m^{289} &lt; n_2$ but $m^{4913} \geq n_3$, then $t_1 = m^{17}$ and $t_2 = m^{289}$ (no modulo is involved) and $c = m^{4913}\ \text{mod}\ n_3$. This implies that $c$ is the remainder when $m^{4913}$ is divided by $n_3$. Well, $m = 2$ and $m = 3$ are such values. We can recover a small multiple of $n_3$ by</p>
+<p>$$k \cdot n_3 := \gcd\left(2^{4913} - \mathcal{E}(2), 3^{4913} - \mathcal{E}(3)\right).$$</p>
+<p>We can easily recover $n_3$ from $k$ by testing if they are divisible by small primes.</p>
+<h4 id="finishing-the-challenge">Finishing the challenge<a href="#finishing-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>From here, we obtain $n_1 = pq$ and $n_3 = rp$. We can recover $p$ by $p := \gcd(n_1, n_3)$, thus effectively recover $q = n_1 / p$ and $r = n_3 / p$. We will obtain private exponents $d_1$, $d_2$ and $d_3$, allow us to decrypt the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{shar1n9_pr1m3s_f0r_r5a_1s_n0t_4_sm4r7_m0v3}
+</span></span></code></pre></div><h2 id="slightly-informative-crypto">Slightly Informative (Crypto)<a href="#slightly-informative-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>What will happen if I am giving some more information about my RSA key?</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/slightly-informative/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/slightly-informative/public/output.txt"
+   
+   target="_blank" rel="noopener noreferrer" >output.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a RSA public key $(n, e)$ with $n = pq$ and a encrypted flag $c$. We are also given $s$ and $t$ such that $d = sp + t$ ($d$ is the private exponent). The objective is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">n = 104761374953173292488929744863165210794654068795777885288141577481002622221368522222345141465054888216685195323019389786561685227925970380642821816770602985472200153940453825122714968250922188816858014096712757866955919806714643962473332876738158067418215518151671679136192434497079441504252290233276785611599
+</span></span><span class="line"><span class="cl">e = 65537
+</span></span><span class="line"><span class="cl">c = 65928964054587881283125968144498292857628864173177955118556976763155079656459679077792117840779590338576427244089037717506889027748698067761926112680228885555444571382015302945365206338671155793788123643640188995655372264100530540193424123290247632274913224252938261740392478884552717293366009033122985923910
+</span></span><span class="line"><span class="cl">s = 5142613903784744424286082317496829116877907073407033860339838239164453521174213069438631369864823275015906330523317080155171707469704307761287329022024572
+</span></span><span class="line"><span class="cl">t = 7967501076725747803058232903884621217031867311480596291389476854702834454579805205282313799601751011483434096767204486104203547013606991412953137405179501
+</span></span></code></pre></div><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To begin, we will recall how the private exponent $d$ is defined:</p>
+<p>$$e \cdot d \equiv 1 \ (\text{mod}\ \phi(n)).$$</p>
+<p>If we replace $\phi(n) = (p - 1)(q - 1)$ remove the use of modular equation, we can see that there exists a non-negative integer $k$ such that</p>
+<p>$$e \cdot d = 1 + k(p - 1)(q - 1) = k[(n + 1) - (p + q)].$$</p>
+<p>Let's substitute $d = sp + t$ so that is an equation of three unknowns: $p, q$ and $k$.</p>
+<p>$$e (sp + t) = 1 + k[(n + 1) - (p + q)]$$</p>
+<p>We can further eliminate the unknown $q$ because $pq = n$.</p>
+<p>$$\begin{aligned}
+&amp; e (sp + t) = 1 + k[(n + 1) - (p + n/p)] \\
+\Longrightarrow \quad &amp; es \cdot p^2 + et \cdot p = p + k(n + 1) \cdot p - k \cdot p^2 - kn \\
+\Longrightarrow \quad &amp; (k + es) \cdot p^2 + [et - 1 - k(n+1)] \cdot p + kn = 0 \qquad [\dagger]
+\end{aligned}$$</p>
+<p>What we see is a quadratic equation in $p$. But guess what? $k$ is another unknown so what I said is not exactly true. Here comes one more fact:</p>
+<p>$$\begin{aligned}
+&amp; e \cdot d = 1 + k \cdot \phi(n) &gt; k \cdot \phi(n) \\
+\Longrightarrow \quad &amp; \frac{k}{e} &lt; \frac{d}{\phi(n)} = 1 \\
+\Longrightarrow \quad &amp; k &lt; e = 65537.
+\end{aligned}$$</p>
+<p>Because $k$ is also non-negative, $k$ could only be 0, 1, ..., or $e-1$. As there are only 65537 possibility, we can exhaust every $k$ into $[\dagger]$. Now we can solve 65537 quadratic equations and test every root $p$ obtained. That said, if $p$ is a positive integer such that $n$ is divisible by $p$, then we are able to factorize $n = pq$.</p>
+<p>Eventually, we can compute $\phi(n) = (p - 1)(q - 1)$ and compute $d = e^{-1}\ \text{mod}\ \phi(n)$. We can use the private exponent to recover the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{st0p_l34k1ng_3x7r4_5tuffs_ab0u7_y0ur_r5a_k3y}
+</span></span></code></pre></div><p> </p>
+<div class="alert info">
+  <p><strong>Postmortem.</strong> @sahuang from team Project Sekai has an alternate solution, which is pretty elegant:</p>
+<p>Since $e \cdot d \equiv 1\ (\text{mod}\ \phi(n))$, we also have $e \cdot d \equiv 1\ (\text{mod}\ (p-1))$ which lead to</p>
+<p>$$e \cdot (sp + t) \equiv 1\ (\text{mod}\ (p-1)) \Longrightarrow e \cdot (s + t) \equiv 1\ (\text{mod}\ (p-1)).$$</p>
+<p>Thus $p - 1$ is a factor of $M := e \cdot (s + t) - 1$. To be accurate, $M$ is a small multiple of $p - 1$. We can factor $M$ from <em>factordb</em> and obtain $p$, thus factoring $n$ as well.</p>
+
+</div>
+
+<h2 id="np-sha256-crypto">NP-SHA256 (Crypto)<a href="#np-sha256-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I have copied a SHA-256 implementation available <a href="https://github.com/keanemind/python-sha-256/blob/master/sha256.py"
+   
+   target="_blank" rel="noopener noreferrer" >online</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> while having the padding removed. It is now 0.1% faster without having the security premises broken.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/np-sha256/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/np-sha256/public/sha256.py"
+   
+   target="_blank" rel="noopener noreferrer" >sha256.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>The challenge copies a Python SHA256 implementation from <a href="https://github.com/keanemind/python-sha-256/blob/370be6eba8c69c8adf8dfd719cd00f0bda752f39/sha256.py"
+   
+   target="_blank" rel="noopener noreferrer" ><code>keanemind/Python-SHA-256</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> with few lines removed:</p>
+<pre tabindex="0"><code class="language-diff-python&nbsp;diff-highlight" data-lang="diff-python&nbsp;diff-highlight">def generate_hash(message: bytearray) -&gt; bytearray:
+    # (omitted)
+
+    # Padding
+    length = len(message) * 8 # len(message) is number of BYTES!!!
+    message.append(0x80)
+-   while (len(message) * 8 + 64) % 512 != 0:
+-       message.append(0x00)
+-
+-   message += length.to_bytes(8, &#39;big&#39;) # pad to 8 bytes or 64 bits
+-
+-   assert (len(message) * 8) % 512 == 0, &#34;Padding did not complete properly!&#34;
+
+    # Parsing
+    blocks = [] # contains 512-bit chunks of message
+    for i in range(0, len(message), 64): # 64 bytes is 512 bits
+        blocks.append(message[i:i+64])
+</code></pre><p>The objective is to find a hash collision of the patched SHA256, i.e., find $m_1$ and $m_2$, at least 64-byte long, such that $m_1 \neq m_2$ and $\text{SHA256}(m_1) = \text{SHA256}(m_2)$.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The solution is simple: Let $m_1$ and $m_2$ be the messages with 64 null bytes and 65 null bytes, respectively. Then $\text{SHA256}(m_1) = \text{SHA256}(m_2)$.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">[&gt;] 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+</span></span><span class="line"><span class="cl">[&gt;] 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+</span></span><span class="line"><span class="cl">[&lt;] Good! MOCSCTF{ev3ry_d3t41l_1n_cryp70gr4phy_m4t73rs}
+</span></span></code></pre></div><p>But why? Let's compute $\text{SHA256}(m_3)$ and $\text{SHA256}(m_4)$, where $m_3$ and $m_4$ are the empty message and the message with one null byte respectively:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">m3</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">m4</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;00&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Let's copy the <code>generate_hash</code> function to explain the stuffs. I have innotate the stuffs with comments:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">generate_hash</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">bytearray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;Return a SHA-256 hash from the message passed.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    The argument should be a bytes, bytearray, or
+</span></span></span><span class="line"><span class="cl"><span class="s2">    string object.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">message</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">message</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">TypeError</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Padding</span>
+</span></span><span class="line"><span class="cl">    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">    <span class="n">message</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mh">0x80</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># [MYSTIZ&#39;S COMMENT]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># At this stage,</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#   message = bytes.fromhex(&#34;80&#34;)   # -- for m3</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#   message = bytes.fromhex(&#34;0080&#34;) # -- for m4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="mi">64</span><span class="p">):</span> <span class="c1"># 64 bytes is 512 bits</span>
+</span></span><span class="line"><span class="cl">        <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">64</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># [MYSTIZ&#39;S COMMENT]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># At this stage,</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#   blocks = [bytes.fromhex(&#34;80&#34;)]   # -- for m3</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#   blocks = [bytes.fromhex(&#34;0080&#34;)] # -- for m4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">h0</span> <span class="o">=</span> <span class="mh">0x6a09e667</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h1</span> <span class="o">=</span> <span class="mh">0xbb67ae85</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h2</span> <span class="o">=</span> <span class="mh">0x3c6ef372</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h3</span> <span class="o">=</span> <span class="mh">0xa54ff53a</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h5</span> <span class="o">=</span> <span class="mh">0x9b05688c</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h4</span> <span class="o">=</span> <span class="mh">0x510e527f</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h6</span> <span class="o">=</span> <span class="mh">0x1f83d9ab</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h7</span> <span class="o">=</span> <span class="mh">0x5be0cd19</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># [MYSTIZ&#39;S COMMENT]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Since there is only one block, I&#39;ll rewrite below without losing the meaning:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">message_block</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">message_schedule</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="mi">15</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">message_schedule</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">message_block</span><span class="p">[</span><span class="n">t</span><span class="o">*</span><span class="mi">4</span><span class="p">:(</span><span class="n">t</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mi">4</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># [MYSTIZ&#39;S COMMENT]</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># At this stage,</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">#   message_schedule[0] = bytes.fromhex(&#34;80&#34;)   # -- for m3</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">#   message_schedule[0] = bytes.fromhex(&#34;0080&#34;) # -- for m4</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># and for i = 1, 2, ..., 15</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">#   message_schedule[i] = b&#34;&#34;                   # for both m3 and m4</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">term1</span> <span class="o">=</span> <span class="n">_sigma1</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">term2</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">7</span><span class="p">],</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">term3</span> <span class="o">=</span> <span class="n">_sigma0</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">term4</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">16</span><span class="p">],</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">schedule</span> <span class="o">=</span> <span class="p">((</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span> <span class="o">+</span> <span class="n">term4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">message_schedule</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">schedule</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># [MYSTIZ&#39;S COMMENT]</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># For i = 16, 17, ..., 64, message_schedule[i] for m3 and m4 are equal.</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># This is because that the big-endian representations for</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># bytes.fromhex(&#34;80&#34;) and bytes.fromhex(&#34;0080&#34;) are the same.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">)</span> <span class="o">==</span> <span class="mi">64</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># (omitted)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t1</span> <span class="o">=</span> <span class="p">((</span><span class="n">h</span> <span class="o">+</span> <span class="n">_capsigma1</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">_ch</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="o">+</span> <span class="n">K</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">message_schedule</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># [MYSTIZ&#39;S COMMENT]</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># t1 on the i-th round looks for the big-endian representation for</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># message_schedule[i]. That said, t1 for m3 and m4 would always be the same.</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># After all, this makes a, b, ..., h for both m3 and m4 equal for each round.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># (omitted)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># [MYSTIZ&#39;S COMMENT]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Now h0, h1, ..., h7 for both m3 and m4 are equal.</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># That would imply the digests would be the same.</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h0</span> <span class="o">=</span> <span class="p">(</span><span class="n">h0</span> <span class="o">+</span> <span class="n">a</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h1</span> <span class="o">=</span> <span class="p">(</span><span class="n">h1</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h2</span> <span class="o">=</span> <span class="p">(</span><span class="n">h2</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h3</span> <span class="o">=</span> <span class="p">(</span><span class="n">h3</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h4</span> <span class="o">=</span> <span class="p">(</span><span class="n">h4</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h5</span> <span class="o">=</span> <span class="p">(</span><span class="n">h5</span> <span class="o">+</span> <span class="n">f</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h6</span> <span class="o">=</span> <span class="p">(</span><span class="n">h6</span> <span class="o">+</span> <span class="n">g</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h7</span> <span class="o">=</span> <span class="p">(</span><span class="n">h7</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">((</span><span class="n">h0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">h1</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="n">h2</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">h3</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="n">h4</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">h5</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="n">h6</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">h7</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span></code></pre></div><p>It is essentially the same for $m_1$ and $m_2$, except the initial values $h_0, h_1, ..., h_7$ are different. Let's leave that as readers' exercise.</p>
+<h2 id="hmac-sha256-crypto">HMAC-SHA256 (Crypto)<a href="#hmac-sha256-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>It is advised to solve NP-SHA256 first. Does it help? I frankly don't know.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/hmac-sha256/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are asked to find 64 pairs of $(k, m)$ such that $\text{HMAC-SHA256}_k(m)$ are all equal.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>When the key is shorter than the block size (64 for SHA256), it will be padded by zeros on the right.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> For example, the key will be padded to <code>hello world_____________________________________________________</code> (hereby each <code>_</code> represents a null byte) if the unpadded key being <code>hello world</code>. It is easy to see that the keys <code>foo</code> and <code>foo_</code> would be padded into the same key, thus generating equal hashes for equal messages.</p>
+<p>After all, the below 65 keys would be padded into the same way:</p>
+<ul>
+<li>an empty key</li>
+<li><code>_</code> (one null byte)</li>
+<li><code>__</code> (two null bytes)</li>
+<li><code>___</code>  (three null bytes)<br>
+...</li>
+<li><code>________________________________________________________________</code> (64 null bytes)</li>
+</ul>
+<p>and they all generate equal hashes given the same message. By sending such keys to the server (for an arbitrary message), we can obtain the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{wh4t_i5_th3_u53_0f_5uch_c0111si0ns_w1th_d1ff3ren7_k3y5}
+</span></span></code></pre></div><h2 id="rc4-crypto">RC4 (Crypto)<a href="#rc4-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  <strong>Disambiguation.</strong> Not to be confused with the <a href="/posts/2021/2021-01-18-firebird-internal-ctf/#rc4-misc"
+   
+   >RC4</a> challenge I made for Firebird CTF 2021.
+</div>
+
+<h3 id="challenge-summary-4">Challenge Summary<a href="#challenge-summary-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>There are many attacks for RC4 on the internet. Maybe you can find one and apply on this challenge (or not).</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/rc4/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, a 16-byte key will be generated for an altered RC4. We can call the below functions for an arbitrary number of times:</p>
+<ol>
+<li><strong>[Encrypt message]</strong> Send $m$ and obtain $\text{RC4}(m)$,</li>
+<li><strong>[Encrypt flag]</strong> Obtain $\text{RC4}(\text{flag})$.</li>
+</ol>
+<p>The objective is to obtain the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">RC4</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">keylength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">keylength</span><span class="p">])</span> <span class="o">%</span> <span class="mh">0xff</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>    <span class="o">%</span> <span class="mh">0xff</span>
+</span></span><span class="line"><span class="cl">        <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">%</span> <span class="mh">0xff</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">j</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">s</span><span class="p">[(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">%</span> <span class="mh">0xff</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">m</span><span class="o">^</span><span class="bp">self</span><span class="o">.</span><span class="n">__next</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">message</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="solution-4">Solution<a href="#solution-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="whats-wrong-with-the-rc4-function">What's wrong with the RC4 function?<a href="#whats-wrong-with-the-rc4-function" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The RC4 function is not implemented correctly. We can either observe this by</p>
+<ol>
+<li>comparing ciphertexts of an existing and the current RC4 implementations, or</li>
+<li>reading the source code carefully.</li>
+</ol>
+<p>We can see that the error comes from <code>% 0xff</code>, which should be <code>&amp; 0xff</code> (or <code>% 256</code>, which is the same).</p>
+<h4 id="exploiting-the-mistake">Exploiting the mistake<a href="#exploiting-the-mistake" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>By taking everything modulo 255, the indexes for <code>s</code> is always between $[0, 255)$. Thus <code>s[255]</code> is <em>never</em> accessed in the <code>__next</code> function. That said, <code>s[255]</code> (we will use $x$ below) would never be used in the keystream.</p>
+<p>We can encrypt a bunch of null bytes and obtain the keystream bytes $(k_1, k_2, ..., k_n)$. If the set $\{k_1, k_2, ..., k_n\}$ has 255 elements, we can effectively recover $x$. After that, we can repeatedly obtain $\text{RC4}(\text{flag})$. If $y$ never appears in the $i$-th byte of $\text{RC4}(\text{flag})$, then $x \oplus y$ is the $i$-th byte of the flag (i.e., the plaintext). We can obtain the flag by working on this on every character:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{i_sh0uld_u5e_AND_0xff_in5t3ad_0f_M0D_0xff}
+</span></span></code></pre></div><h2 id="hashtable-misc">HashTable (Misc)<a href="#hashtable-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-5">Challenge Summary<a href="#challenge-summary-5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Making CTF challenges is easy -- Copy code from Github, make it vulnerable and the challenge is done. Mystiz has copied a HashTable implementation and it is your turn to read the flag.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/hashtable/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/hashtable/public/hashtable.py"
+   
+   target="_blank" rel="noopener noreferrer" >hashtable.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a <a href="https://gist.github.com/Tetsuya3850/fe841bf1f1088fe1f804c189db4c9daf"
+   
+   target="_blank" rel="noopener noreferrer" >Python implementation</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> of hash table. There is a server that allows us to interact with the hash table ($k_0$ is a 16-byte secret):</p>
+<ol>
+<li><strong>[Set]</strong> Given $k$ and $v$, sets $\text{HashTable}[k] := v$.</li>
+<li><strong>[Get]</strong> Given $k$, gets $\text{HashTable}[k]$.</li>
+<li><strong>[Delete]</strong> Given $k$, removes $\text{HashTable}[k]$.</li>
+<li><strong>[Put secret]</strong> Sets $\text{HashTable}[k_0] := \text{no flag for you}$.</li>
+<li><strong>[Get secret]</strong> If $\text{HashTable}[k_0] \neq \text{no flag for you}$ then we are given the flag (we need to call <em>put secret</em> at least once).</li>
+</ol>
+<h3 id="solution-5">Solution<a href="#solution-5" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>There are at least two bugs of the implementation:</p>
+<ol>
+<li>If the key $\hat{k}$ is on the first of the bucket, then all entries from the same bucket will be removed upon $\text{Delete}(\hat{k})$.</li>
+<li>Suppose that $\text{HashTable}[\hat{k}] = v_1$. Calling $\text{Set}(\hat{k}, v_2)$ would <em>not</em> make the subsequent calls of $\text{Get}(\hat{k})$ to return $v_2$ (i.e., the key is not overwritten).</li>
+</ol>
+<p>We will use the first bug to remove $\text{HashTable}[k_0]$ without knowing what $k_0$. Assume that $k_0$ maps to the $b$-th bucket. We can retrieve the flag with the below steps:</p>
+<ol>
+<li>Find a key $k_1$ that also maps to the $b$-th bucket.</li>
+<li>Call $\text{Set}(k_1, \text{whatever})$ to occupy the first slot of the $b$-th bucket.</li>
+<li>Call $\text{PutSecret}$, which puts the secret in the second slot of $b$-th bucket.</li>
+<li><strong>&lt;:ladybug:&gt;</strong> Call $\text{Delete}(k_1)$ to remove <em>all</em> of the entries from the $b$-th bucket. That said $\text{HashTable}(k_0)$ is accidentally removed.</li>
+<li>Call $\text{GetSecret}$. Since $\text{HashTable}[k_0]$ removed, $\text{HashTable}[k_0] \neq \text{no flag for you}$ and thus we have the flag.</li>
+</ol>
+<p>To solve the challenge, we simply occupy the first slot of all buckets in step 2 and remove all of the entries in step 4. Eventually we have the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{wr1t3_un1t_t3st5_f0r_y0ur_s4n1ty}
+</span></span></code></pre></div><h2 id="wordle-crypto-misc">Wordle (Crypto, Misc)<a href="#wordle-crypto-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-6">Challenge Summary<a href="#challenge-summary-6" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>You can guess the word in five attempts. But can you guess the word in ONE attempt?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/wordle/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a server that plays Wordle with us. The words are picked randomly from the <code>Random</code> class defined below (which is a linear congruential generator):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Random</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span>       <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">=</span> <span class="mi">271828182845904523536028</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">increment</span>  <span class="o">=</span> <span class="mi">314159265358979323846264</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">modulus</span>    <span class="o">=</span> <span class="mi">246024225711064289902592</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">increment</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">modulus</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
+</span></span></code></pre></div><p>We can play up to fifty games if we don't lose a game. More importantly, the goal is to guess the word in the first time for ten consecutive games.</p>
+<pre class='language-bash command-line' data-output='2-71' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">nc HOST PORT
+🎲 Wordle #1
+🔍 games
+    #1 | games | ⬜⬜⬜🟨🟩
+
+🔍 repot
+    #1 | games | ⬜⬜⬜🟨🟩
+    #2 | repot | ⬜🟩⬜🟩⬜
+
+🔍 zeros
+    #1 | games | ⬜⬜⬜🟨🟩
+    #2 | repot | ⬜🟩⬜🟩⬜
+    #3 | zeros | ⬜🟩⬜🟩🟩
+
+🔍 demos
+    #1 | games | ⬜⬜⬜🟨🟩
+    #2 | repot | ⬜🟩⬜🟩⬜
+    #3 | zeros | ⬜🟩⬜🟩🟩
+    #4 | demos | 🟩🟩⬜🟩🟩
+
+🔍 locks             
+    #1 | games | ⬜⬜⬜🟨🟩
+    #2 | repot | ⬜🟩⬜🟩⬜
+    #3 | zeros | ⬜🟩⬜🟩🟩
+    #4 | demos | 🟩🟩⬜🟩🟩
+    #5 | locks | 🟨🟨⬜⬜🟩
+
+🔍 delos
+    #1 | games | ⬜⬜⬜🟨🟩
+    #2 | repot | ⬜🟩⬜🟩⬜
+    #3 | zeros | ⬜🟩⬜🟩🟩
+    #4 | demos | 🟩🟩⬜🟩🟩
+    #5 | locks | 🟨🟨⬜⬜🟩
+    #6 | delos | 🟩🟩🟩🟩🟩
+
+✨ Nice!
+🎲 Wordle #2
+🔍 delta
+    #1 | delta | ⬜🟩⬜⬜🟨
+
+🔍 betas
+    #1 | delta | ⬜🟩⬜⬜🟨
+    #2 | betas | ⬜🟩⬜🟨🟩
+
+🔍 doabs
+    #1 | delta | ⬜🟩⬜⬜🟨
+    #2 | betas | ⬜🟩⬜🟨🟩
+    #3 | doabs | ⬜⬜🟩⬜🟩
+
+🔍 gears
+    #1 | delta | ⬜🟩⬜⬜🟨
+    #2 | betas | ⬜🟩⬜🟨🟩
+    #3 | doabs | ⬜⬜🟩⬜🟩
+    #4 | gears | ⬜🟩🟩🟩🟩
+
+🔍 pears
+    #1 | delta | ⬜🟩⬜⬜🟨
+    #2 | betas | ⬜🟩⬜🟨🟩
+    #3 | doabs | ⬜⬜🟩⬜🟩
+    #4 | gears | ⬜🟩🟩🟩🟩
+    #5 | pears | ⬜🟩🟩🟩🟩
+
+🔍 tears
+    #1 | delta | ⬜🟩⬜⬜🟨
+    #2 | betas | ⬜🟩⬜🟨🟩
+    #3 | doabs | ⬜⬜🟩⬜🟩
+    #4 | gears | ⬜🟩🟩🟩🟩
+    #5 | pears | ⬜🟩🟩🟩🟩
+    #6 | tears | ⬜🟩🟩🟩🟩
+
+👋 You lose! The correct word is nears.</code>
+</pre>
+
+<h3 id="solution-6">Solution<a href="#solution-6" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="playing-wordle">Playing Wordle<a href="#playing-wordle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Having a strategy of playing Wordle is now a survival skill. Since there are a lot of blog posts and resources online, I am not going to explain it in my way. These are some interesting ones:</p>
+<ul>
+<li><em>Maximising Differential Entropy to Solve Wordle</em> by <em>Aditya Sengupta</em> (<a href="https://aditya-sengupta.github.io/coding/2022/01/13/wordle.html"
+   
+   target="_blank" rel="noopener noreferrer" >Link</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>)</li>
+<li><em>Unwordle</em> by <em>sadmoody</em> (<a href="_https://sadmoody.github.io/unwordle/"
+   
+   >Link</a>)</li>
+<li><em>Absurdle</em> by <em>qntm</em> (<a href="https://qntm.org/wordle"
+   
+   target="_blank" rel="noopener noreferrer" >Link</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>)</li>
+<li><em>Solving Wordle using information theory</em> by <em>3Blue1Brown</em> (<a href="https://www.youtube.com/watch?v=v68zYyaEmEA"
+   
+   target="_blank" rel="noopener noreferrer" >Link</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>)</li>
+</ul>
+<h4 id="analysing-the-random-class">Analysing the <code>Random</code> class<a href="#analysing-the-random-class" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The $n$-th number, $x_n$, outputed from the PRNG will be</p>
+<p>$$x_n = \begin{cases}
+(a x_{n-1} + b)\ \text{mod}\ m &amp; \text{if}\ n &gt; 0 \\
+\text{seed} &amp; \text{if}\ n = 0
+\end{cases},$$</p>
+<p>where $a$, $b$ and $m$ are three numbers given above. We can express $x_n$ in terms of $\text{seed}$:</p>
+<p>$$\begin{aligned}
+x_n &amp;\equiv a x_{n-1} + b \equiv a \cdot (a x_{n-2} + b) + b \equiv a^2 \cdot x_{n-2} + b \cdot (a + 1) \\
+&amp;\equiv a^2 \cdot (a x_{n-3} + b) + b \cdot (a + 1) \equiv a^3 \cdot x_{n-3} + b \cdot (a^2 + a + 1) \\
+&amp;\equiv ... \equiv a^n \cdot x_0 + b \cdot (a^{n-1} + a^{n-2} + ... + 1) \\
+&amp;\equiv a^n \cdot \text{seed} + b \cdot (a^{n-1} + a^{n-2} + ... + 1) \quad (\text{mod}\ m)
+\end{aligned}$$</p>
+<p>Interestingly, $m = 2^{64} \cdot 13337$ and $a$ and $b$ are multiple of 4 (that said, there exist integers $u$ and $v$ such that $a = 4u$ and $b = 4v$).</p>
+<p>We can consider the whole thing under mod $2^{64}$:</p>
+<p>$$\begin{aligned}
+x_n &amp;\equiv a^n \cdot \text{seed} + b \cdot (a^{n-1} + a^{n-2} + ... + 1) \\
+&amp;\equiv (4u)^n \cdot \text{seed} + 4v \cdot [(4u)^{n-1} + (4u)^{n-2} + ... + 1] \quad (\text{mod}\ 2^{64})
+\end{aligned}$$</p>
+<p>In particular, when $n \geq 32$, we have $4^n = 2^{2n} = 2^{64} \cdot 2^{2n - 64} \equiv 0\ (\text{mod}\ 2^{64})$. We have:</p>
+<p>$$\begin{aligned}
+x_n &amp;\equiv (4u)^n \cdot \text{seed} + 4v \cdot [(4u)^{n-1} + (4u)^{n-2} + ... + 1] \\
+&amp;\equiv 4^n \cdot u^n \cdot \text{seed} + 4v \cdot [4^{n-1} \cdot u^{n-1} + 4^{n-2} \cdot u^{n-2} + ... + 1] \\
+&amp;\equiv 0 \cdot u^n \cdot \text{seed} + 4v \cdot [0 \cdot u^{n-1} + ... + 0 \cdot u^{32} + 4^{31} \cdot u^{31} + 4^{30} \cdot u^{30} + ... + 1] \\
+&amp;\equiv 4v \cdot [4^{31} \cdot u^{31} + 4^{30} \cdot u^{30} + ... + 1] \\
+&amp;\equiv 9640705563541584152 \quad (\text{mod}\ 2^{64})
+\end{aligned}$$</p>
+<p>This imply that $x_n\ \text{mod}\ 2^{64}$ is indepedent of the seed when $n$ is big. On the other hand, $x_n\ \text{mod}\ 13337$ is still unknown. Luckily there are only 13337 possibilities so we can exhaust them.</p>
+<p>After all, for $n \geq 32$, there exists an integer $0 \leq u_n &lt; 13337$ such that</p>
+<p>$$x_n = 9640705563541584152 + 2^{64} \cdot u_n.$$</p>
+<p>From here, we can devise with the below strategy:</p>
+<ol>
+<li>Play 34 rounds and obtain $x_{33}\ \text{mod}\ 12972$ and $x_{34}\ \text{mod}\ 12972$.</li>
+<li>Recover $x_{34}$ using $x_{33}\ \text{mod}\ 12972$ and $x_{34}\ \text{mod}\ 12972$.</li>
+<li>Compute $x_{35}, x_{36}, ..., x_{44}$ so that we can guess the words immediately.</li>
+<li>??</li>
+<li>Profit!</li>
+</ol>
+<p>If everything goes well, then we will obtain the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{c4n_y0u_pr3d1c7_th3_4ctu4l_w0rd13_s0lu71on5_n0w}
+</span></span></code></pre></div><p>By the way, it is much easier to get the answers for Wordle - they are hardcoded in the JavaScript files.</p>
+<h2 id="3-aes-crypto-misc">3-AES (Crypto, Misc)<a href="#3-aes-crypto-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-7">Challenge Summary<a href="#challenge-summary-7" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Denote $\text{3AES}: \mathcal{M} \rightarrow \mathcal{C}$ by $c := \text{3AES}(m)$, where</p>
+<p>$$\begin{aligned}
+t_1 &amp;= \text{AES-CBC}_{k_1, \nu_1}(m) \\
+t_2 &amp;= \text{AES-CBC}_{k_2, \nu_2}(t_1) \\
+c &amp;= \text{AES-CBC}_{k_3, \nu_3}(t_2).
+\end{aligned}$$</p>
+<p>When connected to the server, three sets of key-IV pairs $(k_i, \nu_i)$ (for $i = 1, 2, 3$) are generated. Here</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">key</span> <span class="o">=</span> <span class="n">md5</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">iv</span>  <span class="o">=</span> <span class="n">md5</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span></code></pre></div><p>We are allowed to call the below functions for an arbitrary number of times:</p>
+<ol>
+<li><strong>[Encrypt message]</strong> Given $m$ and we get $\text{3AES}(m)$.</li>
+<li><strong>[Encrypt flag]</strong> We get $\text{3AES}(\text{flag})$.</li>
+</ol>
+<p>The objective is to recover the flag.</p>
+<div class="alert danger">
+  <strong>Incorrect cipher definition!</strong> This is not the cipher we are going to analyse. We will explain why and state the actual cipher to-be studied later.
+</div>
+
+<h3 id="solution-7">Solution<a href="#solution-7" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-cipher-does-not-behave-as-expected">The cipher does not behave as expected<a href="#the-cipher-does-not-behave-as-expected" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">()]</span> <span class="o">*</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">gen_keys</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">=</span> <span class="n">md5</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">iv</span> <span class="o">=</span> <span class="n">md5</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iv</span><span class="p">)</span>
+</span></span></code></pre></div><p>After <code>gen_keys</code> is called, one may expect <code>keys</code> would look like:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">key1</span><span class="p">,</span> <span class="n">iv1</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">key2</span><span class="p">,</span> <span class="n">iv2</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">key3</span><span class="p">,</span> <span class="n">iv3</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>This is indeed incorrect. In reality, <code>keys</code> would be:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">key1</span><span class="p">,</span> <span class="n">iv1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">iv2</span><span class="p">,</span> <span class="n">key3</span><span class="p">,</span> <span class="n">iv3</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">key1</span><span class="p">,</span> <span class="n">iv1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">iv2</span><span class="p">,</span> <span class="n">key3</span><span class="p">,</span> <span class="n">iv3</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">key1</span><span class="p">,</span> <span class="n">iv1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="n">iv2</span><span class="p">,</span> <span class="n">key3</span><span class="p">,</span> <span class="n">iv3</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>You can refer to <a href="https://stackoverflow.com/questions/240178/list-of-lists-changes-reflected-across-sublists-unexpectedly"
+   
+   target="_blank" rel="noopener noreferrer" >this StackOverflow question</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> for an explanation of the behaviour. Anyway, this is the <em>actual</em> definition of $\text{3AES}: \mathcal{M} \rightarrow \mathcal{C}$. Let $c := \text{3AES}(m)$, then</p>
+<p>$$\begin{aligned}
+t_1 &amp;= \text{AES-CBC}_{k, \nu}(m) \\
+t_2 &amp;= \text{AES-CBC}_{k, \nu}(t_1) \\
+c &amp;= \text{AES-CBC}_{k, \nu}(t_2).
+\end{aligned}$$</p>
+<p>Here $k$ and $\nu$ are respectively <code>key1</code> and <code>iv1</code> defined above.</p>
+<h4 id="attacking-the-cipher">Attacking the cipher<a href="#attacking-the-cipher" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since there are only $2^{24}$ possible keys, we can easily exhaust them to obtain $k$. If we have the right key, we can recover $\nu$ by sending 48 null bytes as the plaintext. In that way we have $m_1, m_2, m_3$ and $c_1, c_2, c_3$ as shown in the below figure. We omit the padding blocks ($m_4$ and $c_4$) for simplicity.</p>
+
+
+<figure>
+  <img src="/images/2022-02-19-mocsctf/3-aes-blocks-1.png" title="The blocks for 3-AES, here we knew the green ones immediately.">
+  
+  <figcaption>The blocks for 3-AES, here we knew the green ones immediately.</figcaption>
+  
+</figure>
+
+<p>This is how we derive $\nu$ from $m_1, m_2, m_3$ and $c_1, c_2, c_3$ given a <em>correct</em> key ($\text{AESEnc}$ and $\text{AESDec}$ are respectively the encrypt and decrypt functions):</p>
+<p>$$\begin{aligned}
+s_2 &amp;:= c_1 \oplus \text{AESDec}_k(c_2) \\
+s_3 &amp;:= c_2 \oplus \text{AESDec}_k(c_3) \\
+r_3 &amp;:= s_2 \oplus \text{AESDec}_k(s_3) \\
+r_2 &amp;:= m_3 \oplus \text{AESDec}_k(r_3) \\
+r_1 &amp;:= m_2 \oplus \text{AESDec}_k(r_2) \\
+\nu &amp;:= m_1 \oplus \text{AESDec}_k(r_1)
+\end{aligned}$$</p>
+
+
+<figure>
+  <img src="/images/2022-02-19-mocsctf/3-aes-blocks-2.png" title="We have six more blocks (including the IV, $\nu$) if we knew the key.">
+  
+  <figcaption>We have six more blocks (including the IV, $\nu$) if we knew the key.</figcaption>
+  
+</figure>
+
+<p>However, we do not know whether the key is correct. We can determine the correctness of the key by compute $c_1'$ and check if $c_1 = c_1'$:</p>
+<p>$$\begin{aligned}
+s_1 &amp;:= \text{AESEnc}(\nu \oplus r_1) \
+c_1' &amp;:= \text{AESEnc}(\nu \oplus s_1)
+\end{aligned}$$</p>
+<p>After we have the correct $(k, \nu)$, we can get $\text{3AES}(\text{flag})$ and decrypt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{pl34s3_h4nd13_y0ur_py7h0n_l1st5_w3ll}
+</span></span></code></pre></div><h2 id="elementary-reverse">Elementary (Reverse)<a href="#elementary-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-8">Challenge Summary<a href="#challenge-summary-8" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<ol>
+<li>Download the program</li>
+<li>Execute the program.</li>
+<li>??</li>
+<li>Profit!</li>
+</ol>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/elementary/public/chall"
+   
+   target="_blank" rel="noopener noreferrer" >chall</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a Linux binary that prints the flag slowly. Players are expected to reverse the binary and optimize the algorithm.</p>
+<h3 id="solution-8">Solution<a href="#solution-8" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is not difficult to see from decompilers (like IDA or Ghidra) that the program evaluates $\text{p}(0), \text{p}(1), ..., \text{p}(64)$ from a given polynomial $\text{p}$.</p>
+<p>Why is it slow? This is how I define <code>a + b</code>, <code>a * b</code> and <code>a ^ b</code> (exponentation):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define n 1000000007
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// O(a + b)
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">_add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// O(a + b)
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">_sub</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>    
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">c</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// O(a + b)
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="nf">_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">)</span> <span class="n">c</span> <span class="o">=</span> <span class="nf">_sub</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// O(n * b)
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">mul</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="nf">add</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// O(n ^ b)
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">pow</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="nf">mul</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Also, the coefficients of the polynomial is given in the <code>main</code> function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">polynomial</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">77</span><span class="p">,</span> <span class="mi">543680933</span><span class="p">,</span> <span class="mi">779305823</span><span class="p">,</span> <span class="mi">406010255</span><span class="p">,</span> <span class="mi">852593453</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">670940274</span><span class="p">,</span> <span class="mi">400957584</span><span class="p">,</span> <span class="mi">848777990</span><span class="p">,</span> <span class="mi">534939184</span><span class="p">,</span> <span class="mi">328847351</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">616300066</span><span class="p">,</span> <span class="mi">359055106</span><span class="p">,</span> <span class="mi">161410101</span><span class="p">,</span> <span class="mi">171509744</span><span class="p">,</span> <span class="mi">155648929</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">916365238</span><span class="p">,</span> <span class="mi">18733844</span><span class="p">,</span> <span class="mi">380452845</span><span class="p">,</span> <span class="mi">509377978</span><span class="p">,</span> <span class="mi">800691109</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">908467961</span><span class="p">,</span> <span class="mi">104753231</span><span class="p">,</span> <span class="mi">181241660</span><span class="p">,</span> <span class="mi">273070766</span><span class="p">,</span> <span class="mi">93557074</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">561221533</span><span class="p">,</span> <span class="mi">449550761</span><span class="p">,</span> <span class="mi">188262493</span><span class="p">,</span> <span class="mi">915004277</span><span class="p">,</span> <span class="mi">426375697</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">665693795</span><span class="p">,</span> <span class="mi">107906776</span><span class="p">,</span> <span class="mi">665848870</span><span class="p">,</span> <span class="mi">211169645</span><span class="p">,</span> <span class="mi">53616008</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">489964557</span><span class="p">,</span> <span class="mi">908019215</span><span class="p">,</span> <span class="mi">786707135</span><span class="p">,</span> <span class="mi">573479073</span><span class="p">,</span> <span class="mi">905263359</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">938064888</span><span class="p">,</span> <span class="mi">780724541</span><span class="p">,</span> <span class="mi">361367421</span><span class="p">,</span> <span class="mi">636367390</span><span class="p">,</span> <span class="mi">816611492</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">238098701</span><span class="p">,</span> <span class="mi">596575814</span><span class="p">,</span> <span class="mi">426971134</span><span class="p">,</span> <span class="mi">943814120</span><span class="p">,</span> <span class="mi">365926771</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">929927764</span><span class="p">,</span> <span class="mi">885597612</span><span class="p">,</span> <span class="mi">895263918</span><span class="p">,</span> <span class="mi">678662340</span><span class="p">,</span> <span class="mi">387318491</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">644785517</span><span class="p">,</span> <span class="mi">566974198</span><span class="p">,</span> <span class="mi">229009720</span><span class="p">,</span> <span class="mi">874699826</span><span class="p">,</span> <span class="mi">637234082</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">673340960</span><span class="p">,</span> <span class="mi">577186089</span><span class="p">,</span> <span class="mi">903058253</span><span class="p">,</span> <span class="mi">424604291</span><span class="p">,</span> <span class="mi">663043221</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// p(x) = 663043221 * x^55 + 424604291 * x^54 + ... + 543680933 * x + 77
+</span></span></span></code></pre></div><p>Anyway it is easy to optimize the algorithm - you can just implement <code>a + b</code>, <code>a * b</code> and <code>a ^ b</code> in a standard way and the flag would be shown immediately:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{th1s_pr0gr4m_1s_4lr34dy_sl0w_d01ng_ar1thm3t1c_0p3ra7i0n5}
+</span></span></code></pre></div><h2 id="redactor-reverse">Redactor (Reverse)<a href="#redactor-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-9">Challenge Summary<a href="#challenge-summary-9" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I don't know, maybe you can run the program during the CTF and get a sense of what's going on.</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220219-mocsctf/redactor/public/chall.exe"
+   
+   target="_blank" rel="noopener noreferrer" >chall.exe</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a <code>.exe</code> file which is suggested to run in the background. Players may observe that the program would redact the flag (or part of the flag) that exists in the clipboard. For example, if one copies the first line from the clipboard, it became the second line after pasting.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{what_is_this?}
+</span></span><span class="line"><span class="cl">********what_is_this?}
+</span></span></code></pre></div><h3 id="solution-9">Solution<a href="#solution-9" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since the program is compiled by <em>PyInstaller</em>, one may try <a href="https://github.com/extremecoders-re/pyinstxtractor"
+   
+   target="_blank" rel="noopener noreferrer" >PyInstaller Extractor</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> to recover the source code (I did not try this, however).</p>
+<p>If players are running the program during the CTF, I expect that they will be copy-pasting flags occasionally. The program redacts part of the flag they obtained and the players could have an insight on the behaviour of the program. We can obtain the flag byte-by-byte by exhausting the characters:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{0 MOCSCTF{1 MOCSCTF{2 MOCSCTF{3 MOCSCTF{4 MOCSCTF{5 MOCSCTF{6 MOCSCTF{7
+</span></span><span class="line"><span class="cl">MOCSCTF{8 MOCSCTF{9 MOCSCTF{a MOCSCTF{b MOCSCTF{c MOCSCTF{d MOCSCTF{e MOCSCTF{f
+</span></span><span class="line"><span class="cl">MOCSCTF{g MOCSCTF{h MOCSCTF{i MOCSCTF{j MOCSCTF{k MOCSCTF{l MOCSCTF{m MOCSCTF{n
+</span></span><span class="line"><span class="cl">MOCSCTF{o MOCSCTF{p MOCSCTF{q MOCSCTF{r MOCSCTF{s MOCSCTF{t MOCSCTF{u MOCSCTF{v
+</span></span><span class="line"><span class="cl">MOCSCTF{w MOCSCTF{x MOCSCTF{y MOCSCTF{z MOCSCTF{A MOCSCTF{B MOCSCTF{C MOCSCTF{D
+</span></span><span class="line"><span class="cl">MOCSCTF{E MOCSCTF{F MOCSCTF{G MOCSCTF{H MOCSCTF{I MOCSCTF{J MOCSCTF{K MOCSCTF{L
+</span></span><span class="line"><span class="cl">MOCSCTF{M MOCSCTF{N MOCSCTF{O MOCSCTF{P MOCSCTF{Q MOCSCTF{R MOCSCTF{S MOCSCTF{T
+</span></span><span class="line"><span class="cl">MOCSCTF{U MOCSCTF{V MOCSCTF{W MOCSCTF{X MOCSCTF{Y MOCSCTF{Z MOCSCTF{! MOCSCTF{&#34;
+</span></span><span class="line"><span class="cl">MOCSCTF{# MOCSCTF{$ MOCSCTF{% MOCSCTF{&amp; MOCSCTF{&#39; MOCSCTF{( MOCSCTF{) MOCSCTF{*
+</span></span><span class="line"><span class="cl">MOCSCTF{+ MOCSCTF{, MOCSCTF{- MOCSCTF{. MOCSCTF{/ MOCSCTF{: MOCSCTF{; MOCSCTF{&lt;
+</span></span><span class="line"><span class="cl">MOCSCTF{= MOCSCTF{&gt; MOCSCTF{? MOCSCTF{@ MOCSCTF{[ MOCSCTF{\ MOCSCTF{] MOCSCTF{^
+</span></span><span class="line"><span class="cl">MOCSCTF{_ MOCSCTF{` MOCSCTF{{ MOCSCTF{| MOCSCTF{} MOCSCTF{~
+</span></span></code></pre></div><p>It became the below after copy-pasting. Note that <code>MOCSCTF{c</code> has been replaced to <code>*********</code> and therefore we know <code>MOCSCTF{c</code> is the prefix of the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">********0 ********1 ********2 ********3 ********4 ********5 ********6 ********7
+</span></span><span class="line"><span class="cl">********8 ********9 ********a ********b ********* ********d ********e ********f
+</span></span><span class="line"><span class="cl">********g ********h ********i ********j ********k ********l ********m ********n
+</span></span><span class="line"><span class="cl">********o ********p ********q ********r ********s ********t ********u ********v
+</span></span><span class="line"><span class="cl">********w ********x ********y ********z ********A ********B ********C ********D
+</span></span><span class="line"><span class="cl">********E ********F ********G ********H ********I ********J ********K ********L
+</span></span><span class="line"><span class="cl">********M ********N ********O ********P ********Q ********R ********S ********T
+</span></span><span class="line"><span class="cl">********U ********V ********W ********X ********Y ********Z ********! ********&#34;
+</span></span><span class="line"><span class="cl">********# ********$ ********% ********&amp; ********&#39; ********( ********) *********
+</span></span><span class="line"><span class="cl">********+ ********, ********- ********. ********/ ********: ********; ********&lt;
+</span></span><span class="line"><span class="cl">********= ********&gt; ********? ********@ ********[ ********\ ********] ********^
+</span></span><span class="line"><span class="cl">********_ ********` ********{ ********| ********} ********~
+</span></span></code></pre></div><p>We can obtain the flag by repeating the process.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{cryp70curr3ncy_4s537s_4r3_s0m3t1m3s_5tol3n_v1a_cl1pb04rd}
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>H. Krawczyk, M. Bellare, R. Canetti (1997) &quot;HMAC: Keyed-Hashing for Message Authentication&quot;<br><a href="https://datatracker.ietf.org/doc/html/rfc2104#section-2"
+   
+   target="_blank" rel="noopener noreferrer" >https://datatracker.ietf.org/doc/html/rfc2104#section-2</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          MOCSCTF 2022 Postmortem
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-03-01-tsjctf-1/">← TSJ CTF 2022 (I): Cipher Switching Service</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-02-14-intigriti-xss/">Intigriti&#39;s XSS Challenge (February 2022) →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

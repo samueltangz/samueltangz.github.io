@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Aes on Mystify</title>
+    <link>https://mystiz.hk/tags/aes/</link>
+    <description>Recent content in Aes on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 08 Apr 2021 08:00:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/aes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ångstromCTF 2021: Cache Money</title>
+      <link>https://mystiz.hk/posts/2021/2021-04-08-angstromctf-2021/</link>
+      <pubDate>Thu, 08 Apr 2021 08:00:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-04-08-angstromctf-2021/</guid>
+      <description>&lt;p&gt;I played ångstromCTF 2021 for &lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt; to spend my Easter holiday. I solved most of the reverse and cryptography challenges alone. In particular, &lt;em&gt;Cache Money&lt;/em&gt; is one of the harder crypto challenges that I spent more than one day tackling. It is very rewarding, and eventually four teams ended up solving it.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;p&gt;This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 and 256-bit keys. The encryptor is equipped with caches and we are given a service to encrypt (or decrypt) our messages. In short, there are four oracles provided by the service ($k_0$ is the fixed secret key and $b \in \{128, 192, 256\}$).&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

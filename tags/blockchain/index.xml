@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blockchain on Mystify</title>
+    <link>https://mystiz.hk/tags/blockchain/</link>
+    <description>Recent content in Blockchain on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Sep 2024 01:30:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/blockchain/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BlazCTF 2024 Writeup</title>
+      <link>https://mystiz.hk/posts/2024/2024-09-28-blazctf/</link>
+      <pubDate>Sat, 28 Sep 2024 01:30:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2024/2024-09-28-blazctf/</guid>
+      <description>&lt;p&gt;This time I went to &lt;a href=&#34;https://twitter.com/DeFiHackLabs&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@DeFiHackLabs&lt;/a&gt; and attempt my very first Web3-focused CTF. I am fortunately able to solve some challenges. Nothing particular difficult, but that&#39;s still something.&lt;/p&gt;&#xA;&lt;div class=&#34;alert danger&#34;&gt;&#xA;  🚧 &lt;strong&gt;Syntax highlight to be fixed.&lt;/strong&gt; I never imagine that I will work on Web3 challenges, thus I did not have syntax highlight for Solidity. I will have this addressed.&#xA;&lt;/div&gt;&#xA;&#xA;&lt;h2 id=&#34;8inch&#34;&gt;8Inch&lt;/h2&gt;&#xA;&lt;h3 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;After finding out CowSwap raising millions, Tony reluctantly coded an intent-based DeFi project, wrestling with his ideals as venture capital poured in.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

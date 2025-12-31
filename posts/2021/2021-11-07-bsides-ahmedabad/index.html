@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BSides Ahmedabad CTF 2021 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">BSides Ahmedabad CTF 2021 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-11-07T11:02:00&#43;08:00">2021-11-07</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/bsides-ahmedabad/" class="text-muted text-decoration-none">#bsides-ahmedabad</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/algorithms/" class="text-muted text-decoration-none">#algorithms</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>No, we did not win. I see that coming and took a screenshot during the game.</p>
+<p>BSides Ahmedabad CTF 2021 is organized by <a href="https://twitter.com/zer0pts" target="_blank" rel="nofollow">@zer0pts</a>. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I'll go through the harder crypto challenges and the reversing challenge called <em>Collapsed License</em> in this blog post.</p>
+<h2 id="ssssrng">SSSS.RNG<a href="#ssssrng" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let $p$ be a 512-bit prime and $a, b, g_0 \in [2, p)$. Let $\mathcal{G}$ be a PRNG and let $g_k$ be its $k$-th output, given by</p>
+<p>$$g_k = (a\cdot g_{k-1} + b)\ \text{mod}\ p.$$</p>
+<p>Let $\text{f}(x) := g_1 + g_2 x + g_3 x^2 + g_4 x^3 + g_5 x^4 + g_6 x^5$ be a polynomial over $\mathbb{Z}_p$. Suppose that we are given $p$, $\text{f}(1), \text{f}(2), \text{f}(3), \text{f}(4)$ and $c = \text{f}(\text{flag})$. The objective is to compute $\text{flag}$.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We let $t = g_1$. Then</p>
+<p>$$\begin{aligned}
+\text{f}(x) = t &amp;+ (at + b) x + (a^2t + ab + b) x^2 + (a^3t + a^2b + ab + b) x^3 \\
+&amp; + (a^4t + a^3b + a^2b + ab + b) x^4 + (a^5t + a^4b + a^3b + a^2b + ab + b) x^5
+\end{aligned}$$</p>
+<p>Since we are given $\text{f}(1), ..., \text{f}(4)$, then we have relations in terms of $a, b, t$. Using Gröbner basis, we are able to get $a, b$ and $t$ (Please refer to my blog post on <a href="/posts/2021/2021-02-15-dicectf-1/#benaloh"
+   
+   >benaloh in DiceCTF 2021</a> about Grobner basis). After we have $a, b$ and $t$, we can find the roots of $\text{f}(m) = c$. One of the roots $m$ is the flag - <code>Neko{7h3_SSSS_way_wa5_imp3rf3c7}</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">Fp</span> <span class="o">=</span> <span class="n">GF</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">P</span><span class="o">.&lt;</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">PolynomialRing</span><span class="p">(</span><span class="n">Fp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">I</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">I</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">1</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">3</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">3</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">4</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">4</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">5</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">4</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">5</span> <span class="o">-</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">I</span> <span class="o">=</span> <span class="n">ideal</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">groebner_basis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># [</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   a + 2266836953589743257351224509273439729689541525677993833001930920472782742737910602275706868772676759946821904069905859968756597270976151522409326524927600,</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   b + 2788740700292957168049099171058712103000578129267348979215398750092376230150013503532084224750557141914333611578327023620351350891306875949435645505020009,</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   t + 2396732332549055902303832537638214877286359297511891847206728175987402024672248779417486082181632073168252809943847197628520807355008794399778015958945044</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ]</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2266836953589743257351224509273439729689541525677993833001930920472782742737910602275706868772676759946821904069905859968756597270976151522409326524927600</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2788740700292957168049099171058712103000578129267348979215398750092376230150013503532084224750557141914333611578327023620351350891306875949435645505020009</span>
+</span></span><span class="line"><span class="cl"><span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2396732332549055902303832537638214877286359297511891847206728175987402024672248779417486082181632073168252809943847197628520807355008794399778015958945044</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">P</span><span class="o">.&lt;</span><span class="n">x</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">PolynomialRing</span><span class="p">(</span><span class="n">Fp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">1</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">3</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">3</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">4</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">4</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">5</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">4</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="o">^</span><span class="mi">5</span> <span class="o">-</span> \
+</span></span><span class="line"><span class="cl">    <span class="n">c</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">roots</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span><span class="o">+</span><span class="mi">7</span><span class="p">)</span><span class="o">//</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="ecc-rsa-2">ECC-RSA 2<a href="#ecc-rsa-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let $n = p\cdot q$ with $p$ and $q$ being 512-bit primes. An elliptic curve $\mathcal{C}$ is given by:</p>
+<p>$$\mathcal{C}:\quad y^2 \equiv x^3 + a x + b\ (\text{mod}\ n),$$</p>
+<p>where $a = -3$. Let $P \in \mathcal{C}$ and let $m_0, m_1, ... \in [0, 256)$ be the characters of the flag. The $k$-th character of the flag $m_k$ is encrypted to $c_k$ (here $e = 65537$):</p>
+<p>$$c_k \equiv ((2^k\cdot P)_x \cdot m_k)^e \ (\text{mod}\ n).$$</p>
+<p>Given $n, a, b$ and $c_0, c_1, ...$. It is known that the flag satisfies the format <code>Neko{\w+}</code>, the objective is to recover the flag.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-elliptic-curve-doubling">Part I: Elliptic curve doubling<a href="#part-i-elliptic-curve-doubling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>It is another time I looked up how a point in elliptic curve is doubled. Suppose that $Q = (x_1, y_1)$ and $2Q = (x_2, y_2)$:</p>
+<p>$$\begin{cases}
+&amp; \lambda = (3x_1^2 + a) / 2y_1 \\
+&amp; x_2 = \lambda^2 - 2x_1 \\
+&amp; y_2 = \lambda(x_1 - x_2) - y_1
+\end{cases}$$</p>
+<p>We can express $x_2$ in terms of $x_1$:</p>
+<p>$$\begin{aligned}
+x_2 &amp;= \lambda^2 - 2x_1 = \left(\frac{3x_1^2 + a}{2y_1}\right)^2 - 2x_1 = \frac{(3x_1^2 + a)^2}{4y_1^2} - 2x_1 = \frac{(3x_1^2 + a)^2}{4(x_1^3 + ax_1 + b)} - 2x_1 \\
+&amp;= \frac{9x_1^4 + 6ax_1^2 + a^2 - 8x_1^4 - 8ax_1^2 - 8bx_1}{4(x_1^3 + ax_1 + b)} = \frac{x_1^4 - 2ax_1^2 - 8bx_1 + a^2}{4(x_1^3 + ax_1 + b)}
+\end{aligned}$$</p>
+<p>From above, we could recover the $x$-coordinate of $2Q$ if we have the $x$-coordinate of $Q$. Inductively, we can recover the $x$-coordinates of $4Q$, $8Q$, $16Q$, etc... Wait, we don't even have an $x$-coordinate yet.</p>
+<h4 id="part-ii-recovering-the-x-coordinate-of-p">Part II: Recovering the $x$-coordinate of $P$<a href="#part-ii-recovering-the-x-coordinate-of-p" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let $x_0$ and $x_1$ be the $x$-coordinates of $P$ and $2P$. We know the prefix of the flag, i.e., $m_0, ..., m_4$. That said, we have ${x_0}^e = c_0 / {m_0}^e$, ${x_1}^e = c_1 / {m_1}^e$ and so on. From the previous part, we can express $x_1$ in terms of $x_0$. In that way we have two polynomials that shares a common root $x_0$:</p>
+<p>$$\begin{cases}
+&amp; A(x) = x^e - c_0 / {m_0}^e \\
+&amp; B(x) = (x^4 - 2ax^2 - 8bx + a^2)^e - [4(x^3 + ax + b)]^e \cdot c_1 / {m_1}^e
+\end{cases}$$</p>
+<p>Since $x_0$ is a common root of the polynomials, we can compute $g(x) := \gcd(A(x), B(x))$ with half GCD algorithm (or Euclidean algorithm but it is significantly slower).</p>
+<h4 id="part-iii-finishing-up">Part III: Finishing up<a href="#part-iii-finishing-up" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Now we have $x_0, x_1, ...$. Since each ciphertext corresponds to one byte of the flag, we can easily generate $(x_k \cdot m_k)^e\ \text{mod}\ n$ for all $m_k \in [0, 256)$. This can serve as a lookup table to get $c_k$ from $m_k$. After all, the flag is <code>Neko{h4lf_gcd_g0es_brrr...}</code>.</p>
+<h2 id="they-were-eleven">They Were Eleven<a href="#they-were-eleven" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Suppose that we have a 111-byte message $m$. Let $p_1, p_2, ..., p_{11}, q_1, q_2, ..., q_{11}$ be 512-bit primes and $r_1, r_2, ..., r_{11} \in [0, 2^{11})$.</p>
+<p>We are given $n_i = p_i\cdot q_i$ and $c_i = m^{11}\cdot r_i\ \text{mod}\ n_i$ for $i = 1, 2, ..., 11$. The objective is to recover $m$.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-comparing-with-the-broadcast-attack">Part I: Comparing with the broadcast attack<a href="#part-i-comparing-with-the-broadcast-attack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>It looked very similar to broadcast attack. $e = 11$ and we have 11 messages encrypted with different moduli. The only difference is the each ciphertext is multiplied with a 11-bit number. I think of Chinese remainder theorem that is used by the broadcast attack (hereby $N_k = (\prod{n_i}) / n_k$):</p>
+<p>$$c = \left(\sum_{k=1}^{11} c_i \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k)\right)\ \text{mod}\ N.\qquad[\dagger]$$</p>
+<p>On a second thought, $c$ is not meaningful at all. Although $c$ is not useful, the expression actually helped.</p>
+<h4 id="part-ii-when-in-doubt-use-lattice">Part II: When in doubt, use lattice<a href="#part-ii-when-in-doubt-use-lattice" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>One thing that caught my attention is the size of $m$. It is 111-byte long, which is a bit short when compiled to the moduli. Does it mean that it is a &quot;short solution&quot; of a system of equations? The picture is clearer if we substitute $c_k = m^{11}\cdot r_k$ on $[\dagger]$:</p>
+<p>$$c = \left(\sum_{k=1}^{11} m^{11} \cdot r_k \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k)\right)\ \text{mod}\ N.$$</p>
+<p>Right, this is <em>still</em> useless. The only difference is those problematic $r_i$'s. If we remove those $r_k$'s our world would be much cleaner:</p>
+<p>$$m^{11} = \left(\sum_{k=1}^{11} m^{11} \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k)\right)\ \text{mod}\ N.$$</p>
+<p>In particular, $m^{11}$ is $9768 = 111 \cdot 8 \cdot 11$ bits long. Since $N$ is $11264 = 1024 \cdot 11$ bits long, $m^{11}$ is considered short. Maybe we can find short $r_1, r_2, ..., r_{11}$ such that</p>
+<p>$$m^{11} = \left(\sum_{k=1}^{11} c_k \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k) \cdot {r_k}^{-1}\right)\ \text{mod}\ N.$$</p>
+<p>I don't know how to formulate ${r_k}^{-1}$ in lattice for small $r_k$'s. Luckily we can rewrite the equation (denote $R = \prod r_i$ and $R_k = R / r_k$) by multiplying $R$ on both sides:</p>
+<p>$$m^{11} R = \left(\sum_{k=1}^{11} c_k \cdot N_k \cdot ({N_k}^{-1}\ \text{mod}\ n_k) \cdot R_k\right)\ \text{mod}\ N.$$</p>
+<p>Well, it doesn't sound <em>lucky</em> at all. Hear me out: The left hand side is now 9889 bits long. There are 11 unknowns on the right hand side, namely $R_1, R_2, ..., R_{11}$. Each of them is 88 bits long. There are total of 10857 bits, which is still smaller than 11264. Now we can try putting the whole thing in a lattice:</p>
+<p>$$\left[\begin{matrix}
+-1 &amp; 1 &amp; 0 &amp; ... &amp; 0 \\
+c_1 \cdot N_1 \cdot {N_1}^{-1} &amp; 0 &amp; 1 &amp; ... &amp; 0 \\
+&amp;&amp;\vdots \\
+c_{11} \cdot N_{11} \cdot {N_{11}}^{-1} &amp; 0 &amp; 0 &amp; ... &amp; 1 \\
+N &amp; 0 &amp; 0 &amp; ... &amp; 0
+\end{matrix}\right]$$</p>
+<div class="alert info">
+  <strong>Note.</strong> I used ${N_{k}}^{-1}$ as a shorthand for ${N_{k}}^{-1}\ \text{mod}\ n_k$. That was too long.
+</div>
+
+<p>It is expected that $(0, m^{11}R, R_1, R_2, ..., R_{11})$ is an vector spanned by the lattice. It could be found assigning appropriate weights to the vectors and perform LLL. I exhausted $r_1$ and computed $R := r_1R_1$. After that, we can derive $m$ from $m^{11}R$ and $R$. Finally, those integral $m$'s could be the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Neko{th3_5tud3nts_0f_spac3_univ3rsity_sh0u1d_b3_wis3_1ik3_a_cat}
+</span></span></code></pre></div><h4 id="addendum">Addendum<a href="#addendum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><em>Updated 2021.11.10 16:30 (HKT).</em></p>
+<p>@maple3142 suggested that $m^{11}R$ should be $m^{11}R'$ where $R' = \text{lcm}(r_1, r_2, ..., r_{11})$. This is correct, and below is a shorter vector that should be contained in the lattice:</p>
+<p>$$(0, m^{11}R', R'_1, R'_2, ..., R'_{11}),$$</p>
+<p>where $R' = \text{lcm}(r_1, r_2, ..., r_{11})$ and $R'_k = R' / r_k$. Note that $(0, m^{11}R, R_1, R_2, ..., R_{11})$ is an integer multiple of the above vector. That said, this vector is still spanned by the lattice, but it would not be one of the vectors those constitute to the basis. We can use the same way to solve the problem with the new vector.</p>
+<h3 id="solve-script">Solve script<a href="#solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="c1"># omitted</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">cs</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Ns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">Ninvs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Nc</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span> <span class="k">for</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Ns</span><span class="p">,</span> <span class="n">ns</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">bounds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">11264</span><span class="p">,</span> <span class="mi">2</span><span class="o">^</span><span class="mi">11264</span> <span class="o">//</span> <span class="mi">2</span><span class="o">^</span><span class="mi">9889</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="o">^</span><span class="mi">11264</span> <span class="o">//</span> <span class="mi">2</span><span class="o">^</span><span class="mi">110</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl"><span class="n">Q</span> <span class="o">=</span> <span class="n">diagonal_matrix</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span>  <span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span>  <span class="mi">0</span>  <span class="p">]</span> <span class="o">=</span> <span class="n">N</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>  <span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Ns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Ninvs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="n">N</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span>   <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">*=</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">LLL</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">/=</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">A</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">row</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Guess k1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">k1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">11</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k_prod</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="n">k_prod</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="n">k_prod</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">=</span> <span class="n">c1</span><span class="o">^</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">11</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">):</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="n">flag</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">flag</span> <span class="o">=</span> <span class="n">flag</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Neko{th3_5tud3nts_0f_spac3_univ3rsity_sh0u1d_b3_wis3_1ik3_a_cat}</span>
+</span></span></code></pre></div><h2 id="collapsed-license">Collapsed License<a href="#collapsed-license" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are given a binary executable compiled in C++ (luckily unstripped). It reads a &quot;license file&quot; and valiates it, and prints us the flag if the license file is valid.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-what-is-a-valid-license">Part I: What is a valid license?<a href="#part-i-what-is-a-valid-license" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I understood the validation logic after spending some time reversing the binary. A valid license file should be 8192 bytes long (i.e., 65536 bits). It is converted into a $256 \times 256$ grid with each entry being either 0 or 1. There should be exactly 256 set bits, satisfying both conditions:</p>
+<ul>
+<li>Each row (and each column) should contain exactly one set bit.</li>
+<li>Suppose that $(x_1, y_1)$ and $(x_2, y_2)$ are two distinct set bits in the grid. If $(x_1', y_1')$ and $(x_2', y_2')$ are two set bits satisfying $x_1 - x_2 = x_1' - x_2'$ and $y_1 - y_2 = y_1' - y_2'$, then $(x_1', y_1') = (x_1, y_1)$ and $(x_2', y_2') = (x_2, y_2)$.</li>
+</ul>
+<p>Let $(0, y_0), (1, y_1), ..., (63, y_{63})$ be the coordinates of the set bits. The below conditions are equivalent to the above ones:</p>
+<ul>
+<li>$y_0, y_1, ..., y_{63}$ are all distinct, and</li>
+<li>$y_1 - y_0, y_2 - y_1, ..., y_{63} - y_{62}$ are all distinct, and</li>
+<li>$y_2 - y_0, y_3 - y_1, ..., y_{63} - y_{61}$ are all distinct, and</li>
+<li>...</li>
+<li>$y_{62} - y_0, y_{63} - y_1$ are all distinct.</li>
+</ul>
+<div class="alert info">
+  <strong>What is the array called?</strong> According to @ptr-yudai, the array $y_0, y_1, ..., y_{n-1}$ is called a Costas array. We need to find such an array when $n = 256$.
+</div>
+
+<h4 id="part-ii-a-symbolic-solution">Part II: A symbolic solution<a href="#part-ii-a-symbolic-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I wrote a script with Z3. It worked for $n$ is as small as 10-ish. When $n = 256$ my laptop crashed after running the program for 30 minutes.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">z3</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">256</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">Int</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;y</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">And</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Distinct</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Distinct</span><span class="p">([</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">)]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">check</span><span class="p">()</span> <span class="o">==</span> <span class="n">sat</span>
+</span></span><span class="line"><span class="cl"><span class="n">md</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="n">md</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">as_long</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">by</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">b</span><span class="o">&lt;&lt;</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">8</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">by</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">by</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">by</span><span class="p">)</span>
+</span></span></code></pre></div><h4 id="part-iii-the-adrenaline-rush-when-my-laptop-was-crashed">Part III: The adrenaline rush when my laptop was crashed<a href="#part-iii-the-adrenaline-rush-when-my-laptop-was-crashed" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert success">
+  I am really excited able to think of the correct solution.
+</div>
+
+<p>I was forced to work on paper and pen when my laptop was crashed. Suppose that $(0, y_0), (1, y_1), ..., (63, y_{63})$ are the coordinates of the set bits.</p>
+<p>There are a number of failed attempts, like $y_k = \sum_{i=0}^{k} i$. At some point of time I think of <em>primitive roots</em>, which led me to the final solution.</p>
+<hr>
+<p><strong>Claim.</strong> Let $g$ be a primitive root under modulo 257. Below is a valid solution:</p>
+<p>$$y_k = (g^k\ \text{mod}\ 257)-1,$$</p>
+<p>for $k = 0, 1, 2, ..., 255$.</p>
+<p><strong>Proof.</strong></p>
+<p>Since g is a primitive root under modulo 257, $g^0, g^1, ..., g^{255}$ are all distinct. That said, $y_k$'s are all distinct.</p>
+<p>Also, let $d &gt; 0$. Suppose that $y_{i+d} - y_i = y_{j + d} - y_j$ for $0 \leq i, j \leq 255-d$.</p>
+<p>$$\begin{aligned}
+&amp; g^i (g^d - 1) \equiv y_{i+d} - y_i \equiv y_{j + d} - y_j \equiv g^j (g^d - 1)\ (\text{mod}\ 257) \\
+&amp; \Longrightarrow i = j \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\blacksquare
+\end{aligned}$$</p>
+<hr>
+<p>I substituted $g = 3$ to created a license file. Sending the license to the server, we have the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Neko{c4n_U_f1nd_0ut_h0w_m4ny_v4L1d_l1c3ns3_3x1St5?}
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          BSides Ahmedabad CTF 2021 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-11-18-hkcert-ctf-1/">← HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-10-25-asis-lagleg/">Factoring a special RSA modulus from ASIS CTF 2021 Quals →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

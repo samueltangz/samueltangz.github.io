@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firebird Internal CTF 2021 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Firebird Internal CTF 2021 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-01-18T22:00:00&#43;08:00">2021-01-18</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/firebird-training/" class="text-muted text-decoration-none">#firebird-training</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I have written four question for Firebird Internal CTF - <em>Oofbleck</em> (Crypto), <em>Obvious Transfer</em> (Crypto), <em>RC4</em> (Misc) and <em>Prooof-ooof-Wooork</em> (Reverse, Misc). I will be including all of them in this blog post.</p>
+<h2 id="oofbleck-crypto">Oofbleck (Crypto)<a href="#oofbleck-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>One (out of six) team have solved this during the CTF period.</p>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Some of the block cipher modes of operation are pretty vulnerable, which includes but not limited to padding oracle in CBC, key-recovery attacks with repeated nonces in GCM and <em>Zerologon</em> in CFB8... What about OFB?</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/oofbleck/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/oofbleck/public/output.txt"
+   
+   target="_blank" rel="noopener noreferrer" >output.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/oofbleck/public/secret.py"
+   
+   target="_blank" rel="noopener noreferrer" >secret.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>In this challenge, we are given a ciphertext encrypted with OFB, and the respective encryption script. The following is the core part of the program.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">iv</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_OFB</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">message</span> <span class="o">=</span> <span class="n">pad</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">iv</span> <span class="o">+</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ciphertext</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^firebird\{\w</span><span class="si">{58}</span><span class="s1">\}$&#39;</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">flag</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span></code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-output-feedback-mode-of-operation">The output feedback mode of operation<a href="#the-output-feedback-mode-of-operation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since this is a challenge regarding to the output feedback (OFB) mode, let's see how is it done.</p>
+
+
+<figure>
+  <img src="/images/2021-01-17-firebird/ofb-wiki.png" title="OFB mode of operation from Wikipedia.">
+  
+  <figcaption>OFB mode of operation from Wikipedia.</figcaption>
+  
+</figure>
+
+<p>Furthermore, the message is 68 bytes long (<code>firebird{[...58 characters...]}</code>). Since the block size of AES is 16 bytes, it is composed of 5 blocks after padding. Define $(m_1, m_2, m_3, m_4, m_5)$ and $(x_0, c_1, c_2, c_3, c_4, c_5)$ as the padded plaintext and its ciphertext (where $x_0$ is the IV). Then for $i \in {1, 2, 3, 4, 5}$, we have</p>
+<p>$$
+\begin{cases}\begin{aligned}
+x_i &amp;= \text{Enc}_k(x_{i-1}) \\
+c_i &amp;= m_i \oplus x_i
+\end{aligned}\end{cases}
+$$</p>
+<p>It seems that we have $(x_0, c_1, c_2, c_3, c_4, c_5)$, which does not allow us to recover any of the $m_i$'s... or is it?</p>
+<h4 id="misusing-the-package-methods">Misusing the package methods<a href="#misusing-the-package-methods" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Anyone who is familiar with <em>pycrypto</em> (or <em>pycryptodome</em>) may immediately spot the problem - the order of the parameters are messed up. From the documentation<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, the first and the third arguments should be respectively the key and the IV. Unfortunately, they are swapped in this challenge.</p>
+<p>Hence, we are actually given $(k, c_1, c_2, c_3, c_4, c_5)$ instead of $(x_0, c_1, c_2, c_3, c_4, c_5)$. Knowing the key, we can recover all of the $x_i$'s given any of them (by either encrypting or decrypting). To retrieve one of the $x_i$'s, let's first look at how the padded plaintext is structured. A 68-byte plaintext will be padded with 12 copies of <code>\x0c</code> under PKCS7 padding. If we let <code>X</code> to be <code>\x0c</code>, the padded message would be:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">m1______________ m2______________ m3______________ m4______________ m5______________
+</span></span><span class="line"><span class="cl">firebird{??????? ???????????????? ???????????????? ???????????????? ???}XXXXXXXXXXXX
+</span></span></code></pre></div><p>Since there are only three unknown characters in $m_5$, we can exhaust them to recover $x_5$. Then we can decrypt for $x_4, ..., x_1$ and hence recover $m_4, ..., m_1$. If $m_1$ starts with <code>firebird{</code>, then the flag can be obtained via concatenating the message blocks.</p>
+<h2 id="obvious-transfer-crypto">Obvious Transfer (Crypto)<a href="#obvious-transfer-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Zero (out of six) teams have solved this during the CTF period.</p>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Can you distinguish ciphertext from RSA with random?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/obvious-transfer/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/obvious-transfer/public/secret.py"
+   
+   target="_blank" rel="noopener noreferrer" >secret.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We will be given 100 challenges and will win the flag if all of they are all passed. This is how a challenge performed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">c0</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;🤯 </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">params</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;🤖 &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">action</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;📦&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">c0</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ciphertext</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">oaep_k</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">flag</span><span class="p">),</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🤫&#39;</span><span class="p">,</span> <span class="n">long_to_b64</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;🔓&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">c0</span> <span class="o">!=</span> <span class="n">c1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">failed</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;👌&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;🏃&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">exited</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">failed</span> <span class="ow">or</span> <span class="n">exited</span><span class="p">:</span> <span class="k">break</span>
+</span></span></code></pre></div><p>In short, at the beginning of the round, a number $c_0$ is selected. We can request output via 📦 - which outputs a random number if $c_0 = 0$ and a ciphertext from RSA if $c_0 = 1$. Finally we can send our guess $c_1$ via 🔓 - the program terminates if $c_0 \neq c_1$.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="some-trivial-variants">Some trivial variants<a href="#some-trivial-variants" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>There are two variants that make the challenge trivial.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Variant 1</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">c0</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># use textbook RSA instead</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">),</span> <span class="n">k</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Variant 2</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">c0</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">oaep_k</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">flag</span><span class="p">),</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>In the first variant, we can use 📦 twice to obtain two <em>ciphertexts</em>, namely $x_1$ and $x_2$. Since there are no randomness involved in encrypting with textbook RSA, $x_1 = x_2$ always hold. Of course, it is also possible that $x_1 = x_2$ when $c_0 = 0$. But it is very unlikely and thus neglected.</p>
+<p>In the second variant, if $c_0 = 1$, it is always true that $x &lt; n$. On the other hand, if $c_0 = 0$, it is possible that the output to be greater (or equal to) $n$. Thus the probability for $x \geq n$ is</p>
+<p>$$p_1 := 1 - \frac{n}{2^{2048}}.$$</p>
+<div class="alert warning">
+  &#x1f52c; <strong>Experiment.</strong> I have generated 100 RSA keys and $n \approx 0.721144\times 2^{2048}$.
+</div>
+
+<p>Hence, if we call 📦 $k$ times, then the probability for $\text{max}(x_1, x_2, ..., x_k) \geq n$ is</p>
+<p>$$p_k := 1 - \left(1 - \frac{n}{2^{2048}}\right)^k.$$</p>
+<p>With the results from the experiment, $p_{100} \approx 1.000000$. That said, it is almost certain that there is an $x_i \geq n$ in 100 trials if $c_0 = 0$.</p>
+<h4 id="distinguishing-something-from-random">Distinguishing something from random<a href="#distinguishing-something-from-random" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert danger">
+  As you may suspect, we cannot distinguish ciphertext encrypted with RSA-OAEP from random. This question is actually <em>not</em> solvable - that's all.
+</div>
+
+<p>...of course not! If we cannot distinguish it from random, how about distinguishing <em>random</em> from random? Note that if $c_0 = 0$, the random generated is <em>not</em> cryptographyic secure. They are generated with MT19937 and we can recover its internal state<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> if we have $624 \times 32$ bits extracted. With that, we can further predict the $c_0$s in the subsequent challenges.</p>
+<p>Well... You can take a look at it. I am happy if someone solves the challenge with such an approach, but this is not the intended attack though.</p>
+<h4 id="the-intended-solution">The intended solution<a href="#the-intended-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Now suppose that I knew nothing about MT19937 and assumed that the random comes from a CSPRNG. Then the <code>ciphertext</code> for both $c_0 = 0$ and $c_0 = 1$ do not reveal anything useful. Luckily, there is a critical factor - <em>time</em>. It is significantly slower to compute <code>ciphertext</code> when $c_0 = 1$ compared to when $c_0 = 0$.</p>
+<p>In average, it takes 660µs and 50µs when $c_0 = 0$ and $c_0 = 1$, respectively. We can call 📦 1000 times to overcome network latency and it will be significantly slower if $c_0 = 0$. This way we do not need to crack and recover the states from MT19937.</p>
+<div class="alert info">
+  After the CTF, I have a short chat with @ciphr on Discord. Turns out the network latency is more fluctuated than expected owing to geographical location. Luckily I am hosting a challenge for a local university, which expects there is someone in the team who live close to the server. This may not be the case in global CTFs and I should be awared of this.
+</div>
+
+<h2 id="prooof-ooof-wooork-reverse-misc">Prooof-ooof-Wooork (Reverse, Misc)<a href="#prooof-ooof-wooork-reverse-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Four (out of six) teams have solved this during the CTF period.</p>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Download the binary, <code>nc HOST PORT</code>, execute the binary, win the flag. That is it. Easy? Easy!</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/prooof-ooof-wooork/public/gen"
+   
+   target="_blank" rel="noopener noreferrer" >gen</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the service, we are given 100 commands to be executed. If we can reply all of the output for the commands in 180 seconds, then the service will grant us the flag. <del>If it is more well-planned, I can simply bribe someone with flags to mine bitcoins.</del></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nc HOST PORT
+</span></span><span class="line"><span class="cl"><span class="c1"># This challenge is easy. Just execute the binary to complete the proof-of-work!</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Of course, it will be getting harder and harder...</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ./gen LGb6W/RZCz9KKw== 2223635746 1</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># &gt; DfwI12HrGw</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ./gen BlviwtbVRlHfHA== 819508855 4</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># &gt; ...</span>
+</span></span></code></pre></div><p>This is an example for running the binary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./gen LGb6W/RZCz9KKw<span class="o">==</span> <span class="m">2223635746</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># DfwI12HrGw</span>
+</span></span></code></pre></div><h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="reversing-not-for-me">Reversing? Not for me<a href="#reversing-not-for-me" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since I am the challenge author, I will simply skip the reversing part and paste the source code here. You are the ones who don't have the source code, so good luck to you!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">unsigned</span> <span class="kt">int</span> <span class="nf">getrand</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="n">state</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">state</span> <span class="o">=</span> <span class="mh">0x1337</span> <span class="o">*</span> <span class="o">*</span><span class="n">state</span> <span class="o">+</span> <span class="mh">0x5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">*</span><span class="n">state</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">init</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Usage: %s &lt;ciphertext&gt; &lt;seed&gt; &lt;rounds&gt;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">state</span><span class="p">[</span><span class="n">N</span><span class="p">];</span> <span class="c1">// N = 100000
+</span></span></span><span class="line"><span class="cl">    <span class="n">memset</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">state</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">ciphertext</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">seed</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">rounds</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">raw_ciphertext</span><span class="p">;</span> <span class="kt">int</span> <span class="n">outlen</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">raw_ciphertext</span> <span class="o">=</span> <span class="n">base64_decode</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">outlen</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">raw_ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">rounds</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">z</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">)</span> <span class="n">x</span> <span class="o">^=</span> <span class="n">y</span> <span class="o">^=</span> <span class="n">x</span> <span class="o">^=</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="n">state</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">z</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">)</span> <span class="n">x</span> <span class="o">^=</span> <span class="n">y</span> <span class="o">^=</span> <span class="n">x</span> <span class="o">^=</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="n">q</span> <span class="o">+=</span> <span class="n">state</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%c&#34;</span><span class="p">,</span> <span class="n">raw_ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">q</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="understanding-the-code">Understanding the code<a href="#understanding-the-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Suppose that we have a state $S = (s_0, s_1, ..., s_{m-1})$. Define two operations $\text{Update}(l, r, x)$ and $\text{Query}(l, r)$.</p>
+<ul>
+<li>$\text{Update}(l, r, x)$ updates $s_k \leftarrow (s_k + x)\ \text{mod}\ 256$ every $l \leq k &lt; r$.</li>
+<li>$\text{Query}(l, r)$ returns $\left(\sum_{k = l}^{r-1} s_k\right) \text{mod}\ 256$.</li>
+</ul>
+<p>With the operations defined, let me update the <code>main</code> function to elaborate.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">raw_ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">rounds</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">             * Update(l, r, x)
+</span></span></span><span class="line"><span class="cl"><span class="cm">             */</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// swap l and r if l &gt; r
+</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">)</span> <span class="n">l</span> <span class="o">^=</span> <span class="n">r</span> <span class="o">^=</span> <span class="n">l</span> <span class="o">^=</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="n">state</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">z</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">         * q := Query(l, r)
+</span></span></span><span class="line"><span class="cl"><span class="cm">         */</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">getrand</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">)</span> <span class="n">l</span> <span class="o">^=</span> <span class="n">r</span> <span class="o">^=</span> <span class="n">l</span> <span class="o">^=</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="n">q</span> <span class="o">+=</span> <span class="n">state</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%c&#34;</span><span class="p">,</span> <span class="n">raw_ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">q</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>To print one character, $n$ range updates and one range query are performed. The time complexities for $\text{Update}(l, r, x)$ and $\text{Query}(l, r)$ in the binary are both $\mathcal{O}(m)$, which makes the overall complexity to print <em>one</em> character being $\mathcal{O}(km)$. Since $k = 10^4$ in the 100th command, the binary isn't optimized for the challenge.</p>
+<h4 id="data-structures-can-help">Data structures can help<a href="#data-structures-can-help" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I will be skipping the details since this kind of problem is rather common in competitive programming. It is called <em>range sum query</em> (RSQ) and there are multiple data structures those efficiently perform $\text{Update}(l, r, x)$, and optionally $\text{Query}(l, r)$.</p>
+<p>For example, segment tree<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> can do both in $\mathcal{O}(\log n)$. I would prefer Fenwick tree<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> (as known as binary indexed tree) because it is the easiest to implement, while maintaining the time complexities for both operations to be $\mathcal{O}(\log n)$. Implementing a Fenwick tree isn't difficult - try it if you didn't!</p>
+<div class="alert info">
+  Turns out most teams are storing the deltas and computing the partial sum on demand. It takes $\mathcal{O}(1)$ to perform $\text{Update}(l, r, x)$ and $\mathcal{O}(n)$ for $\text{Query}(l, r)$ - which is decent in our case.
+</div>
+
+<h2 id="rc4-misc">RC4 (Misc)<a href="#rc4-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Three (out of six) teams have solved this during the CTF period.</p>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>The Firebird admins do not want too much crypto challenges, so I am going to label this as a misc challenge. But no worries, you can get part of the flag if you achieve something.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/rc4/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20210116-firebird-internal-ctf/rc4/public/rc4.py"
+   
+   target="_blank" rel="noopener noreferrer" >rc4.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>Basically we have an netcat service that sends us a 16-byte key $k_1$. The objective is to send another key $k_2$ such that $\text{RC4}_{k_1}(\text{flag}) = \text{RC4}_{k_2}(\text{flag})$. Also, $k_1$ should <em>not</em> be a substring of $k_2$.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="is-it-really-a-misc-ategorized">Is it really a <em>misc</em>-ategorized?<a href="#is-it-really-a-misc-ategorized" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To begin, let's read <code>chall.py</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">string</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rc4</span> <span class="kn">import</span> <span class="n">RC4</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">secret</span> <span class="kn">import</span> <span class="n">flag</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">prefix_length</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">convert_key</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">cipher</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">^</span> <span class="nb">next</span><span class="p">(</span><span class="n">cipher</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">))])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">charset</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">charset</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">16</span><span class="p">))</span>    
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🔑&#39;</span><span class="p">,</span> <span class="n">key1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">key2</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;🔑 &#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">key1</span> <span class="ow">in</span> <span class="n">key2</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🤨&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">key1</span> <span class="o">=</span> <span class="n">convert_key</span><span class="p">(</span><span class="n">key1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key2</span> <span class="o">=</span> <span class="n">convert_key</span><span class="p">(</span><span class="n">key2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">cipher1</span> <span class="o">=</span> <span class="n">RC4</span><span class="p">(</span><span class="n">key1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher2</span> <span class="o">=</span> <span class="n">RC4</span><span class="p">(</span><span class="n">key2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext1</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">cipher1</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext2</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">cipher2</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">l</span> <span class="o">=</span> <span class="n">prefix_length</span><span class="p">(</span><span class="n">ciphertext1</span><span class="p">,</span> <span class="n">ciphertext2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🤨&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="n">l</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;🏁 </span><span class="si">{</span><span class="n">flag</span><span class="p">[:</span><span class="n">l</span><span class="p">]</span><span class="si">}</span><span class="s1">...&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;🏁 </span><span class="si">{</span><span class="n">flag</span><span class="p">[:</span><span class="n">l</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></div><p>Also, the imported RC4 is copied from the repository <a href="https://github.com/bozhu/RC4-Python/blob/aac30b8eb19a157ae35566b80639039bbac9bd13/rc4.py"
+   
+   target="_blank" rel="noopener noreferrer" >bozhu/RC4-Python</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and slightly updated to make it compatible for Python 3.</p>
+<p>This looks evident to find a pair of keys such that the prefixes of the keystream would be identical. There are research<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup> those tried to find pairs of RC4 keys such that the initial states would be the same. In this way, the resulting ciphertext would be identical. This might be an approach, but this would imply that this should <em>not</em> be a misc challenge. Is this my intention? If this is <em>really</em> a crypto challenge, those Firebird guys would hate me for even longer.</p>
+<h4 id="the-pytfall---python-2-vs-python-3">The pytfall - Python 2 vs Python 3<a href="#the-pytfall---python-2-vs-python-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let's cut the crap. Look at how the initial state is generated.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Lines 16-17, chall.py</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">convert_key</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Lines 23-34, rc4.py</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">KSA</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">keylength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># In Python 3, `range` returns an iterator instead of a list...</span>
+</span></span><span class="line"><span class="cl">    <span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">keylength</span><span class="p">])</span> <span class="o">%</span> <span class="mi">256</span>
+</span></span><span class="line"><span class="cl">        <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># swap</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">S</span>
+</span></span></code></pre></div><p>Pretty standard. There are implementations online in Python which use a string as the key and perform key-scheduling. For example, <a href="https://github.com/manojpandey/rc4/blob/7490e1d31bfe075e7a17f4a1aa7d0924b92ee549/rc4-3.py#L14"
+   
+   target="_blank" rel="noopener noreferrer" >manojpandey/rc4</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, gist from <a href="https://gist.github.com/cdleary/188393#file-rc4-py-L17"
+   
+   target="_blank" rel="noopener noreferrer" >cdleary</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+
+
+<figure>
+  <img src="/images/2021-01-17-firebird/rc4-ksa-wiki.png" title="Pseudocode from Wikipedia.">
+  
+  <figcaption>Pseudocode from Wikipedia.</figcaption>
+  
+</figure>
+
+<p>The pseudocode from Wikipedia has showed that the KSA itself is fine. However, since I am writing in Python 3, I should be using <code>bytes</code> instead of <code>str</code>. This is not only a matter of the coding style, but the pitfall, too! Of course, we would not be able to run the above script in Python 2, since <code>f-string</code> is supported since Python 3.6. And even if it is possible, we can simply exploit the program with <code>input</code>. But if we have patched <code>input</code> to <code>raw_input</code> and fixed the compatibility issues, it is likely to be unexploitable. So what's the deal with this? Look at this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Python 2</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">raw_input</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="err">🤷</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">ord</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">159</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="mi">183</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Python 3</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="err">🤷</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">ord</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="mi">129335</span><span class="p">]</span>
+</span></span></code></pre></div><p>This is the documentation for <code>ord</code> in Python 2.7.18<sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup>:</p>
+<blockquote>
+<p>Given a string of length one, return an integer representing the Unicode code point of the character when the argument is a unicode object, or the value of the byte when the argument is an 8-bit string. For example, <code>ord('a')</code> returns the integer <code>97</code>, <code>ord(u'\u2020')</code> returns <code>8224</code>. This is the inverse of chr() for 8-bit strings and of unichr() for unicode objects. If a unicode argument is given and Python was built with UCS2 Unicode, then the character’s code point must be in the range [0..65535] inclusive; otherwise the string length is two, and a <code>TypeError</code> will be raised.</p>
+</blockquote>
+<p>and for Python 3.9<sup id="fnref:8"><a href="#fn:8" class="footnote-ref" role="doc-noteref">8</a></sup>:</p>
+<blockquote>
+<p>Given a string representing one Unicode character, return an integer representing the Unicode code point of that character. For example, <code>ord('a')</code> returns the integer <code>97</code> and <code>ord('€')</code> (Euro sign) returns <code>8364</code>. This is the inverse of <code>chr()</code>.</p>
+</blockquote>
+<p>That said, the <code>ord</code> function supports unicode characters as default in Python 3. Owing to this, the entries <code>key</code> is not confined in 0 and 255. Hence, knowing this, we can easily win the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ nc HOST PORT
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔑 sRlXr6fBOMPwxlUC</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔑 sRlXr6fBOMPwxlUŃ</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 🏁 firebird{n0w_rc4_i5_t0t4lly_4_r3d_h3rr1n9}</span>
+</span></span></code></pre></div><p>Now are you convinced that this is actually a <em>misc</em> challenge? Say yes.</p>
+<h4 id="a-story-behind">A story behind<a href="#a-story-behind" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert warning">
+  This part is totally meaningless if you want to learn something.
+</div>
+
+<p>This challenge was actually inspired by the <em>unintended</em> solution for <a href="/posts/2020/2020-05-05-de1ctf/#part-iii-where-did-it-went-wrong"
+   
+   >OV from De1CTF2020</a>. One day I was messing around with something else and found that <code>chr</code> actually supports a larger set of values (from $[0, 255]$ Python 2 to $[0, 1114111]$ in Python 3). Originally, the challenge would be an exact copy <em>OV</em> and make it work for Sage 9 over Python 3. Unfortunately <code>fetch_int</code> checks the range of the input and someone may smell that easily if I am wiring something else.</p>
+<p>Thanks Vergissmeinnichtz for enlightening me for this challenge. You all know who to hate now.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>pycrypto.org (2012) &quot;Crypto.Cipher.AES&quot;<br><a href="https://www.dlitz.net/software/pycrypto/api/current/Crypto.Cipher.AES-module.html"
+   
+   target="_blank" rel="noopener noreferrer" >https://www.dlitz.net/software/pycrypto/api/current/Crypto.Cipher.AES-module.html</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Thomas Ptacek, Sean Devlin, Alex Balducci (2013) &quot;Challenge 23, Set 3 - The Cryptopals Crypto Challenges&quot;<br><a href="https://cryptopals.com/sets/3/challenges/23"
+   
+   target="_blank" rel="noopener noreferrer" >https://cryptopals.com/sets/3/challenges/23</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>cp-algorithms.com (2020) &quot;Segment Tree - Competitive Programming Algorithms&quot;<br><a href="https://cp-algorithms.com/data_structures/segment_tree.html"
+   
+   target="_blank" rel="noopener noreferrer" >https://cp-algorithms.com/data_structures/segment_tree.html</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
+<p>cp-algorithms.com (2020) &quot;Fenwick Tree - Competitive Programming Algorithms&quot;<br><a href="https://cp-algorithms.com/data_structures/fenwick.html"
+   
+   target="_blank" rel="noopener noreferrer" >https://cp-algorithms.com/data_structures/fenwick.html</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5">
+<p>Mitsuru Matsui (2009). &quot;Key Collisions of the RC4 Stream Cipher&quot;<br><a href="https://link.springer.com/chapter/10.1007/978-3-642-03317-9_3"
+   
+   target="_blank" rel="noopener noreferrer" >https://link.springer.com/chapter/10.1007/978-3-642-03317-9_3</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6">
+<p>Amit Jana, Goutam Paul (2016). &quot;Revisiting RC4 Key Collision: Faster Search Algorithm and New 22-byte Colliding Key Pairs&quot;<br><a href="https://eprint.iacr.org/2016/1001.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >https://eprint.iacr.org/2016/1001.pdf</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:7">
+<p>Python Software Foundation (2020). &quot;2. Built-in Functions - Python 2.7.18 documentation&quot;<br><a href="https://docs.python.org/2.7/library/functions.html#ord"
+   
+   target="_blank" rel="noopener noreferrer" >https://docs.python.org/2.7/library/functions.html#ord</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:7" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:8">
+<p>Python Software Foundation (2020). &quot;Built-in Functions - Python 3.9.1 documentation&quot;<br><a href="https://docs.python.org/3.9/library/functions.html#ord"
+   
+   target="_blank" rel="noopener noreferrer" >https://docs.python.org/3.9/library/functions.html#ord</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:8" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Firebird Internal CTF 2021 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-01-29-hoifanrds-osu-challenge/">← hoifanrd&#39;s osu! Challenge</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-01-03-tetctf-unevaluated/">TetCTF 2021: unevaluated →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

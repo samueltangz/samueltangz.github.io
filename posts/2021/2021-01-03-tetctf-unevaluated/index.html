@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TetCTF 2021: unevaluated | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">TetCTF 2021: unevaluated</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-01-03T13:39:00&#43;08:00">2021-01-03</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/tetctf/" class="text-muted text-decoration-none">#tetctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/discrete-logarithm/" class="text-muted text-decoration-none">#discrete-logarithm</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>TetCTF is the first CTF I have played in 2021. I recalled from last year that they have cool challenges. This year, there are three crypto challenges. In particular, <em>unevaluated</em> is the hardest among them. Although I did not solve them, I dug into rabbit holes and had a lot of struggle, uh, fun.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>There is a 128-bit prime $p$. Define $\cdot: \mathbb{Z}_{p^2}^2\times\mathbb{Z}_{p^2}^2\rightarrow\mathbb{Z}_{p^2}^2$ by</p>
+<p>$$(x_1, y_1)\cdot(x_2, y_2) := \left(\left(x_1x_2-y_1y_2\right)\ \text{mod}\ p^2, \left(x_1y_2+y_1x_2\right)\ \text{mod}\ p^2\right),$$</p>
+<p>where $(x_1, y_1), (x_2, y_2) \in \mathbb{Z}_{p^2}^2$. Also, define for $k\in\mathbb{N}$ and $G \in \mathbb{Z}_{p^2}^2$, $G^k = G \cdot G \cdot ... \cdot G$ (i.e., $G$ multiplied $k$ times). Given that $G, H \in \mathbb{Z}_{p^2}^2$, the objective is to find $k\in \{0, 1, \dots, 2^{256}-1\}$ such that $H = G^k$.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert warning">
+  <strong>Clickbaited!</strong> This writeup is not original and has referred (or stolen) to several sources (Thanks rkm0959 and CryptoHack!). I would like to write this up for my own reference. Anyway, this is more like a story than a solution.
+</div>
+
+<h3 id="part-i-what-is-the-order-composed-of">Part I: What is the order composed of?<a href="#part-i-what-is-the-order-composed-of" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Since $p$ and $k$ are respectively 128 and 256 bits long, it is expected to recover two out of $k\ \text{mod}\ p$, $k\ \text{mod}\ q$ and $k\ \text{mod}\ r$ to compute $k$. It is interesting to see the order being a product of three primes $p, q, r$, with $q | (p-1)$ and $r | (p+1)$.</p>
+<p>I defined $\text{norm}: \mathbb{Z}_{p^2}^2 \rightarrow \mathbb{Z}_{p^2}$ by $\text{norm}(x, y) = (x^2 + y^2)\ \text{mod}\ p^2$ and experimented a bit and discovered some of the properties:</p>
+<ul>
+<li>The imaginary part of $G^{pr}$ is zero.</li>
+<li>$\text{norm}(G^{pq}) = 1$, and</li>
+</ul>
+<p>If we are working on $\mathbb{Z}_p$ instead of $\mathbb{Z}_{p^2}^2$, then</p>
+<ul>
+<li>The imaginary part of $G^r$ is zero.</li>
+<li>$\text{norm}(G^q) = 1$, and</li>
+</ul>
+<p>The following code snipped is used to verify the above properties.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Under mod n</span>
+</span></span><span class="line"><span class="cl"><span class="n">P</span> <span class="o">=</span> <span class="n">complex_pow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">p</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>           <span class="c1"># P.im == 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">dQ</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">complex_pow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">p</span><span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span> <span class="c1"># dQ == 1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Under mod p</span>
+</span></span><span class="line"><span class="cl"><span class="n">P</span> <span class="o">=</span> <span class="n">complex_pow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>             <span class="c1"># P.im == 0</span>
+</span></span><span class="line"><span class="cl"><span class="n">dQ</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">complex_pow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>   <span class="c1"># dQ == 1</span>
+</span></span></code></pre></div><p>This made me thinking: If we consider a <em>polar coordinate representation</em> where $G = \rho e^{i\theta}$, with $\rho\in R$ and $\theta\in A$, then $R \cong \mathbb{Z}_{pq}$ and $A \cong \mathbb{Z}_{pr}$. Hence, we can imagine that the subgroup that $G$ generates is isomorphic to $\mathbb{Z}_{pq}\times\mathbb{Z}_{pr}$.</p>
+<div class="alert warning">
+  Well, they are not important though. This is interesting however.
+</div>
+
+<h3 id="part-ii-stealing-the-ideas-from-an-existing-cryptosystem">Part II: Stealing the ideas from an existing cryptosystem<a href="#part-ii-stealing-the-ideas-from-an-existing-cryptosystem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Solving discrete log under modulo $n^2$ does not seem difficult. For example, we can see from Paillier cryptosystem that discrete logarithms under modulo $n^2$ can be computed easily. In this way, we can compute $x\ \text{mod}\ p$ with:</p>
+<p>$$x \equiv \frac{\mathcal{L}(h^{p-1}\ \text{mod}\ p^2)}{\mathcal{L}(g^{p-1}\ \text{mod}\ p^2)}\ (\text{mod}\ p),$$</p>
+<p>where $\mathcal{L}(x) = \frac{x-1}{p}$, like how a ciphertext is decrypted with the Paillier cryptosystem. Now we have $x\ \text{mod}\ p$.</p>
+<div class="alert info">
+  <p><strong>Mini Checklist</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> $x\ \text{mod}\ p$</li>
+<li><input disabled="" type="checkbox"> $x\ \text{mod}\ q$</li>
+<li><input disabled="" type="checkbox"> $x\ \text{mod}\ r$</li>
+</ul>
+</div>
+
+<h3 id="part-iii-solving-128-bit-discrete-logarithm">Part III: Solving 128-bit discrete logarithm<a href="#part-iii-solving-128-bit-discrete-logarithm" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let's work on $\mathbb{Z}_{p}^2$ instead of $\mathbb{Z}_{p^2}^2$. This reminded me the challenge <em>galiver</em> in ASIS CTF Finals 2020. I searched the discussion on CryptoHack's Discord server, and found...</p>
+
+
+<figure>
+  <img src="/images/2021-01-03-tetctf/hellman-on-galiver.png" title="hellman&#39;s comment on galiver back then.">
+  
+  <figcaption>hellman&#39;s comment on galiver back then.</figcaption>
+  
+</figure>
+
+<p>Okay, <em>works for 128-bit $p$ rather fast</em>. So this must be discrete logarithm. So let's try? Since the imaginary part for $G^r, H^r$ are zero, I tried <code>discrete_log(H^r, G^r, q)</code> on Sage. After five minutes, my PC crashed. I could not solve it during the CTF. After the game, rkm0959 publishes the <a href="https://rkm0959.tistory.com/192"
+   
+   target="_blank" rel="noopener noreferrer" >writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> on the CTF and he used <code>h.log(g)</code> and have got it working. In his writeup, he uses a <em>norm map</em> which is isomorphic to the subgroup that $G^r$ generates.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="mi">206109322179011817882783419945552366363</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="mi">103054661089505908941391709972776183181</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="mi">17175776848250984823565284995462697197</span>
+</span></span><span class="line"><span class="cl"><span class="n">G</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20878314020629522511110696411629430299663617500650083274468525283663940214962</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="mi">16739915489749335460111660035712237713219278122190661324570170645550234520364</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">H</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11048898386036746197306883207419421777457078734258168057000593553461884996107</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">     <span class="mi">34230477038891719323025391618998268890391645779869016241994899690290519616973</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Zp</span> <span class="o">=</span> <span class="n">GF</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">g</span> <span class="o">=</span> <span class="n">Zp</span><span class="p">(</span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># equivalently, g = Zp(complex_pow(G, r, p).re)</span>
+</span></span><span class="line"><span class="cl"><span class="n">h</span> <span class="o">=</span> <span class="n">Zp</span><span class="p">(</span><span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">H</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># and           h = Zp(complex_pow(H, r, p).re)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="n">g</span><span class="o">^</span><span class="n">q</span> <span class="o">==</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">x_mod_q</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;x % q =&#39;</span><span class="p">,</span> <span class="n">x_mod_q</span><span class="p">)</span> <span class="c1"># 26176203815975575469683683780455489251</span>
+</span></span></code></pre></div><div class="alert success">
+  <strong>Takeaway.</strong> Sage is powerful. It tooks 3 minutes for my PC to compute the discrete log, where the time complexity should be $\mathcal{O}(\sqrt{q})$. Also, <em>do not use</em> <code>discrete_log(h, g)</code>. Use <code>h.log(g)</code> instead.
+</div>
+
+<div class="alert info">
+  <p><strong>Mini Checklist</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> $x\ \text{mod}\ p$</li>
+<li><input checked="" disabled="" type="checkbox"> $x\ \text{mod}\ q$</li>
+<li><input disabled="" type="checkbox"> $x\ \text{mod}\ r$</li>
+</ul>
+</div>
+
+<h3 id="part-iv-combining-the-building-blocks">Part IV: Combining the building blocks<a href="#part-iv-combining-the-building-blocks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>With Chinese remainder theorem, we are able to recover $x_0 := x\ \text{mod}\ pq$. It may not equal to $x$, but they are differ from a small multiple of $pq$. We can simply compute $x_0 + kpq$ for some small $k\in\mathbb{N}$ until $k$ is obtained. After that we have the flag - <code>TetCTF{h0m0m0rph1sm_1s_0ur_fr13nd-mobi:*100*231199111007#}</code>. This challenge makes me think more about discrete logarithm, and I am amazed by the capability of Sage. I am still wondering why discrete logarithm of a 128-bit prime can be computed in just a few minutes...</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          TetCTF 2021: unevaluated
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-01-18-firebird-internal-ctf/">← Firebird Internal CTF 2021 Writeup</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2020/2020-12-20-hxpctf-hyper/">hxp CTF 2020: Hyper →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

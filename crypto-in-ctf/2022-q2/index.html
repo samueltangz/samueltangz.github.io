@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crypto in CTF: Q2 2022 | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Crypto in CTF: Q2 2022</h1>
+
+      
+
+      <div class="post-content js-toc-content"><div>
+          <table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        CTF
+      </th>
+      
+      <th>
+        Challenge Name
+      </th>
+      
+      <th>
+        Solves (Difficulty)
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        Midnight Sun Quals 2022
+      </td>
+      
+      <td>
+        Pelle's Rotor-Supported Arithmetic 🔥
+      </td>
+      
+      <td>
+        35/346 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Midnight Sun Quals 2022
+      </td>
+      
+      <td>
+        BabyZK 🔥
+      </td>
+      
+      <td>
+        19/346 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Midnight Sun Quals 2022
+      </td>
+      
+      <td>
+        kompot_512 🔥
+      </td>
+      
+      <td>
+        15/346 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Midnight Sun Quals 2022
+      </td>
+      
+      <td>
+        WeedSolomon 420
+      </td>
+      
+      <td>
+        3/346 (❓)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        PlaidCTF 2022
+      </td>
+      
+      <td>
+        pressure
+      </td>
+      
+      <td>
+        18/431 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        PlaidCTF 2022
+      </td>
+      
+      <td>
+        choreography
+      </td>
+      
+      <td>
+        14/431 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ångstromCTF 2022
+      </td>
+      
+      <td>
+        log log log
+      </td>
+      
+      <td>
+        104/1319 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ångstromCTF 2022
+      </td>
+      
+      <td>
+        Strike-Slip Fault
+      </td>
+      
+      <td>
+        50/1319 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ångstromCTF 2022
+      </td>
+      
+      <td>
+        Prophet
+      </td>
+      
+      <td>
+        45/1319 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ångstromCTF 2022
+      </td>
+      
+      <td>
+        RSA-AES 🔥
+      </td>
+      
+      <td>
+        36/1319 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<h2 id="midnight-sun-ctf-quals-2022">Midnight Sun CTF Quals 2022<a href="#midnight-sun-ctf-quals-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="pelles-rotor-supported-arithmetic-">Pelle's Rotor-Supported Arithmetic 🔥<a href="#pelles-rotor-supported-arithmetic-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 35/346</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+<li>Author: <a href="https://twitter.com/carllondahl" target="_blank" rel="nofollow">@carllondahl</a></li>
+</ul>
+<p>Let $p$ and $q$ be two 512-bit primes for RSA and $n = pq$ be its modulus. Let $e = 65537$ and $d$ has $l$ digits in base 10. Here we denote $d = \overline{d_0 d_1 ... d_{l-2} d_{l-1}}$).</p>
+<p>Suppose that we have an oracle, $\mathcal{O}(c, i)$, which returns $m$ defined by the below steps:</p>
+<ol>
+<li>Compute $d' = \overline{d_i d_{i+1} ... d_{l-2} d_{l-1} d_0 d_1 ... d_{i-2} d_{i-1}}$.</li>
+<li>Compute $m = c^{d'}\ \text{mod}\ n$.</li>
+</ol>
+<p>We are given $\approx 340$ oracle calls and the encrypted flag $c_0$ (and nothing else). The goal is to decrypt $c_0$, which is encrypted with a different $e$ but the same $n$.</p>
+<h3 id="babyzk-">BabyZK 🔥<a href="#babyzk-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 19/346</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>math</code></li>
+<li>Author: <a href="https://twitter.com/carllondahl" target="_blank" rel="nofollow">@carllondahl</a></li>
+</ul>
+<p>Let $p$ be a 1024-bit safe prime (i.e., $p = 2q+1$ with $q$ is also a prime). Let $m(x)$ be a polynomial of degree 14 and $g \in \mathbb{Z}_p$.</p>
+<p>Suppose that we have an oracle $\mathcal{O}(x)$, which returns $h$ defined below:</p>
+<ol>
+<li>Compute $u = m(x)\ \text{mod}\ (p-1)$.</li>
+<li>Compute $h = g^u\ \text{mod}\ p$.</li>
+</ol>
+<p>We are given 17 oracle calls. After that, we are given $x_1, x_2, ..., x_{100}$. The objective is to find $0 \leq y_1, y_2, ..., y_{100} &lt; p$ such that $y_i \equiv g^{\text{m}(x_i)}\ (\text{mod}\ p)$ for all $i = 1, 2, ..., 100$.</p>
+<h3 id="kompot_512-">kompot_512 🔥<a href="#kompot_512-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 15/346</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>math</code></li>
+<li>Author: <a href="https://twitter.com/carllondahl" target="_blank" rel="nofollow">@carllondahl</a></li>
+</ul>
+<div class="alert info">
+  <p><strong>Definition.</strong> If $f$ is a rational function of degree 1, then it can be represented by</p>
+<p>$$f(x) = \frac{ax + b}{cx + d}$$</p>
+<p>for some constants $a, b, c, d$.</p>
+
+</div>
+
+<p>Let $p$ be a prime. Define the addition (denoted by $\oplus$) of two rational functions of degree 1 (namely $f(x)$ and $g(x)$) under modulo $p$ by $f \oplus g := f(g(x))\ \text{mod}\ p$, i.e.,</p>
+<p>$$\begin{aligned}
+&amp; f(x) = \frac{a_1 x + b_1}{c_1 x + d_1}, g(x) = \frac{a_2 x + b_2}{c_2 x + d_2} \\
+\qquad &amp; \Longrightarrow f(x) \oplus g(x) = \frac{a_1 \frac{a_2 x + b_2}{c_2 x + d_2} + b_1}{c_1 \frac{a_2 x + b_2}{c_2 x + d_2} + d_1} = \frac{(a_1a_2 + b_1c_2) x + (a_1b_2 + b_1d_2)}{(c_1a_2 + d_1c_2) x + (c_1b_2 + d_1d_2)}.
+\end{aligned}$$</p>
+<p>We are given $f$ and $g$ defined below:</p>
+<p>$$f(x) = \frac{x + 2}{3x + 4}, \quad g(x) = \frac{2x + 1}{13x + 37}.$$</p>
+<p>Four numbers $x_0, x_1, y_0, y_1 \in [0, 2^{128})$ are randomly generated (not given). We are also given $A$ and $B$ defined by</p>
+<p>$$\begin{aligned}
+&amp; A = \underbrace{f \oplus f \oplus ... \oplus f}_{x_0\ f\text{'s}} \oplus \underbrace{g \oplus g \oplus ... \oplus g}_{x_1\ g\text{'s}}, \\
+&amp; B = \underbrace{f \oplus f \oplus ... \oplus f}_{y_0\ f\text{'s}} \oplus \underbrace{g \oplus g \oplus ... \oplus g}_{y_1\ g\text{'s}}.
+\end{aligned}$$</p>
+<p>Define $C$ by</p>
+<p>$$C = \underbrace{f \oplus f \oplus ... \oplus f}_{(x_0 + y_0)\ f\text{'s}} \oplus \underbrace{g \oplus g \oplus ... \oplus g}_{(x_1 + y_1)\ g\text{'s}}.$$</p>
+<p>The objective is to recover $C$.</p>
+<h3 id="weedsolomon-420">WeedSolomon 420<a href="#weedsolomon-420" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 3/346</li>
+<li>Difficulty: ❓</li>
+<li>Tags: ?</li>
+<li>Author: <a href="https://twitter.com/carllondahl" target="_blank" rel="nofollow">@carllondahl</a></li>
+</ul>
+<div class="alert warning">
+  <strong>Needs more information.</strong> I am unsure about this challenge yet. I will update the details later.
+</div>
+
+<h2 id="plaidctf-2022">PlaidCTF 2022<a href="#plaidctf-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="pressure">pressure<a href="#pressure" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 18/431</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>ecc</code>, <code>private set intersection</code></li>
+<li>Author: <em>mserrano</em></li>
+</ul>
+<div class="alert info">
+  <p><strong>Notations.</strong> Denote $G$ be a generator of the curve ED25519. Let also $\mathcal{P}$ be the set of points on that curve.</p>
+<p>Also, if $k \in \mathbb{Z}$ and $S \in \mathcal{P}$, the set $k \cdot S$ is given by $\{k Q \in \mathcal{P} : Q \in S\}$.</p>
+
+</div>
+
+<p>When connected to the server, the below private parameters are randomly generated:</p>
+<ol>
+<li>$r \in [1, 2^{32})$,</li>
+<li>$n \in [128, 256]$,</li>
+<li>$(x_0, ..., x_{n-1}) \in \{1, 2, ..., 255\}^n$, and</li>
+<li>$b_1, b_2 \in [0, 2^{512})$.</li>
+</ol>
+<p>It is used to generate a secret set $\mathcal{S}$ with $n + 4096$ entries:</p>
+<ol>
+<li><strong>[The $n$]</strong> $\text{SHA512}(25037 \cdot r \cdot x_i + i) \cdot G \in \mathcal{S}$ for $i = 0, 1, ..., n-1$.</li>
+<li><strong>[The 4096]</strong> $\text{SHA512}(k + 4096 \cdot (r\ \text{mod}\ k)) \cdot G \in \mathcal{S}$ for $k = 1, 2, ..., 4096$.</li>
+</ol>
+<p>The client (us) interacts with the server with the below procedures:</p>
+<ul>
+<li>The client sends a set $A_1 \subseteq \mathcal{P}$ to the server.</li>
+<li>The server computes $T = b_1 \cdot A$ and $B_1 = b_1 \cdot \mathcal{S}$ and sends them to the client.</li>
+<li>The server computes $B_2 = b_2 \cdot \mathcal{S}$ and sends it to the client.</li>
+<li>The client sends sets $A_2, B_2' \subseteq \mathcal{P}$ to the server.</li>
+<li>The server checks if $\left|B_2\right| = \left|B'_2\right|$ and $B_2 \cap B'_2 = \phi$ and $B'_2 = b_2 \cdot A$. If that is the case, the server sends the flag to the client.</li>
+</ul>
+<p>The goal is to win the flag from the server.</p>
+<h3 id="choreography">choreography<a href="#choreography" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 14/431</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>block cipher</code></li>
+<li>Author: <a href="https://twitter.com/ubuntor" target="_blank" rel="nofollow">@ubuntor</a></li>
+</ul>
+<p>The challenge defined two ciphers <code>encrypt1</code> and <code>encrypt2</code> which encrypts a 4-byte message into a 4-byte ciphertext using a 4-byte key. Hereby <code>sbox</code> is a permutation of $\mathbb{Z}_{256}$ and <code>ROUNDS = 2**22 + 2</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt1</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">plaintext</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ROUNDS</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span> <span class="o">^=</span> <span class="n">sbox</span><span class="p">[</span><span class="n">b</span> <span class="o">^</span> <span class="n">k</span><span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">^=</span> <span class="n">sbox</span><span class="p">[</span><span class="n">d</span> <span class="o">^</span> <span class="n">k</span><span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">a</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt2</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">plaintext</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ROUNDS</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">^=</span> <span class="n">sbox</span><span class="p">[</span><span class="n">d</span> <span class="o">^</span> <span class="n">k</span><span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span> <span class="o">^=</span> <span class="n">sbox</span><span class="p">[</span><span class="n">b</span> <span class="o">^</span> <span class="n">k</span><span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mi">3</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">])</span>
+</span></span></code></pre></div><p>When connected to the server, a 4-byte key $k$ is generated. We can send 1000 4-byte plaintexts $m_1, ..., m_{500}, m'_1, ..., m'_{500}$ to the server. After that, we will obtain 1000 4-byte ciphertexts $\text{Enc}_1(k, m_1), ..., \text{Enc}_1(k, m_{500}), \text{Enc}_2(k, m'_1), ..., \text{Enc}_2(k, m'_{500})$. The goal is to recover $k$ in 30 seconds.</p>
+<h2 id="ångstromctf-2022">ångstromCTF 2022<a href="#ångstromctf-2022" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="log-log-log">log log log<a href="#log-log-log" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 104/1319</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>dlog</code></li>
+<li>Author: <em>lamchcl</em></li>
+</ul>
+<p>Suppose that $p$ and $q$ are two primes such that $p = 2^{1024} q + 1$. Let $g \in \text{GF}(p)$ be a generator and $h \equiv g^x\ \text{mod}\ p$ for some hidden $x$. We are given $p$, $g$ and $h$ and the goal is to recover $x$.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="mi">127049168626532606399765615739991416718436721363030018955400489736067198869364016429387992001701094584958296787947271511542470576257229386752951962268029916809492721741399393261711747273503204896435780180020997260870445775304515469411553711610157730254858210474308834307348659449375607755507371266459204680043</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">1024</span> <span class="o">*</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">g</span> <span class="o">=</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="n">h</span> <span class="o">=</span> <span class="mi">22167430376059430630679676235652972242459549427184424487101004659078731951275684400544395455032520211526504936260764167543579962894859895105461241638191329157341317508524604123528869569970436522398088133282816501026124675867597303023053315921006794737150458893962604878313958214001541026011431916550491653311353413427974497947502149907519824065494644815580044942957676947079119519638286167265601768018850753567210484166464342762618682061366667502051134347228205613775687498269608568148198217826596701451568949937835734503519735835665755712108573943924004834183073368205468093930976680849195434185471527862856627210807</span>
+</span></span></code></pre></div><h3 id="strike-slip-fault">Strike-Slip Fault<a href="#strike-slip-fault" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 50/1319</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+<li>Author: <em>lamchcl</em></li>
+</ul>
+<p>We are given a RSA public key $(n, e)$ and the encrypted flag $c$. Denote $d$ be the private exponent, and $d'$ to be $d$ with three bits flipped. We are also given</p>
+<p>$$m' = c^{d'}\ \text{mod}\ n.$$</p>
+<p>The goal is to recover the flag.</p>
+<h3 id="prophet">Prophet<a href="#prophet" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 45/1319</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>prng</code></li>
+<li>Author: <em>aplet123</em></li>
+</ul>
+<p>Let $\mathcal{R}$ be the PRNG that is used in the <code>math</code> package in <em>Golang 1.18</em> with a hidden 64-bit seed. Let $v_k$ be the $k$-th 64-bit output (zero-indexed) from $\mathcal{R}$. We are given</p>
+<ul>
+<li>the encrypted flag (the flag XOR-ed with $v_{100000}, v_{100001}, v_{100002}$ and $v_{100003}$), and</li>
+<li>607 non-consecutive outputs: $v_{n_0}, v_{n_1}, ..., v_{n_{606}}$.</li>
+</ul>
+<p>Here $n_0 = 100004$ and $n_{k+1} = n_k + 1 + (k\ \text{mod}\ 13)$ for all $k \geq 0$. The objective is to recover the flag.</p>
+<h3 id="rsa-aes-">RSA-AES 🔥<a href="#rsa-aes-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 36/1319</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>aes</code>, <code>rsa</code></li>
+<li>Author: <em>lamchcl</em></li>
+</ul>
+<p>We are given a RSA exponent $(n, e)$ and the encrypted flag $c$ (this is unchanged for all server connections). Upon connecting to the server, a 32-byte key $\mathcal{K}$ and a 16-byte IV (used for AES-CBC) are generated.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mh">0xbb7bbd6bb62e0cbbc776f9ceb974eca6f3d30295d31caf456d9bec9b98822de3cb941d3a40a0fba531212f338e7677eb2e3ac05ff28629f248d0bc9f98950ce7e5e637c9764bb7f0b53c2532f3ce47ecbe1205172f8644f28f039cae6f127ccf1137ac88d77605782abe4560ae3473d9fb93886625a6caa7f3a5180836f460c98bbc60df911637fa3f52556fa12a376e3f5f87b5956b705e4e42a30ca38c79e7cd94c9b53a7b4344f2e9de06057da350f3cd9bd84f9af28e137e5190cbe90f046f74ce22f4cd747a1cc9812a1e057b97de39f664ab045700c40c9ce16cf1742d992c99e3537663ede6673f53fbb2f3c28679fb747ab9db9753e692ed353e3551</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span> <span class="o">=</span> <span class="mh">0x10001</span>
+</span></span></code></pre></div><p>We are allow to interact with the server by sending $c \in [0, n)$. We will then obtain $s$:</p>
+<p>$$s := \text{AES-CBC}_\mathcal{K}(c^d\ \text{mod}\ n),$$</p>
+<p>where $d$ is the private exponent of RSA, and the IV used in $\text{AES-CBC}$ is the last ciphertext block (or IV if no encryptions are done yet). The objective is to recover the flag.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Crypto in CTF: Q2 2022
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

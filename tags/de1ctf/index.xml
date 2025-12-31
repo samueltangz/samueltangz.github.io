@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>De1ctf on Mystify</title>
+    <link>https://mystiz.hk/tags/de1ctf/</link>
+    <description>Recent content in De1ctf on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 May 2020 20:36:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/de1ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>De1CTF 2020 Writeup</title>
+      <link>https://mystiz.hk/posts/2020/2020-05-05-de1ctf/</link>
+      <pubDate>Tue, 05 May 2020 20:36:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2020/2020-05-05-de1ctf/</guid>
+      <description>&lt;p&gt;I was teamed up with &lt;a href=&#34;https://twitter.com/shellphish&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@shellphish&lt;/a&gt; this time for De1CTF. During the game, I have solved 5 (out of 7) cryptography challenges individually, and a reverse challenge and a misc challenge in cooperation with @DuSu and @fs0c.&lt;/p&gt;&#xA;&lt;p&gt;I said that I&#39;ll commit the solution scripts to my Github after I have managed to prettify them. &lt;em&gt;It never happened.&lt;/em&gt; I will not make the same promise again.&lt;/p&gt;&#xA;&lt;h2 id=&#34;homomorphic&#34;&gt;Homomorphic&lt;/h2&gt;&#xA;&lt;h3 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h3&gt;&#xA;&lt;p&gt;This is a cryptography challenge with 465 points.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>De1CTF 2019 Writeup</title>
+      <link>https://mystiz.hk/posts/2019/2019-08-06-de1ctf/</link>
+      <pubDate>Tue, 06 Aug 2019 10:20:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2019/2019-08-06-de1ctf/</guid>
+      <description>&lt;p&gt;It has been a very long time that I&#39;ve compiled a writeup. This time I have played on my own as &lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt;. Let me write on some particular interesting ideas that I have learnt in the challenges. Bear with me if you find this writeup &lt;em&gt;too&lt;/em&gt; math-intensive.&lt;/p&gt;&#xA;&lt;p&gt;The solution scripts will be committed to &lt;a href=&#34;https://github.com/samueltangz/ctf-archive&#34;&#xA;   &#xA;   target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34; &gt;my Github repository&lt;/a&gt;&lt;svg t=&#34;1713426496023&#34; style=&#34;margin: 0 0 0 5px;&#34; class=&#34;icon&#34; viewBox=&#34;0 0 1024 1024&#34; version=&#34;1.1&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; p-id=&#34;8864&#34; width=&#34;10&#34; height=&#34;10&#34;&gt;&#xA;    &lt;path d=&#34;M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z&#34; fill=&#34;#666666&#34; p-id=&#34;8865&#34;&gt;&lt;/path&gt;&#xA;&lt;/svg&gt; sooner or later, after I&#39;ve managed to prettify them.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

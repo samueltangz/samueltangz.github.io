@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ångstromCTF 2021: Cache Money | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">ångstromCTF 2021: Cache Money</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-04-08T08:00:00&#43;08:00">2021-04-08</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/angstromctf/" class="text-muted text-decoration-none">#angstromctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/web/" class="text-muted text-decoration-none">#web</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/aes/" class="text-muted text-decoration-none">#aes</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/timing-attack/" class="text-muted text-decoration-none">#timing-attack</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I played ångstromCTF 2021 for <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> to spend my Easter holiday. I solved most of the reverse and cryptography challenges alone. In particular, <em>Cache Money</em> is one of the harder crypto challenges that I spent more than one day tackling. It is very rewarding, and eventually four teams ended up solving it.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>This challenge reimplements the Advanced Encryption Standard (AES) on 128, 192 and 256-bit keys. The encryptor is equipped with caches and we are given a service to encrypt (or decrypt) our messages. In short, there are four oracles provided by the service ($k_0$ is the fixed secret key and $b \in \{128, 192, 256\}$).</p>
+<ul>
+<li>$\mathcal{E}(m, k)$ encrypts a message $m$ with $k$,</li>
+<li>$\mathcal{D}(c, k)$ decrypts a ciphertext $c$ with $k$,</li>
+<li>$\mathcal{E}_0(m, b)$ encrypts a message $m$ with the first $b$ bits of $k_0$, are</li>
+<li>$\mathcal{D}_0(c, b)$ decrypts a ciphertext $c$ with the first $b$ bits of $k_0$.</li>
+</ul>
+<p>Apart from the ciphertext (resp. plaintext), each oracle returns also the amount of time, in nanoseconds, used for encryption (resp. decryption).</p>
+<p>Additionally, there is an flag $m_0$ encrypted with the $k_0$ under AES-256. The objective is of course decrypt and retrieve the flag. Needless to mention, they had measures to avoid the flag being retrieved by calling $\mathcal{D}_0(c_0, 256)$ directly. At least I am not awared of a way to solve this without recovering the key.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-what-is-that-cache">Part I: What is that cache?<a href="#part-i-what-is-that-cache" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-caching-strategy">The caching strategy<a href="#the-caching-strategy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>From the challenge, there is a <code>Rijndael</code> class that encrypts and decrypts messages. All of the functions inside the class are decorated with <code>@instance_method_cache</code> and they will call the cache method defined below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">instance_method_cache</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># lru_cache uses the same cache for every instance which kinda sucks</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># so i made my own cache implementation</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># deal with unhashable arguments</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># remove the least recently used element</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># dont want the cache blowing up</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">mintimestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                <span class="n">lowest</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mintimestamp</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">mintimestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">lowest</span> <span class="o">=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">lowest</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ret</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">wrapper</span>
+</span></span></code></pre></div><p>Suppose we want to call $\mathcal{F}(x)$. This is how the caching works:</p>
+<ol>
+<li>If $(\mathcal{F}, x)$ is cached, <strong>return</strong> the cached value of $\mathcal{F}(x)$.</li>
+<li>Drop the oldest entry from the cache until there are less than 300 entries.</li>
+<li>Compute $y := \mathcal{F}(x)$, cache $y$ as the value to $(\mathcal{F}, x)$ and <strong>return</strong> it.</li>
+</ol>
+<h4 id="caching-in-action-encrypting-a-dummy-flag-with-a-dummy-key">Caching in action: Encrypting a dummy flag with a dummy key<a href="#caching-in-action-encrypting-a-dummy-flag-with-a-dummy-key" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I added a hook to log the entries and see how the function calls are triggered:</p>
+<pre tabindex="0"><code class="language-diff-python&nbsp;diff-highlight" data-lang="diff-python&nbsp;diff-highlight">-   self.cache[key] = (ret, timestamp())
++   t2 = timestamp()
++   val = (ret, t2)
++   self.cache[key] = val
++   print(f&#39;[+] self.cache[{key}] = {val} (time spent: {t2 - t1})&#39;)
+</code></pre><p>This is a <a href="https://gist.github.com/samueltangz/cbba3f529d07396d1a196ebf7693599f#file-angstromctf-2021-cache-money-sample-log"
+   
+   target="_blank" rel="noopener noreferrer" >transcript</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> that encrypts <code>actf{this_is_a_test_flag}</code> with the key being <code>Tes3UeYGqoq6vatPmlM6uQrTA7OTLNP8</code>. There are two parts:</p>
+<ol>
+<li>(<em>Lines 1-369</em>) Initializes the <code>Rijndael</code> class with the key.</li>
+<li>(<em>Lines 375-5690</em>) Encrypts the message.</li>
+</ol>
+<p>For the oracles, only second part will be timed.</p>
+<h3 id="part-ii-obviously-a-timing-attack-but-how">Part II: Obviously a timing attack, but how?<a href="#part-ii-obviously-a-timing-attack-but-how" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It takes around 0.7 seconds to encrypt a random block of message under AES-256. A costy operation would be <code>MixColumns</code> - it is called 13 times and each contributes ~6% to the total encryption time (hence around 85% in total). Unfortunately, it is not feasible to read cached <code>MixColumns</code> for the timing attack. Here's why:</p>
+<div class="alert warning">
+  <strong>Don't believe that 0.7s.</strong> The time is measured with there is verbose logging, and I/O definitely takes a considerable amount of time. It takes only 0.2s without logging (which is still pretty slow by the way).
+</div>
+
+<ol>
+<li>Suppose that $m_1, m_2, ..., m_{13}$ are the inputs for <code>MixColumns</code>. It is not likely to find $m_i = m_j$ for some distinct pairs $(i, j)$.</li>
+<li>The time fluctuates a lot and it is not reliable measuring a 6% difference.</li>
+</ol>
+<p>Well, I think timing attack is difficult solely with the second point. There are many function calls triggered by a single <code>encrypt_block</code>, including:</p>
+<ul>
+<li>~1.8K <code>Add</code> calls,
+<ul>
+<li>15 of them add two 4×4 matrices (~5ms each),</li>
+<li>60 of them add two array of 4 entries (~1ms each),</li>
+<li>the remainder adds two numbers (~0.2ms each).</li>
+</ul>
+</li>
+<li>~380 <code>Multiply</code> calls (~1ms each),</li>
+<li>~350 <code>Double</code> calls (~0.2ms each),</li>
+<li>56 <code>SubWord</code> calls (~0.2ms each),</li>
+<li>14 <code>ShiftRows</code> calls (~0.2ms each), and</li>
+<li>13 <code>MixColumns</code> calls (~40ms each).</li>
+</ul>
+<p>That is a lot of uncertainty. It would be much better if we are able to determine whether a single <code>Add</code> operation is cached... Is it even possible?</p>
+<p>I had no idea. The challenge author released a hint few hours later:</p>
+<blockquote>
+<p>Hint 1: This is also partially a web challenge...look for something you can exploit to make things more consistent.</p>
+</blockquote>
+<p>There must be something fishy being a <em>web</em> challenge. Let's look at the source code for the encryption endpoint:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nd">@instance_method_cache</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">encrypt_block</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">:][:</span><span class="mi">16</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="sa">b</span><span class="s2">&#34;Error&#34;</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/api/enc&#34;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;POST&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&#34;a&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Does not pad if the length of message is a multiple of 16</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">16</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&#34;secret&#34;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&#34;secret128&#34;</span><span class="p">,</span> <span class="s2">&#34;secret192&#34;</span><span class="p">,</span> <span class="s2">&#34;secret256&#34;</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&#34;k&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Takes the first n bytes of the secret if we are using k0 for encryption.</span>
+</span></span><span class="line"><span class="cl">        <span class="n">k</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">:</span> <span class="p">{</span><span class="s2">&#34;secret128&#34;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">&#34;secret192&#34;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s2">&#34;secret256&#34;</span><span class="p">:</span> <span class="mi">32</span><span class="p">}[</span>
+</span></span><span class="line"><span class="cl">                <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&#34;secret&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">Rijndael</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&#34;result&#34;</span><span class="p">:</span> <span class="s2">&#34;Invalid key&#34;</span><span class="p">,</span> <span class="s2">&#34;time&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">    <span class="n">start</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">enc</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">del</span> <span class="n">cipher</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&#34;result&#34;</span><span class="p">:</span> <span class="n">enc</span><span class="o">.</span><span class="n">hex</span><span class="p">(),</span> <span class="s2">&#34;time&#34;</span><span class="p">:</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">})</span>
+</span></span></code></pre></div><p>Note that if we are encrypting the message block <code>actf{this_is_a_t</code> with $k_0$ under AES-256, then this is the JSON object we send:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="c1">// Request
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;a&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mi">97</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">97</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">116</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="s2">&#34;secret256&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Response
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;result&#34;</span><span class="p">:</span> <span class="s2">&#34;83696d00a4e4def3a9ca1c3e61b899cb&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="mi">144329411</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>What if we send a malformed <code>a</code>? The exception is raised in a lower level function and is handled by <code>encrypt(self, m)</code>. It is good to see the time measured.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;a&#34;</span><span class="p">:</span> <span class="p">[[]],</span> <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="s2">&#34;secret256&#34;</span><span class="p">}</span> <span class="c1">// Request
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;result&#34;</span><span class="p">:</span> <span class="s2">&#34;4572726f72&#34;</span><span class="p">,</span> <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="mi">45599</span><span class="p">}</span> <span class="c1">// Response (&#34;4572726f72&#34; is Error hexed)
+</span></span></span></code></pre></div><p>Currently we are measuring <em>nothing</em>, since exception is raised before the first function call is completed. Let's throw after the first function call:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;a&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1337</span><span class="p">,</span> <span class="p">[]],</span> <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="s2">&#34;secret256&#34;</span><span class="p">}</span> <span class="c1">// Request
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;result&#34;</span><span class="p">:</span> <span class="s2">&#34;4572726f72&#34;</span><span class="p">,</span> <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="mi">189082</span><span class="p">}</span> <span class="c1">// Response
+</span></span></span></code></pre></div><p>By throwing errors in an early stage, the time differences are more significant than the fluctuations now. Nice!</p>
+<h3 id="part-iii-leaking-one-eighth-of-the-key">Part III: Leaking one eighth of the key<a href="#part-iii-leaking-one-eighth-of-the-key" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="a-drop-in-response-time">A drop in response time<a href="#a-drop-in-response-time" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>As mentioned above, the first 369 lines from my <a href="https://gist.github.com/samueltangz/cbba3f529d07396d1a196ebf7693599f#file-angstromctf-2021-cache-money-sample-log"
+   
+   target="_blank" rel="noopener noreferrer" >transcript</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> is where the <code>Rijndael</code> instance being initialized. Lines 1-55 is the log for computing the round constants <code>rcon</code>. Lines 56-369 represents how the round keys are computed, and this is part of the transcript:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">56:[+] self.cache[(&#39;RotWord&#39;, (76, 78, 80, 56))] = ((78, 80, 56, 76), 505349375647612, 8617) (time spent: 8617)
+</span></span><span class="line"><span class="cl">57:[+] self.cache[(&#39;SubWord&#39;, (78, 80, 56, 76))] = ((47, 83, 7, 41), 505349375732640, 14356) (time spent: 14356)
+</span></span><span class="line"><span class="cl">58:[+] self.cache[(&#39;Add&#39;, 47, 1)] = (46, 505349375825251, 9545) (time spent: 9545)
+</span></span><span class="line"><span class="cl">59:[+] self.cache[(&#39;Add&#39;, 83, 0)] = (83, 505349375902264, 9931) (time spent: 9931)
+</span></span><span class="line"><span class="cl">60:[+] self.cache[(&#39;Add&#39;, 7, 0)] = (7, 505349375978725, 9218) (time spent: 9218)
+</span></span><span class="line"><span class="cl">61:[+] self.cache[(&#39;Add&#39;, 41, 0)] = (41, 505349376055553, 9776) (time spent: 9776)
+</span></span><span class="line"><span class="cl">62:[+] self.cache[(&#39;Add&#39;, (47, 83, 7, 41), (1, 0, 0, 0))] = ((46, 83, 7, 41), 505349376123267, 320106) (time spent: 320106)
+</span></span><span class="line"><span class="cl">63:[+] self.cache[(&#39;Add&#39;, 84, 46)] = (122, 505349376211788, 7671) (time spent: 7671)
+</span></span><span class="line"><span class="cl">64:[+] self.cache[(&#39;Add&#39;, 101, 83)] = (54, 505349376306808, 11562) (time spent: 11562)
+</span></span><span class="line"><span class="cl">65:[+] self.cache[(&#39;Add&#39;, 115, 7)] = (116, 505349376404211, 12700) (time spent: 12700)
+</span></span><span class="line"><span class="cl">66:[+] self.cache[(&#39;Add&#39;, 51, 41)] = (26, 505349376486636, 9646) (time spent: 9646)
+</span></span><span class="line"><span class="cl">67:[+] self.cache[(&#39;Add&#39;, (84, 101, 115, 51), (46, 83, 7, 41))] = ((122, 54, 116, 26), 505349376555581, 361347) (time spent: 361347)
+</span></span><span class="line"><span class="cl">68:[+] self.cache[(&#39;Add&#39;, 85, 122)] = (47, 505349376655242, 16317) (time spent: 16317)
+</span></span><span class="line"><span class="cl">69:[+] self.cache[(&#39;Add&#39;, 101, 54)] = (83, 505349376735919, 10524) (time spent: 10524)
+</span></span><span class="line"><span class="cl">   ...
+</span></span></code></pre></div><p>AES-128 and AES-192 have less than 300 function calls computing the round keys, thus every single step taken for round keys is cached. This is not the case for AES-256. Therefore, we should attempt to leak something from $k_0$ via $\mathcal{E}_0(m, 128)$ or $\mathcal{E}_0(m, 192)$. To achieve this, let's try to make use of the error-throwing strategy we discussed in the last part.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;a&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1337</span><span class="p">,</span> <span class="p">[]],</span> <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="s2">&#34;secret128&#34;</span><span class="p">}</span> <span class="c1">// Request
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;result&#34;</span><span class="p">:</span> <span class="s2">&#34;4572726f72&#34;</span><span class="p">,</span> <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="mi">159767</span><span class="p">}</span> <span class="c1">// Response
+</span></span></span></code></pre></div><p>Iterating <code>0 &lt;= a[0] &lt; 256</code>, it is observed the request <code>a[0] = 40</code> is particularly faster than the others.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;a&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="p">[]],</span> <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="s2">&#34;secret128&#34;</span><span class="p">}</span> <span class="c1">// Request
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;result&#34;</span><span class="p">:</span> <span class="s2">&#34;4572726f72&#34;</span><span class="p">,</span> <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="mi">40721</span><span class="p">}</span> <span class="c1">// Response
+</span></span></span></code></pre></div><h4 id="what-is-this-why-is-it-faster">What is this? Why is it faster?<a href="#what-is-this-why-is-it-faster" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert danger">
+  🤨 <strong>Confusion alert.</strong> I know it is getting more confusing. Please bear with me...
+</div>
+
+<p>In short, <code>Add(???, 40)</code> is cached... But what is that? To understand why, look at the constructor and the <code>encrypt_block</code> method:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">4</span> <span class="o">*</span> <span class="n">i</span> <span class="p">:][:</span><span class="mi">4</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roundkeys</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ... omitted ...</span>
+</span></span></code></pre></div><p>This is how the methods called during <code>encrypt_block</code>, in order:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">encrypt_block(block)
+</span></span><span class="line"><span class="cl">-&gt;  [...  Computes m &lt;- block  ...]
+</span></span><span class="line"><span class="cl">-&gt;  Add(roundkeys[:4], m)
+</span></span><span class="line"><span class="cl">    -&gt;  Add(roundkeys[0], m[0])
+</span></span><span class="line"><span class="cl">        -&gt;  Add(roundkeys[0][0], m[0][0]) [... 💰 Uses the cache ...]
+</span></span><span class="line"><span class="cl">        -&gt;  Add(roundkeys[0][1], m[0][1]) [... :fire: Throws an error ... ]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            [... The subsequent functions are not called ...]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        -&gt;  Add(roundkeys[0][2], m[0][2])
+</span></span><span class="line"><span class="cl">        -&gt;  Add(roundkeys[0][3], m[0][3])
+</span></span><span class="line"><span class="cl">    -&gt;  Add(roundkeys[1], m[1])
+</span></span><span class="line"><span class="cl">    -&gt;  ...
+</span></span></code></pre></div><p>Therefore, that <code>Add(???, 40)</code> cached is actually <code>Add(roundkeys[0][0], m[0][0])</code>. With the same strategy, we can find <code>a[1]</code>, <code>a[2]</code> and <code>a[3]</code> that the API calls has a smaller response time: <code>67, 82, 56</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;a&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="p">[]],</span> <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="s2">&#34;secret128&#34;</span><span class="p">}</span> <span class="c1">// Request
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;result&#34;</span><span class="p">:</span> <span class="s2">&#34;4572726f72&#34;</span><span class="p">,</span> <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="mi">40665</span><span class="p">}</span> <span class="c1">// Response
+</span></span></span></code></pre></div><p>What does <code>(40, 67, 82, 56)</code> mean? From the cache's perspective, the function call <code>Add(roundkeys[0], (40, 67, 82, 56))</code> is cached. But why is it cached? Looking back at the constructor, this is executed when the round keys are computed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">Add</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Add</span><span class="p">(</span><span class="n">SubWord</span><span class="p">(</span><span class="n">RotWord</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span> <span class="n">rcon</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span></span></code></pre></div><p>Hereby <code>w[0]</code> and <code>w[3]</code> are respectively <code>roundkeys[0]</code> and <code>roundkeys[3]</code>, while <code>rcon[1] == (1, 0, 0, 0)</code>. That said, it is very likely that <code>(40, 67, 82, 56)</code> is being the second argument, i.e.:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">Add</span><span class="p">(</span><span class="n">SubWord</span><span class="p">(</span><span class="n">RotWord</span><span class="p">(</span><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span> <span class="n">rcon</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">56</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># eqivalently...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sbox</span><span class="p">(</span><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">^</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">40</span>
+</span></span><span class="line"><span class="cl"><span class="n">sbox</span><span class="p">(</span><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>     <span class="o">==</span> <span class="mi">67</span>
+</span></span><span class="line"><span class="cl"><span class="n">sbox</span><span class="p">(</span><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>     <span class="o">==</span> <span class="mi">82</span>
+</span></span><span class="line"><span class="cl"><span class="n">sbox</span><span class="p">(</span><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>     <span class="o">==</span> <span class="mi">56</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># and equivalently...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span>  <span class="mi">76</span>
+</span></span><span class="line"><span class="cl"><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl"><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span>  <span class="mi">72</span>
+</span></span><span class="line"><span class="cl"><span class="n">roundkeys</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">118</span>
+</span></span></code></pre></div><p>On top of that, <code>roundkeys[3] == key[12:16]</code>. Therefore we have recovered four bytes of $k_0$. We can further recover the first eight bytes of $k_0$ by testing <code>a[4]</code>, <code>a[5]</code>, ..., <code>a[11]</code>. Since we have 12 bytes of the key, we can exhaust to recover the secret key used for AES-128 (i.e., <code>key[0:16]</code>)</p>
+<p>The idea can be used when dealing with AES-192. We are able to recover <code>key[20:24]</code> by finding an appropriate input for <code>a[0]</code>, <code>a[1]</code>, <code>a[2]</code> and <code>a[3]</code>, and eventually <code>key[0:24]</code> by brute-forcing the remaining bytes.</p>
+<h3 id="part-iv-the-cache-is-not-in-reach-for-aes-256">Part IV: The cache is not in reach for AES-256!<a href="#part-iv-the-cache-is-not-in-reach-for-aes-256" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Unfortunately, we cannot generalize the idea to recover keys under AES-256 because there are more than 300 function calls for computing round keys. Hence, the cache for <code>Add(roundkeys[0][0], m[0][0])</code> and others have already expired prior than they are used. Only the round keys for the later rounds are cached. With that said, we can use $\mathcal{D}_0(c, 256)$ instead of $\mathcal{E}_0(m, 256)$ and recover the round keys generated near-end. Specifically they are <code>roundkeys[49] == a[0:4]</code>, <code>roundkeys[50] == a[4:8]</code> and <code>roundkeys[51] == a[8:12]</code>.</p>
+<div class="alert info">
+  <strong>Why?</strong> The proof is left as readers' exercise (I apologize being lazy and I have actually lose patient spending five hours compiling this writeup during CTF).
+</div>
+
+<p>Since we have <code>roundkeys[0]</code>, <code>roundkeys[1]</code>, ..., <code>roundkeys[5]</code>, we can retrieve <code>key[24:32]</code> using <em>Z3</em>. Eventually we found <code>key == b'fGsOY9Xb4Eq5vLdHzDGbJ4QvQqOCQcYm'</code> and could successfully decrypt the flag: <code>actf{if_you_cache_my_drift}</code>. First 🩸!</p>
+<div class="alert success">
+  &#x1f511; <strong>Solution script!</strong> The full solution script is available <a href="https://gist.github.com/samueltangz/cbba3f529d07396d1a196ebf7693599f#file-angstromctf-2021-cache-money-solve-py"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> (and <a href="https://gist.github.com/samueltangz/cbba3f529d07396d1a196ebf7693599f#file-angstromctf-2021-cache-money-solve-log"
+   
+   target="_blank" rel="noopener noreferrer" >its output</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>). Hope this explains how my attack works.
+</div>
+
+<h3 id="part-v-attacks-without-time-reading">Part V: Attacks without time-reading<a href="#part-v-attacks-without-time-reading" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>Note.</strong> This is not my idea. I found this pretty mind-blowing so I shamelessly document this as well. Kudos to @UnblvR!
+</div>
+
+<p>In short, one can send a float to determine if an item is cached. One could check if <code>Add(roundkeys[0][0], 1337)</code> is cached by sending the below JSON object:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;a&#34;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1337.0</span><span class="p">]</span> <span class="s2">&#34;secret&#34;</span><span class="p">:</span> <span class="s2">&#34;secret128&#34;</span><span class="p">}</span> <span class="c1">// Request
+</span></span></span></code></pre></div><p>It happens that an error is thrown if and only if <code>Add(roundkeys[0][0], 1337)</code> is not cached. The cached output will be returned if <code>Add(roundkeys[0][0], 1337)</code> is cached, since <code>(&quot;Add&quot;, roundkeys[0][0], 1337) == (&quot;Add&quot;, roundkeys[0][0], 1337.0)</code>. Otherwise it will attempt to compute <code>roundkeys[0][0] ^ 1337.0</code>. This throws an error since XORing an integer with a float is undefined. This error-based oracle made the attack simpler.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          ångstromCTF 2021: Cache Money
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-04-19-plaidctf-leaky-block-cipher/">← PlaidCTF 2021: Leaky Block Cipher</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-04-01-binary-exploitation-1/">My Path of Binary Exploitation (1) →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

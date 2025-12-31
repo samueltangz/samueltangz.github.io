@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hoifanrd&#39;s osu! Challenge | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">hoifanrd&#39;s osu! Challenge</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-01-29T21:05:00&#43;08:00">2021-01-29</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <div class="alert warning">
+  There are a lot of moments which I telepathed and synced with the challenge author. If it doesn't make sense to you, just bear with it.
+</div>
+
+<p>This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge.</p>
+<p>To kick-start, let's look at <em>hoifanrd</em> from Firebird CTF team has shared a challenge he created some days ago.</p>
+<div class="alert info">
+  Some readers may not be familiar of <em>Firebird CTF team</em>. It is formed by students from the <em>Hong Kong University of Science and Technology</em> (HKUST). I was not a student there, but most of my teammates of Black Bauhinia were. Hence, it is natural I got invited to the Discord server. This is their team on <a href="https://ctftime.org/team/65249"
+   
+   target="_blank" rel="noopener noreferrer" >CTFtime</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.
+</div>
+
+<h2 id="background">Background<a href="#background" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>At around 11pm of January 25, I received a direct message from <em>hoifanrd</em> that he is going to make a guessy challenge. I replied &quot;make it&quot; in few minutes. On the next morning, I saw a challenge came alive in the Discord server of the Firebird CTF team.</p>
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/background.png" title="Did you see a pandora&#39;s box?">
+  
+  <figcaption>Did you see a pandora&#39;s box?</figcaption>
+  
+</figure>
+
+<div class="alert info">
+  🔎 <strong>What is &quot;tuning&quot;?</strong> Tuning has a similar pronunciation to 通靈 in Cantonese and it means <em>mediumship</em>. UCCU hacker from Taiwan used it to describe the guessy challenges that required telepathy between the players and the challenge authors, and is quickly popularized in the CTF teams we knew in Hong Kong.
+</div>
+
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/tuning.jpeg" title="Shamelessly stolen from the Facebook page of UCCU hacker.">
+  
+  <figcaption>Shamelessly stolen from the Facebook page of UCCU hacker.</figcaption>
+  
+</figure>
+
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>This is the challenge description he left in the Discord server:</p>
+<blockquote>
+<p>The journey starts here...
+<code>P2k9ZmhuM2U5U2pkeDA=</code></p>
+</blockquote>
+<p>On top of that, he also commented that the challenge would be fun since it involves some abnormal stego and hiding techniques.</p>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-an-obvious-base64">Part I: An obvious base64<a href="#part-i-an-obvious-base64" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Instead of the above base64-encoded string, I started with the challenge description he DMed me (as below). At that time I was not awared of the description he sent to the server is different from what he sent to me.</p>
+<blockquote>
+<p>The journey starts here...
+<code>ZmhuM2U5U2pkeDA=</code></p>
+</blockquote>
+<p>Noticing that the string being encoded in base64 is not hard. Decoding it, I have <code>fhn3e9Sjdx0</code>. Knowing that being an <em>osu!</em>-related challenge, I thought this is an username he created in <em>osu!</em>. Turns out it isn't. I honestly had no clues and searched <code>osu fhn3e9Sjdx0</code> on Google. It returns only one entry - A YouTube video recording the <em>osu!</em> gameplay of <em>firebat92</em>. Well it is very likely to be unrelated. I don't even know the reason it came to my search result, since the second keyword isn't found anywhere. In particular, the video ID is <code>jbTebNnwarg</code>, which is not what I expected.</p>
+<p>Well... I was messing around and tried to plug <code>fhn3e9Sjdx0</code> as the video ID. <em>Video unavailable</em>. However, one thing I learnt is that the video ID of YouTube is 11 characters long... Coincidence? Later I was reminded by <em>hoifanrd</em> that the challenge description I received is not up-to-date. For the updated one, it is <code>?i=fhn3e9Sjdx0</code> decoded. I am more convinced that it is a YouTube video. Let's figure out how to convert the <code>i</code> into <code>v</code>?</p>
+<p>The first thing I think is <em>Caesar cipher</em>. I bet it wouldn't be <em>Vigenere cipher</em> owing to its short message, and I would definitely question the author's knowledge on computer science if it is Vigenere cipher. I threw the ciphertext to cryptii.com and eventually found <code>?v=sua3r9Fwqk0</code>...</p>
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/step-1.png" title="Oh wow. So it is actually an video on YouTube.">
+  
+  <figcaption>Oh wow. So it is actually an video on YouTube.</figcaption>
+  
+</figure>
+
+<p>&#x23f0; <em>Time elapsed: 10 minutes.</em></p>
+<h3 id="part-ii-figuring-out-that-being-a-wav-stego">Part II: Figuring out that being a <code>.wav</code> stego...<a href="#part-ii-figuring-out-that-being-a-wav-stego" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  It is almost impossible to solve the challenge by myself since this part. I am heavily hinted by <em>hoifanrd</em>.
+</div>
+
+<p><em>hoifanrd</em> played two beatmaps in the video. They are</p>
+<ol>
+<li><a href="https://osu.ppy.sh/beatmapsets/1337388#osu/2770393"
+   
+   target="_blank" rel="noopener noreferrer" >Hyakka Ryouran Hanafubuki [Iceluin's Hard] mapped by <em>Hojo Karen</em></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> (0:00-3:47), and</li>
+<li><a href="https://osu.ppy.sh/beatmapsets/1339791#osu/2775742"
+   
+   target="_blank" rel="noopener noreferrer" >Koyoi Tsuki no Yakata Nite (Cover) [Hard] mapped by <em>hoifanrd</em></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> (3:55-7:43).</li>
+</ol>
+<p>Knowing that being a stego challenge, it must be the second beatmap that the secret is hidden. At first, I wanted to see if something inside the video. I was soon stopped by <em>hoifanrd</em> and pointed that I am not on the right track. Well, since we can download the beatmap from osu.ppy.sh, let's download the beatmap and analyse. It is an <code>.osz</code> file that can be opened like zip file.</p>
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/osz-file.png" title="">
+  
+</figure>
+
+<p>I suspect that there is only one file with the secret hidden. I could immediately eliminate five files because they are modified earlier than Jan 25, the day he told me that he had an idea. I quickly looked into the three <code>.osu</code> files and didn't find anything fishy. After all, it is very likely to be a <code>.wav</code> stego.</p>
+<div class="alert info">
+  Of course, I would not have the above conclusion unless <em>hoifanrd</em> confirms that. He also informed me that there should be a <em>passphrase</em>...
+</div>
+
+<p>Okay, so what I have to do is to find both the <em>passphrase</em> and the correct <em>tool</em> hiding the secret bits.</p>
+<p>&#x23f0; <em>Time elapsed: 75 minutes (+ 65 minutes).</em></p>
+<h3 id="part-iii-finding-the-passphrase">Part III: Finding the passphrase<a href="#part-iii-finding-the-passphrase" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>After a long break (i.e. my working hours), I am back to the challenge. Without the passphrase, I am unable to tell if the tool is correct. Hence I decided to find the passphrase first. Knowing that there are two beatmaps in the video those serve their own purpose, I was focusing on the first gameplay. If the second gameplay contains the secret, then the key must be hidden in the first one.</p>
+<p>Well... I made no progress for an hour and at some point of time I decided to stream on the Discord server. Eventually <em>hoifanrd</em> thinks I am too weak and decided to give me some hints:</p>
+<blockquote>
+<p>It should be something that is easy to aware... notice the cursor</p>
+</blockquote>
+<p>After a short while, I noticed a cursor having a <em>heartbeat</em> behaviour on 2:46, the cursor was not pumping on the other timestamps. It must be morse code.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<video autoplay loop  style="width: 100%; margin: 12px auto; display: block;">
+  <source src="/images/2021-01-29-hoifanrd/gameplay.webm" type="video/webm">
+</video>
+<p>However there is no significant time difference between a dash and a dot. What can we do to distinguish dashes from dots? Well, if you met <em>some</em> conditions, then the replay will be recorded and uploaded to osu.ppy.sh (as an <code>.osr</code> file). The first gameplay satisfies such conditions and is available online. There are multiple approaches to read an <code>.osr</code> file, since I am lazy to install <em>osu!</em> for that, I found a Python package on Github called <a href="https://github.com/kszlim/osu-replay-parser"
+   
+   target="_blank" rel="noopener noreferrer" >osrparse</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. Doing some math, I identified the time interval of the heartbeat and extracted the key pressed during the interval.</p>
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/step-3.png" title="">
+  
+</figure>
+
+<p>The above figure marks the keys pressed during the interval:</p>
+<ul>
+<li>A blue dot is the place he pressed M1,</li>
+<li>a red dot is the place he pressed M2, and</li>
+<li>a green dot is the place he pressed M1 and M2.</li>
+</ul>
+<p>After all, we have <code>.​-- . .​-.. --- ...- . ... .​- --</code>, which decodes into <code>WELOVESAM</code>.</p>
+<div class="alert info">
+  <strong>Who's Sam?</strong> Sam is a well-loved trainer of their team. He once made a guessy forensics challenge and pretended that it was made by another trainer in the team. The Firebird members made the below picture to express their love to Sam...
+</div>
+
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/we-love-sam.png" title="">
+  
+</figure>
+
+<p>&#x23f0; <em>Time elapsed: 200 minutes (+ 135 minutes).</em></p>
+<h3 id="part-iv-the-final-bits">Part IV: The final bits<a href="#part-iv-the-final-bits" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The only thing remaining is to find the correct tool to extract the secret hidden in the <code>.wav</code> file. Since <em>steghide</em> is the most common one amongst them, I am able to extract the secret with the following command.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">steghide extract -sf audio.wav -p WELOVESAM
+</span></span></code></pre></div><p>I have extracted the message below. Well, I quickly realized that is nonogram.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">7 2 2 1 1 7
+</span></span><span class="line"><span class="cl">1 1 2 1 1 1
+</span></span><span class="line"><span class="cl">1 3 1 1 6 2 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 2 1 3 1 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 4 3 2 1 3
+</span></span><span class="line"><span class="cl">1
+</span></span><span class="line"><span class="cl">1 1 1 1 1 1 2 1 1
+</span></span><span class="line"><span class="cl">7 1 1 1 1 1 1 1 7
+</span></span><span class="line"><span class="cl">1 1 2 2 1
+</span></span><span class="line"><span class="cl">4 1 1 4 1 2 3 1
+</span></span><span class="line"><span class="cl">1 2 2 1 3 2
+</span></span><span class="line"><span class="cl">1
+</span></span><span class="line"><span class="cl">1 1 1 1 3 2 1
+</span></span><span class="line"><span class="cl">1 1 5 4 2
+</span></span><span class="line"><span class="cl">1 5 1 1 2 1 3
+</span></span><span class="line"><span class="cl">1 1 5 1 2 1 1 1 1
+</span></span><span class="line"><span class="cl">3 1 3 1 1 2 1 1 3
+</span></span><span class="line"><span class="cl">2 1
+</span></span><span class="line"><span class="cl">1 1 2 3 4 1
+</span></span><span class="line"><span class="cl">1 3 1 1 1 3 5
+</span></span><span class="line"><span class="cl">1 1 1 2 2 1 2 1
+</span></span><span class="line"><span class="cl">1 6 3 1 3
+</span></span><span class="line"><span class="cl">3 4 1 4 1 1 1
+</span></span><span class="line"><span class="cl">1 1 2 1 3 8
+</span></span><span class="line"><span class="cl">3
+</span></span><span class="line"><span class="cl">1 1 3 5 1 2
+</span></span><span class="line"><span class="cl">7 1 3 1 3 1 2 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 2
+</span></span><span class="line"><span class="cl">1 3 1 1 1 6
+</span></span><span class="line"><span class="cl">1 3 1 2 2 3 2 1 2 1
+</span></span><span class="line"><span class="cl">1 3
+</span></span><span class="line"><span class="cl">1 4 1 2 1 1 1
+</span></span><span class="line"><span class="cl">1 1 4 2 1 1 2 1
+</span></span><span class="line"><span class="cl">7 3 1 1 1 3 1 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">7 1 1 1 7
+</span></span><span class="line"><span class="cl">1 1 2 2 1 1 1 1 1
+</span></span><span class="line"><span class="cl">1
+</span></span><span class="line"><span class="cl">3 1 1 1 1 1 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 1 4 3 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 1 1 1 1 2 1 3 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 1 1 1
+</span></span><span class="line"><span class="cl">7 1
+</span></span><span class="line"><span class="cl">1 1 1 1 1 1 7
+</span></span><span class="line"><span class="cl">3 1 3
+</span></span><span class="line"><span class="cl">1 3 1 2 2 1 2 1 4
+</span></span><span class="line"><span class="cl">1 3 1 1 3 2 1 4
+</span></span><span class="line"><span class="cl">1 1 3 3 1 3
+</span></span><span class="line"><span class="cl">3 1 3 1 1 1
+</span></span><span class="line"><span class="cl">1 3
+</span></span><span class="line"><span class="cl">1 2 1 2 6 2 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 1 1 1 3 1
+</span></span><span class="line"><span class="cl">1 1 5 2 1 1 2 2
+</span></span><span class="line"><span class="cl">3 1 1 3 1 1 1
+</span></span><span class="line"><span class="cl">4 5 2 2 1
+</span></span><span class="line"><span class="cl">2 1 1
+</span></span><span class="line"><span class="cl">1 1 1 1 1 2 3 1
+</span></span><span class="line"><span class="cl">1 1 1 1 2 4 4 2
+</span></span><span class="line"><span class="cl">1 1 2 1 1 4 4 1 2
+</span></span><span class="line"><span class="cl">1 1 2 4 3 5 1 1
+</span></span><span class="line"><span class="cl">1 2 1
+</span></span><span class="line"><span class="cl">1 1 2 1
+</span></span><span class="line"><span class="cl">7 1 2 1 1 1 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 1 2 1
+</span></span><span class="line"><span class="cl">1 3 1 3 3 1 6 2
+</span></span><span class="line"><span class="cl">1 3 1 3 1 2 1 1 2 1
+</span></span><span class="line"><span class="cl">1 3
+</span></span><span class="line"><span class="cl">1 1 1 1 1 3 1
+</span></span><span class="line"><span class="cl">1 1 4 3 4 2
+</span></span><span class="line"><span class="cl">7 2 1 2 1 3 1 2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">I like playing puzzle...
+</span></span></code></pre></div><p>Unfortunately, <em>hoifanrd</em> noticed that the message isn't correct owing to some issues regarding to line breaks. I have received an updated message from him:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">7 2 2 1 1 7
+</span></span><span class="line"><span class="cl">1 1 2 1 1 1
+</span></span><span class="line"><span class="cl">1 3 1 1 6 2 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 2 1 3 1 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 4 3 2 1 3 1
+</span></span><span class="line"><span class="cl">1 1 1 1 1 1 2 1 1
+</span></span><span class="line"><span class="cl">7 1 1 1 1 1 1 1 7
+</span></span><span class="line"><span class="cl">1 1 2 2 1
+</span></span><span class="line"><span class="cl">4 1 1 4 1 2 3 1
+</span></span><span class="line"><span class="cl">1 2 2 1 3 2
+</span></span><span class="line"><span class="cl">1 1 1 1 1 3 2 1
+</span></span><span class="line"><span class="cl">1 1 5 4 2
+</span></span><span class="line"><span class="cl">1 5 1 1 2 1 3
+</span></span><span class="line"><span class="cl">1 1 5 1 2 1 1 1 1
+</span></span><span class="line"><span class="cl">3 1 3 1 1 2 1 1 3
+</span></span><span class="line"><span class="cl">2 1 1 1 2 3 4 1
+</span></span><span class="line"><span class="cl">1 3 1 1 1 3 5
+</span></span><span class="line"><span class="cl">1 1 1 2 2 1 2 1
+</span></span><span class="line"><span class="cl">1 6 3 1 3
+</span></span><span class="line"><span class="cl">3 4 1 4 1 1 1
+</span></span><span class="line"><span class="cl">1 1 2 1 3 8 3
+</span></span><span class="line"><span class="cl">1 1 3 5 1 2
+</span></span><span class="line"><span class="cl">7 1 3 1 3 1 2 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 2
+</span></span><span class="line"><span class="cl">1 3 1 1 1 6
+</span></span><span class="line"><span class="cl">1 3 1 2 2 3 2 1 2 1
+</span></span><span class="line"><span class="cl">1 3 1 4 1 2 1 1 1
+</span></span><span class="line"><span class="cl">1 1 4 2 1 1 2 1
+</span></span><span class="line"><span class="cl">7 3 1 1 1 3 1 1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">7 1 1 1 7
+</span></span><span class="line"><span class="cl">1 1 2 2 1 1 1 1 1
+</span></span><span class="line"><span class="cl">1 3 1 1 1 1 1 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 1 4 3 1 3 1
+</span></span><span class="line"><span class="cl">1 3 1 1 1 1 1 2 1 3 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 1 1 1
+</span></span><span class="line"><span class="cl">7 1 1 1 1 1 1 1 7
+</span></span><span class="line"><span class="cl">3 1 3
+</span></span><span class="line"><span class="cl">1 3 1 2 2 1 2 1 4
+</span></span><span class="line"><span class="cl">1 3 1 1 3 2 1 4
+</span></span><span class="line"><span class="cl">1 1 3 3 1 3
+</span></span><span class="line"><span class="cl">3 1 3 1 1 1 1 3
+</span></span><span class="line"><span class="cl">1 2 1 2 6 2 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 1 1 1 3 1
+</span></span><span class="line"><span class="cl">1 1 5 2 1 1 2 2
+</span></span><span class="line"><span class="cl">3 1 1 3 1 1 1
+</span></span><span class="line"><span class="cl">4 5 2 2 1 2 1 1
+</span></span><span class="line"><span class="cl">1 1 1 1 1 2 3 1
+</span></span><span class="line"><span class="cl">1 1 1 1 2 4 4 2
+</span></span><span class="line"><span class="cl">1 1 2 1 1 4 4 1 2
+</span></span><span class="line"><span class="cl">1 1 2 4 3 5 1 1
+</span></span><span class="line"><span class="cl">1 2 1 1 1 2 1
+</span></span><span class="line"><span class="cl">7 1 2 1 1 1 1
+</span></span><span class="line"><span class="cl">1 1 1 2 1 1 2 1
+</span></span><span class="line"><span class="cl">1 3 1 3 3 1 6 2
+</span></span><span class="line"><span class="cl">1 3 1 3 1 2 1 1 2 1
+</span></span><span class="line"><span class="cl">1 3 1 1 1 1 1 3 1
+</span></span><span class="line"><span class="cl">1 1 4 3 4 2
+</span></span><span class="line"><span class="cl">7 2 1 2 1 3 1 2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">I like playing puzzle...
+</span></span></code></pre></div><p>I have imported the nonogram to <a href="http://a.teall.info/nonogram/"
+   
+   target="_blank" rel="noopener noreferrer" >an online nonogram solver</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. The solver occasionally stop working owing to unknown reasons (maybe the solution is not unique), so I decided to guess the shaded bits. Luckily I am streaming this, so that the ones who are watching can also deal with it while I am stuck.</p>
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/qrcode.png" title="Crowd-sourcing nonogram. Credit to TWY.">
+  
+  <figcaption>Crowd-sourcing nonogram. Credit to TWY.</figcaption>
+  
+</figure>
+
+<p>Shortly after, we have enough information for the QR code to be scanned correctly: <code>flag{W3_l0v3_S4m_4nd_p1z_dun_1ov3_m3}</code>. Sam is blushed.</p>
+
+
+<figure>
+  <img src="/images/2021-01-29-hoifanrd/sam-final.png" title="">
+  
+</figure>
+
+<p>&#x23f0; <em>Time elapsed: 220 minutes (+ 20 minutes).</em></p>
+<h2 id="my-feedback">My Feedback<a href="#my-feedback" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In short, there are a few steps to get it through.</p>
+<ol>
+<li>Decode with base64 and decrypt with Caesar cipher for the video link</li>
+<li>Find the file that conceals the secret something</li>
+<li>Find the passphrase to open the secret</li>
+<li>Find the steganographic tool to open the secret</li>
+<li>Solve the puzzle from the secret for the flag</li>
+</ol>
+<p>The challenge is not difficult itself, but I am very sure that I am unable to solve it on my own. Parts 1 and 5 are okay. I would think part 4 is guessy if it is not <em>steghide</em>. However, parts 2 and 3 are the toughest parts. They are the most guessy, but at the same time I learnt something interesting.</p>
+<p>To solve parts 2 and 3, you need to know what <em>hoifanrd</em> thinks (or wait until he gives hints). There are two beatmaps, and the reason why it got to be <em>two</em> is:</p>
+<ol>
+<li>The replay will be uploaded only if the gameplay is one of the top 1000 games in a given <em>ranked beatmap</em>. The first beatmap (Hyakka Ryouran Hanafubuki) satisfies the condition, hence you are able to download the replay from osu.ppy.sh.</li>
+<li>Needless to say, you can hide steganographically the <code>.wav</code> file in your own beatmaps.</li>
+</ol>
+<p>Apart from this, you do need good eyesight to solve the challenge. Otherwise it will be impossible to notice the morse code during the break time... It is good to learn parsing <code>.osr</code> files and liked the idea of hiding something in such a way.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          hoifanrd's osu! Challenge
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-02-01-justctf-oracles/">← justCTF 2020: Oracles</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-01-18-firebird-internal-ctf/">Firebird Internal CTF 2021 Writeup →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-12-24T16:46:00&#43;08:00">2022-12-24</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>This is the third year Black Bauhinia co-organized HKCERT CTF. This time I wrote nine challenges: Seven crypto, one reverse and one misc.</p>
+<p>Similar to the last year, I have a series of three blog posts walking through the challenges that I wrote. We will discuss the four easier crypto challenges: <em>Flawed ElGamal</em>, <em>Catch-22</em>, <em>Rogue Secret Assistant</em> and <em>Base64 encryption</em>.</p>
+<p>This is an index of the challenges I wrote for HKCERT CTF 2022. There are in total 309 teams participating:</p>
+<ol>
+<li><a href="#%e6%b5%b7%e5%b1%b1%e6%a8%93--flawed-elgamal-crypto"
+   
+   >Flawed ElGamal (Crypto; 127 solves)</a></li>
+<li><a href="#%e4%b9%9d%e9%be%8d%e5%85%ac%e5%9c%92--catch22-crypto"
+   
+   >Catch-22 (Crypto; 136 solves)</a></li>
+<li><a href="#%e7%8d%85%e5%ad%90%e5%b1%b1%e4%ba%8c%e8%99%9f%e6%a3%92%e7%90%83%e5%a0%b4--base64-encryption-crypto"
+   
+   >Base64 Encryption (Crypto; 6 solves)</a></li>
+<li><a href="#%e9%a6%99%e6%b8%af%e4%b8%ad%e6%96%87%e5%a4%a7%e5%ad%b8%e9%82%b5%e9%80%b8%e5%a4%ab%e5%a4%ab%e4%ba%ba%e6%a8%93--rogue-secret-assistant-crypto"
+   
+   >Rogue Secret Assistant (Crypto; 7 solves)</a></li>
+<li><a href="/posts/2022/2022-12-24-hkcert-ctf-2/#%e4%ba%9e%e6%b4%b2%e5%8d%94%e6%9c%83%e9%a6%99%e6%b8%af%e4%b8%ad%e5%bf%83--mystiz-cant-code-crypto"
+   
+   >Mystiz can't code (Crypto; 1 solve)</a></li>
+<li><a href="/posts/2022/2022-12-24-hkcert-ctf-2/#%e6%be%b3%e6%b4%b2%e7%89%9b%e5%a5%b6%e5%85%ac%e5%8f%b8--slow-keystream-crypto"
+   
+   >Slow keystream (Crypto; 6 solves)</a></li>
+<li><a href="/posts/2022/2022-12-24-hkcert-ctf-2/#%e6%b5%b7%e5%b8%86%e9%81%93--king-of-rock-paper-scissors-crypto"
+   
+   >King of Rock, Paper, Scissors (Crypto; 1 solve)</a></li>
+<li><a href="/posts/2022/2022-12-24-hkcert-ctf-3/#%e8%a7%80%e5%a1%98%e6%b5%b7%e6%bf%b1%e9%9f%b3%e6%a8%82%e5%99%b4%e6%b3%89--numbers-go-brrr-reverse"
+   
+   >Numbers go brrr (Reverse; 3 solves)</a></li>
+<li><a href="/posts/2022/2022-12-24-hkcert-ctf-3/#cga-%e9%a6%99%e6%b8%af%e9%9b%bb%e7%ab%b6%e9%a4%a8--minecraft-geoguessr-misc"
+   
+   >Minecraft Geoguessr (Misc; 4 solves)</a></li>
+</ol>
+<h2 id="海山樓--flawed-elgamal-crypto">海山樓 / Flawed ElGamal (Crypto)<a href="#海山樓--flawed-elgamal-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Cryptography is difficult. It is hard to implement -- every small mistakes would lead to a total break down.</p>
+<p>I tried my very best to implement the ElGamal according to the Wikipedia page. What can go wrong?</p>
+<p>Solution: <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2022-i-en-3f8a9ef6"
+   
+   target="_blank" rel="noopener noreferrer" >https://hackmd.io/@blackb6a/hkcert-ctf-2022-i-en-3f8a9ef6</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/elgamal/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>The server will be returning an encrypted flag, $(c_1, c_2)$, every time a player connects to the server. This is the public key used:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="mi">1444779821068309665607966047026245709114363505560724292470220924533941341173119282750461450104319554545087521581252757303050671443847680075401505584975539</span>
+</span></span><span class="line"><span class="cl"><span class="n">g</span> <span class="o">=</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">h</span> <span class="o">=</span> <span class="mi">679175474187312157096793918495021788380347146757928688295980599009809870413272456661249570962293053504169610388075260415234004679602069004959459298631976</span>
+</span></span></code></pre></div><p>Note that the ciphertext is computed by a flawed ElGamal such that $(c_1, c_2)$:</p>
+<ol>
+<li>Generating a random $y \in [1, p-1]$,</li>
+<li>Compute $s := h^y \ \text{mod}\ p$,</li>
+<li>Compute $c_1 := g^y\ \text{mod}\ p$,</li>
+<li>Compute $c_2 := m \cdot s$.</li>
+</ol>
+<p>The goal is to obtain the flag, $m$.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>An important observation is that $c_2 := m \cdot s$ is not taken modulo $p$, therefore it is a multiple of $m$. If we get many ciphertexts $(c_1, c_2)$, $(c_1', c_2')$, ... by connecting to the server multiple times, eventually we have</p>
+<p>$$m = \gcd(c_2, c_2', ...).$$</p>
+<p>We can use the Euclidean algorithm to compute the GCD of two numbers, given below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">a</span>
+</span></span></code></pre></div><p>To compute GCD of multiple numbers ($a, b, ..., c$), we can apply GCD pairwise:</p>
+<p>$$\gcd(a, b, ..., c) = \gcd(...\gcd(\gcd(a, b), ...), c).$$</p>
+<p>After getting the number $m$, we can convert it into a string. From <code>chall.py</code>, the flag string is converted to a number by <code>m = int.from_bytes(flag, 'big')</code>. You may want to look at how a reverse operation can be done using <a href="https://docs.python.org/3/library/stdtypes.html#int.to_bytes"
+   
+   target="_blank" rel="noopener noreferrer" ><code>int.to_bytes</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> in Python. Eventually, we have the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert22{4nd_th1s_t1m3_7h3_i5su3_1s_s0l31y_n0t_t4k1n9_m0du10s}
+</span></span></code></pre></div><div class="alert danger">
+  <strong>🏁 I am not getting the flag!</strong> That means the <code>m</code> you got is incorrect. The GCD you obtained is probably a small multiple of the actual $m$ - go get more $c_2$'s and compute GCDs further!
+</div>
+
+<h2 id="九龍公園--catch-22-crypto">九龍公園 / Catch-22 (Crypto)<a href="#九龍公園--catch-22-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>You need a key to open the door... but what if the key is in the room?</p>
+<p>Solution: <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2022-ii-en-6a196795"
+   
+   target="_blank" rel="noopener noreferrer" >https://hackmd.io/@blackb6a/hkcert-ctf-2022-ii-en-6a196795</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+<p>http://HOST:PORT/</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20221111-hkcert-ctf/catch-22/public"
+   
+   target="_blank" rel="noopener noreferrer" >catch-22.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a web game. The player can navigate in the map and the goal is to access the flag.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/catch-22-summary.png" title="">
+  
+</figure>
+
+<p>Notably, the game state (example given below) is encrypted by AES-ECB and is stored in the cookie.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;username&#34;</span><span class="p">:</span><span class="s2">&#34;mystiz&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">13</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="nt">&#34;inventory&#34;</span><span class="p">:[],</span><span class="nt">&#34;onMapItems&#34;</span><span class="p">:[{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">4</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">4</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">}]}</span>
+</span></span></code></pre></div><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert warning">
+  <strong>Note.</strong> Copying the cookies from the write-up would not work. The encryption keys are different when I compile the write-up and for the actual challenge.
+</div>
+
+<h4 id="part-i-interacting-with-the-browser-cookies">Part I: Interacting with the browser &#x1f36a;s<a href="#part-i-interacting-with-the-browser-cookies" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>If you are using Google Chrome (probably the same for the common browsers), you can press F12 to open the developer tools and switch to the &quot;Console&quot; tab. You can read the cookies by typing the below snippet, and execute it by pressing Enter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span>
+</span></span></code></pre></div><p>To set a cookie (for example, setting the value of the <code>game-token</code> to <code>bar</code>), type the below snippet and press Enter:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="o">=</span><span class="s2">&#34;game-token=bar&#34;</span>
+</span></span></code></pre></div><p>That's it! You can manipulate cookies easily from your browser.</p>
+<h4 id="part-ii-encrypting-messages-of-arbitrary-length-for-block-ciphers">Part II: Encrypting messages of arbitrary length for block ciphers<a href="#part-ii-encrypting-messages-of-arbitrary-length-for-block-ciphers" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Block ciphers are only capable to encrypt messages of a fixed length. For instance, <em>Advanced Encryption Standard (AES)</em> can only encrypt messages of 16 bytes. To encrypt messages of variable length, the messages are first padded such that their length is a multiple of the block size. After that, a mode of operation is picked.</p>
+<h5 id="the-electronic-codebook-ecb-mode-of-operation">The electronic codebook (ECB) mode of operation<a href="#the-electronic-codebook-ecb-mode-of-operation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/catch-22-ecb.png" title="Illustration of ECB. Source: Wikipedia">
+  
+  <figcaption>Illustration of ECB. Source: Wikipedia</figcaption>
+  
+</figure>
+
+<p>We are using ECB in this challenge. As illustrated above, the message blocks are encrypted independently. Sounds intuitive?</p>
+<p>Let's use a cookie as an example. It is encrypted in AES, which the block size is 16 bytes (equivalent to 32 hex characters):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">fff21bf4a7d27a027502b1e1a253b35f071efbc3642eea3269d634e6c984feebf89e4736ab5ba5b4ef81b78a57a889ba4cf06024a9c302947c9a620592c23a76476e8424c54f1f47216f45d903c1baa4d2bd6f06d268a81b9d30326c80f521249fdba79cf386395248f82a0236c0771ae4210d738aa474035eda8131cc3f384ac551a93538d21903eb1b717741df7e1b7ac7350304f0d7f6db588f809cf319706f0a09ededf7547fab175c8e132a832c878303dd6064ba98361cf4f9784a0699
+</span></span></code></pre></div><p>corresponds to the state</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;username&#34;</span><span class="p">:</span><span class="s2">&#34;mystiz_&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">13</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="nt">&#34;inventory&#34;</span><span class="p">:[],</span><span class="nt">&#34;onMapItems&#34;</span><span class="p">:[{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">4</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">}]}</span>
+</span></span></code></pre></div><p>Let <code>_</code> be the padding character (ASCII value <code>0x0b</code>) according to PKCS5. These are the relations extracted between the plaintext and ciphertext blocks:</p>
+<table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        Plaintext Block
+      </th>
+      
+      <th>
+        Ciphertext Block
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        <code>{&quot;username&quot;:&quot;mys</code>
+      </td>
+      
+      <td>
+        <code>fff21bf4a7d27a027502b1e1a253b35f</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>tiz_&quot;,&quot;x&quot;:13,&quot;y&quot;</code>
+      </td>
+      
+      <td>
+        <code>071efbc3642eea3269d634e6c984feeb</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>:5,&quot;inventory&quot;:[</code>
+      </td>
+      
+      <td>
+        <code>f89e4736ab5ba5b4ef81b78a57a889ba</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>],&quot;onMapItems&quot;:[</code>
+      </td>
+      
+      <td>
+        <code>4cf06024a9c302947c9a620592c23a76</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>{&quot;item&quot;:0,&quot;x&quot;:3,</code>
+      </td>
+      
+      <td>
+        <code>476e8424c54f1f47216f45d903c1baa4</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>&quot;y&quot;:4},{&quot;item&quot;:1</code>
+      </td>
+      
+      <td>
+        <code>d2bd6f06d268a81b9d30326c80f52124</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>,&quot;x&quot;:4,&quot;y&quot;:5},{&quot;</code>
+      </td>
+      
+      <td>
+        <code>9fdba79cf386395248f82a0236c0771a</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>item&quot;:1,&quot;x&quot;:5,&quot;y</code>
+      </td>
+      
+      <td>
+        <code>e4210d738aa474035eda8131cc3f384a</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>&quot;:5},{&quot;item&quot;:1,&quot;</code>
+      </td>
+      
+      <td>
+        <code>c551a93538d21903eb1b717741df7e1b</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>x&quot;:6,&quot;y&quot;:5},{&quot;it</code>
+      </td>
+      
+      <td>
+        <code>7ac7350304f0d7f6db588f809cf31970</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>em&quot;:0,&quot;x&quot;:15,&quot;y&quot;</code>
+      </td>
+      
+      <td>
+        <code>6f0a09ededf7547fab175c8e132a832c</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>:1}]}___________</code>
+      </td>
+      
+      <td>
+        <code>878303dd6064ba98361cf4f9784a0699</code>
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<h4 id="part-iii-casting-the-cut-and-paste-attack">Part III: Casting the cut-and-paste attack<a href="#part-iii-casting-the-cut-and-paste-attack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>There is an interesting property for electronic codebook (ECB). Since the blocks are independently encrypted, no one would be able to identify if we swap two blocks. For instance, this is a message-ciphertext pair that we can forge (given the above relations):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Message:     {&#34;username&#34;:&#34;mys{&#34;username&#34;:&#34;mys
+</span></span><span class="line"><span class="cl">Ciphertext:  fff21bf4a7d27a027502b1e1a253b35f fff21bf4a7d27a027502b1e1a253b35f
+</span></span></code></pre></div><p>This seemed to be useless, but we will use this idea to solve the challenge.</p>
+<p>There are many ways to get the flag. My approach is to fill my inventory with keys. The <code>inventory</code> in the state is an array of item IDs. For instance, when there is two keys (ID = 0) in the inventory, the state would be <code>{...,&quot;inventory&quot;:[0,0],...}</code>.</p>
+<p>If we register an account called <code>mys0,0,0,0,0,0,0,0 tiz_</code>, then we have the corresponding token:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">fff21bf4a7d27a027502b1e1a253b35ffb2333bf9573b1d240840aefb4f78b1e071efbc3642eea3269d634e6c984feebf89e4736ab5ba5b4ef81b78a57a889ba4cf06024a9c302947c9a620592c23a76476e8424c54f1f47216f45d903c1baa4d2bd6f06d268a81b9d30326c80f521249fdba79cf386395248f82a0236c0771ae4210d738aa474035eda8131cc3f384ac551a93538d21903eb1b717741df7e1b7ac7350304f0d7f6db588f809cf319706f0a09ededf7547fab175c8e132a832c878303dd6064ba98361cf4f9784a0699
+</span></span></code></pre></div><table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        Plaintext Block
+      </th>
+      
+      <th>
+        Ciphertext Block
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        <code>{&quot;username&quot;:&quot;mys</code>
+      </td>
+      
+      <td>
+        <code>fff21bf4a7d27a027502b1e1a253b35f</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>0,0,0,0,0,0,0,0 </code>
+      </td>
+      
+      <td>
+        <code>fb2333bf9573b1d240840aefb4f78b1e</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>tiz_&quot;,&quot;x&quot;:13,&quot;y&quot;</code>
+      </td>
+      
+      <td>
+        <code>071efbc3642eea3269d634e6c984feeb</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>:5,&quot;inventory&quot;:[</code>
+      </td>
+      
+      <td>
+        <code>f89e4736ab5ba5b4ef81b78a57a889ba</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>],&quot;onMapItems&quot;:[</code>
+      </td>
+      
+      <td>
+        <code>4cf06024a9c302947c9a620592c23a76</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>{&quot;item&quot;:0,&quot;x&quot;:3,</code>
+      </td>
+      
+      <td>
+        <code>476e8424c54f1f47216f45d903c1baa4</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>&quot;y&quot;:4},{&quot;item&quot;:1</code>
+      </td>
+      
+      <td>
+        <code>d2bd6f06d268a81b9d30326c80f52124</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>,&quot;x&quot;:4,&quot;y&quot;:5},{&quot;</code>
+      </td>
+      
+      <td>
+        <code>9fdba79cf386395248f82a0236c0771a</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>item&quot;:1,&quot;x&quot;:5,&quot;y</code>
+      </td>
+      
+      <td>
+        <code>e4210d738aa474035eda8131cc3f384a</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>&quot;:5},{&quot;item&quot;:1,&quot;</code>
+      </td>
+      
+      <td>
+        <code>c551a93538d21903eb1b717741df7e1b</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>x&quot;:6,&quot;y&quot;:5},{&quot;it</code>
+      </td>
+      
+      <td>
+        <code>7ac7350304f0d7f6db588f809cf31970</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>em&quot;:0,&quot;x&quot;:15,&quot;y&quot;</code>
+      </td>
+      
+      <td>
+        <code>6f0a09ededf7547fab175c8e132a832c</code>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        <code>:1}]}___________</code>
+      </td>
+      
+      <td>
+        <code>878303dd6064ba98361cf4f9784a0699</code>
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<p>If we move the second block between the fourth and the fifth blocks, then this is the new plaintext:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;username&#34;</span><span class="p">:</span><span class="s2">&#34;mystiz_&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">13</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="nt">&#34;inventory&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">],</span><span class="nt">&#34;onMapItems&#34;</span><span class="p">:[{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">4</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">5</span><span class="p">},{</span><span class="nt">&#34;item&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">}]}</span>
+</span></span></code></pre></div><p>We can concatenate the ciphertext blocks and update the cookie accordingly. Now we can fill our inventory with eight keys, which is more than enough! One last thing is to walk to the doors, unlock them with the keys and finally grab the flag! &#x1f389;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert22{cu7_4nd_p45t3_1ik3_4_3ng1n3er}
+</span></span></code></pre></div>
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/catch-22-multiple-keys.png" title="One man with eight keys.">
+  
+  <figcaption>One man with eight keys.</figcaption>
+  
+</figure>
+
+<h3 id="final-words">Final Words<a href="#final-words" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>There are a lot of possible ways to solve the challenge. These are some more weird game states that we crafted:</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/catch-22-too-many-doors.png" title="What can I do with so many doors?">
+  
+  <figcaption>What can I do with so many doors?</figcaption>
+  
+</figure>
+
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/catch-22-no-keys-required.png" title="I teleported!">
+  
+  <figcaption>I teleported!</figcaption>
+  
+</figure>
+
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/catch-22-full-of-keys.png" title="This might be hard: The map is flooded with keys.">
+  
+  <figcaption>This might be hard: The map is flooded with keys.</figcaption>
+  
+</figure>
+
+<div class="alert success">
+  <strong>💭 More ideas?</strong> Can you solve the challenge in a different way? Let me know!
+</div>
+
+<h2 id="獅子山二號棒球場--base64-encryption-crypto">獅子山二號棒球場 / Base64 Encryption (Crypto)<a href="#獅子山二號棒球場--base64-encryption-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>People said that base64 is an encoding, not an encryption. Did they have a misconception about that?</p>
+<p>If you believe that base64 is just an encoding, then convince me that you are able to &quot;decode&quot; the article (which is in English).</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/base64-encryption/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/base64-encryption/public/message.enc.txt"
+   
+   target="_blank" rel="noopener noreferrer" >message.enc.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given an 1198-byte message (in English) encoded in base64, except that the charset is shuffled (without a mapping given). The goal is to recover the message.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  &#x1f4ac; <strong>Presentation?</strong> Some of you may prefer to read slides rather than words. If that's the case, please refer to the <a href="/images/2022-12-24-hkcert-ctf/20221119-hkcert-ctf-writeup.pdf"
+   
+   >slides</a> I used for <em>HKCERT's livestream</em> dated November 19, 2022.
+</div>
+
+<h4 id="part-i-conservation-of-characters-for-substitution-ciphers">Part I: Conservation of &quot;characters&quot; for substitution ciphers<a href="#part-i-conservation-of-characters-for-substitution-ciphers" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>In short, this is a substitution cipher to the character set <code>A-Za-z0-9+/</code>. Also, for substitution ciphers, each letter is encrypted into another letter.</p>
+<div class="alert info">
+  💡 <strong>Observation.</strong> If <code>A</code> is encrypted to <code>b</code>, then the numbers of <code>A</code>'s in the plaintext and the numbers of <code>b</code>'s in the ciphertext would be the same. This also happens to every message character $m$ that encrypts to $c$ -- the numbers of $m$ in the plaintext and the number of $c$ in the ciphertext are the same.
+</div>
+
+<p>For substitution ciphers, we can look at the frequencies for every character to recover the key. Say, if <code>w</code> appears the most in the ciphertext, it is probably encrypted from <code>e</code> because <code>e</code> is the most used letter in the English language. Can we apply the same to base64 encoded messages? Yes!</p>
+<p>I will take <a href="https://ocw.mit.edu/ans7870/6/6.006/s08/lecturenotes/files/t8.shakespeare.txt"
+   
+   target="_blank" rel="noopener noreferrer" >t8.shakespeare.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> as the ground truth. To get started, I encoded it with base64 (the message begins with <code>VGhpcyBpcyB0aGUgMTAwdGggRXRleHQgZmlsZSBwcmVzZ</code>). After that, I partitioned the message into four groups, where group one contains the $4k+1$^th^ characters (i.e., <code>VccaMd...</code>) of the encoded message for $k \geq 0$; group two contains the $4k+2$^th^ characters (i.e., <code>GyyGTG...</code>); and so on.</p>
+<p>Why four groups? This is because base64 encodes a message into strings with sizes being a multiple of 4. For instance, the $4k+1$^th^ encoded character comes from the six upper bits of the $3k+1$^th^ byte. Those characters always depend on the six most significant bits from the source bytes.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-conversion.png" title="An example of base64 encoding. Source: Wikipedia.">
+  
+  <figcaption>An example of base64 encoding. Source: Wikipedia.</figcaption>
+  
+</figure>
+
+<p>The bar charts are the distributions of the four groups. The distributions looked pretty different amongst these groups:</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-encryption-frequency-shakespeare.png" title="Frequency distributions on base64-encoded Shakespeare&#39;s text, in four groups.">
+  
+  <figcaption>Frequency distributions on base64-encoded Shakespeare&#39;s text, in four groups.</figcaption>
+  
+</figure>
+
+<h4 id="part-ii-frequency-analysis---the-first-take">Part II: Frequency analysis - The first take<a href="#part-ii-frequency-analysis---the-first-take" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>After that, we can look at the distribution of the ciphertexts. These are the ten most frequent characters in the ciphertext:</p>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th style="width: 20%;" rowspan=2>Character</th>
+            <th style="width: 80%;" colspan=4>Frequency in group</th>
+        </tr>
+        <tr>
+            <th style="width: 20%;">1</th>
+            <th style="width: 20%;">2</th>
+            <th style="width: 20%;">3</th>
+            <th style="width: 20%;">4</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>w</code></td><td style="text-align: right;">0.0%</td><td style="text-align: right;">20.5%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.25%</td></tr>
+        <tr><td><code>Y</code></td><td style="text-align: right;">18.5%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">1.0%</td><td style="text-align: right;">0.0%</td></tr>
+        <tr><td><code>c</code></td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">18.05%</td><td style="text-align: right;">0.25%</td></tr>
+        <tr><td><code>6</code></td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">5.01%</td><td style="text-align: right;">12.53%</td></tr>
+        <tr><td><code>R</code></td><td style="text-align: right;">16.0%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.0%</td></tr>
+        <tr><td><code>W</code></td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.75%</td><td style="text-align: right;">0.5%</td><td style="text-align: right;">14.29%</td></tr>
+        <tr><td><code>z</code></td><td style="text-align: right;">1.0%</td><td style="text-align: right;">12.75%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.0%</td></tr>
+        <tr><td><code>V</code></td><td style="text-align: right;">9.25%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">4.01%</td><td style="text-align: right;">0.0%</td></tr>
+        <tr><td><code>0</code></td><td style="text-align: right;">12.0%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">1.25%</td><td style="text-align: right;">0.0%</td></tr>
+        <tr><td><code>L</code></td><td style="text-align: right;">11.5%</td><td style="text-align: right;">0.0%</td><td style="text-align: right;">0.75%</td><td style="text-align: right;">0.0%</td></tr>
+    </tbody>
+</table>
+<p>Why do we care about the most frequent characters? Well... who cares if you misspelt once in 1000 words. But it matters when you misspelt once every two words.</p>
+<p>Anyway, let's guess the character that encrypts to <code>w</code>. Maybe <code>I</code>? It appears the most from the base64-encoded Shakespeare's text. Apparently not. The frequencies of <code>I</code> from the four groups are respectively 23.9%, 0.0%, 1.3% and 0.3%, which is not similar to the frequencies of encrypted <code>w</code>. Instead, it looks more like <code>G</code>, which has frequencies (0.0%, 17.6%, 0.0%, 2.1%).</p>
+<p>We then continue to find the best guess that encrypts to <code>Y</code>. It is likely to be <code>b</code>, because the frequencies of the ciphertext <code>Y</code> and the plaintext <code>b</code> are respectively (18.5%, 0.0%, 1.0%, 0.0%) and (13.6%, 0.0%, 0.0%, 0.04%). Repeating the process, we have the plaintext-ciphertext mapping below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Plaintext:  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+</span></span><span class="line"><span class="cl">Ciphertext: 4czfHjwa9rl+Xds/1EbFuJioVRnYL0ym86UZ2WDMQPgBKGT5AN3Cqe7OShpvkxIt
+</span></span></code></pre></div><p>&quot;Decrypting&quot; the ciphertext and decoding the whole message with base64, we have:</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-result-1.png" title="Credit: Background image by rawpixel.com on Freepik">
+  
+  <figcaption>Credit: Background image by rawpixel.com on Freepik</figcaption>
+  
+</figure>
+
+<p>...which is not good at all.</p>
+<h4 id="part-iii-improving-the-heuristic">Part III: Improving the heuristic<a href="#part-iii-improving-the-heuristic" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since the article is written in English, it might be safe to assume that the ASCII code for all characters is in $[0, 128)$. The most significant bit for each byte is zero. When encoded in base64, the below bits are zero:</p>
+<ul>
+<li>the first bit in group 1,</li>
+<li>the third bit in group 2, and</li>
+<li>the fifth bit in group 3.</li>
+</ul>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-conversion-msb.png" title="Those bits in red are zero.">
+  
+  <figcaption>Those bits in red are zero.</figcaption>
+  
+</figure>
+
+<p>What does it mean? We will never see <code>ghijklmnopqrstuvwxyz0123456789+/</code> in group 1. Likewise, <code>IJKLMNOPYZabcdefopqrstuv456789+/</code> and <code>CDGHKLOPSTWXabefijmnqruvyz2367+/</code> will not appear in groups 2 and 3 respectively. To avoid those characters in the respective groups, we can add a <em>huge</em> penalty when those characters are picked.</p>
+<p>Previously, we expected that <code>Y</code> decrypts to <code>b</code> as they have similar distributions. However, <code>b</code> will appear in group 3 and thus this is not a good choice. <code>I</code> may be a better corresponding plaintext in this case - the distributions are similar, and we are not penalised by picking it. Below are the new mapping and the plaintext:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Plaintext:  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+</span></span><span class="line"><span class="cl">Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygf6UGZWDMQPuBClqKAX35Te9ONhsv2mkp
+</span></span></code></pre></div>
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-result-2.png" title="">
+  
+</figure>
+
+<h4 id="part-iv-fine-tuning-for-the-win">Part IV: Fine-tuning for the win<a href="#part-iv-fine-tuning-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Although the article is still unreadable, we can read some words from it. There is a clear spelling mistake: Instead of <code>that hs</code>, it should instead be <code>that is</code>.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-result-3.png" title="">
+  
+</figure>
+
+<p>When encoded in base64, they are respectively <code>...aGF0IGhz...</code> and <code>...aGF0IGlz...</code>. Let's make <code>W</code> and <code>6</code> decrypt to <code>h</code> and <code>l</code> respectively (they were corresponding to <code>l</code> and <code>h</code>). The article looked a bit better.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Plaintext:  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+</span></span><span class="line"><span class="cl">Ciphertext: 4czIHjwaYd8F1St/xEb7rJioV0+RLnygfWUGZ6DMQPuBClqKAX35Te9ONhsv2mkp
+</span></span></code></pre></div><p>We can fix the plaintext-ciphertext mapping by looking at the spelling mistakes. For instance, spaces should appear more frequently.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-result-4.png" title="">
+  
+</figure>
+
+<p>Eventually, it is quite manual work to recover the final message:</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/base64-result-5.png" title="">
+  
+</figure>
+
+<h2 id="香港中文大學邵逸夫夫人樓--rogue-secret-assistant-crypto">香港中文大學邵逸夫夫人樓 / Rogue Secret Assistant (Crypto)<a href="#香港中文大學邵逸夫夫人樓--rogue-secret-assistant-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Mystiz does not seem to give up using RSA to store his secrets. This time you are even allowed to send arbitrary public exponent, <em>e</em>. Can you unveil the secret flag?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/rogue-secret-assistant/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, a 2048-bit RSA public exponent $n$ and a 128-character long secret are generated (none of them is given to the players). Players can send three different $e$ such that $e \neq 1$. The message</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">The secret token is [SECRET] and it is encrypted with e = [E].
+</span></span></code></pre></div><p>is encrypted using RSA with the key $(n, e)$. The goal is to recover the secret.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-connection-of-the-unknowns-by-a-congruence">Part I: Connection of the unknowns by a congruence<a href="#part-i-connection-of-the-unknowns-by-a-congruence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let $m_0$, $m_1$ and $m_2$ be the constant parts of the message, $s$ be the secret and $e_\text{c}$ be the public exponent in ASCII (and $l$ be its length). Then the message would be</p>
+<p>$$m := 256^{l + 159} \cdot m_0 + 256^{l + 31} \cdot s + 256^{l + 1} \cdot m_1 + 256 \cdot e_\text{c} + m_2.$$</p>
+<p>Hereby the base message, $m_0$, $m_1$ and $m_2$, are constants given below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># m0 = &#34;The secret token is &#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">m0</span> <span class="o">=</span> <span class="mh">0x5468652073656372657420746f6b656e2069732</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># m1 = &#34; and it is encrypted with e = &#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">m1</span> <span class="o">=</span> <span class="mh">0x20616e6420697420697320656e6372797074656420776974682065203d20</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># m2 = &#34;.&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">m2</span> <span class="o">=</span> <span class="mh">0x2e</span>
+</span></span></code></pre></div><p>You can imagine that <code>m</code> is a concatenation of <code>The secret token is </code>, followed by the secret, <code> and it is encrypted with e = </code>, $e$ and a fullstop.</p>
+<p>If we let further $c$ be the ciphertext of $m$, then $c \equiv m^e\ (\text{mod}\ n)$.</p>
+<p>Since $\mu_{l, e} := 256^{l + 159} \cdot m_0 + 256^{l + 1} \cdot m_1 + 256 \cdot e_\text{c} + m_2$ is known (we know $l$, $m_0$, $m_1$, $m_2$ and $e_\text{c}$), we will just use $\mu_{l, e}$ for simplicity. Connecting the two relations, we have the congruence</p>
+<p>$$c \equiv (\mu_{l, e} + 256^{l + 31} \cdot s)^e \ (\text{mod}\ n).$$</p>
+<p>Now, how do we get $n$ and $s$ by sending three different $e$s (with $e \neq 1$)? These are the congruences we have (the variables in red are unknown):</p>
+<p>$$\left{\begin{aligned}
+c_1 = (\mu_{l_1, e_1} + 256^{l_1 + 31} \cdot {\color{red}s})^{e_1} \ (\text{mod}\ {\color{red}n}) \
+c_2 = (\mu_{l_2, e_2} + 256^{l_2 + 31} \cdot {\color{red}s})^{e_2} \ (\text{mod}\ {\color{red}n}) \
+c_3 = (\mu_{l_3, e_3} + 256^{l_3 + 31} \cdot {\color{red}s})^{e_3} \ (\text{mod}\ {\color{red}n})
+\end{aligned}\right.$$</p>
+<h4 id="part-ii-recovering-the-unknowns">Part II: Recovering the unknowns<a href="#part-ii-recovering-the-unknowns" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Fortunately, $e$ does not need to be positive. We can set $e_1 = -1$ (i.e., $l_1 = 2$ because <code>-1</code> is two-character long), then</p>
+<p>$$\begin{aligned}
+&amp; c_1 = (\mu_{2, -1} + 256^{33} \cdot s)^{-1} \ (\text{mod}\ n) \\
+\Longrightarrow \ &amp; (\mu_{2, -1} + 256^{33} \cdot s) \cdot c_1 = 1 \ (\text{mod}\ n) \\
+\Longrightarrow \ &amp; s = \frac{1 - \mu_{2, -1} \cdot c_1}{256^{33} \cdot c_1} \ (\text{mod}\ n)
+\end{aligned}$$</p>
+<p>Substitute the above congruence to the remaining two (assuming $l_2 = l_3 = 2$ for simplicity), then for $i = 2, 3$, we have:</p>
+<p>$$\begin{aligned}
+&amp; c_i \equiv (\mu_{2, e_i} + 256^{33} \cdot \frac{1 - \mu_{2, -1} \cdot c_1}{256^{33} \cdot c_1})^{e_i} \equiv (\mu_{2, e_i} + \frac{1 - \mu_{2, -1} \cdot c_1}{c_1})^{e_i} \ (\text{mod}\ n) \\
+\Longrightarrow \ &amp; c_i - (\mu_{2, e_i} + \frac{1 - \mu_{2, -1} \cdot c_1}{c_1})^{e_i} \equiv 0 \ (\text{mod}\ n)
+\end{aligned}$$</p>
+<p>Thus we have two multiples of $n$. By taking its GCD, then we can recover $n$... but wait, how can we divide without the modulus? We can do multiplication instead. Now we assume further that $e_2 = -2$ and $e_3 = -3$. For $i = 2, 3$:</p>
+<p>$$\begin{aligned}
+&amp; c_i - (\mu_{2, e_i} + \frac{1 - \mu_{2, -1} \cdot c_1}{c_1})^{e_i} \equiv 0 \ (\text{mod}\ n) \\
+\Longrightarrow \ &amp; c_i \cdot (\mu_{2, e_i} + \frac{1 - \mu_{2, -1} \cdot c_1}{c_1})^{-e_i} - 1 \equiv 0 \ (\text{mod}\ n) \\
+\Longrightarrow \ &amp; c_i \cdot (\mu_{2, e_i} + \frac{1 - \mu_{2, -1} \cdot c_1}{c_1})^{-e_i} \cdot {c_1}^{-e_i} - {c_1}^{-e_i} \equiv 0 \ (\text{mod}\ n) \\
+\Longrightarrow \ &amp; c_i \cdot (\mu_{2, e_i} \cdot c_1 + 1 - \mu_{2, -1} \cdot c_1)^{-e_i} - {c_1}^{-e_i} \equiv 0 \ (\text{mod}\ n)
+\end{aligned}$$</p>
+<p>Therefore, we have the two numbers</p>
+<p>$$c_2 \cdot (\mu_{2, -2} \cdot c_1 + 1 - \mu_{2, -1} \cdot c_1)^2 - {c_1}^2 \quad\text{and}\quad c_3 \cdot (\mu_{2, -3} \cdot c_1 + 1 - \mu_{2, -1} \cdot c_1)^3 - {c_1}^3,$$</p>
+<p>which are both multiples of $n$. We can finally compute the GCD. Since the GCD of the two numbers are not necessarily equal to $n$ (it could be a <em>small</em> multiple of $n$), I attempted to remove small factors from the GCD in the solve script.</p>
+<p>It is very unlikely that the <code>n</code> obtained is not equal to the actual public modulus. If that's the case, we can simply re-run the script. Eventually, we will get the flag: <code>hkcert22{r5a_i5_ju5t_a_6unch_0f_m4th5}</code>.</p>
+<h3 id="solve-script">Solve script<a href="#solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gcd</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s1">&#39;chal.hkcert22.pwnable.hk&#39;</span><span class="p">,</span> <span class="mi">28101</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;c = &#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">c</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">encrypt</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="n">encrypt</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">µ1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;The secret token is &#39;</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">128</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39; and it is encrypted with e = -1.&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">µ2</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;The secret token is &#39;</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">128</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39; and it is encrypted with e = -2.&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">µ3</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;The secret token is &#39;</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">128</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39; and it is encrypted with e = -3.&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">µ1</span><span class="p">,</span> <span class="n">µ2</span><span class="p">,</span> <span class="n">µ3</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">µ</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">µ</span> <span class="ow">in</span> <span class="p">[</span><span class="n">µ1</span><span class="p">,</span> <span class="n">µ2</span><span class="p">,</span> <span class="n">µ3</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="n">µ2</span> <span class="o">*</span> <span class="n">c1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">µ1</span> <span class="o">*</span> <span class="n">c1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">c1</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c3</span> <span class="o">*</span> <span class="p">(</span><span class="n">µ3</span> <span class="o">*</span> <span class="n">c1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">µ1</span> <span class="o">*</span> <span class="n">c1</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">c1</span><span class="o">**</span><span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Eliminate small factors</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1000</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">n</span> <span class="o">//=</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">secret</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="o">-</span><span class="mi">33</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">µ1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+</span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="n">secret</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="o">**</span><span class="mi">128</span>
+</span></span><span class="line"><span class="cl"><span class="n">secret</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">secret</span> <span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2022 Postmortem (I): Easier Crypto Challenges
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-12-24-hkcert-ctf-2/">← HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-10-19-h4ck1ng-g00gl3/">H4CK1NG G00GL3 - Ep 005 Ch 002: Project Zero Adventure →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

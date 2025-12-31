@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2023 Postmortem (II): Harder Crypto Challenges | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2023 Postmortem (II): Harder Crypto Challenges</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2024-01-27T05:30:01&#43;08:00">2024-01-27</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>In the second part of the series, I will cover four cryptography challenges: baDES, Maybe Someday, Cipher Bridging Service and RSA Triooo. Interestingly, most of them are somehow &quot;plagiarized&quot; from the other CTFs.</p>
+<h2 id="bades">baDES<a href="#bades" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>DES, published as an official Federal Information Processing Standard in 1977, is considered bad in 2023. We will slightly change the cipher and attack that together!</p>
+<p>https://HOST:PORT/</p>
+<p><strong>Note:</strong> There is a guide for this challenge <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2023-ii-en-4e6150a89a1ff32c"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/bades_bb8b71ab412bcd0a330156417ebcaed1.zip"
+   
+   target="_blank" rel="noopener noreferrer" >bades.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>In this challenge, we are given an slightly modified <a href="https://en.wikipedia.org/wiki/Data_Encryption_Standard"
+   
+   target="_blank" rel="noopener noreferrer" >Data Encryption Standard</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> (denoted by DES'). Additionally, we are given the two oracles:</p>
+<ol>
+<li><code>encrypt_flag</code> encrypts the flag using DES'-CBC.</li>
+<li><code>encrypt</code> encrypts an arbitrary message using DES'-CBC.</li>
+</ol>
+<p>Additionally, the initialization vector of the encryption calls are fixed. The goal is to retrieve the flag using the above oracle calls.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="how-is-the-cipher-being-modified">How is the cipher being modified?<a href="#how-is-the-cipher-being-modified" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The only change to the cipher is the values of the left shifts for the key schedule, <code>__left_rotations</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-diff" data-lang="diff"><span class="line"><span class="cl"><span class="gd">- [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
+</span></span></span><span class="line"><span class="cl"><span class="gi">+ [16, 25, 8, 1, 7, 13, 3, 4, 0, 24, 25, 15, 21, 27, 20, 3]
+</span></span></span></code></pre></div><p>DES is a Feistel cipher, where the plaintext will go through 16 rounds of Feistel function with 16 subkeys, $k_1, k_2, ..., k_{16}$. The subkeys are derived only with the key and the left shifts, illustrated below:</p>
+
+
+<figure>
+  <img src="/images/2024-01-27-hkcert-ctf/bades-key-schedule.png" title="">
+  
+</figure>
+
+<p>The shifts of the intermediate keys (the blocks in dark yellow) are accumulated. Since both the left and right keys are 28 bits, the partial key would become itself after shifting 28 bits. The following table shows the accumulated shifts before PC2:</p>
+
+
+<figure>
+  <img src="/images/2024-01-27-hkcert-ctf/bades-shifts-table.png" title="">
+  
+</figure>
+
+<p>From the table, we can see that the accumulated shifts for $k_1$ and $k_{16}$ are the same. This would imply that $k_1 = k_{16}$. Similarly, we have $k_2 = k_{15}$, $k_3 = k_{14}$, ..., $k_8 = k_9$.</p>
+<h4 id="every-key-is-a-weak-key">Every key is a weak key<a href="#every-key-is-a-weak-key" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>We can claim that every key is a weak key with the above property. Therefore we have $\text{Encrypt}_k = \text{Decrypt}_k.$ This mean that the encryption function is exactly the decryption function. In this way, if we encrypt a ciphertext, it actually decrypts it. But why?</p>
+
+
+<figure>
+  <img src="/images/2024-01-27-hkcert-ctf/bades-feistel.png" title="">
+  
+</figure>
+
+<p>Let's look at the Feistel rounds of DES above, where we respectively let $(L_0, R_0)$ and $(R_{16}, L_{16})$ be the plaintext and the ciphertext. We then have</p>
+<p>$$L_{i + 1} = R_i \quad \text{and} \quad R_{i+1} = L_i \oplus F(R_i, k_{i+1}).$$</p>
+<p>Now we let $(L'_0, R'_0)$ to be the ciphertext for $(L_0, R_0)$, i.e., $L'_0 = R_{16}$ and $R'_0 = L_{16}$. Then we have</p>
+<p>$$\begin{cases}\begin{aligned}
+L'_1 &amp;= R'_0 = L_{16} = R_{15} \\
+R'_1 &amp;= L'_0 \oplus F(R'_0, k_1) = R_{16} \oplus F(L_{16}, k_{16}) = L_{15}.
+\end{aligned}\end{cases}$$</p>
+<p>Repeating the process, we eventually have $L'_{16} = R_0$ and $R'_{16} = L_0$. Therefore, the corresponding ciphertext for $(L_{16}, R_{16})$ is $(L_0, R_0)$.</p>
+<p>$$(L_0, R_0) \xrightarrow{\text{Encrypt}} (L_{16}, R_{16}) \xrightarrow{\text{Encrypt}} (L_0, R_0).$$</p>
+<div class="alert warning">
+  📑 <strong>Difference in implementation!</strong> There are some additional transformations before and after the aforementioned part, but they actually does <em>not</em> affect how we understand the encryption.
+</div>
+
+<h4 id="ecb-and-cbc">ECB and CBC<a href="#ecb-and-cbc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The above property happens for <em>a single block of the</em> DES' cipher. In this challenge, the messages are encrypted using the cipher block chaining (CBC) mode. Hence if we have a message $(m_1, m_2, ...)$ where $m_i$ is the $i$-th message block, then we have</p>
+<p>$$c_i = \text{Encrypt}(c_{i-1} \oplus m_i)$$</p>
+<p>for $i = 1, 2, ...$. Here $c_0$ is the initialization vector.</p>
+<p>To recover $m_1$, we can encrypt $m'_1 := c_0 \oplus c_1$ using the oracle. The corresponding ciphertext, $c'_1$, would be</p>
+<p>$$\begin{aligned}
+c'_1 &amp;= \text{Encrypt}(c_0 \oplus m'_1) = \text{Encrypt}(c_0 \oplus c_0 \oplus c_1) \\
+&amp;= \text{Encrypt}(c_1) = \text{Decrypt}(c_1) = c_0 \oplus m_1.
+\end{aligned}$$</p>
+<p>Hence, we can recover $m_1$ by computing $c_0 \oplus c'_1$. We can further recover $m_i$ for the subsequent $i$'s by encrypting $m'_1 = c_0 \oplus c_i$, where the corresponding ciphertext $c'_1$ is</p>
+<p>$$\begin{aligned}
+c'_1 &amp;= \text{Encrypt}(c_0 \oplus m'_i) = \text{Encrypt}(c_0 \oplus c_0 \oplus c_i) \\
+&amp;= \text{Encrypt}(c_i) = \text{Decrypt}(c_i) = c_{i-1} \oplus m_i,
+\end{aligned}$$</p>
+<p>and recover $m_i$ using $c_{i-1} \oplus c'_1$. With this, we can recover the full flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert23{DES_c4n_6e_34s1ly_d0wngr4d3d_6y_ch4ng31ng_l1t71e_th1n9s}
+</span></span></code></pre></div><h2 id="maybe-someday">Maybe Someday<a href="#maybe-someday" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Wait, isn't this the challenge from <a href="https://github.com/google/google-ctf/blob/master/2022/quals/crypto-maybe-someday/attachments/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >Google CTF 2022</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>? As the challenge author, Mystiz has even compiled the <a href="https://mystiz.hk/posts/2022/2022-07-20-google-ctf-maybe-someday/"
+   
+   target="_blank" rel="noopener noreferrer" >writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>...</p>
+<p>The source code is slightly different. Never mind.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/maybe-someday_b5e4076f38ed2292796e72e560bf1846.zip"
+   
+   target="_blank" rel="noopener noreferrer" >maybe-someday.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>A set of Paillier keys is generated when connected to the server. The players are given the public key $(n, g)$. Also, we are also given an encrypted flag, $c_0$, which is padded in PKCS#1v1.5.</p>
+<p>We are given an oracle for ciphertext $c$. The server will decrypt $c$, unpad and send the least significant bit of the message to the player. If there is an exception (for instance, invalid padding), the program would terminate. Finally, the goal is to recover the flag.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  &#x1f4d6; <strong>References.</strong> Please read <a href="/posts/2022/2022-07-20-google-ctf-maybe-someday/#background-homomorphic-property-of-paillier-cryptosystem"
+   
+   >my writeup</a> for <em>Maybe Someday</em> from Google CTF 2022 for the homomorphic properties of Paillier cryptosystem, which are essential to solve the challenge.
+</div>
+
+<p>Let $m_0$ be a flag padded in PKCS#1v1.5 and $c_0$ is a corresponding ciphertext. We are only given the ciphertext $c_0$.</p>
+<p>$$m_0 = \texttt{00} \ \texttt{02} \ \texttt{[PADDING]} \ \texttt{00} \ || \ \texttt{68} \ \texttt{6b} \ \texttt{63} \ \texttt{65} \ \texttt{72} \ \texttt{74} \ \dots.$$</p>
+<p>Here $\texttt{68} \ \texttt{6b} \ \texttt{63} \ \texttt{65} \ \texttt{72} \ \texttt{74} \ \dots$ is the flag, and we know it starts with <code>hkcert</code>.</p>
+<p>Since we are given the LSB oracle, it is evident that we can retrieve $m_0 \ \text{mod}\ 2$ by simply sending $c_0$ to the oracle. Suppose that $m_0 = 2m_1 + b_0$ (hereby $b_0$ is the LSB of $m_0$), we can get a ciphertext of $\mathcal{E}(m_1)$ using the homomorphic properties. Mathematically,</p>
+<p>$$\begin{aligned}
+\mathcal{E}(m_1) &amp;= \mathcal{E}(2^{-1} \cdot (m_0 - b_0)) = \mathcal{E}(m_0 - b_0)^k \\
+&amp;= [\mathcal{E}(m_0) \cdot \mathcal{E}(-b_0)]^k,
+\end{aligned}$$</p>
+<p>where $k = 2^{-1} \ \text{mod}\ n$. This is equivalent to make the new plaintext to be $\lfloor m_0/2\rfloor$, thus effectively move the second bit to the LSB. Unfortunately, the padding will be no longer valid.</p>
+<p>$$m_1 = \begin{cases}
+\texttt{00} \ \texttt{01} \ \texttt{[PADDING]} \ \texttt{00} \ || \ \texttt{34} \ \texttt{35} \ \texttt{b1} \ \texttt{b2} \ \texttt{b9} \ \texttt{3a} \ \dots &amp; \text{if} \ p_k \equiv 1 \ (\text{mod}\ 2) \\
+\texttt{00} \ \texttt{01} \ \texttt{[PADDING]} \ \texttt{80} \ || \ \texttt{34} \ \texttt{35} \ \texttt{b1} \ \texttt{b2} \ \texttt{b9} \ \texttt{3a} \ \dots &amp; \text{otherwise}
+\end{cases}$$</p>
+<p>$m_1$, which is currently $\lfloor m_0/2\rfloor$, is no longer PKCS#1v1.5-compliant because of the two reasons. The second byte of $m_1$ became $\texttt{01}$, which no longer equals $\texttt{02}$. Also, the null bytes between the padding the message will be replaced by a $\texttt{80}$ if $p_k$ is odd.</p>
+<p>To solve the first problem, we should add $256^{254}$ to $m_1$. Now the second byte would became $\texttt{02}$ again.</p>
+<p>$$m_1 = \begin{cases}
+\texttt{00} \ \texttt{02} \ \texttt{[PADDING]} \ \texttt{00} \ || \ \texttt{34} \ \texttt{35} \ \texttt{b1} \ \texttt{b2} \ \texttt{b9} \ \texttt{3a} \ \dots &amp; \text{if} \ p_k \equiv 1 \ (\text{mod}\ 2) \\
+\texttt{00} \ \texttt{02} \ \texttt{[PADDING]} \ \texttt{80} \ || \ \texttt{34} \ \texttt{35} \ \texttt{b1} \ \texttt{b2} \ \texttt{b9} \ \texttt{3a} \ \dots &amp; \text{otherwise}
+\end{cases}$$</p>
+<p>However, it is tricky to force the byte between the padding and the message to be zero. Fortunately, we know that the flag starts with <code>h</code>. By replacing the <code>h</code> to a null byte (mathematically, subtract $\texttt{68} \ \texttt{00} \ ... \ \texttt{00}$ from $m_0$), we are have 16 unset bits after the padding, which guaranteeded that there will be a null byte.</p>
+<p>$$m_1 = \begin{cases}
+\texttt{00} \ \texttt{02} \ \texttt{[PADDING]} \ \texttt{00} \ || \ \texttt{00} \ \texttt{35} \ \texttt{b1} \ \texttt{b2} \ \texttt{b9} \ \texttt{3a} \ \dots &amp; \text{if} \ p_k \equiv 1 \ (\text{mod}\ 2) \\
+\texttt{00} \ \texttt{02} \ \texttt{[PADDING]} \ \texttt{80} \ || \ \texttt{00} \ \texttt{35} \ \texttt{b1} \ \texttt{b2} \ \texttt{b9} \ \texttt{3a} \ \dots &amp; \text{otherwise}
+\end{cases}$$</p>
+<p>However, we need the length of the flag before forcing its first character to a null byte. To retrieve the flag length, we can simply add $\texttt{01}$, $\texttt{01} \ \texttt{00}$, $\texttt{01}\ \texttt{00}\ \texttt{00}$, ... to the plaintext, until we are kicked from the server. We are kicked because the plaintext became $\texttt{00}\ \texttt{02}\ \texttt{[PADDING]}\ \texttt{01}\ || \ \texttt{[FLAG]}$, which the null byte between the padding and the message has been replaced.</p>
+<p>After all, this is the flow to recover the flag:</p>
+<ol>
+<li>Connect to the server. Add $\texttt{01}$, $\texttt{01} \ \texttt{00}$, $\texttt{01}\ \texttt{00}\ \texttt{00}$ and so on to the plaintext using the homomorphic property. Suppose that we are kicked after adding $\texttt{01} \ \texttt{00} \ \texttt{00} \ \dots \ \texttt{00}$ (one $\texttt{01}$ followed by $l$ $\texttt{00}$'s) to the plaintext. In that way, we know that the flag is $l$ character long.</li>
+<li>Reconnect to the server. Let $c_0$ be the encrypted flag.</li>
+<li>Update $c_0$ using the homomorphic property so that the corresponding plaintext becomes $\texttt{00} \ \texttt{02} \ \texttt{[PADDING]} \ \texttt{00} \ || \ \texttt{00} \ \texttt{6b} \ \texttt{63} \ \texttt{65} \ \texttt{72} \ \texttt{74} \ \dots$, and set $m \leftarrow \texttt{68} \times 256^{l-1}$.</li>
+<li>For $i = 0, 1, 2, ..., 8l-9$, do the following
+<ul>
+<li>Call the LSB oracle with the current $c_0$, and denote the output by $b$.</li>
+<li>Update $m \leftarrow m + 2^i \cdot b$.</li>
+<li>Update $c_0$ so that the corresponding plaintext is halved. After that, update $c_0$ so that the plaintext starts with $\texttt{00} \ \texttt{02}$.</li>
+</ul>
+</li>
+<li>Finally, $m$ is now the flag.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert23{wh0_w0u1d_ev3r_l34k_4_b1t_fr0m_th3_p1a1n73xt_1n_2023?}
+</span></span></code></pre></div><h2 id="cipher-bridging-service">Cipher Bridging Service<a href="#cipher-bridging-service" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>I implemented a cipher switching service (totally not the one from <a href="https://mystiz.hk/posts/2022/2022-03-01-tsjctf-1/"
+   
+   target="_blank" rel="noopener noreferrer" >TSJ CTF 2022</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>) and served as a bridge between symmetric and asymmetric ciphers. Can you find my secret on the bridge?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/cipher-bridging-service_b2d435952d9dd4dd458efe1c599a5c85.zip"
+   
+   target="_blank" rel="noopener noreferrer" >cipher-bridging-service.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>In this challenge, we are given a &quot;cipher bridging service&quot;. When connected to the service, a 16-byte AES key and a 2048-bit RSA key are generated. It will be used in the entire connection. Define the four functions:</p>
+<ol>
+<li>$\text{AESEncrypt}(m)$ generates a 16-byte $\nu$, pad the message $m$ and encrypt the padded message in AES-CBC with IV being $\nu$. Prepend $\nu$ before the ciphertext and return.</li>
+<li>$\text{AESDecrypt}(c)$ takes the first 16-byte as $\nu$, decrypt the remaining bytes with AES-CBC with IV being $\nu$. Unpad the message and return.</li>
+<li>$\text{RSAEncrypt}(m)$ encrypts the message with RSA.</li>
+<li>$\text{RSADecrypt}(c)$ decrypts the message with RSA.</li>
+</ol>
+<p>There are two type of calls:</p>
+<ol>
+<li>We can send a $c$ (not longer than 256 bytes). The server computes and returns $\text{RSAtoAES}(c) := \text{AESEncrypt}(\text{RSADecrypt}(c))$, and</li>
+<li>We can send a $c$ (not longer than 288 bytes). The server computes and returns $\text{AEStoRSA}(c) := \text{RSAEncrypt}(\text{AESDecrypt}(c))$.</li>
+</ol>
+<p>Notably, the program would terminate when there are any exceptions (e.g. invalid padding). The server will generate $\text{secret}$ (which is composed of 128 hex characters) and return $\text{AESEncrypt}(\text{secret})$. The goal is to retrieve the secret in 3999 calls.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="leaking-an-arbitrary-aes-ecb-block">Leaking an arbitrary AES-ECB block<a href="#leaking-an-arbitrary-aes-ecb-block" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Suppose that we want to recover $m$ such that $c = \text{AES-ECB}(m)$.</p>
+<p>We can obtain $\text{AESEncrypt}(0)$ by calling $\text{RSAtoAES}(0)$. The ciphertext will be of 32 bytes, a 16-byte IV $c_0$ followed by a 16-byte ciphertext $c_1$. Here</p>
+<p>$$c_1 = \text{AESECBEncrypt}(c_0 \oplus \texttt{000f0f...0f}).$$</p>
+<p>Imagine we have a AES-encrypted ciphertext $\nu \ || \ c \ || \ c_0'\ || \ c_1$. The corresponding plaintext would be $\text{prefix} \ ||\ \heartsuit \ ||\ \text{suffix}$. Here we don't know what $\heartsuit$ is, but it is fine to not care about that. Instead, $\text{prefix} = \nu \oplus m$ and $\text{suffix} = \texttt{000f0f...0f} \oplus c_0 \oplus c_0'$ are something that we want to look at.</p>
+<p>To leak the first byte of $m$, we would want to set $\text{suffix} = \texttt{1010...10}$. If the first byte of $\text{prefix}$ is $\texttt{00}$, the unpadded plaintext would be of 31 bytes. That said, the AES-encrypted ciphertext is 48 bytes long (instead of 64 bytes). Hence, we can leak the first byte with 512 oracle calls:</p>
+<ol>
+<li>Let $\nu_0 = \texttt{0000...00}, \nu_1 = \texttt{0100...00}, ..., \nu_{255} = \texttt{ff00...00}$.</li>
+<li>Let $c_0' = c_0 \oplus \texttt{000f...0f} \oplus \texttt{1010...10}$.</li>
+<li>Call the oracle for 256 times: $t_i := \text{AEStoRSA}(\nu_i \ || \ c \ || \ c_0' \ || \ c_1)$ for $i = 0, 1, ..., 255$.</li>
+<li>Call the oracle for 256 times: $s_i := \text{RSAtoAES}(t_i)$ for $i = 0, 1, ..., 255$.</li>
+<li>If $s_i$ is of 48-byte long (the remaining ones are of 64 bytes), then the first byte of $m$ is $i$.</li>
+</ol>
+<p>Similarly, we can recover the second byte with another 512 oracle calls:</p>
+<ol>
+<li>Let $\nu_0 = m_0 \ || \ \texttt{00...00}, \nu_1 = m_0 \ || \ \texttt{01...00}, ..., \nu_{255} = m_0 \ || \ \texttt{ff...00}$.</li>
+<li>Let $c_0' = c_0 \oplus \texttt{000f...0f} \oplus \color{yellow}{\texttt{0f0f...0f}}$.</li>
+<li>Call the oracle for 256 times: $t_i := \text{AEStoRSA}(\nu_i \ || \ c \ || \ c_0' \ || \ c_1)$ for $i = 0, 1, ..., 255$.</li>
+<li>Call the oracle for 256 times: $s_i := \text{RSAtoAES}(t_i)$ for $i = 0, 1, ..., 255$.</li>
+<li>If $s_i$ is of 48-byte long, then the second byte of $m$ is $i$.</li>
+</ol>
+<p>We can repeat the process until the entire block is recovered.</p>
+<h4 id="extending-the-above-to-leak-the-secret">Extending the above to leak the secret<a href="#extending-the-above-to-leak-the-secret" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>From above, we are able to recover a block with $256 \times 16 \times 2 = 8192$ calls. Fortunately, we know that the secret is composed of hex characters. Hence we can recover one byte of the secret in $16 \times 2 = 32$ calls, thus we can recover a block in $16 \times 16 \times 2 = 512$ calls.</p>
+<p>The secret is composed 128 hex charcaters, which is broken down into 8 blocks. Overall, we need $512 \times 8 = 4096$ calls to fully recover the secret. This is slightly over the bound.</p>
+<p>It is obvious that when a hex character is not equal to <code>0</code>, <code>1</code>, ..., <code>e</code>, then it must be a <code>f</code>. We can then recover one byte of the secret in $15 \times 2 = 30$ calls. After all, we can recover a block with $15 \times 16 \times 2 = 480$ calls, thus recover the secret in $480 \times 8 = 3840$ calls.</p>
+<h3 id="unintended-solutions">Unintended solutions<a href="#unintended-solutions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  &#x1f389; <strong>Thanks everyone!</strong> There are a lot of unintended solutions, and I wonder if there is someone solving with the intended solution. I will briefly describe three different approaches that I see from the players.
+</div>
+
+<p>Although my solution does not require recovering the public modulus for RSA, having it recovered could lead to much simpler solutions. We can use two calls to recover $n$ (the modulus):</p>
+<ol>
+<li>$s_1 = \text{RSAtoAES}(2^{1024} - 1)$</li>
+<li>$t_1 = \text{AEStoRSA}(s_1)$</li>
+</ol>
+<p>From above, we have $2^{1024} - 1 \equiv t_1\ (\text{mod}\ n)$, so $n$ is a factor of $2^{1024} - 1 - t_1$. Hence we can effectively recover $n$.</p>
+<h4 id="grhkms-solution-2066-calls">grhkm's solution (2066 calls)<a href="#grhkms-solution-2066-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Knowing the $n$, grhkm from <a href="https://ctftime.org/team/275244"
+   
+   target="_blank" rel="noopener noreferrer" >Black Bacon</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> uses the homomorphic property of RSA to get a ciphertext of $k \cdot m$ from a ciphertext of $m$.</p>
+<p>Suppose $t$ is a RSA-encrypted ciphertext of $m$ such that $0 \leq m &lt; 2^{128}$. We can obtain $t'$ such that it is the ciphertext of $k \cdot m$ by</p>
+<p>$$t' \equiv k^e \cdot t \ (\text{mod}\ n).$$</p>
+<p>We can obtain $s' := \text{RSAtoAES}(t')$ and compute its length and we can use it to check whether $k \cdot m &lt; 2^{128b}$ for some integer $b$. This can be used to retrieve such largest $k$ using binary search. With $k$, we are able to recover the possible values of $m$.</p>
+<h4 id="hoifanrds-solution-65-calls">hoifanrd's solution (65 calls)<a href="#hoifanrds-solution-65-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>hoifanrd from <a href="https://ctftime.org/team/275245"
+   
+   target="_blank" rel="noopener noreferrer" >M*****'s Fan Club</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> combined the homomorphic property RSA and delegated some brute-force offline. He is able to leak four characters of the secret with two oracle calls. After all, hoifanrd is able to retrieve the secret with 65 additional calls. You can read his writeup <a href="https://hackmd.io/@hoifanrd/HJdyTTWVa"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+<h4 id="gennis-solution-2-calls">Genni's solution (2 calls)<a href="#gennis-solution-2-calls" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Genni from <a href="https://ctftime.org/team/300/"
+   
+   target="_blank" rel="noopener noreferrer" >Tower of Hanoi</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> had a solution that uses two additional oracle calls. Let $s_0 := \text{AESEncrypt}(\text{secret})$ and $s_0'$ be $s_0$ with the most significant bit flipped.</p>
+<ol>
+<li>$t_0 = \text{AEStoRSA}(s_0)$</li>
+<li>$t_0' = \text{AEStoRSA}(s_0')$</li>
+</ol>
+<p>Since $s_0$ is AES-CBC encrypted, we can flip the first bit of $s_0$ and the corresponding plaintext would have the first bit flipped as well. Thus, the resulting plaintext would be $\text{secret}' := \text{secret} \oplus 2^{1023}$. Since $\text{secret}$ is composed of hexadecimal characters, the first bit must be unset. Thus $\text{secret}' = \text{secret} + 2^{1023}$.</p>
+<p>In this way, we have $t_0 \equiv \text{secret}^e \ (\text{mod}\ n)$ and $t_0' \equiv (\text{secret} + 2^{1023})^e \ (\text{mod}\ n)$. If we let</p>
+<p>$$\begin{aligned}
+\text{f}(x) &amp;= x^e - t_0 \\
+\text{g}(x) &amp;= (x + 2^{1023})^e - t_0',
+\end{aligned}$$</p>
+<p>we have $\text{f}(\text{secret}) = \text{g}(\text{secret}) = 0$ and thus $x - \text{secret}$ is a factor of both $\text{f}(x)$ and $\text{g}(x)$. Finally, we can recover $\text{secret}$ by computing $\text{GCD}(\text{f}(x), \text{g}(x))$.</p>
+<h2 id="rsa-triooo">RSA Triooo<a href="#rsa-triooo" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Miss the challenges I made? Here comes a remastered version of <a href="https://mystiz.hk/posts/2022/2022-02-19-mocsctf/#rsa-trio-crypto"
+   
+   target="_blank" rel="noopener noreferrer" >RSA Trio</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>!</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/blackb6a/hkcert-ctf-2023-challenges/releases/download/v1.0.0/rsa-trio_c6633be398ad27d740ad8455bc93ecf1.zip"
+   
+   target="_blank" rel="noopener noreferrer" >rsa-trio.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, three 1024-bit primes $p$, $q$ and $r$ are generated. Let $n_1 = pq$, $n_2 = qr$ and $n_3 = rp$ and three RSA public keys $(n_1, e)$, $(n_2, e)$, $(n_3, e)$ are constructed (here <code>e = 65537</code> and $q &lt; p &lt; r$, i.e., $n_1 &lt; n_2 &lt; n_3$).</p>
+<p>Let $\mathcal{E}(m)$ be the encryption function that returns the ciphertext $c$:</p>
+<p>$$\begin{aligned}
+&amp; s = m^e\ \text{mod}\ n_1 \\
+&amp; t = s^e\ \text{mod}\ n_2 \\
+&amp; c = t^e\ \text{mod}\ n_3,
+\end{aligned}$$</p>
+<p>and $\mathcal{D}(c)$ be the decryption function that returns the message $m$:</p>
+<p>$$\begin{aligned}
+&amp; t = c^d\ \text{mod}\ n_3 \\
+&amp; s = t^d\ \text{mod}\ n_2 \\
+&amp; m = s^d\ \text{mod}\ n_1.
+\end{aligned}$$</p>
+<p>At the very beginning, we are only given $c_0 := \mathcal{E}(m_0)$ where $m_0$ is the flag. We are then given three calls, in total, to the below oracles:</p>
+<ol>
+<li><strong>[Encrypt]</strong> Given $m \geq 0$, return $\mathcal{E}(m)$, and</li>
+<li><strong>[Decrypt]</strong> Given $c \geq 0$ and $c \neq c_0$, return $\mathcal{D}(c)$.</li>
+</ol>
+<p>The objective is to recover $m_0$.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  <p>📘 <strong>Notations.</strong> We will use $m_i$, $s_i$, $t_i$ and $c_i$ to denote the intermediate values in the $i$-th oracle call. That said, they satisfy</p>
+<p>$$s_i = {m_i}^e\ \text{mod}\ n_1, \quad t_i = {s_i}^e\ \text{mod}\ n_2, \quad c_i = {t_i}^e\ \text{mod}\ n_3.$$</p>
+
+</div>
+
+<h4 id="recovering-n_1">Recovering $n_1$<a href="#recovering-n_1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since $n_1$ is 2048 bits, it must satisfy $0 \leq n_1 &lt; 2^{2048}$. We can recover $n_1$ with two two oracle calls:</p>
+<ol>
+<li>$c_1 := \mathcal{E}(2^{2048})$,</li>
+<li>$m_2 := \mathcal{D}(c_1)$.</li>
+</ol>
+<p>With these oracle calls, we have $m_2 = 2^{2048} \ \text{mod} \ n_1$.</p>
+<table class="table table-striped table-bordered" style="width: 80%; margin: 12px auto; text-align: center;">
+    <thead>
+        <tr>
+            <th style="width: 5%;">$i$</th>
+            <th style="width: 19%;">Direction</th>
+            <th style="width: 19%;">$m_i$</th>
+            <th style="width: 19%;">$s_i$</th>
+            <th style="width: 19%;">$t_i$</th>
+            <th style="width: 19%;">$c_i$</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>1</td><td>$m_1 \rightarrow c_1$</td><td>$2^{2048}$</td><td>-</td><td>-</td><td>$c_1$</td></tr>
+        <tr><td>2</td><td>$m_2 \leftarrow c_2$</td><td>$2^{2048}\ \text{mod}\ n_1$</td><td>-</td><td>-</td><td>$c_1$</td></tr>
+    </tbody>
+</table>
+<h4 id="recovering-p-and-q">Recovering $p$ and $q$<a href="#recovering-p-and-q" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>We can decrypt $c_3 = 2^{65537}$ remotely to recover $q$. From the decryption flow, we have</p>
+<p>$$t_3 \equiv {c_3}^d \equiv 2^{ed} \equiv 2 \ (\text{mod}\ n_3),$$</p>
+<p>thus $t_3 = 2$. Since $q$ is a common factor of $n_1$ and $n_2$, we also have $s_3 \equiv {m_3}^e \ (\text{mod}\ q)$ and $t_3 \equiv {s_3}^e \ (\text{mod}\ q)$. Essentially we have ${m_3}^{e^2} \equiv {s_3}^e \equiv t_3 \equiv 2 \ (\text{mod}\ q)$, implying ${m_3}^{e^2} - 2$ is a multiple of $q$. Thus $u := ({m_3}^{e^2} - 2)\ \text{mod}\ n_1$ is also a multiple of $q$. We then can recover $q$ by $q = \text{gcd}(u, n_1)$. Also, $p = n_1 / q$.</p>
+<table class="table table-striped table-bordered" style="width: 80%; margin: 12px auto; text-align: center;">
+    <thead>
+        <tr>
+            <th style="width: 5%;">$i$</th>
+            <th style="width: 19%;">Direction</th>
+            <th style="width: 19%;">$m_i$</th>
+            <th style="width: 19%;">$s_i$</th>
+            <th style="width: 19%;">$t_i$</th>
+            <th style="width: 19%;">$c_i$</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>1</td><td>$m_1 \rightarrow c_1$</td><td>$2^{2048}$</td><td>-</td><td>-</td><td>$c_1$</td></tr>
+        <tr><td>2</td><td>$m_2 \leftarrow c_2$</td><td>$2^{2048}\ \text{mod}\ n_1$</td><td>-</td><td>-</td><td>$c_1$</td></tr>
+        <tr><td>3</td><td>$m_3 \leftarrow c_3$</td><td>$m_3$</td><td>-</td><td>$2$</td><td>$2^e$</td></tr>
+    </tbody>
+</table>
+<h4 id="recovering-r">Recovering $r$<a href="#recovering-r" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>How do we recover $r$ to fully recover the private key? To recover $r$, we will need two multiples of $r$ and perform GCD. Although we have no oracle calls left, we can reuse the previous oracle calls.</p>
+<p>We can actually compute $s_i$ because $m_i$ and $n_1$ are known.</p>
+<table class="table table-striped table-bordered" style="width: 80%; margin: 12px auto; text-align: center;">
+    <thead>
+        <tr>
+            <th style="width: 5%;">$i$</th>
+            <th style="width: 19%;">Direction</th>
+            <th style="width: 19%;">$m_i$</th>
+            <th style="width: 19%;">$s_i$</th>
+            <th style="width: 19%;">$t_i$</th>
+            <th style="width: 19%;">$c_i$</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>1</td><td>$m_1 \rightarrow c_1$</td><td>$2^{2048}$</td><td>$s_1$</td><td>-</td><td>$c_1$</td></tr>
+        <tr><td>2</td><td>$m_2 \leftarrow c_2$</td><td>$2^{2048}\ \text{mod}\ n_1$</td><td>$s_2$</td><td>-</td><td>$c_1$</td></tr>
+        <tr><td>3</td><td>$m_3 \leftarrow c_3$</td><td>$m_3$</td><td>$s_3$</td><td>$2$</td><td>$2^e$</td></tr>
+    </tbody>
+</table>
+<p>Since ${s_3}^e \equiv 2\ (\text{mod}\ n_2)$, we know that ${s_3}^e - 2$ is a multiple of $r$.</p>
+<p>On the other hand, since $r$ is a common factor of $n_2$ and $n_3$, we have</p>
+<p>$${s_1}^e \equiv t_1 \ (\text{mod}\ r), \qquad {t_1}^e \equiv c_1\ (\text{mod}\ r).$$</p>
+<p>Thus ${s_1}^{e^2} \equiv {t_1}^e \equiv c_1 \ (\text{mod}\ r)$, and therefore ${s_1}^{e^2} - c_1$ is also a multiple of $r$. We can do $\text{gcd}({s_1}^{e^2} - c_1, {s_3}^e - 2)$ to recover $r$, but ${s_1}^{e^2}$ is too large to compute. Luckily, ${s_3}^e$ is around $2^{27}$ bits so it is still computable. In this case, we can compute the required GCD by doing one step of Euclidean algorithm manually. Instead of sending ${s_1}^{e^2} - c_1$ as one of the parameters for GCD, we use $({s_1}^{e^2} - c_1) \ \text{mod}\ ({s_3}^e - 2)$.</p>
+<p>Finally, we have $p$, $q$ and $r$ and therefore can decrypt the encrypted flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert23{c4n_y0u_s01v3_th3_ch4l13n9e_wh3n_th3_encryp71on_0r4c13_1s_r3m0ved?}
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2023 Postmortem (II): Harder Crypto Challenges
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2024/2024-01-27-hkcert-ctf-3/">← HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2024/2024-01-27-hkcert-ctf-1/">HKCERT CTF 2023 Postmortem (I): Easier Crypto Challenges →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

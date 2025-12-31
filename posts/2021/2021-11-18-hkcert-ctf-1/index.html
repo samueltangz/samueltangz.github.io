@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-11-18T16:05:00&#43;08:00">2021-11-18</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>Black Bauhinia coorganized HKCERT CTF 2021 and helped 95% of the technical stuffs, including challenge setting, platform development, infrastructure and etc. I will be writing a series of blog posts talking about the contest, and the first four would be the writeups of the challenges those I wrote.</p>
+<p>In the first blog post, we will be going through four easier crypto challenges: <em>A Joke Cipher</em>, <em>Cipher Mode Picker</em>, <em>Key Backup Service 1</em> and <em>Key Backup Service 2</em>.</p>
+<h2 id="小諧星--a-joke-cipher-crypto">小諧星 / A Joke Cipher (Crypto)<a href="#小諧星--a-joke-cipher-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p><em>早知不可獲勝</em><br>
+<em>擠出喜感做諧星</em><br>
+<em>無力當 你們崇尚的精英</em><br>
+<em>有幸獻醜的 小丑 都不失敬</em></p>
+<p>In the beginning of 2020, Khaled A. Nagaty invented a cryptosystem based on key exchange. The cipher is faster than ever... It is impossible to break, right?</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/a-joke-cipher/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/a-joke-cipher/public/output.txt"
+   
+   target="_blank" rel="noopener noreferrer" >output.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+<p>To solve this challenge, you need to read the source code <code>chall.py</code>. Try to get those questions answered:</p>
+<ul>
+<li>Can <code>shared_key</code> generated from <code>y_A</code> and <code>y_B</code>?</li>
+<li>If so, how do we calculate <code>m</code> from <code>c</code> and <code>shared_key</code>?</li>
+<li>How can we convert the number <code>m</code> into a flag that is in the format <code>hkcert21{...}</code>?</li>
+</ul>
+</blockquote>
+<p>The challenge implements Nagaty's Cryptosystem<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> which no one knows why it is a <em>cryptosystem</em>. Initially, a prime $p$ is determined. Alice (resp. Bob) derives a private key $x_A$ and its public key $y_A := x_A\ \text{mod}\ p$ (resp. $x_B$ and $y_B := x_B\ \text{mod}\ p$). A shared key is computed by Alice with $s = y_A \cdot {y_B}^2 \cdot x_A\ \text{mod}\ p$. Finally, the message $m$ is encrypted by $m \cdot s$.</p>
+<p>In the challenge, we are given $p$, $y_A$, $y_B$ and an encrypted flag $c$. The objective is to recover the flag.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is easy to compute the shared key $s$ given $y_A$ and $y_B$:</p>
+<p>$$s = {y_A}^2 \cdot {y_B}^2\ \text{mod}\ p.$$</p>
+<p>With $s$, we can easily recover the message $m$ from ciphertext $c$ by $m = c / s$.</p>
+<div class="alert warning">
+  <strong>Note.</strong> It is infeasible for real life key exchange algorithms to compute the shared key from the public keys. After all, this cipher is just a joke (the author of the cryptosystem doesn't think so).
+</div>
+
+<h2 id="freedom--cipher-mode-picker-crypto">Freedom / Cipher Mode Picker (Crypto)<a href="#freedom--cipher-mode-picker-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p><em>Freedom where's our freedom?</em><br>
+<em>Freedom what would it be</em><br>
+<em>Can you tell me what's the reason?</em><br>
+<em>Reason that meant to be</em></p>
+<p>Every slightest mistake in cryptography would lead to a disastrous result. Let's see what will happen when you allow end-users to pick the mode of operation...</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/freedom/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>A 16-byte key and a 16-byte IV is generated when connected to the server. We are able to use each of the below encryption functions once, to encrypt either a given message or the 80-byte flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 1. AES-ECB</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. AES-CBC</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. AES-CFB</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CFB</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span> <span class="n">segment_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 4. AES-OFB</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_OFB</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 5. AES-CTR</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CTR</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="n">Counter</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">iv</span><span class="p">[:</span><span class="mi">14</span><span class="p">]))</span>
+</span></span></code></pre></div><p>The goal is to recover the flag.</p>
+<h3 id="motivation">Motivation<a href="#motivation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>This challenge is intended to be entry-level for students to learn block cipher mode of operations.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Suppose that we are encrypting a message $m_1, m_2, ..., m_n$. Let's define the ciphertexts (in different modes of operation) mathematically:</p>
+<p>$$\begin{aligned}
+&amp; c^\text{(ECB)}_k := \text{Enc}(m_k) \\
+&amp; c^\text{(CBC)}_k := \text{Enc}(m_k \oplus c^\text{(CBC)}_{k-1}) \\
+&amp; c^\text{(CFB)}_k := \text{Enc}(c^\text{(CFB)}_{k-1}) \oplus m_k \\
+&amp; c^\text{(OFB)}_k := \text{Enc}^{k}(\text{IV}) \oplus m_k \\
+&amp; c^\text{(CTR)}_k := \text{Enc}(\text{IV} + k) \oplus m_k,
+\end{aligned}$$</p>
+<p>where $c^\text{(CBC)}_0 = c^\text{(CFB)}_0 = \text{IV}$.</p>
+<div class="alert info">
+  <strong>Notation.</strong> $\text{Enc}^{k}$ is $\text{Enc}$ applied $k$ times. For example $\text{Enc}^2(x) = \text{Enc}(\text{Enc}(x))$.
+</div>
+
+<p>To solve the challenge, we do not need to use all of the modes. Instead, we need to encrypt 80 null bytes with the CBC mode. In that way we have:</p>
+<p>$$\begin{aligned}
+&amp; c^\text{(CBC)}_1 = \text{Enc}(m_1 \oplus c^\text{(CBC)}_0) = \text{Enc}(0 \oplus \text{IV}) = \text{Enc}(\text{IV}) \\
+&amp; c^\text{(CBC)}_2 = \text{Enc}(m_2 \oplus c^\text{(CBC)}_1) = \text{Enc}(0 \oplus \text{Enc}(\text{IV})) = \text{Enc}^2(\text{IV}) \\
+&amp; c^\text{(CBC)}_3 = \text{Enc}(m_3 \oplus c^\text{(CBC)}_2) = \text{Enc}(0 \oplus \text{Enc}^2(\text{IV})) = \text{Enc}^3(\text{IV}) \\
+&amp; c^\text{(CBC)}_4 = \text{Enc}(m_4 \oplus c^\text{(CBC)}_3) = \text{Enc}(0 \oplus \text{Enc}^3(\text{IV})) = \text{Enc}^4(\text{IV}) \\
+&amp; c^\text{(CBC)}_5 = \text{Enc}(m_5 \oplus c^\text{(CBC)}_4) = \text{Enc}(0 \oplus \text{Enc}^4(\text{IV})) = \text{Enc}^5(\text{IV})
+\end{aligned}$$</p>
+<p>Let $\hat{m_1}, \hat{m_2}, ..., \hat{m_5}$ be the flag. We can encrypt the flag with the OFB mode and obtain:</p>
+<p>$$c^\text{(OFB)}_k = \text{Enc}^k(\text{IV}) \oplus \hat{m_k}$$</p>
+<p>for $k = 1, 2, ..., 5$. After all, we can compute $\hat{m_k} := c^\text{(CBC)}_k \oplus c^\text{(OFB)}_k$ for $k = 1, 2, ..., 5$ to recover the flag.</p>
+<div class="alert info">
+  <strong>Another approach?</strong> The use of CBC mode can be replaced by CFB mode.
+</div>
+
+<h2 id="長話短說--key-backup-service-1-crypto">長話短說 / Key Backup Service 1 (Crypto)<a href="#長話短說--key-backup-service-1-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p><em>長話𥚃短說</em><br>
+<em>但察覺太短</em><br>
+<em>或者真正意義</em><br>
+<em>並不需要說穿</em></p>
+<p><em>Note: This is part one of a two-part series. Part two: <strong>Braceless / Key Backup Service 2</strong>.</em></p>
+<p>Mystiz made a key vault which could encrypts his darkest secrets (i.e., the flag). Everything is protected with a bank-level encryption (i.e., a 256-bit key). You are welcome to look at the encrypted secrets and praise his cryptographic knowledge.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/key-backup-service-1/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, a 32-byte master secret $x$ is generated. We are able to call the below functions at a total of 17 times:</p>
+<ol>
+<li><strong>[SEND]</strong> Returns the ciphertext, i.e., $m^e\ \text{mod}\ n$, of an arbitrary given message $m$ with the current key $\mathcal{K}$.</li>
+<li><strong>[PKEY]</strong> Generates a set of RSA key and assign to $\mathcal{K} = (n, e)$.</li>
+<li><strong>[BACKUP]</strong> Returns the encrypted secret, i.e., $x^{e}\ \text{mod}\ n$, with the current key $\mathcal{K}$.</li>
+<li><strong>[FLAG]</strong> Encrypts the flag with the key $x$ under AES-CBC.</li>
+</ol>
+<p>Additionally, the public exponent is $e = 17$ and the 512-bit primes for the moduli is generated by a PRNG, seeded by the below snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 256 bits for random-number generator</span>
+</span></span><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="mh">0xcdc21452d0d82fbce447a874969ebb70bcc41a2199fbe74a2958d0d280000001</span>
+</span></span><span class="line"><span class="cl"><span class="n">G</span> <span class="o">=</span> <span class="mh">0x5191654c7d85905266b0a88aea88f94172292944674b97630853f919eeb1a070</span>
+</span></span><span class="line"><span class="cl"><span class="n">H</span> <span class="o">=</span> <span class="mh">0x7468657365206e756d6265727320617265206f6620636f757273652073757321</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># The primes for the public exponent. id is a randomly generated 256-bit integer.</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span></code></pre></div><h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are often told that we need $\geq e$ ciphertexts to perform the broadcast attack, which is not always true. We could recover $m$ as soon as $m^e &lt; n_1n_2 ... n_k$ - that said, if $m$ is significantly smaller than the modulus, we do not need $e$ messages.</p>
+<p>In our scenario, $n$ is 1024 bits long but the master secret $x$ is only 256 bits long. Since $256\cdot17 = 4352 &lt; 5120 = 1024\cdot5$, we can recover $x$ given</p>
+<p>$$\begin{cases}
+c_1 \equiv x^{17}\ (\text{mod}\ n_1) \\
+c_2 \equiv x^{17}\ (\text{mod}\ n_2) \\
+c_3 \equiv x^{17}\ (\text{mod}\ n_3) \\
+c_4 \equiv x^{17}\ (\text{mod}\ n_4) \\
+c_5 \equiv x^{17}\ (\text{mod}\ n_5)
+\end{cases}.$$</p>
+<p>We need three oracle calls to obtain one set of $x^{17}\ \text{mod}\ n_k$:</p>
+<ol>
+<li><code>PKEY</code> to update $\mathcal{K}$ to $n = n_k$ and $e = 17$,</li>
+<li><code>BACKUP</code> to obtain $x^{17}\ \text{mod}\ n_k$ <em>without</em> knowing $n_k$,</li>
+<li><code>SEND -1</code> to obtain $(-1)^{17} \text{mod}\ n_k$, which is $n_k - 1$.</li>
+</ol>
+<p>After collecting $(c_1, n_1)$, $(c_2, n_2)$, ..., $(c_5, n_5)$, we can use Chinese remainder theorem to find $x^{17}\ \text{mod}\ n_1n_2...n_5$. Since $0 \leq x^{17} &lt; n_1n_2...n_5$, we can directly take the 17th root of $x^{17}$ for $x$.</p>
+<p>Finally, we can use <code>FLAG</code> to obtain the encrypted flag. Since we already have the key, we are able to decrypt for the flag.</p>
+<h2 id="braceless--key-backup-service-2-crypto">Braceless / Key Backup Service 2 (Crypto)<a href="#braceless--key-backup-service-2-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p><em>根本不介意</em><br>
+<em>擠逼都市像有點失智</em><br>
+<em>迷迷魂魂 十二萬轉 oh oh oh</em><br>
+<em>根本不介意</em><br>
+<em>喜歡失意又跌多幾次</em><br>
+<em>就算跌崩 一隻牙齒</em></p>
+<p><em>Note: This is part two of a two-part series. Part one: <strong>長話短說 / Key Backup Service I</strong>.</em></p>
+<p>Mystiz is really lazy. He expects that someone would crack the bank-level encryption, but he doesn't care about that. After all, the darkest secret is not that dark.</p>
+<p>He decided to change the numbers and release it to the public again. Now crack it!</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/key-backup-service-2/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/key-backup-service-2/public/transcript.zip"
+   
+   target="_blank" rel="noopener noreferrer" >transcript.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>The challenge is identical to <em>長話短說 / Key Backup Service I</em>, with three changes:</p>
+<ol>
+<li>$e = 17$ is changed to $e = 65537$,</li>
+<li>The number of oracle calls is increased from 17 to 65537,</li>
+<li>We do <em>not</em> have the netcat service anymore. Instead, we have a transcript of an interaction. It includes one <code>FLAG</code> operation, followed by a sequence of length 16384, consisted of the below operations: <code>PKEY</code>, <code>SEND 2</code>, <code>SEND 3</code> and <code>BACKUP</code>.</li>
+</ol>
+<h3 id="motivation-1">Motivation<a href="#motivation-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>This is a sequel of the challenge <em>長話短說 / Key Backup Service I</em>, but I actually made this earlier than the other challenge. I was inspired by <a href="https://www.youtube.com/watch?v=BRsXsUEIU70"
+   
+   target="_blank" rel="noopener noreferrer" >Austin Allshouse's talk</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> in DEFCON this year and it is the first time learning batch GCD.</p>
+<p>My initial plan is to create a netcat service that generates RSA keys based on the master secret. I later reject the idea because it is very slow and memory intensive to generate a lot of keys. Alas, it appeared in RCTF as <em>Uncommon Factor II</em>.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The three constants $N$, $G$ and $H$ finally comes to play in the second part of the challenge:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="mh">0xcdc21452d0d82fbce447a874969ebb70bcc41a2199fbe74a2958d0d280000001</span>
+</span></span><span class="line"><span class="cl"><span class="n">G</span> <span class="o">=</span> <span class="mh">0x5191654c7d85905266b0a88aea88f94172292944674b97630853f919eeb1a070</span>
+</span></span><span class="line"><span class="cl"><span class="n">H</span> <span class="o">=</span> <span class="mh">0x7468657365206e756d6265727320617265206f6620636f757273652073757321</span>
+</span></span></code></pre></div><p>In particular, $G^{2^{25}} \equiv 1\ \text(mod\ N)$. Since one of the primes, $p$, is generated with seed $G^x\ \text{mod}\ N$, there are only $2^{25}$ possible values. It is known that there is a collision when there are $\sqrt{2^{25}} \approx 5800$ numbers - that said, there will be a shared prime factor in around $5800$ generated public moduli. There exists $i, j$ such that $\gcd(n_i, n_j) &gt; 1$.</p>
+<p>We can recover a small multiple of $n_1, n_2, ..., n_{16384}$ from the transcript. Let $c_2$ and $c_3$ be the outputs of <code>SEND 2</code> and <code>SEND 3</code>. We could recover a small multiple of $n$ by $\gcd(2^{65537} - c_2, 3^{65537} - c_3)$.</p>
+<div class="alert info">
+  <strong>Why?</strong> Since $2^{65537} \equiv c_2\ (\text{mod}\ n)$ and $3^{65537} \equiv c_3\ (\text{mod}\ n)$, $2^{65537} - c_2$ and $3^{65537} - c_3$ are multiples of $n$. Taking gcd of two numbers would result in $kn$ for some $k \geq 1$ (where $k$ should be pretty small).
+</div>
+
+<p>With 16384 $n$'s, we can apply the batch GCD algorithm<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> and find common factors to find some prime $p$ such that $p$ is a common factor of $n_i$ and $n_j$ for some $i, j$.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Khaled A. Nagaty (2019) &quot;A public key cryptosystem and signature scheme based on numerical series&quot;<br><a href="https://link.springer.com/content/pdf/10.1007/s42452-019-1928-8.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >https://link.springer.com/content/pdf/10.1007/s42452-019-1928-8.pdf</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Daniel J. Bernstein, Nadia Heninger, Tanja Lange (2012). &quot;FactHacks: Batch gcd&quot;<br><a href="https://facthacks.cr.yp.to/batchgcd.html"
+   
+   target="_blank" rel="noopener noreferrer" >https://facthacks.cr.yp.to/batchgcd.html</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2021 Postmortem (I): Easier Crypto Challenges
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-11-18-hkcert-ctf-2/">← HKCERT CTF 2021 Postmortem (II): Harder Crypto Challenges</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-11-07-bsides-ahmedabad/">BSides Ahmedabad CTF 2021 Writeup →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

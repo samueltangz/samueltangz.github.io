@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bsides-Ahmedabad on Mystify</title>
+    <link>https://mystiz.hk/tags/bsides-ahmedabad/</link>
+    <description>Recent content in Bsides-Ahmedabad on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 07 Nov 2021 11:02:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/bsides-ahmedabad/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BSides Ahmedabad CTF 2021 Writeup</title>
+      <link>https://mystiz.hk/posts/2021/2021-11-07-bsides-ahmedabad/</link>
+      <pubDate>Sun, 07 Nov 2021 11:02:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-11-07-bsides-ahmedabad/</guid>
+      <description>&lt;p&gt;No, we did not win. I see that coming and took a screenshot during the game.&lt;/p&gt;&#xA;&lt;p&gt;BSides Ahmedabad CTF 2021 is organized by &lt;a href=&#34;https://twitter.com/zer0pts&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@zer0pts&lt;/a&gt;. That implies that players could spend a day happily working on the challenges. I enjoyed working on the challenges a lot. I&#39;ll go through the harder crypto challenges and the reversing challenge called &lt;em&gt;Collapsed License&lt;/em&gt; in this blog post.&lt;/p&gt;&#xA;&lt;h2 id=&#34;ssssrng&#34;&gt;SSSS.RNG&lt;/h2&gt;&#xA;&lt;h3 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h3&gt;&#xA;&lt;p&gt;Let $p$ be a 512-bit prime and $a, b, g_0 \in [2, p)$. Let $\mathcal{G}$ be a PRNG and let $g_k$ be its $k$-th output, given by&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

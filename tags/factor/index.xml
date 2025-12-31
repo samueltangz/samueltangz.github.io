@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Factor on Mystify</title>
+    <link>https://mystiz.hk/tags/factor/</link>
+    <description>Recent content in Factor on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 Oct 2021 23:35:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/factor/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Factoring a special RSA modulus from ASIS CTF 2021 Quals</title>
+      <link>https://mystiz.hk/posts/2021/2021-10-25-asis-lagleg/</link>
+      <pubDate>Mon, 25 Oct 2021 23:35:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-10-25-asis-lagleg/</guid>
+      <description>&lt;p&gt;&lt;em&gt;LagLeg&lt;/em&gt; is a crypto challenge in &lt;em&gt;ASIS CTF Quals 2021&lt;/em&gt;. We are asked to factor a given modulus $n$ such that $n = (r^5 + s)(r + s)$. Hereby $r$ and $s$ are respectively 256 and 64 bits long. I think my approach used is very unique - and definitely worth mentioning. It does not mean that it is a good approach, however.&lt;/p&gt;&#xA;&lt;p&gt;I will record the exact steps I solved the challenge. However, I will update the bounds and prove the whole thing so that it &lt;em&gt;looked&lt;/em&gt; more rigorous. The full code will be attached at the end of the blog post, too.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

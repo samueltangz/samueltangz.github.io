@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firebird Internal CTF 2022 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Firebird Internal CTF 2022 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-01-23T22:07:00&#43;08:00">2022-01-23</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/firebird-training/" class="text-muted text-decoration-none">#firebird-training</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>This is the time that Firebird Internal CTF happens. I made three crypto challenges this year - <em>Lack of Entropy</em> (⭐), <em>Authenticator</em> (⭐⭐) and <em>Collider</em> (⭐⭐). I will discuss the solution for all of them in the blog post.</p>
+<div class="alert info">
+  <strong>What are the stars?</strong> They are the difficulties I estimated when comparing to global CTFs (where I documented them <a href="/crypto-in-ctf"
+   
+   >here</a> since Q3 last year).
+</div>
+
+<h2 id="lack-of-entropy-crypto">Lack of Entropy (Crypto)<a href="#lack-of-entropy-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Three (out of six) teams solved this during the CTF.</p>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Mystiz's computer is lack of entropy. He needs to reuse randomness to generate the primes for RSA...</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/lack-of-entropy/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/lack-of-entropy/public/output.txt"
+   
+   target="_blank" rel="noopener noreferrer" >output.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a RSA public key $(n, e)$ and an encrypted flag $c$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">12189464288007059657184858632825479990912616419482466046617619319388181010121359489739982536798361842485210016303524715395474637570227926791570158634811951043352789232959763417380155972853016696908995809240738171081946517881643416715486249</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span> <span class="o">=</span> <span class="mi">65537</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="mi">10093874086170276546167955043813453195412484673031739173390677430603113063707524122014352886564777373620029541666833142412009063988439640569778321681605225404251519582850624600712844557011512775502356036366115295154408488005375252950048742</span>
+</span></span></code></pre></div><p>Note that the prime factors of $n$ (namely $p$ and $q$) are generated such that:</p>
+<p>$$\begin{cases}
+p = a_0 + 3 a_1 + 3^2 a_2 + ... \\
+q = a_0 + 10 a_1 + 10^2 a_2 + ...
+\end{cases},$$</p>
+<p>where $a_i \in \{0, 1, 2\}$. The objective is to recover the flag.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+
+<figure>
+  <img src="/images/2022-01-23-firebird/lack-of-entropy-p-to-q.png" title="A relation between $p$ and $q$. We can see that $q$ is increasing.">
+  
+  <figcaption>A relation between $p$ and $q$. We can see that $q$ is increasing.</figcaption>
+  
+</figure>
+
+<p>One important fact that we could observe is $q$ increases as $p$ increases (Refer to the above figure). That said, $n = p \cdot q$ also increases as $p$ increases. In that way, we can simply perform binary search on $\tilde{p}$ and check if the corresponding $\tilde{n}$ satisfying:</p>
+<ol>
+<li>$\tilde{n} &lt; n$ (which imply that $\tilde{p} &lt; p$), or</li>
+<li>$\tilde{n} &gt; n$ (which imply that $\tilde{p} &gt; p$), or</li>
+<li>$\tilde{n} = n$ (which imply that $\tilde{p} = p$).</li>
+</ol>
+<h2 id="authenticator-crypto">Authenticator (Crypto)<a href="#authenticator-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>One (out of six) team solved this during the CTF.</p>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Hash-based authentication is great and I have invented one. Can you prove that my system is secure?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/authenticator/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>Define a protocol $\mathcal{P}$ that is used to authenticates between a client and a server. Suppose that they have a pre-shared password <code>password</code>:</p>
+<ol>
+<li>Client generates a 16-byte <code>challenge_client</code> and sends it to the server.</li>
+<li>Server computes the response <code>response_server</code> (specified below) and generates a 16-byte <code>challenge_server</code>.</li>
+<li>Server sends <code>response_server</code> and <code>challenge_server</code> to the client.</li>
+<li>Client verifies <code>response_server</code> and aborts if it is incorrect. Otherwise, it computes the response <code>response_client</code> (specified below).</li>
+<li>Client sends <code>response_client</code> to the server.</li>
+<li>Server verifies <code>response_client</code> and aborts if it is incorrect. Otherwise, it is said that the authentication is completed.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">response_server</span> <span class="o">=</span> <span class="n">blake3</span><span class="p">(</span><span class="n">password</span> <span class="o">+</span> <span class="s2">&#34;HANDSHAKE_FROM_SERVER&#34;</span> <span class="o">+</span> <span class="n">challenge_client</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">response_client</span> <span class="o">=</span> <span class="n">blake3</span><span class="p">(</span><span class="n">password</span> <span class="o">+</span> <span class="s2">&#34;HANDSHAKE_FROM_CLIENT&#34;</span> <span class="o">+</span> <span class="n">challenge_server</span><span class="p">)</span>
+</span></span></code></pre></div><p>When connected to the remote service, a password that matches the regex <code>/^[0-9a-zA-Z]{6}$/</code> is generated. The player and the remote service respectively act as the client and the server. The objective is to complete the authentication within 10 seconds (while the player does not know the password).</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert danger">
+  <strong>First thing first.</strong> There are only $62^6 \approx 2^{35.725}$ possible passwords. Unless you are very rich, you just cannot exhaust it in ten seconds.
+</div>
+
+<h4 id="walkthrough-for-rich-person-only">Walkthrough for rich person only<a href="#walkthrough-for-rich-person-only" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let's cater <em>only</em> the rich guys. You can simply connect to the server and send an arbitrary <code>challenge_client</code> (I will use <code>CHALLENGE_CLIENT</code> for simplicity). Upon receiving the <code>response_server</code>, you can exhaust $62^6$ passwords in ten seconds using a 5680-core machine by checking whether:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">response_server</span> <span class="o">==</span> <span class="n">blake3</span><span class="p">(</span><span class="n">password</span> <span class="o">+</span> <span class="s2">&#34;HANDSHAKE_FROM_SERVER&#34;</span> <span class="o">+</span> <span class="s2">&#34;CHALLENGE_CLIENT&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>You can proceed the authentication. Done! Easy?</p>
+<div class="alert warning">
+  <strong>Where are the numbers from?</strong> My laptop could compute 1M BLAKE3 hashes per second. I will just adapt the figure to the remaining of the section.
+</div>
+
+<h4 id="what-if-i-am-not-that-rich">What if I am not <em>that</em> rich?<a href="#what-if-i-am-not-that-rich" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I guess most of us could not find a 5680-core machine easily. Instead of computing everything online, we can precompute the $62^{6}$ outputs of <code>response_server</code> given that the client's challenge being <code>CHALLENGE_CLIENT</code>. Below is the expected time and space taken for precompution.</p>
+<ul>
+<li><strong>Estimated time taken:</strong> 15 hours</li>
+<li><strong>Estimated space taken:</strong> 1800 GB</li>
+</ul>
+<p>You can proceed the authentication. Done! Easy?</p>
+<p>...Of course not! Precomputing for 15 hours is time-consuming, and taking up 1800 GB is absurd. Luckily there are two ways to reduce the time and space complexities by sacrificing <em>a third factor</em>.</p>
+<h5 id="optimization-1-precompute-part-of-the-password-space">Optimization 1: Precompute part of the password space<a href="#optimization-1-precompute-part-of-the-password-space" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<p>This is still very resource-intensive with the above optimization. Can we precompute only $1/n$ of the password space? The answer is certain. However, the probability of recovering a password is decreased to $1/n$.</p>
+<p>Does it hurt? Not really. If we set $n = 64$, it is expected that we can recover one password every 64 times we connect to the server. This largely decrease the required resources.</p>
+<ul>
+<li><strong>Estimated time taken:</strong> 15 minutes <font style="color: #28a745;">(⬇️ 98.4%)</font></li>
+<li><strong>Estimated space taken:</strong> 28.4 GB <font style="color: #28a745;">(⬇️ 98.4%)</font></li>
+<li><strong>Estimated service connections:</strong> 64 <font style="color: #dc3545;">(⬆️ 6400.0%)</font></li>
+</ul>
+<h5 id="optimization-2-store-part-of-the-blake3-digest">Optimization 2: Store part of the BLAKE3 digest<a href="#optimization-2-store-part-of-the-blake3-digest" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<p>We can further reduce the space taken by storing 8 bytes of the digest (instead of the whole digest, which is 32 bytes).</p>
+<p>As $62^6 / 64 \lt \sqrt{256^{8}}$, it is unlikely that collision exists. We can reduce the space by 75% sacrificing a little bit of accuracy.</p>
+<ul>
+<li><strong>Estimated time taken:</strong> 15 minutes (-)</li>
+<li><strong>Estimated space taken:</strong> 7.1 GB <font style="color: #28a745;">(⬇️ 75%)</font></li>
+<li><strong>Estimated service connections:</strong> 64 <font style="color: #dc3545;">(⬆️ $\varepsilon$%)</font></li>
+</ul>
+<p>You can proceed the authentication. Done! Easy?</p>
+<h2 id="collider-crypto">Collider (Crypto)<a href="#collider-crypto" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Zero (out of six) teams solved this during the CTF.</p>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Find a collision for my hash algorithm! It is basically military-graded: The output is 256-bit long, and discrete log is hard! I even made it harder such that you don't even have the public parameters!</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20220122-firebird-internal-ctf/collider/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>Define a hash algorithm below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hash</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;SECUREHASH_&#39;</span> <span class="o">+</span> <span class="n">m</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">256</span><span class="o">//</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Suppose that the server is running the oracle $\mathcal{O}$ that takes a message $m$ (with only lowercase English letters):</p>
+<ol>
+<li>Computes $h \leftarrow \mathcal{H}(m)$ and sends $h$ to us.</li>
+<li>If $m \neq \text{pleasegivemetheflag}$ but $h = \mathcal{H}(\text{pleasegivemetheflag})$, sends the flag to us.</li>
+</ol>
+<p>When connected to the server, a 256-bit prime $p$ and a 256-bit number $g$ is generated (and not given to us). We are allowed to call the oracle $\mathcal{O}$ for five times. The goal is to obtain the flag.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="recovering-g-and-p">Recovering $g$ and $p$<a href="#recovering-g-and-p" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since we are given only five calls of $\mathcal{O}$ and we need one for getting the flag, it is expected that we could use at most four calls to recover the parameters $g$ and $p$.</p>
+<p>To do so, we can obtain $h_1 = \mathcal{H}(\text{a})$, $h_2 = \mathcal{H}(\text{b})$, $h_3 = \mathcal{H}(\text{c})$ and $h_4 = \mathcal{H}(\text{d})$ via $\mathcal{O}$. Thus</p>
+<p>$$h_i = g^{256 \cdot m_0 + 96 + i}\ \text{mod}\ p,$$</p>
+<p>where $m_0$ is the prefix <code>SECUREHASH_</code>. Since</p>
+<p>$$h_1 \cdot h_3 \equiv g^{512 \cdot m_0 + 196} \equiv {h_2}^2\ (\text{mod}\ p) \quad\text{and}\quad h_2 \cdot h_4 \equiv g^{512 \cdot m_0 + 198} \equiv {h_3}^2\ (\text{mod}\ p),$$</p>
+<p>we see that $\gcd(h_1 \cdot h_3 - {h_2}^2, h_2 \cdot h_4 - {h_3}^2)$ is a small multiple of $p$. This allows us to obtain $p$ easily. Now we can effectively recover $g$ by</p>
+<p>$$g = h_2 \cdot {h_1}^{-1}\ \text{mod}\ p.$$</p>
+<p>By the way, although we have recovered $g$ and $p$, we will not use $g$.</p>
+<div class="alert warning">
+  <strong>A Follow-up Question:</strong> Knowing that we do not need $g$ to solve the challenge. Is it possible to recover $p$ with three calls of $\mathcal{O}$?
+</div>
+
+<h4 id="finding-a-preimage">Finding a preimage<a href="#finding-a-preimage" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Fermat's little theorem stated that $a^{p-1} \equiv 1\ (\text{mod}\ p)$ for $\gcd(a, p) = 1$. Equivalently, if $u$ and $v$ are two padded messages (i.e., in the format <code>SECUREHASH_...</code>), then</p>
+<p>$$g^u \equiv g^v \ (\text{mod}\ p) \quad \Longleftrightarrow \quad u \equiv v \ (\text{mod}\ (p-1)).$$</p>
+<p>The goal is to find a padded message $u$ such that $u \equiv v\ (\text{mod}\ (p-1))$, with $v$ being the padded message <code>SECUREHASH_pleasegivemetheflag</code>.</p>
+<p>Let's present the message mathematically. If we write the unpadded message being $\overline{u_{l-1} u_{l-2} ... u_1 u_0}$, then</p>
+<p>$$u = 256^l \cdot m_0 + \sum_{i=0}^{l-1} 256^i \cdot u_i$$</p>
+<p>Therefore we need to find $(u_0, u_1, ..., u_{l-1}) \in [97, 122]^{l}$ such that</p>
+<p>$$256^{l-1} \cdot u_{l-1} + ... + 256 \cdot u_1 + u_0 + (256^l \cdot m_0 - v) \equiv 0 \quad (\text{mod}\ (p-1)).$$</p>
+<p>We can solve the modular congruence with Lenstra–Lenstra–Lovász algorithm. LLL tries to find <em>small</em> roots (i.e., each variable is close to zero) so we need to &quot;adjust the center&quot;. If we let $x_i = u_i - 109$ for all $i$'s, then $x_i \in [-12, 13]$ which is smaller in magnitude. Now we have</p>
+<p>$$\begin{aligned}
+&amp; 256^{l-1} \cdot x_{l-1} + ... + 256 \cdot x_1 + x_0 \\
+&amp; \qquad + [256^l \cdot m_0 + 109 \cdot (256^{l-1} + ... + 256 + 1) - v] \equiv 0 \quad (\text{mod}\ (p-1)).
+\end{aligned}$$</p>
+<p>Let $s = 256^l \cdot m_0 + 109 \cdot (256^{l-1} + ... + 256 + 1) - v$ (i.e., the right hand side), we know that there is an integer $k$ such that:</p>
+<p>$$256^{l-1} \cdot x_{l-1} + ... + 256 \cdot x_1 + x_0 + s + k (p - 1) = 0.$$</p>
+<p>At this stage, we can construct the matrix $A$ below:</p>
+<p>$$A = \left[\begin{matrix}
+s \cdot W         &amp; 1 &amp; 0 &amp; \dots  &amp; 0 &amp; 0 \\
+256^{l-1} \cdot W &amp; 0 &amp; 1 &amp; \dots  &amp; 0 &amp; 0 \\
+\vdots &amp;&amp;&amp; \ddots &amp;&amp; \\
+256^1 \cdot W     &amp; 0 &amp; 0 &amp; \dots &amp; 1 &amp; 0 \\
+256^0 \cdot W     &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 1 \\
+(p-1) \cdot W     &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 0
+\end{matrix}\right]$$</p>
+<p>We can see that $\mathbf{t} := \left[\begin{matrix}0 &amp; 1 &amp; x_{l-1} &amp; ... &amp; x_1 &amp; x_0 \end{matrix}\right]$ is a linear combination of the row vectors of $A$, since</p>
+<p>$$\begin{aligned}
+\mathbf{t} = \left[\begin{matrix}0 &amp; 1 &amp; x_{l-1} &amp; \dots &amp; x_1 &amp; x_0 \end{matrix}\right]
+&amp;=        1 \cdot       \left[\begin{matrix}s \cdot W         &amp; 1 &amp; 0 &amp; \dots &amp; 0 &amp; 0\end{matrix}\right] \\
+&amp; \quad + x_{l-1} \cdot \left[\begin{matrix}256^{l-1} \cdot W &amp; 0 &amp; 1 &amp; \dots &amp; 0 &amp; 0\end{matrix}\right] \\
+&amp; \quad + ... \\
+&amp; \quad + x_1 \cdot     \left[\begin{matrix}256^1 \cdot W     &amp; 0 &amp; 0 &amp; \dots &amp; 1 &amp; 0\end{matrix}\right] \\
+&amp; \quad + x_0 \cdot     \left[\begin{matrix}256^0 \cdot W     &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 1\end{matrix}\right] \\
+&amp; \quad + k \cdot       \left[\begin{matrix}(p-1) \cdot W     &amp; 0 &amp; 0 &amp; \dots &amp; 0 &amp; 0\end{matrix}\right].
+\end{aligned}$$</p>
+<p>More importantly, the coefficients are integers. If $\lVert\mathbf{t}\rVert$ is small (i.e., $\mathbf{t}$ is short), then we can use LLL to recover such a vector. After all, LLL is an <em>lattice reduction</em> algorithm which is intended to find a set spanned by integer coefficients and short vectors. I suggest reading <a href="https://klwu.co/maths-in-crypto/lattice-based-cryptography-basics/"
+   
+   target="_blank" rel="noopener noreferrer" >Cousin's blog post</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> on lattice-based cryptography for an in-depth mathematical context.</p>
+<p>We have introduced $W$ without any explanation. What is that? It is just a big number to encourage the first entry of the resulting vectors in the basis to be zero. When the first entry of a vector $\mathbf{v}$ is non-zero, then the length of $\mathbf{v}$ would be inevitably big. Since LLL tries to find a set of short vectors, $\mathbf{v}$ is usually not included in the output. Finally, we can increase $l$ until a vector $\left[\begin{matrix}0 &amp; 1 &amp; x_{l-1} &amp; ... &amp; x_1 &amp; x_0 \end{matrix}\right]$ (where $x_i \in [-12, 13]$) is found. It is suggested to try $l \geq 100$ because $\sqrt[100]{2^{256}} \approx 5.897077$, an average magnitude of the elements in the vector.</p>
+<h4 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;p = &#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">g</span> <span class="o">=</span> <span class="mi">1337</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hash</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;SECUREHASH_&#39;</span> <span class="o">+</span> <span class="n">m</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">256</span><span class="o">//</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># (x0 + 109) + 256 * (x1 + 109) + 256^2 * (x2 + 109) + ... + 256^(k-1) * (x(k-1) + 109) + 256^k * m0 = v (mod p-1)</span>
+</span></span><span class="line"><span class="cl"><span class="n">m0</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;SECUREHASH_&#39;</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;SECUREHASH_pleasegivemetheflag&#39;</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[ ] Trying </span><span class="si">{</span><span class="n">l</span> <span class="si">= }</span><span class="s1">...&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="nb">sum</span><span class="p">(</span><span class="mi">256</span><span class="o">**</span><span class="n">i</span> <span class="o">*</span> <span class="mi">109</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="o">+</span> <span class="mi">256</span><span class="o">**</span><span class="n">l</span> <span class="o">*</span> <span class="n">m0</span> <span class="o">-</span> <span class="n">v</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    [s          1      0      0     ... 0] &lt;-- 1
+</span></span></span><span class="line"><span class="cl"><span class="s1">    [256^(k-1)  0      1      0     ... 0] &lt;-- x(k-1)
+</span></span></span><span class="line"><span class="cl"><span class="s1">    [256^(k-2)  0      0      1     ... 0] &lt;-- x(k-2)
+</span></span></span><span class="line"><span class="cl"><span class="s1">    [                       ...          ]     ...
+</span></span></span><span class="line"><span class="cl"><span class="s1">    [256^0      0      0      0     ... 1] &lt;-- x0
+</span></span></span><span class="line"><span class="cl"><span class="s1">    [p-1        0      0      0     ... 0] &lt;-- *
+</span></span></span><span class="line"><span class="cl"><span class="s1">     ↓          ↓      ↓      ↓         ↓
+</span></span></span><span class="line"><span class="cl"><span class="s1">     0          1      x(k-1) x(k-2)    x0
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">256</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">A</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">l</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q</span> <span class="o">=</span> <span class="n">diagonal_matrix</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># First column</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="o">-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span><span class="o">^</span><span class="p">(</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># The remaining columns</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">A</span> <span class="o">*=</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">LLL</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span> <span class="o">/=</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">A</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">row</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="c1"># centered by 109</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">12</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="mi">109</span> <span class="o">+</span> <span class="n">mc</span> <span class="k">for</span> <span class="n">mc</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[*] &#39;</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&#39; has the same hash with &#39;pleasegivemetheflag&#39;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&#34;Collision found!&#34;</span>
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Firebird Internal CTF 2022 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-02-08-dicectf-commitment/">← DiceCTF 2022 (I): commitment-issues</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-01-17-intigriti-xss/">Intigriti&#39;s XSS Challenge (January 2022) →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

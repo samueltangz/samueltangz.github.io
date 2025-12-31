@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crypto in CTF: Q4 2021 | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Crypto in CTF: Q4 2021</h1>
+
+      
+
+      <div class="post-content js-toc-content"><div>
+          <table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        CTF
+      </th>
+      
+      <th>
+        Challenge Name
+      </th>
+      
+      <th>
+        Solves (Difficulty)
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        TSG CTF 2021
+      </td>
+      
+      <td>
+        Beginner's Crypto 2021
+      </td>
+      
+      <td>
+        126/775 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        TSG CTF 2021
+      </td>
+      
+      <td>
+        Minimalist's Private
+      </td>
+      
+      <td>
+        49/775 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        TSG CTF 2021
+      </td>
+      
+      <td>
+        Baba is Flag
+      </td>
+      
+      <td>
+        34/775 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        TSG CTF 2021
+      </td>
+      
+      <td>
+        Flag is Win
+      </td>
+      
+      <td>
+        10/775 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        TSG CTF 2021
+      </td>
+      
+      <td>
+        This is DSA
+      </td>
+      
+      <td>
+        9/775 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        TastelessCTF 2021
+      </td>
+      
+      <td>
+        crybaby 🔥
+      </td>
+      
+      <td>
+        14/162 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        pbctf 2021
+      </td>
+      
+      <td>
+        Alkaloid Stream
+      </td>
+      
+      <td>
+        132/210 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        pbctf 2021
+      </td>
+      
+      <td>
+        Steroid Stream
+      </td>
+      
+      <td>
+        38/210 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        pbctf 2021
+      </td>
+      
+      <td>
+        GoodHash 🔥
+      </td>
+      
+      <td>
+        30/210 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        pbctf 2021
+      </td>
+      
+      <td>
+        Seed Me 🔥
+      </td>
+      
+      <td>
+        24/210 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        pbctf 2021
+      </td>
+      
+      <td>
+        Yet Another PRNG 🔥
+      </td>
+      
+      <td>
+        14/210 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        pbctf 2021
+      </td>
+      
+      <td>
+        Yet Another RSA 🔥
+      </td>
+      
+      <td>
+        12/210 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Hack.lu CTF 2021
+      </td>
+      
+      <td>
+        Silver Water Industries
+      </td>
+      
+      <td>
+        92/174 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Hack.lu CTF 2021
+      </td>
+      
+      <td>
+        WhatTheHecc
+      </td>
+      
+      <td>
+        45/174 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Hack.lu CTF 2021
+      </td>
+      
+      <td>
+        lwsr
+      </td>
+      
+      <td>
+        20/174 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        BSides Ahmedabad CTF 2021
+      </td>
+      
+      <td>
+        dlppp
+      </td>
+      
+      <td>
+        39/314 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        BSides Ahmedabad CTF 2021
+      </td>
+      
+      <td>
+        floorsa
+      </td>
+      
+      <td>
+        27/314 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        BSides Ahmedabad CTF 2021
+      </td>
+      
+      <td>
+        SSSS.RNG 🔥
+      </td>
+      
+      <td>
+        16/314 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        BSides Ahmedabad CTF 2021
+      </td>
+      
+      <td>
+        ECC-RSA 2 🔥
+      </td>
+      
+      <td>
+        8/314 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        BSides Ahmedabad CTF 2021
+      </td>
+      
+      <td>
+        They Were Eleven 🔥
+      </td>
+      
+      <td>
+        3/314 (⭐⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HKCERT CTF 2021
+      </td>
+      
+      <td>
+        A Joke Cipher
+      </td>
+      
+      <td>
+        88/239 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HKCERT CTF 2021
+      </td>
+      
+      <td>
+        Cipher Mode Picker
+      </td>
+      
+      <td>
+        21/239 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HKCERT CTF 2021
+      </td>
+      
+      <td>
+        Key Backup Service 1
+      </td>
+      
+      <td>
+        6/239 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HKCERT CTF 2021
+      </td>
+      
+      <td>
+        Key Backup Service 2
+      </td>
+      
+      <td>
+        5/239 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HKCERT CTF 2021
+      </td>
+      
+      <td>
+        Tenet: The Plagarism
+      </td>
+      
+      <td>
+        4/239 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HKCERT CTF 2021
+      </td>
+      
+      <td>
+        Sratslla SEA
+      </td>
+      
+      <td>
+        2/239 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HKCERT CTF 2021
+      </td>
+      
+      <td>
+        Sign In Please, Again
+      </td>
+      
+      <td>
+        2/239 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Balsn CTF 2021
+      </td>
+      
+      <td>
+        1337 pins
+      </td>
+      
+      <td>
+        5/284 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Balsn CTF 2021
+      </td>
+      
+      <td>
+        dlog 🔥
+      </td>
+      
+      <td>
+        2/284 (⭐⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Balsn CTF 2021
+      </td>
+      
+      <td>
+        trinity
+      </td>
+      
+      <td>
+        0/284 (⭐⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Dragon CTF 2021
+      </td>
+      
+      <td>
+        Baby MAC
+      </td>
+      
+      <td>
+        89/247 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Dragon CTF 2021
+      </td>
+      
+      <td>
+        CRC Recursive Challenge (warmup)
+      </td>
+      
+      <td>
+        11/247 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        Dragon CTF 2021
+      </td>
+      
+      <td>
+        CRC Recursive Challenge 🔥
+      </td>
+      
+      <td>
+        2/247 (⭐⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HITCON CTF 2021
+      </td>
+      
+      <td>
+        a little easy rsa
+      </td>
+      
+      <td>
+        37/288 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HITCON CTF 2021
+      </td>
+      
+      <td>
+        so easy rsa
+      </td>
+      
+      <td>
+        56/288 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HITCON CTF 2021
+      </td>
+      
+      <td>
+        magic rsa
+      </td>
+      
+      <td>
+        27/288 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HITCON CTF 2021
+      </td>
+      
+      <td>
+        magic dlog
+      </td>
+      
+      <td>
+        27/288 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HITCON CTF 2021
+      </td>
+      
+      <td>
+        so easy but not rsa
+      </td>
+      
+      <td>
+        15/288 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        HITCON CTF 2021
+      </td>
+      
+      <td>
+        still not rsa
+      </td>
+      
+      <td>
+        12/288 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        SECCON CTF 2021
+      </td>
+      
+      <td>
+        pppp
+      </td>
+      
+      <td>
+        70/506 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        SECCON CTF 2021
+      </td>
+      
+      <td>
+        oOoOoO
+      </td>
+      
+      <td>
+        26/506 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        SECCON CTF 2021
+      </td>
+      
+      <td>
+        CCC
+      </td>
+      
+      <td>
+        17/506 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        SECCON CTF 2021
+      </td>
+      
+      <td>
+        cerberus
+      </td>
+      
+      <td>
+        16/506 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        SECCON CTF 2021
+      </td>
+      
+      <td>
+        XXX
+      </td>
+      
+      <td>
+        14/506 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        SECCON CTF 2021
+      </td>
+      
+      <td>
+        Sign Wars
+      </td>
+      
+      <td>
+        8/506 (⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        hxp CTF 2021
+      </td>
+      
+      <td>
+        gipfel
+      </td>
+      
+      <td>
+        109/150 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        hxp CTF 2021
+      </td>
+      
+      <td>
+        kipferl
+      </td>
+      
+      <td>
+        35/150 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        hxp CTF 2021
+      </td>
+      
+      <td>
+        zipfel 🔥
+      </td>
+      
+      <td>
+        5/150 (⭐⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        hxp CTF 2021
+      </td>
+      
+      <td>
+        infinity
+      </td>
+      
+      <td>
+        11/150 (⭐⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        hxp CTF 2021
+      </td>
+      
+      <td>
+        f_cktoring 🔥
+      </td>
+      
+      <td>
+        3/150 (⭐⭐⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        hxp CTF 2021
+      </td>
+      
+      <td>
+        caBalS puking 🔥
+      </td>
+      
+      <td>
+        6/150 (⭐⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ASIS CTF Finals 2021
+      </td>
+      
+      <td>
+        Stairs
+      </td>
+      
+      <td>
+        43/198 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ASIS CTF Finals 2021
+      </td>
+      
+      <td>
+        RAS
+      </td>
+      
+      <td>
+        36/198 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ASIS CTF Finals 2021
+      </td>
+      
+      <td>
+        nDLP
+      </td>
+      
+      <td>
+        37/198 (⭐)
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        ASIS CTF Finals 2021
+      </td>
+      
+      <td>
+        mDLP
+      </td>
+      
+      <td>
+        30/198 (⭐)
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<h2 id="tsg-ctf-2021">TSG CTF 2021<a href="#tsg-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="beginners-crypto-2021">Beginner's Crypto 2021<a href="#beginners-crypto-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 126/775</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>We are given $p$ and $q$, the primes for RSA. Denote $n = pq$. We are also given the flag $c_1, c_2, c_3$ encrypted with the same modulus but different exponents. Those exponents, $e_1, e_2, e_3$, are computed by</p>
+<p>$$\begin{aligned}
+&amp; e_1 = e^{65537}\ \text{mod}\ \varphi(n) \
+&amp; e_2 = (e + 2)^{65537}\ \text{mod}\ \varphi(n) \
+&amp; e_3 = (e + 4)^{65537}\ \text{mod}\ \varphi(n)
+\end{aligned}$$</p>
+<p>Note that $e$, $e+2$ and $e+4$ are all primes. The objective is to recover the flag.</p>
+<h3 id="minimalists-private">Minimalist's Private<a href="#minimalists-private" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 49/775</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>We are given a RSA public key $(n, e)$ and a ciphertext $c$. Additionally, $\lambda(n)$ (the order of $\mathbb{Z}^*_n$) satisfies</p>
+<p>$$\lambda(n)^2 \leq 10000n.$$</p>
+<p>The objective is to decrypt $c$ for the flag.</p>
+<h3 id="baba-is-flag">Baba is Flag<a href="#baba-is-flag" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 34/775</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>ecdsa</code></li>
+</ul>
+<p>When connected to the server, a ECDSA private key $d$ for SECP256k1 is generated. We are allowed to perform the below operations in a total of five times:</p>
+<ol>
+<li><strong>[Sign]</strong> We will be given a signature of <code>Baba</code>. The ECDSA is slightly modified (will be described below) and the nonce $k$ is around 80 bits.</li>
+<li><strong>[Find rule]</strong> We will be asked to send a message $m$ and the signature $(r, s)$. It would return the flag if we have a valid signature for message <code>Flag</code>.</li>
+</ol>
+<p>For ECDSA, $s = k^{-1} (z + rd_A)\ \text{mod}\ n$. However in this challenge, $s$ is computed by</p>
+<p>$$k^{-1} (z + d_A)\ \text{mod}\ n.$$</p>
+<p>The objective is to forge a signature for the message <code>Flag</code>.</p>
+<h3 id="flag-is-win">Flag is Win<a href="#flag-is-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 10/775</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>ecdsa</code></li>
+</ul>
+<p>When connected to the server, a ECDSA private key $d$ for SECP256k1 is generated. We are allowed to perform the below operations in a total of five times:</p>
+<ol>
+<li><strong>[Sign]</strong> We will be given a signature of <code>Baba</code>. The nonce $k$ is around 80 bits.</li>
+<li><strong>[Find rule]</strong> We will be asked to send a message $m$ and the signature $(r, s)$. It would return the flag if we have a valid signature for message <code>Flag</code>.</li>
+</ol>
+<p>The objective is to forge a signature for the message <code>Flag</code>.</p>
+<h3 id="this-is-dsa">This is DSA<a href="#this-is-dsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 9/775</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>dsa</code></li>
+</ul>
+<p>The challenge uses a modified <code>pycryptodome</code> package with the below code difference:</p>
+
+
+<figure>
+  <img src="/images/crypto-in-ctf/q4/tsgctf/this-is-dsa-1.png" title="">
+  
+</figure>
+
+<p>When connected to the server, we are given a 256-bit order $q$ and is asked a 2048-bit $p$ and $h$. The generator $g$ is computed by</p>
+<p>$$g = h^{\lfloor{(p-1)/q\rfloor}}\ \text{mod}\ p.$$</p>
+<p>Also, a private key $x \in [0, q)$ is generated and the public key $y$ is given by</p>
+<p>$$y = g^x\ \text{mod}\ p.$$</p>
+<p>We will be given $g$ and $y$. The goal is to craft a signature of <code>flag</code> in 15 seconds.</p>
+<h2 id="tastelessctf-2021">TastelessCTF 2021<a href="#tastelessctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="crybaby-">crybaby 🔥<a href="#crybaby-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 14/162</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>gcm</code></li>
+</ul>
+<p>When connected to the server, a 16-byte AES key $\mathcal{K}$ is generated. There are two stages and during the $k$-th stage, we are given the $k$-th oracle $\mathcal{O}_k$. We are able to call the oracles as much as we could (unless an exception is thrown).</p>
+<ul>
+<li>
+<p>$\mathcal{O}_1$ uses <em>AES-CTR</em> and it asks for nonce $\mu$ and ciphertext $c$. It returns</p>
+<p>$$\text{Encrypt}_\mathcal{K}(\mu, \text{Login successful!})$$</p>
+<p>and proceed to the next stage if $\text{Decrypt}_\mathcal{K}(\mu, c)$ is equal to <code>adminplz</code>, and otherwise</p>
+<p>$$\text{Encrypt}_\mathcal{K}(\mu, \text{Unknown command!}).$$</p>
+</li>
+<li>
+<p>$\mathcal{O}_2$ uses <em>AES-GCM</em> and it asks for nonce $\mu$ and ciphertext $c$. It returns</p>
+<p>$$\text{Encrypt}_\mathcal{K}(\mu, \mathcal{F})$$</p>
+<p>if $\text{Decrypt}_\mathcal{K}(\mu, c)$ is equal to <code>flagplz</code>, and otherwise</p>
+<p>$$\text{Encrypt}_\mathcal{K}(\mu, \text{Unknown command!}).$$</p>
+</li>
+</ul>
+<p>The objective is to recover the flag $\mathcal{F}$.</p>
+<h2 id="pbctf-2021">pbctf 2021<a href="#pbctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="alkaloid-stream">Alkaloid Stream<a href="#alkaloid-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 132/210</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>math</code></li>
+</ul>
+<p>Suppose that the flag is $m$ bits long ($m = 600$ in this challenge). Initially, an invertible $m\times m$ matrix in $\text{GF}(2)$ (denote by $\mathcal{K}$) is generated and is interpreted as $m$ $m$-bit integers, <code>0 &lt;= key[0], key[1], ..., key[m-1] &lt; 2^m</code>. A keystream and a public key is generated from the key by the function <code>gen_keystream</code>, defined below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">gen_keystream</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ln</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Generate some fake values based on the given key...</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fake</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ln</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ln</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ln</span> <span class="o">//</span> <span class="mi">3</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="n">ln</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fake</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^=</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Generate the keystream</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ln</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">t</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="n">fake</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="p">]]))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fake</span><span class="p">[</span><span class="n">i</span><span class="p">]]))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Shuffle!</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">keystream</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">res</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">public</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">res</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">keystream</span><span class="p">,</span> <span class="n">public</span>
+</span></span></code></pre></div><p>We are given a public key and the flag xorred with the keystream. The objective is to recover the flag.</p>
+<h3 id="steroid-stream">Steroid Stream<a href="#steroid-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 38/210</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>math</code></li>
+</ul>
+<p>The challenge is similar to <em>Alkaloid Stream</em>, except that $m = 616$ and <code>gen_keystream</code> is defined below:</p>
+<pre tabindex="0"><code class="language-diff-python&nbsp;diff-highlight" data-lang="diff-python&nbsp;diff-highlight">  def gen_keystream(key):
+      ln = len(key)
++     assert ln &gt; 50
+      
+      # Generate some fake values based on the given key...
+      fake = [0] * ln
+-     for i in range(ln):
+-         for j in range(ln // 3):
+-             if i + j + 1 &gt;= ln:
+-                 break
+-             fake[i] ^= key[i + j + 1]
++     for i in range(ln - ln // 3):
++         arr = list(range(i + 1, ln))
++         random.shuffle(arr)
++         for j in arr[:ln // 3]:
++             fake[i] ^= key[j]
+  
+      # Generate the keystream
+      res = []
+      for i in range(ln):
+          t = random.getrandbits(1)
+          if t:
+              res.append((t, [fake[i], key[i]]))
+          else:
+              res.append((t, [key[i], fake[i]]))
+  
+      # Shuffle!
+      random.shuffle(res)
+  
+      keystream = [v[0] for v in res]
+      public = [v[1] for v in res]
+      return keystream, public
+</code></pre><h3 id="goodhash-">GoodHash 🔥<a href="#goodhash-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 30/210</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>gcm</code></li>
+</ul>
+<p>The digest for the hash algorithm <em>GoodHash</em> for the message $m$ is given by encrypting 32 null bytes with a known key <code>goodhashGOODHASH</code> with the nonce $m$. It is 48 bytes long, which composes of a 32-byte ciphertext and a 16-byte tag.</p>
+<p>We are given a token <code>{&quot;token&quot;: &quot;32 hex characters&quot;, &quot;admin&quot;: false}</code> when connected to the server, along with its corresponding hash $h_0$. The goal is to craft a JSON token <code>token</code> such that <code>token['admin']</code> equals <code>true</code>, which also has the hash $h_0$.</p>
+<h3 id="seed-me-">Seed Me 🔥<a href="#seed-me-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 24/210</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>prng</code>, <code>lcg</code></li>
+</ul>
+<p>We are asked a seed for the Java program. the random instance, <code>rng</code>, is defined by <code>rng = new Random(seed)</code>. We will get the flag if the 2048-, 4096-, ..., 32768-th output from <code>rng.NextFloat()</code> are never less than $0.9801547$.</p>
+<h3 id="yet-another-prng-">Yet Another PRNG 🔥<a href="#yet-another-prng-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 14/210</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>prng</code></li>
+</ul>
+<p>The outputs $r_0, r_1, r_2, ... \in [0, 2^{64})$ of the PRNG in the challenge is defined below:</p>
+<p>$$r_k := 2m_1x_k - m_3y_k - m_2z_k\ \text{mod}\ M,$$</p>
+<p>where $m_1, m_2, m_3$ are 32-bits and $M$ is a 64-bit known constants. Also, let $a_{ij}$ be 20-bit known constants and for $k \leq 3$,</p>
+<p>$$
+\begin{cases}\begin{aligned}
+x_k &amp;:= a_{11} x_{k-3} + a_{12} x_{k-2} + a_{13} x_{k-1} \
+y_k &amp;:= a_{21} y_{k-3} + a_{22} y_{k-2} + a_{23} y_{k-1} \
+z_k &amp;:= a_{31} z_{k-3} + a_{32} z_{k-2} + a_{33} z_{k-1}
+\end{aligned}\end{cases}.
+$$</p>
+<p>Note that we are not given $x_k, y_k, z_k$ for $k = 0, 1, 2$. Suppose that we have $r_0, r_1, ..., r_{11}$, and the flag is xor-ed with $r_{12}, r_{13}, ...$. The objective is to recover the flag.</p>
+<h3 id="yet-another-rsa-">Yet Another RSA 🔥<a href="#yet-another-rsa-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 12/210</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>We are given a RSA public key $n, e$ and an encrypted flag $c$. Hereby $n$ is 1024-bit number which is a product of two 512-bit primes $p, q$ (they are both in the form of $a^2 + 3b^2$). It is also known that $d$ is 400-bit long.</p>
+<p>Remarkably, the <em>multiply</em> operation is performed under a group $\mathcal{G}$ with</p>
+<p>$$\mathcal{G} = \mathbb{Z}_n^2 \cup (\mathbb{Z}_n\times{\varepsilon}) \cup {\varepsilon}^2.$$</p>
+<p>Also $|\mathcal{G}| = (p^2+p+1)(q^2+q+1)$. The objective is to recover the flag from $c$.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Note: The challenge used `add` but I think it would be better to call it `multiply`.</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">P</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">P</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">Q</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">p</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">p</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">mod</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">            <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">mod</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">mod</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">q</span><span class="p">,</span> <span class="n">mod</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">            <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="n">m</span> <span class="o">*</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">q</span><span class="p">,</span> <span class="n">mod</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="n">m</span> <span class="o">*</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="n">m</span> <span class="o">*</span> <span class="n">q</span> <span class="o">+</span> <span class="n">r</span><span class="p">,</span> <span class="n">mod</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="hacklu-ctf-2021">Hack.lu CTF 2021<a href="#hacklu-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="silver-water-industries">Silver Water Industries<a href="#silver-water-industries" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 92/174</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>math</code></li>
+</ul>
+<p>When connected to the server, a modulus $n = pq$ is generated with $p, q$ be 64 bits, $p \equiv 1\ (\text{mod}\ 4)$ and $q \equiv 3\ (\text{mod}\ 4)$. To encrypt a bit $m$, a quadratic non-residue of $n$ (denoted by $x$) is generated. The ciphertext would be $x^2 (-1)^m\ \text{mod}\ n$.</p>
+<p>A token of 20 bytes is encrypted and we have the encrypted token. The objective is to recover the token, which we could win the flag if we send them the correct one.</p>
+<h3 id="whatthehecc">WhatTheHecc<a href="#whatthehecc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 45/174</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>ecc</code></li>
+</ul>
+<p>The challenge defines a signature algorithm $\mathcal{S}$, where a key generated with elliptic curve parameter P-256 (the public and private keys are respectively $Q$ and $d$). The signing algorithm for a message $m$ is specified below ($\text{H}$ is the SHA3-256 algorithm that returns an integer given an array of bytes):</p>
+<ol>
+<li>Compute $r = \text{H}(m) \cdot Q$</li>
+<li>Compute $r' = r\cdot d^{-1}\ \text{mod}\ q$, where $q$ is the order of the curve</li>
+<li>Define $z = n_\text{nonce} | t$, where $n_\text{once} \in [1, q)$ and $t$ is the timestamp in seconds</li>
+<li>Compute $R = r' + \text{H}(z) \cdot G$</li>
+<li>Compute $s = [d - \text{H}(z)]\ \text{mod}\ q$</li>
+<li>Return $(R, s)$ as the signature.</li>
+</ol>
+<p>Also the verifying algorithm for a message $m$ and signature $(R, s)$:</p>
+<ol>
+<li>If $s = 0\ \text{or}\ 1$ and $s &gt; 0$ then the signature is considered invalid.</li>
+<li>The signature is valid only if</li>
+</ol>
+<p>$$s \cdot G - Q + R = \text{H}(m) \cdot G$$</p>
+<p>There are three functions those we can use when connected to the server:</p>
+<ol>
+<li><strong>[Show]</strong> Prints the public key.</li>
+<li><strong>[Sign]</strong> Signs one of the four commands: <code>id</code>, <code>uname</code>, <code>ls</code> and <code>date</code> with $\mathcal{S}$.</li>
+<li><strong>[Run]</strong> Takes a signed command and executes if the signature is valid.</li>
+</ol>
+<h3 id="lwsr">lwsr<a href="#lwsr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 20/174</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>lfsr</code>, <code>lwe</code></li>
+</ul>
+<p>Suppose that $q = 16411$.</p>
+<p>When connected to the server, a LWE private key $s \in \mathbb{Z}_q^{128}$ and 384 sets of public key $(p_1, r_1), (p_2, r_2), ..., (p_{384}, r_{384}) \in \mathbb{Z}_q^{128} \times \mathbb{Z}_q$ are also generated. Also, a LFSR state $t = (t_1, t_2, ..., t_{384})$ with $t_1, t_2, ..., t_{384} \in \{0, 1\}$ is generated.</p>
+<p>The flag is encrypted bit-by-bit. The ciphertext of the $i$-th bit of the message, $m_i$, is defined by:</p>
+<p>$$\begin{cases}
+c_{i, 0} &amp;= (t_1 \cdot p_1 + t_2 \cdot p_2 + ... + t_{384} \cdot p_{384})\ \text{mod}\ q \
+c_{i, 1} &amp;= (t_1 \cdot r_1 + t_2 \cdot r_2 + ... + t_{384} \cdot r_{384} + 8205m_i)\ \text{mod}\ q
+\end{cases}$$</p>
+<p>Additionally, after a bit is encrypted, the LFSR state is updated with</p>
+<p>$$(t'<em>1, t'<em>2, ..., t'</em>{384}) := \left(t_2, t_3, ..., \text{NEXT}(t_1, t_2, ..., t</em>{384})\right).$$</p>
+<p>We are given $(p_1, r_1), (p_2, r_2), ..., (p_{384}, r_{384})$ and encrypted flag $(c_{1,0}, c_{1,1}), (c_{2,0}, c_{2,1}), ...$. We are then able to access the decryption oracle. The goal is to recover the flag.</p>
+<h2 id="bsides-ahmedabad-ctf-2021">BSides Ahmedabad CTF 2021<a href="#bsides-ahmedabad-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="dlppp">dlppp<a href="#dlppp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 39/314</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>discrete log</code></li>
+</ul>
+<p>Let $p$ be a 512-bit prime and $m$ be the flag. Let also $y = (1 + p)^m\ \text{mod}\ p^3$. We are given $p$ and $y$ and the objective is to recover the flag.</p>
+<h3 id="floorsa">floorsa<a href="#floorsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 27/314</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code>, <code>math</code></li>
+</ul>
+<p>Let $p$ and $q$ be 1024-bit prime and $n = p\cdot q$ be a 2048-bit RSA modulus. Let $e = 65537$ and $m$ be the secret message. We are given the $n$ and the ciphertext $c = m^e\ \text{mod}\ n$. Additionally, we are given</p>
+<p>$$s = \sum_{k=0}^{q-1} \lfloor{\frac{p\cdot k}{q}}\rfloor.$$</p>
+<p>The objective is to recover the secret message $m$.</p>
+<h3 id="ssssrng-">SSSS.RNG 🔥<a href="#ssssrng-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 16/314</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>lcg</code></li>
+</ul>
+<p>Let $p$ be a 512-bit prime and $a, b, g_0 \in [2, p)$. Let $\mathcal{G}$ be a PRNG and let $g_k$ be the $k$-th output from $\mathcal{G}$, given by</p>
+<p>$$g_k = (a\cdot g_{k-1} + b)\ \text{mod}\ p.$$</p>
+<p>Let $\text{f}(x) := g_1 + g_2 x + g_3 x^2 + g_4 x^3 + g_5 x^4 + g_6 x^5$ be a polynomial over $\mathbb{Z}_p$. Suppose that we are given $p$, $\text{f}(1), \text{f}(2), \text{f}(3), \text{f}(4)$ and $\text{f}(\text{flag})$. The objective is to compute $\text{flag}$.</p>
+<h3 id="ecc-rsa-2-">ECC-RSA 2 🔥<a href="#ecc-rsa-2-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 8/314</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>ecc</code>, <code>rsa</code></li>
+</ul>
+<p>Let $n = p\cdot q$ with $p$ and $q$ being 512-bit primes. An elliptic curve $\mathcal{C}$ is given by:</p>
+<p>$$\mathcal{C}:\quad y^2 \equiv x^3 + a x + b\ (\text{mod}\ n),$$</p>
+<p>where $a = -3$. Let $P \in \mathcal{C}$ and let $m_0, m_1, ... \in [0, 256)$ be the characters of the flag. The $k$-th character of the flag $m_k$ is encrypted to $c_k$:</p>
+<p>$$c_k \equiv ((2^k\cdot P)_x \cdot m_k)^{65537} \ (\text{mod}\ n).$$</p>
+<p>Given $n, a, b$ and $c_0, c_1, ...$. It is known that the flag satisfies the format <code>Neko{\w+}</code>, the objective is to recover the flag.</p>
+<h3 id="they-were-eleven-">They Were Eleven 🔥<a href="#they-were-eleven-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 3/314</li>
+<li>Difficulty: ⭐⭐⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>Suppose that we have a 111-byte message $m$. Let $p_1, p_2, ..., p_{11}, q_1, q_2, ..., q_{11}$ be 512-bit primes and $r_1, r_2, ..., r_{11} \in [0, 2^{11})$.</p>
+<p>We are given $n_i = p_i\cdot q_i$ and $c_i = m^{11}\cdot r_i\ \text{mod}\ n_i$ for $i = 1, 2, ..., 11$. The objective is to recover $m$.</p>
+<h2 id="hkcert-ctf-2021">HKCERT CTF 2021<a href="#hkcert-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert success">
+  &#x1f389; <strong>A shameless plug.</strong> Thanks <em>Mystiz</em> (myself) for allowing me to promote my own challenges here! However, I dare not to mark them 🔥 although they are all subjectively great. The attachments are available <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20211112-hkcert-ctf"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.
+</div>
+
+<h3 id="小諧星--a-joke-cipher">小諧星 / A Joke Cipher<a href="#小諧星--a-joke-cipher" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 88/239</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>math</code></li>
+</ul>
+<p>The challenge implements Nagaty's Cryptosystem<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> which no one knows why it is a <em>cryptosystem</em>. Initially, a prime $p$ is determined. Alice and Bob respectively derive a private key $x_A$ and a public key $y_A := x_A\ \text{mod}\ p$ (resp. $x_B$ and $y_B := x_B\ \text{mod}\ p$). A shared key is computed by Alice with $s = y_A \cdot {y_B}^2 \cdot x_A\ \text{mod}\ p$. Finally, the message $m$ is encrypted by $m \cdot s$.</p>
+<p>In the challenge, we are given $p$, $y_A$, $y_B$ and an encrypted flag $c$. The objective is to recover the flag.</p>
+<h3 id="freedom--cipher-mode-picker">Freedom / Cipher Mode Picker<a href="#freedom--cipher-mode-picker" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 21/239</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>mode of operations</code></li>
+</ul>
+<p>A 16-byte key and a 16-byte IV is generated when connected to the server. We are able to use each of the below encryption functions once, to encrypt either a given message or the 80-byte flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 1. AES-ECB</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. AES-CBC</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. AES-CFB</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CFB</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span> <span class="n">segment_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 4. AES-OFB</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_OFB</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 5. AES-CTR</span>
+</span></span><span class="line"><span class="cl"><span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CTR</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="n">Counter</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">iv</span><span class="p">[:</span><span class="mi">14</span><span class="p">]))</span>
+</span></span></code></pre></div><p>The goal is to recover the flag.</p>
+<h3 id="長話短說--key-backup-service-1">長話短說 / Key Backup Service 1<a href="#長話短說--key-backup-service-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 6/239</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>When connected to the server, a 32-byte master secret $x$ is generated. We are able to call the below functions at a total of 17 times:</p>
+<ol>
+<li><strong>[SEND]</strong> Returns the ciphertext, i.e., $m^e\ \text{mod}\ n$, of an arbitrary given message $m$ with the current key $\mathcal{K}$.</li>
+<li><strong>[PKEY]</strong> Generates a set of RSA key and assign to $\mathcal{K} = (n, e)$.</li>
+<li><strong>[BACKUP]</strong> Returns the encrypted secret, i.e., $x^{e}\ \text{mod}\ n$, with the current key $\mathcal{K}$.</li>
+<li><strong>[FLAG]</strong> Encrypts the flag with the key $x$ under AES-CBC.</li>
+</ol>
+<p>Additionally, the public exponent is $e = 17$ and the 512-bit primes for the moduli is generated by a PRNG, seeded by the below snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 256 bits for random-number generator</span>
+</span></span><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="mh">0xcdc21452d0d82fbce447a874969ebb70bcc41a2199fbe74a2958d0d280000001</span>
+</span></span><span class="line"><span class="cl"><span class="n">G</span> <span class="o">=</span> <span class="mh">0x5191654c7d85905266b0a88aea88f94172292944674b97630853f919eeb1a070</span>
+</span></span><span class="line"><span class="cl"><span class="n">H</span> <span class="o">=</span> <span class="mh">0x7468657365206e756d6265727320617265206f6620636f757273652073757321</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># The primes for the public exponent. id is a randomly generated 256-bit integer.</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+</span></span></code></pre></div><h3 id="braceless--key-backup-service-2">Braceless / Key Backup Service 2<a href="#braceless--key-backup-service-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 5/239</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>The challenge is identical to <em>長話短說 / Key Backup Service I</em>, with three changes:</p>
+<ol>
+<li>$e = 17$ is changed to $e = 65537$,</li>
+<li>The number of oracle calls is increased from 17 to 65537,</li>
+<li>We do <em>not</em> have the netcat service anymore. Instead, we have a transcript of an interaction. It includes one <code>FLAG</code> operation, followed by 16384 sequences of the below operations: <code>PKEY</code>, <code>SEND 2</code>, <code>SEND 3</code> and <code>BACKUP</code>.</li>
+</ol>
+<h3 id="freerider--tenet-the-plagarism">FreeRider / Tenet: The Plagarism<a href="#freerider--tenet-the-plagarism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 4/239</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>ctr</code></li>
+</ul>
+<p>Suppose that the flag matches the regular expression <code>hkcert21\{\w{35}\}</code>. We define an encryption algorithm, $\mathcal{E}$, with a 16-byte key $k_1k_2...k_{16}$. Let $m$ be the message we would like to encrypt (all of the counters are set to zero):</p>
+<ol>
+<li>Encrypt $m$ with AES-CTR using the key <code>k1 00 00 00 ... 00</code> ($k_1$ followed by 15 null bytes) and denote it by $t_1$.</li>
+<li>Encrypt $t_1$ with AES-CTR using the key <code>k2 00 00 00 ... 00</code> and denote it by $t_2$.</li>
+<li>...</li>
+<li>Encrypt $t_{15}$ with AES-CTR using the key <code>k16 00 00 00 ... 00</code> and denote it by $t_{16}$.</li>
+<li>Return $t_{16}$ as the ciphertext.</li>
+</ol>
+<p>$\mathcal{E}$ is used to encrypt the message <code>Congratulations! [FLAG]</code> and we are given its ciphertext. The objective is to recover the flag. Notably, the challenge is highly referenced from <a href="https://github.com/hkcert-ctf/CTF-Challenges/blob/main/CTF-2020/1.%20%20Cryptography/5.%20Tenet/Challenge/enc.py"
+   
+   target="_blank" rel="noopener noreferrer" >Tenet in HKCERT CTF 2020</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+<h3 id="集合吧地球保衛隊--sratslla-sea">集合吧！地球保衛隊 / Sratslla SEA<a href="#集合吧地球保衛隊--sratslla-sea" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 2/239</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>aes</code></li>
+</ul>
+<p>We will use the Advanced Encryption Standard (AES) for encryption in the challenge. Let $k_0k_1k_2...k_{15}$ be a 16-byte key and let $K_n := k_nk_nk_nk_n$ for $n = 0, 1, 2, ..., 15$. When connected to the server, $k_0k_1k_2...k_{15}$ is randomly created and we are able to access the below functions for 128 times:</p>
+<ol>
+<li><strong>[ark secret]</strong> encrypts $K_0K_1K_2K_3$ without the <code>AddRoundKey</code> operation and returns the ciphertext.</li>
+<li><strong>[sb secret]</strong> encrypts $K_4K_5K_6K_7$ without the <code>SubBytes</code> operation and returns the ciphertext.</li>
+<li><strong>[sr secret]</strong> encrypts $K_8K_9K_{10}K_{11}$ without the <code>ShiftRows</code> operation and returns the ciphertext.</li>
+<li><strong>[mc secret]</strong> encrypts $K_{12}K_{13}K_{14}K_{15}$ without the <code>MixColumns</code> operation and returns the ciphertext.</li>
+<li><strong>[ark data]</strong> (resp. <strong>[sb data]</strong>, <strong>[sr data]</strong> or <strong>[mc data]</strong>) encrypts a 16-byte user-defined data without the <code>AddRoundKey</code> operation (resp. <code>SubBytes</code>, <code>ShiftRows</code> or <code>MixColumns</code>) and returns the ciphertext.</li>
+</ol>
+<p>We are also given a 64-byte encrypted flag when connected to the server. The goal is to collect enough information for the key in 128 calls and decrypt for the flag.</p>
+<h3 id="約定的夢幻島--sign-in-please-again">約定的夢幻島 / Sign In Please, Again<a href="#約定的夢幻島--sign-in-please-again" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 2/239</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>hash</code></li>
+</ul>
+<p>Define the below authentication algorithm $\mathcal{P}$. Suppose that a user have a $n$ character-long password, $p_1p_2...p_n$:</p>
+<ol>
+<li>The server generates a 4-byte salt $s_1s_2s_3s_4$ and generate a permutation of $\{1, 2, ..., n+5\}$, denote it as $\sigma$.</li>
+<li>A user
+<ul>
+<li>generates one byte of pepper $r$,</li>
+<li>denotes $x_k = p_k$ for $k = 1, 2, ..., n$, $x_{n+k} = s_k$ for $k = 1, 2, ..., 4$ and $x_{n+5} = r$,</li>
+<li>computes $y_k = x_{\sigma(k)}$ for $k = 1, 2, ..., n+5$ and $h := \text{SHA256}(y_1y_2...y_{n+5})$, and</li>
+<li>send $h$ to the server.</li>
+</ul>
+</li>
+<li>The server computes $h'$ from $p_1p_2...p_n$, the salt $s_1s_2s_3s_4$ and all $r \in [0, 256)$. If there exists $r$ such that $h = h'$, the user is authenticated.</li>
+</ol>
+<p>The netcat service implements the above algorithm $\mathcal{P}$ and the player, who acts as the man in-the-middle, can play with below operations in a total of 50 times:</p>
+<ol>
+<li><strong>[🕵️]</strong> The player impersonates the server and sends a salt $s_1s_2s_3s_4$ and surjective mapping $\sigma: \{1, 2, ..., k\} \rightarrow \{1, 2, ..., 21\}$ to the user. The user replies with a digest $h$. By surjective $\sigma$ should satisfy the below condition:
+<ul>
+<li>For all $v = 1, 2, ..., 21$, there exists $u \in \{1, 2, ..., k\}$ such that $\sigma(u) = v$.</li>
+</ul>
+</li>
+<li><strong>[🖥️]</strong> The server sends a permutation $\sigma$ and a salt $s_1s_2s_3s_4$. If the player supplies with a valid digest $h$, the server replies with the flag.</li>
+</ol>
+<h2 id="balsn-ctf-2021">Balsn CTF 2021<a href="#balsn-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="1337-pins">1337 pins<a href="#1337-pins" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 5/284</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>mt19937</code></li>
+</ul>
+<p>When connected to the server, we are asked to guess $r_1, r_2, ..., r_{31337}$, the consecutive outputs from <code>random.getrandbits(32) % 10</code>. On the $k$-th turn we are asked to guess $r_k$. If the guess is incorrect, $r_k$ will be printed. The objective is to predict and submit 1337 consecutive outputs.</p>
+<h3 id="dlog-">dlog 🔥<a href="#dlog-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 2/284</li>
+<li>Difficulty: ⭐⭐⭐⭐</li>
+<li>Tags: <code>discrete log</code>, <code>timing attack</code></li>
+</ul>
+<p>Suppose that $p = 2q+1$ where $p, q$ are primes. Let also $s$ be an exponent. We are given that $0 &lt; p &lt; 2^{1025}$ and $0 &lt; s &lt; 2^{100}$. Given three APIs:</p>
+<ul>
+<li><code>/oracle</code> receives $x$ and returns $x^s\ \text{mod}\ p$,</li>
+<li><code>/flag</code> receives $x$. If $x^s\ \text{mod}\ p = 1337$ the flag will be returned,</li>
+<li><code>/metrics</code> returns metrics including the total number of calls and the total time on processing <code>/oracle</code> and <code>/flag</code>.</li>
+</ul>
+<p>The objective is to retrieve the flag.</p>
+<h3 id="trinity">trinity<a href="#trinity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 0/284</li>
+<li>Difficulty: ⭐⭐⭐⭐</li>
+<li>Tags: <code>hash</code></li>
+</ul>
+<p>Given a hash key $k$ for $\text{Blake}_3$, the Blake-3 algorithm returning 64 bits as a digest. The objective is to find three distinct messages $m_1, m_2, m_3$ such that</p>
+<p>$$\text{Blake}_3(m_1, k) = \text{Blake}_3(m_2, k) = \text{Blake}_3(m_3, k).$$</p>
+<h2 id="dragon-ctf-2021">Dragon CTF 2021<a href="#dragon-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="baby-mac">Baby MAC<a href="#baby-mac" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 89/247</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>block cipher</code></li>
+</ul>
+<p>When connected to the server, a 16-byte key $\mathcal{K}$ is generated. Define the signature algorithm $\mathcal{S}$ of message $m$:</p>
+<ol>
+<li>Set $s \leftarrow 0$ (16 null bytes).</li>
+<li>Pad $m$ with PKCS7 and break it down into blocks of 16 bytes: $m_1, m_2, ..., m_n$.</li>
+<li>For $i = 1, 2, ..., n$, update $s \leftarrow \text{Enc}_\mathcal{K}(s \oplus m_i)$.</li>
+<li>Update $s \leftarrow \text{Enc}_\mathcal{K}(s)$.</li>
+<li>Return $s$.</li>
+</ol>
+<p>We are given an oracle to compute $\mathcal{S}(m)$ whenever $m$ does not contain <code>gimme flag</code>. The objective is to craft a signature of a message that contains <code>gimme flag</code>.</p>
+<h3 id="crc-recursive-challenge-warmup">CRC Recursive Challenge (warmup)<a href="#crc-recursive-challenge-warmup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 11/247</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>crc</code></li>
+</ul>
+<p>The objective is to find a message which correctly depicts its CRC-64 digest.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">crc64</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">crc</span><span class="o">=</span><span class="mh">0xffffffffffffffff</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">crc</span> <span class="o">^=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">56</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">crc</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">crc</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">64</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">crc</span> <span class="o">^=</span> <span class="mh">0x1ad93d23594c935a9</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">crc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">crc</span> <span class="o">=</span> <span class="n">crc64</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="sa">f</span><span class="s1">&#39;My crc64 is 0x</span><span class="si">{</span><span class="n">crc</span><span class="si">:</span><span class="s1">016x</span><span class="si">}</span><span class="s1">! Cool, isn</span><span class="se">\&#39;</span><span class="s1">t it?&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nope!&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="crc-recursive-challenge-">CRC Recursive Challenge 🔥<a href="#crc-recursive-challenge-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 2/247</li>
+<li>Difficulty: ⭐⭐⭐⭐</li>
+<li>Tags: <code>crc</code></li>
+</ul>
+<p>The objective is to find a message which correctly depicts its CRC-128 digest.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">crc128</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">crc</span><span class="o">=</span><span class="mh">0xffffffffffffffffffffffffffffffff</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">crc</span> <span class="o">^=</span> <span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="mi">120</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">crc</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">crc</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">128</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">crc</span> <span class="o">^=</span> <span class="mh">0x14caa61b0d7fe5fa54189d46709eaba2d</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">crc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">crc</span> <span class="o">=</span> <span class="n">crc128</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="sa">f</span><span class="s1">&#39;My crc128 is 0x</span><span class="si">{</span><span class="n">crc</span><span class="si">:</span><span class="s1">032x</span><span class="si">}</span><span class="s1">! Cool, isn</span><span class="se">\&#39;</span><span class="s1">t it?&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;flag.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Nope!&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="hitcon-ctf-2021">HITCON CTF 2021<a href="#hitcon-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="a-little-easy-rsa">a little easy rsa<a href="#a-little-easy-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 37/288</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>Let $p$ and $q$ are primes of respectively 211 and 815 bits. Let $d = p$ and $n = pq$ be the private key and the public modulus of RSA. We are given $e = d^{-1}\ \text{mod}\ \phi(n)$, $n$ and the encrypted flag $c$. The objective is to recover the flag.</p>
+<h3 id="so-easy-rsa">so easy rsa<a href="#so-easy-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 56/288</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>lcg</code>, <code>rsa</code></li>
+</ul>
+<p>We are given the parameters of the LCG that is used to generate primes for RSA, namely, $r_A$, $r_B$ and $r_M$ (all of them are 512-bit primes). Let $x_0$ be the seed and the $k$-th output is defined by</p>
+<p>$$x_k = (r_Ax_{k-1} + r_B)\ \text{mod}\ r_M.$$</p>
+<p>Suppose that $p = x_m$ and $q = x_{m+\Delta m}$ ($x_{m+1}, x_{m+2}, ..., x_{m+\Delta m-1}$ are not primes). We are also given $n = pq$, $e = 65537$ and the encrypted flag $c$. The objective is to recover the flag.</p>
+<h3 id="magic-rsa">magic rsa<a href="#magic-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 27/288</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>dlog</code></li>
+</ul>
+<p>We are given 136-bit $n_0$ and is asked to construct a 384-bit $n$ such that the first 136-bit of $n$ is $n_0$. The objective is to find $m$ and $e$ such that:</p>
+<ol>
+<li>$h = m^e\ \text{mod}\ n$, and</li>
+<li>$h = \text{SHA384}(m)$.</li>
+</ol>
+<h3 id="magic-dlog">magic dlog<a href="#magic-dlog" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 27/288</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>dlog</code></li>
+</ul>
+<p>The challenge is similar to <em>magic rsa</em>, except that $n$ this time needs to be a prime.</p>
+<h3 id="so-easy-but-not-rsa">so easy but not rsa<a href="#so-easy-but-not-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 15/288</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>ntru</code>, <code>prng</code></li>
+</ul>
+<p>We are given a transcript that contains</p>
+<ol>
+<li>an encrypted flag,</li>
+<li>a NTRU public key,</li>
+<li>200 pairs of 240-bit random message and its corresponding ciphertext.</li>
+</ol>
+<p>Notably the Python's random (i.e. MT19937) is used to generated the random messages and the polynomials those are used as a random source for encryption. The objective is to recover the encrypted flag.</p>
+<h3 id="still-not-rsa">still not rsa<a href="#still-not-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 12/288</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>ntru</code></li>
+</ul>
+<p>When connected to the server, a polynomial $p_\text{priv}$ with below properties is generated.</p>
+<ol>
+<li>$p_\text{priv}$ is of degree $\leq 167$,</li>
+<li>$p_\text{priv}$ has 61 terms with coefficient being 1,</li>
+<li>$p_\text{priv}$ has 60 terms with coefficient being -1, and</li>
+<li>There exists $q_{128} \in \mathbb{Z}_{128}[x]/(x^{167} - 1)$ and $q_{3} \in \mathbb{Z}_3[x]/(x^{167} - 1)$, such that</li>
+</ol>
+<p>$$p_\text{priv} \cdot q_{128} = 1 \quad\land\quad p_\text{priv} \cdot q_3 = 1.$$</p>
+<p>We are given $p_\text{pub} \in \mathbb{Z}_{128}[x]/(x^{167} - 1)$ where $p_\text{pub} \cdot p_\text{priv} = 3 \cdot r$, where $r$ has a low Hamming weight. We are also allowed to access the decryption oracle $\mathcal{D}$ 1000 times, which takes the ciphertext $c \in \mathbb{Z}_{128}[x]/(x^{167}-1)$ and perform:</p>
+<ol>
+<li>Compute $a = c \cdot p_\text{priv} \in \mathbb{Z}_{128}[x]/(x^{167}-1)$.</li>
+<li>Compute $m = a \cdot q_3 \in \mathbb{Z}_{3}[x]/(x^{167}-1)$.</li>
+<li>Return $m$ as the plaintext.</li>
+</ol>
+<p>Additionally, when performing steps 1 and 2 of decryption, the coefficients are taken such that they have the smallest magnitude. For example,</p>
+<ol>
+<li>$63 x^2 + 64 x + 65$ will be reduced to $63 x^2 - 64 x - 63$ under modulo 128, while</li>
+<li>$2x^5 + 3x^4 + 4x^3 + 5x^2 + 6x + 7$ will be reduced to $x^5 + x^3 - x^2 + 1$ under modulo 3.</li>
+</ol>
+<p>The objective is to recover $p_\text{priv}$.</p>
+<h2 id="seccon-ctf-2021">SECCON CTF 2021<a href="#seccon-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="pppp">pppp<a href="#pppp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 70/506</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>rsa</code>, <code>math</code></li>
+</ul>
+<p>Let $n = pq, e = 65537$ be a RSA public key ($p$ and $q$ are 512-bit long). The flag is broken into two parts $m_1, m_2$ such that $m_1, m_2 &lt; 2^{256}$. Let $M$ be the matrix</p>
+<p>$$\left[\begin{matrix}
+r_1p &amp; r_2p &amp; r_3p &amp; r_4p \
+0 &amp; r_5m_1 &amp; r_6m_1 &amp; r_7m_1 \
+0 &amp; 0 &amp; r_8m_2 &amp; r_9m_2 \
+0 &amp; 0 &amp; 0 &amp; r_10
+\end{matrix}\right].$$</p>
+<p>Here $r_1, r_2, ..., r_{10}$ are 768-bit primes. We are given $n, e$ and $M^e\ \text{mod}\ n$. The objective is to recover $(m_1, m_2)$ for the flag.</p>
+<p><em>Credits: grhkm.</em></p>
+<h3 id="oooooo">oOoOoO<a href="#oooooo" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 26/506</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>knapsack</code></li>
+</ul>
+<p>A message that matches the regular expression <code>/^[oO]{128}$/</code> is generated. We are given a 640-bit prime $m$ and $s := \text{message}\ \text{mod}\ m$. The objective is to recover the message in 600 seconds.</p>
+<h3 id="ccc">CCC<a href="#ccc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 17/506</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>We are given a RSA public key $(n, e = 65537)$ and an encrypted flag $c$. Suppose that the primes of $n$ is generated by:</p>
+<ol>
+<li>$p$ is 1024-bit prime,</li>
+<li>$q = \hat{p} + 3\hat{p} \cdot b + b^2$ is a prime ($\hat{p} = 23p$ and $b$ is a 691-bit integer).</li>
+</ol>
+<p>The objective is to recover the flag.</p>
+<h3 id="cerberus">cerberus<a href="#cerberus" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 16/506</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>pcbc</code></li>
+</ul>
+<p>When connected to the server, an encrypted flag in AES-PCBC $(\hat{\nu}, \hat{c})$ is given ($\hat{\nu}$ is the IV and $\hat{c}$ is the ciphertext). We are given a padding oracle that takes $(\nu, c)$, where $c$ starts with $\hat{c}$, and returns whether the PKCSv5 padding for the decrypted message is valid. The objective is to recover the flag.</p>
+<h3 id="xxx">XXX<a href="#xxx" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 14/506</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>ecc</code></li>
+</ul>
+<p>Suppose that the flag $x_0$ is 40 bytes long. We are given a 796-bit prime $p$ and six elliptic curves $C_1, C_2, ..., C_6$ over $\mathbb{Z}_p$ such that $(x_0, y_k) \in C_k$, where $y_k \in [2, x_0]$ is a random integer. The objective is to recover the flag $x_0$.</p>
+<h3 id="sign-wars">Sign Wars<a href="#sign-wars" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 8/506</li>
+<li>Difficulty: ⭐⭐⭐</li>
+<li>Tags: <code>ecdsa</code>, <code>prng</code></li>
+</ul>
+<p>The challenge is defined over the elliptic curve P-384. There are two stages:</p>
+<ol>
+<li><code>sign_prequel</code> uses the first 48 bytes of the flag as the secret key. A 16-byte message $z_1$ is signed 80 times and we are given their signatures $(r, s)$. Note that the supposingly secure random $k$ in ECDSA is defined by $k = k_1 + 2^{128} z_1 + 2^{256} k_3$, where $k_1, k_3$ are generated by <code>random.getrandbits(128)</code>.</li>
+<li><code>sign_original</code> uses the first 48 bytes of the flag as the secret key. A 16-byte message $z_2$ is signed 3 times and we are given their signatures $(r, s)$. Note that $k$ this time is generated by <code>random.getrandbits(384)</code>.</li>
+</ol>
+<p>Note that we are not given the messages $z_1, z_2$.</p>
+<h2 id="hxp-ctf-2021">hxp CTF 2021<a href="#hxp-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="gipfel">gipfel<a href="#gipfel" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 109/150</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>dh</code></li>
+</ul>
+<p>We are given a prime $q$ such that $q = 4p^2 + 1$ for some prime $p$. When connected to the server, an integer password $\text{pw} \in \mathbb{Z}_{10^6}$ is generated. We are allowed to attempt handshake three times.</p>
+<p>In each handshake attempt, $g = \mathcal{H}(p)$ is derived ($\mathcal{H}$ is a known deterministic hash function) and the server's secret key $x_A \in 40 \cdot \mathbb{Z}_{2^{999}}$ is generated.</p>
+<ol>
+<li>We are given the server's public key $y_A := \mathcal{F}(g, x_A)$.</li>
+<li>We are asked to give $y_B \in [2, q)$.</li>
+<li>The server computes $s := \mathcal{F}(y_B, x_A)$.</li>
+<li>We are given $\text{ver}_A := \mathcal{F}(g, s^3)$.</li>
+<li>We are asked to give $\text{ver}_B$.</li>
+<li>If $\text{ver}_B = \mathcal{F}(g, s^5)$, then we are given the flag encrypted with AES-CTR where the key is derived by $\text{pw}$ and $s$. Otherwise, we will be given $s$.</li>
+</ol>
+<p>Finally, here $\mathcal{F}$ is given by $\mathcal{F}(a, n) = a^n\ \text{mod}\ q$. The goal is to recover the flag.</p>
+<h3 id="kipferl">kipferl<a href="#kipferl" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 35/150</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>ecdh</code></li>
+</ul>
+<p>The challenge is similar to <em>gipfel</em> except that $\mathcal{F}$ is given by $\mathcal{F}(a, n) = (n \cdot G)_x$, with $a$ being the x-coordinate of $G$ on the curve $\mathcal{C}: y^2 = x^3 + x$. Note that $\mathcal{F}$ did not check if there exists a $P \in \mathcal{C}$ such that its x-coordinate equals $a$.</p>
+<h3 id="zipfel-">zipfel 🔥<a href="#zipfel-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 5/150</li>
+<li>Difficulty: ⭐⭐⭐⭐</li>
+<li>Tags: <code>ecdh</code></li>
+</ul>
+<p>The challenge is similar to <em>zipfel</em> except that we are no longer given $\text{ver}_A$.</p>
+<h3 id="infinity">infinity<a href="#infinity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 11/150</li>
+<li>Difficulty: ⭐⭐⭐⭐</li>
+<li>Tags: <code>csidh</code></li>
+</ul>
+<p>When connected to the server, it generates a CSIDH ($n = 29$, $p = 4 l_1 l_2 ... l_n - 1$ where $l_k$ is the $k$-th prime, $C = 2$) private key. We are asked to perform key exchange 500 times and we are given the shared key.</p>
+<p>The goal is to recover the server's private key (which is used to derive an encryption key to encrypt the flag).</p>
+<h3 id="f_cktoring-">f_cktoring 🔥<a href="#f_cktoring-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 3/150</li>
+<li>Difficulty: ⭐⭐⭐⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>We are given a RSA modulus $n$ and an encrypted flag $c$, where $n$ is a product of zero primes generated by <code>gen_prime</code> given below. The objective is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">R</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;random&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">SystemRandom</span><span class="p">()</span><span class="o">.</span><span class="n">randint</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">gen_prime</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">ZZ</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="mf">.0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="n">p</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="o">^</span><span class="mi">55</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">^</span><span class="n">R</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">R</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="o">^</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">p</span> <span class="o">*=</span> <span class="n">matrix</span><span class="p">([[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">],[</span><span class="mi">123</span><span class="o">*</span><span class="n">b</span><span class="p">,</span><span class="o">-</span><span class="n">a</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span> <span class="o">+=</span> <span class="p">(</span><span class="n">ZZ</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="mf">.0</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span> <span class="o">*=</span> <span class="n">diagonal_matrix</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">123</span><span class="p">))</span> <span class="o">*</span> <span class="n">p</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">is_pseudoprime</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">p</span>
+</span></span></code></pre></div><h3 id="cabals-puking-">caBalS puking 🔥<a href="#cabals-puking-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 6/150</li>
+<li>Difficulty: ⭐⭐</li>
+<li>Tags: <code>application</code>, <code>signal</code></li>
+</ul>
+<p>We are given two <em>Signal</em> backup files, one of which represents the state of an empty account. The objective is to recover the flag from the backup files.</p>
+<h2 id="asis-ctf-finals-2021">ASIS CTF Finals 2021<a href="#asis-ctf-finals-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="stairs">Stairs<a href="#stairs" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 43/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>math</code></li>
+</ul>
+<p>An asymmetric cipher is defined in this challenge. A composite $n$ is used as the public key and the ciphertext of a message $m$ is given by</p>
+<p>$$\text{Enc}(m) = (m^5 + m)\ \text{mod}\ n.$$</p>
+<p>When connected to the server, a public key is generated and given. We are also given the encryption oracle - for any given message $m$ we will retrieve $\text{Enc}(m + f)$ where $f$ is the flag. The objective is to recover the flag.</p>
+<h3 id="ras">RAS<a href="#ras" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 36/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>rsa</code></li>
+</ul>
+<p>We are given a RSA public key $(n = pq, e)$ and the encrypted flag $c$. Here $p$ and $q$ are generated so that there are $2 \leq a_p, a_q &lt; 512$, $32 \leq b_p, b_q &lt; 512$ and $0 \leq d_p, d_q &lt; 2^{31}$ with</p>
+<p>$$p = {a_p}^{b_p} + {d_p}\qquad\text{and}\qquad q = {a_q}^{b_q} + {d_q}.$$</p>
+<p>The objective is to recover the flag.</p>
+<h3 id="ndlp">nDLP<a href="#ndlp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 37/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>discrete log</code></li>
+</ul>
+<p>We are given $g, n, y \in \mathbb{Z}$ (as below) such that $g^x \equiv y\ (\text{mod}\ n)$ for a secret $x$. The objective is to recover $x$ (the flag).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">g</span> <span class="o">=</span> <span class="mi">685780528648223163108441</span>
+</span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">12588567055208488159342105634949357220607702491616160304212767442540158416811459761519218454720193189</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="mi">9136134187598897896238293762558529068838567704462064643828064439262538588237880419716728404254970025</span>
+</span></span></code></pre></div><h3 id="mdlp">mDLP<a href="#mdlp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>Solves: 30/198</li>
+<li>Difficulty: ⭐</li>
+<li>Tags: <code>discrete log</code></li>
+</ul>
+<p>An asymmetric cipher is defined in this challenge. Let $p$ be a prime and $d \in [2, p)$ be the private key. The public key is given by $(A, Q) \in \text{GL}_2(p) \times \text{GL}_2(p)$ with $Q = A^d$. A ciphertext $(C, E) \in \text{GL}_2(p) \times \text{GL}_2(p)$ of the message $M \in \text{GL}_2(p)$ is given by:</p>
+<p>$$\begin{cases}
+C = A^r \
+E = Q^r \cdot M
+\end{cases},$$</p>
+<p>where $r \in [2, p)$ is randomly generated. We are given a prime $p$ and the four matrices $A, Q, C, E \in \text{GL}_2(p)$ (as below). The objective is to recover $M$, i.e., the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="mi">94413310751917369305079812653655619566021075449954923397392050181976939189891</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="mi">38199337272663519912859864066101528484023656231849338967558894235177040565160</span><span class="p">,</span> <span class="mi">39708167173513090810083500967474691943646789486489990958101592717502452906918</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span> <span class="mi">8216211510625558273096642057121313417997488994504871245106775381995665925783</span><span class="p">,</span> <span class="mi">56213973479253849392219948587554091081997419218105584429833155946799898624740</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">Q</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="mi">61709241598677561125021718690991651934557899286972116933820920757636771220273</span><span class="p">,</span>  <span class="mi">1945367449329759288724720626216309893787847192907494307536759223359193510642</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="mi">37495232301500074672571996664644922614693962264764098174213150757616575323566</span><span class="p">,</span>  <span class="mi">7348269231944161963123250652171976847627786311806728904368575861561449853500</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">C</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="mi">47566868540912475779105819546118874217903268597017385039977593878486632022506</span><span class="p">,</span> <span class="mi">86073162301954995219912739344010659248720823814557810528618517154406350653517</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="mi">23443866424088482893369441934221448179896589659663581973508963775891809430857</span><span class="p">,</span> <span class="mi">74567333640177484678138574534395714128854315440076840728428649074147859070975</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">E</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="mi">56937964695156855099385034285428853461603799261684034842341841781057485084327</span><span class="p">,</span> <span class="mi">82459328835322885824854425864023809222717401981993182346342472865578156162544</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="mi">85092677346274708324092648597361729755305119435989183201786866456596369562681</span><span class="p">,</span> <span class="mi">22228861714953585357281182780002271505668586948202416054453861940155538803489</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Khaled A. Nagaty (2019) &quot;A public key cryptosystem and signature scheme based on numerical series&quot;<br><a href="https://link.springer.com/content/pdf/10.1007/s42452-019-1928-8.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >https://link.springer.com/content/pdf/10.1007/s42452-019-1928-8.pdf</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Crypto in CTF: Q4 2021
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google CTF 2025 Quals Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Google CTF 2025 Quals Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2025-06-30T07:53:00&#43;08:00">2025-06-30</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/google-ctf/" class="text-muted text-decoration-none">#google-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I wrote two challenges for Google CTF qualifier - <em>Underhanded</em> and <em>Merkurated</em>. There were 17 and 37 solves during the contest time. I will cover both in this blog post.</p>
+<h2 id="underhanded">Underhanded<a href="#underhanded" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Proudly sharing our Python implementation of AES. By the way, we sneakily hid a backdoor. Can you see sharp and see what went wrong?</p>
+<p>Attachments: <a href="https://github.com/google/google-ctf/tree/main/2025/quals/crypto-underhanded/attachments"
+   
+   target="_blank" rel="noopener noreferrer" >underhanded.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given yet another Python implementation of AES.</p>
+<p>A 16-byte key is generated when we connect to the server. We are able to request five ciphertexts of our choice. The goal is to recover the key.</p>
+<div class="alert warning">
+  🎯 <strong>To be accurate...</strong> The players are asked to recover 16 keys in 300 seconds.
+</div>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="the-backdoor">The &quot;backdoor&quot;<a href="#the-backdoor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>At the first glance, the <code>encrypt</code> function seems working perfectly. There are test cases that compares the output from <code>pycryptodome</code>, and the custom implementation is working properly.</p>
+<p>However, the <code>encrypt</code> function only works properly when it encrypts a single block (i.e., 16 bytes). If there are more than 16 bytes, <code>sub_bytes</code> and <code>add_round_key</code> will be applied on the entire input, while <code>shift_rows</code> and <code>mix_columns</code> do not.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">sub_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">bytearray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">sbox</span><span class="p">[</span><span class="n">mc</span><span class="p">]</span> <span class="k">for</span> <span class="n">mc</span> <span class="ow">in</span> <span class="n">m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">shift_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">bytearray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">4</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">8</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">4</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">5</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">9</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">5</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">9</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">6</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">6</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">3</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">7</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">3</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">+</span><span class="mi">7</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">m</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">mix_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">bytearray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">^</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">^</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">u</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span> <span class="o">^=</span> <span class="n">t</span> <span class="o">^</span> <span class="n">xtime</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">^=</span> <span class="n">t</span> <span class="o">^</span> <span class="n">xtime</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">^</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">^=</span> <span class="n">t</span> <span class="o">^</span> <span class="n">xtime</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">^</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">^=</span> <span class="n">t</span> <span class="o">^</span> <span class="n">xtime</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">^</span> <span class="n">u</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">m</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add_round_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Note that the `xor` function comes from `pwnlib.util.fiddling`, where the</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># shorter string will be used to computed the result.</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">xor</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round_keys</span><span class="p">[</span><span class="n">r</span><span class="p">]))</span>
+</span></span></code></pre></div><p>It is natural to assume that the first 16 bytes of a ciphertext is encrypted in the normal AES setting, because <code>shift_rows</code> and <code>mix_columns</code> are applied only to the first 16 bytes. Surprisingly it does not. For instance, let</p>
+<p>$$
+\begin{aligned}
+&amp; m_1 = \texttt{00000000000000000000000000000000} \\
+&amp; m_2 = \texttt{00000000000000000000000000000000 01},
+\end{aligned}
+$$</p>
+<p>the ciphertexts under $k = \texttt{0000...00}$ (16 $\texttt{00}$'s) are</p>
+<p>$$
+\begin{aligned}
+&amp; c_1 = \texttt{66e94bd4ef8a2c3b884cfa59ca342b2e} \\
+&amp; c_2 = \texttt{71edd5d9b112b425a3dba470ca874fe8 92}.
+\end{aligned}
+$$</p>
+<p>When we look deeper in the <code>shift_rows</code>, the value of <code>m[+8]</code> is taken from <code>m[-8]</code>.</p>
+<p>What does that mean? Let $(s_0, s_1, ..., s_{n-1})$ and $(t_0, t_1, ..., t_{n-1})$ respectively be the input and output for the last <code>shift_rows</code> operation. In that case, we have</p>
+<p>$$
+\begin{array}{llll}
+t_0 := s_0, &amp;&amp; t_4 := s_4, &amp;&amp; {\color{red}t_8 := s_{n-8},} &amp;&amp; t_{12} := s_{12} \\
+t_1 := s_5, &amp;&amp; t_5 := s_9, &amp;&amp; t_9 := s_{13}, &amp;&amp; t_{13} := s_1, \\
+t_2 := s_{10}, &amp;&amp; t_6 := s_{14}, &amp;&amp; t_{10} := s_2, &amp;&amp; t_{14} := s_6, \\
+t_3 := s_{15}, &amp;&amp; t_7 := s_3, &amp;&amp; t_{11} := s_7, &amp;&amp; t_{15} := s_{11}, \\
+\end{array}
+$$</p>
+<p>and $t_i := s_i$ for $i = 16, 17, ..., {n-1}$.</p>
+<p>Additionally, the only operation after the last <code>shift_rows</code> would be the tenth <code>add_round_key</code>. Denote the resulting ciphertext be $(c_0, c_1, ..., c_{n-1})$, we have</p>
+<p>$$
+\begin{aligned}
+c_8 &amp;= t_8 \oplus k_{10,8} = s_{n-8} \oplus k_{10,8} \\
+c_{n-8} &amp;= t_{n-8} \oplus k_{10, r} = s_{n-8} \oplus k_{10, r},
+\end{aligned}
+$$</p>
+<p>where $r = (n-8)\ \text{mod}\ 16$ and $k_{ij}$ is the $j$-th byte of the $i$-th subkey. Thus we have</p>
+<p>$$c_8 \oplus c_{n-8} = k_{10, 8} \oplus k_{10, r}.$$</p>
+<p>Since we can request five ciphertexts of our choice, we can obtain six $k_{ij}$'s if we exhaust $k_{10, 8}$. The question is, which bytes from the subkey do we want to leak?</p>
+<p>Turns out we can leak $k_{10,0}, k_{10,3}, k_{10,4}, k_{10,7}, k_{10,12}$ (and $k_{10,8}$). Below is a set of possible plaintexts (in hex) to leak the above bytes. In short, they are of lengths 24, 27, 28, 31 and 36 bytes.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">m1 = 00000000000000000000000000000000 0000000000000000
+</span></span><span class="line"><span class="cl">m2 = 00000000000000000000000000000000 0000000000000000000000
+</span></span><span class="line"><span class="cl">m3 = 00000000000000000000000000000000 000000000000000000000000
+</span></span><span class="line"><span class="cl">m4 = 00000000000000000000000000000000 000000000000000000000000000000
+</span></span><span class="line"><span class="cl">m5 = 00000000000000000000000000000000 00000000000000000000000000000000 00000000
+</span></span></code></pre></div><p>In particular, below are the list of $k_{ij}$'s (marked with <code>@</code>s) that we can recover with the six leaked bytes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">i \ j |  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+</span></span><span class="line"><span class="cl">------|------------------------------------------------
+</span></span><span class="line"><span class="cl">    0 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+</span></span><span class="line"><span class="cl">    1 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+</span></span><span class="line"><span class="cl">    2 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+</span></span><span class="line"><span class="cl">    3 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+</span></span><span class="line"><span class="cl">    4 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+</span></span><span class="line"><span class="cl">    5 |  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+</span></span><span class="line"><span class="cl">    6 |  .  .  .  .  .  .  .  @  .  .  .  .  .  .  .  .
+</span></span><span class="line"><span class="cl">    7 |  .  .  .  @  .  .  .  @  .  .  .  .  @  .  .  .
+</span></span><span class="line"><span class="cl">    8 |  .  .  .  @  .  .  .  @  @  .  .  .  @  .  .  .
+</span></span><span class="line"><span class="cl">    9 |  .  .  .  @  @  .  .  @  @  .  .  .  @  .  .  .
+</span></span><span class="line"><span class="cl">   10 |  @  .  .  @  @  .  .  @  @  .  .  .  @  .  .  .
+</span></span></code></pre></div><p>We can compute $k_{6,7}, k_{7,7}, k_{8,7}$ and $k_{9,7}$ from the $k_{10,j}$'s above. But why are they useful?</p>
+<div class="alert success">
+  🙏🏼 <strong>Thanks Thr!</strong> <em>@Thr</em> noticed that the table I generated was incorrect. I was using a different set of $k_{10,j}$'s...
+</div>
+
+<div class="alert info">
+  <p>💦 <strong>Alternative bytes to leak.</strong> Since we want to perform &quot;the thing&quot; on the next section, we would like to know $k_{6, i}, k_{7, i}, k_{8, i}, k_{9, i}$ and $k_{10, i}$ for some $i$. Here are the combinations of $k_{10, j}$'s (that includes $k_{10, 8}$) that made it possible:</p>
+<ol>
+<li>$k_{10, 0}, k_{10, 3}, k_{10, 4}, k_{10, 7}, k_{10, 8}, k_{10, 12}$,</li>
+<li>$k_{10, 0}, k_{10, 4}, k_{10, 5}, k_{10, 8}, k_{10, 9}, k_{10, 13}$,</li>
+<li>$k_{10, 0}, k_{10, 4}, k_{10, 8}, k_{10, 9}, k_{10, 12}, k_{10, 13}$,</li>
+<li>$k_{10, 3}, k_{10, 4}, k_{10, 7}, k_{10, 8}, k_{10, 11}, k_{10, 12}$,</li>
+<li>$k_{10, 3}, k_{10, 7}, k_{10, 8}, k_{10, 11}, k_{10, 12}, k_{10, 15}$</li>
+</ol>
+</div>
+
+<h4 id="the-2416-bits-meet-in-the-middle">The 24+16 bits meet-in-the-middle<a href="#the-2416-bits-meet-in-the-middle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>We can leak more than one byte from the chosen ciphertexts. When $i \geq 16$, the $i$-th byte of ciphertext would only affected by <code>add_round_key</code> and <code>sub_bytes</code>. Thus</p>
+<p>$$c_i = \texttt{S}\left[...\texttt{S}\left[\texttt{S}\left[m_i \oplus k_{0,j}\right] \oplus k_{1,j}\right] \oplus ...\right] \oplus k_{10,j},$$</p>
+<p>where $j = i\ \text{mod}\ 16$. Now we have $k_{6, 7}, ..., k_{10, 7}$, we can obtain $u_i$ such that</p>
+<p>$$u_i = \texttt{S}\left[...\texttt{S}\left[\texttt{S}\left[m_i \oplus k_{0,j}\right] \oplus k_{1,j}\right] \oplus ...\right] \oplus k_{5,j}.$$</p>
+<p>Let $i = 24, 40, ...$, we have $j = 8$. We can rearrange the terms to &quot;balance&quot; out the number of unknowns ($k_{0, j}, ..., k_{5, j}$):</p>
+<p>$$\texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_i \oplus k_{0,7}\right] \oplus k_{1,7}\right] \oplus k_{2,7}\right] \oplus k_{3,7} = \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_i \oplus k_{5, 7}\right] \oplus k_{4, 7}\right].$$</p>
+<p>We can further remove $k_{3,7}$ from the equation by combining two relations (for example, xoring the relations when $i = 24$ and $i = 40$):</p>
+<p>$$
+\begin{aligned}
+&amp; \texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_{23} \oplus k_{0,7}\right] \oplus k_{1,7}\right] \oplus k_{2,7}\right] \oplus \texttt{S}\left[\texttt{S}\left[\texttt{S}\left[m_{40} \oplus k_{0,7}\right] \oplus k_{1,7}\right] \oplus k_{2,7}\right] \\
+&amp;\qquad = \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_{24} \oplus k_{5, 7}\right] \oplus k_{4, 7}\right] \oplus \texttt{S}^{-1}\left[\texttt{S}^{-1}\left[u_{40} \oplus k_{5, 7}\right] \oplus k_{4, 7}\right].
+\end{aligned}
+$$</p>
+<p>From the above equation, we have five unknowns ($k_{0, 7}, k_{1, 7}, k_{2, 7}, k_{4, 7}$ and $k_{5, 7}$). We can precompute the left hand side and compute the right hand side when we have $k_{6, 7}, k_{7, 7}$, $k_{8, 7}, k_{9, 7}$ and $k_{10, 7}$.</p>
+<p>We can send the new <code>m5</code> to get the relations above:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">m5 = 00000000000000000000000000000000 0000...00 0101...01 0202...02 ... 00000000
+</span></span></code></pre></div><p>In this case, we have $m_{23} = \texttt{00}$, $m_{39} = \texttt{01}$, $m_{55} = \texttt{02}$ and so on. We can compute the corresponding $u_i$'s and recover $k_{i, 7}$'s. We can further deduce even more subkey bytes and eventually are able to obtain the key.</p>
+<h2 id="merkurated">Merkurated<a href="#merkurated" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Can you rugpull my crypto?</p>
+<p>Attachments: <a href="https://github.com/google/google-ctf/tree/main/2025/quals/crypto-merkurated/attachments"
+   
+   target="_blank" rel="noopener noreferrer" >merkurated.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>The server in this challenge hosts a Merkle tree, where users are able to perform the below three operations:</p>
+<ol>
+<li><code>deposit(amount, public_key)</code>: Increases $\texttt{tree}[\texttt{public\_key}]$ by $\texttt{amount} \in (0, M]$.</li>
+<li><code>withdraw(amount, signature, proof)</code>: Decreases $\texttt{tree}[\texttt{public\_key}]$ by $\texttt{amount} \in (0, N]$. $\texttt{public\_key}$ is the public key recovered by the signature and $\texttt{proof}$ is a Merkle proof that the $\texttt{tree}[\texttt{public\_key}] = N$.</li>
+<li><code>flag()</code>: Returns the flag when $M \geq 10^{18}$.</li>
+</ol>
+<p>Here $M$ is the amount that the user has locally. Initially, $M = 10^9$. The goal is to earn enough to call <code>flag()</code>.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>For the Merkle tree, the formula for the node hash is defined as below:</p>
+<p>$$\texttt{bcrypt}_N(\texttt{left\_subtree\_hash} \ || \ \texttt{&quot;:::&quot;} \ || \ \texttt{right\_subtree\_hash} || \ \texttt{&quot;:::&quot;} \ || \ \texttt{bcrypt}_V(\texttt{value})).$$</p>
+<p>$\texttt{bcrypt}_N$ and $\texttt{bcrypt}_V$ are the hash $\texttt{bcrypt}$ respectively with the salt <code>SALT_FOR_NODE</code> and <code>SALT_FOR_VALUE</code>. Note that the salts will be given upon connection.</p>
+<p>As an example, below are the Merkle tree with six nodes and the salts:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+node[shape=&amp;#34;box&amp;#34;, style=&amp;#34;rounded, filled&amp;#34;, color=&amp;#34;#ffe4e1&amp;#34;, fontcolor=&amp;#34;#ffe4e1&amp;#34;, fillcolor=&amp;#34;#33333c&amp;#34;]
+
+{ rank = same; &amp;#34;x1&amp;#34;; &amp;#34;y1&amp;#34;; &amp;#34;x2&amp;#34;; }
+
+x0[label=&amp;#34;🌲 0&amp;#34;, width=0.9]
+x1[label=&amp;#34;🌲 1&amp;#34;, width=0.9]
+y1[style=invis]
+x2[label=&amp;#34;🌲 2&amp;#34;, width=0.9]
+x3[label=&amp;lt;🌿 3&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Value: 1337&amp;lt;/font&amp;gt;&amp;gt;, width=0.9]
+x4[label=&amp;lt;🌿 4&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Value: 1338&amp;lt;/font&amp;gt;&amp;gt;, width=0.9]
+x5[style=invis]
+x6[label=&amp;lt;🌿 5&amp;lt;BR /&amp;gt;&amp;lt;font point-size=&amp;#34;11&amp;#34;&amp;gt;Value: 1339&amp;lt;/font&amp;gt;&amp;gt;, width=0.9]
+
+x0-&amp;gt;x1
+x0-&amp;gt;y1[style=invis]
+x0-&amp;gt;x2
+x1-&amp;gt;x3
+x1-&amp;gt;x4
+x2-&amp;gt;x5[style=invis]
+x2-&amp;gt;x6
+
+  }
+  </div>
+</div>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">SALT_FOR_NODE</span>  <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;$2b$04$NODENODENODENODENODEOO&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">SALT_FOR_VALUE</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;$2b$04$VALUEVALUEVALUEVALUEOO&#39;</span>
+</span></span></code></pre></div><p>We can compute the root node hash (hash for node 0) bottom-up:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">EMPTY_NODE_HASH</span>  <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">SALT_FOR_NODE</span><span class="p">)</span> <span class="c1"># == b&#39;MQ2LoT4.AHVICmhkTdC2USXZDB0z7cm&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">EMPTY_VALUE_HASH</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">SALT_FOR_VALUE</span><span class="p">)</span> <span class="c1"># == b&#39;M2nEWQrn9QFIADu16Da03Xr5ezenIX.&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">NODE_3_VALUE</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;00000000 00000539&#39;</span><span class="p">),</span> <span class="n">SALT_FOR_VALUE</span><span class="p">)</span> <span class="c1"># 1337</span>
+</span></span><span class="line"><span class="cl"><span class="n">NODE_4_VALUE</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;00000000 0000053a&#39;</span><span class="p">),</span> <span class="n">SALT_FOR_VALUE</span><span class="p">)</span> <span class="c1"># 1338</span>
+</span></span><span class="line"><span class="cl"><span class="n">NODE_5_VALUE</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;00000000 0000053b&#39;</span><span class="p">),</span> <span class="n">SALT_FOR_VALUE</span><span class="p">)</span> <span class="c1"># 1339</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">NODE_3_HASH</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;:::&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">EMPTY_NODE_HASH</span><span class="p">,</span> <span class="n">EMPTY_NODE_HASH</span><span class="p">,</span> <span class="n">NODE_3_VALUE</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">SALT_FOR_NODE</span><span class="p">)</span> <span class="c1"># == b&#39;XsDcVafPK/jlPTL0ZSle/dtEJkee/Au&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">NODE_4_HASH</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;:::&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">EMPTY_NODE_HASH</span><span class="p">,</span> <span class="n">EMPTY_NODE_HASH</span><span class="p">,</span> <span class="n">NODE_4_VALUE</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">SALT_FOR_NODE</span><span class="p">)</span> <span class="c1"># == b&#39;IqRxjujNv9y6FmmOvHenWEo/pLRTAUu&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">NODE_5_HASH</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;:::&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">EMPTY_NODE_HASH</span><span class="p">,</span> <span class="n">EMPTY_NODE_HASH</span><span class="p">,</span> <span class="n">NODE_5_VALUE</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">SALT_FOR_NODE</span><span class="p">)</span> <span class="c1"># == b&#39;vVHq1POwhT3YIIfK7IgtaN40H09Zfnq&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">NODE_1_HASH</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;:::&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">NODE_3_HASH</span><span class="p">,</span> <span class="n">NODE_4_HASH</span><span class="p">,</span> <span class="n">EMPTY_VALUE_HASH</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">SALT_FOR_NODE</span><span class="p">)</span> <span class="c1"># == b&#39;sOuDjB/GqERr5J/BaoOKovGz.UjWxPC&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">NODE_2_HASH</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;:::&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">EMPTY_NODE_HASH</span><span class="p">,</span> <span class="n">NODE_5_HASH</span><span class="p">,</span> <span class="n">EMPTY_VALUE_HASH</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">SALT_FOR_NODE</span><span class="p">)</span> <span class="c1"># == b&#39;k4sMGJnOJvAvvhgZfdDjxmGki2avy7W&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">NODE_0_HASH</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;:::&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">NODE_1_HASH</span><span class="p">,</span> <span class="n">NODE_2_HASH</span><span class="p">,</span> <span class="n">EMPTY_VALUE_HASH</span><span class="p">]),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">SALT_FOR_NODE</span><span class="p">)</span> <span class="c1"># == b&#39;.B8SqLK6AYf88PZe93HzUKwH0OJ4Pwe&#39;</span>
+</span></span></code></pre></div><p>Notably, the <code>hash</code> function trims the salt (the first 29 bytes) away. Only the last 31 bytes from bcrypt will be taken.</p>
+<p>It is important that <code>bcrypt</code> would only take the first 72 bytes of the preimage to compute its hash. When we look at the preimage of <code>NODE_0_HASH</code>, only the first four bytes of the <code>VALUE_HASH</code> will be taken into account.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">123456789012345678901234567890123456789012345678901234567890123456789012
+</span></span><span class="line"><span class="cl">`bcrypt` would only take the up to the 72th byte for the digest        ↓
+</span></span><span class="line"><span class="cl">LEFT_SUBTREE_HASH______________:::RIGHT_SUBTREE_HASH_____________:::VALUE_HASH_____________________
+</span></span></code></pre></div><p>Since the output of <code>hash</code> satisfy the regular expression <code>[./0-9A-Za-z]{31}</code>, its character set is of size 64. It is expected to generate $\approx 64^{4/2} = 2^{12}$ preimages to come up with a collision pair. In this challenge, what we need is a pair of leaf nodes such that they have the same hash, and</p>
+<ol>
+<li>the first leaf node has value $x \in [0, 10^9]$, and</li>
+<li>the second leaf node has value $y \in [10^{18}, 2^{64})$.</li>
+</ol>
+<p>If the first leaf node is replaced with the second leaf node, the root node hash remains unchanged. After all, the below is the heuristic to make $M \geq 10^{18}$:</p>
+<ol>
+<li>Generate a random ECDSA key.</li>
+<li>Generate two leaf nodes with the above properties.</li>
+<li>Call <code>deposit(x, public_key)</code> to create the first node in the tree.</li>
+<li>Generate a proof that show that $\texttt{tree}[\texttt{public\_key}] = y$.</li>
+<li>Sign the proof with the ECDSA private key.</li>
+<li>Call <code>withdraw(y, signature, proof)</code> to withdraw $y$ from the server.</li>
+</ol>
+<p>We have $10^9 - x + y \geq 10^{18}$ now, and we can call <code>flag()</code> to win.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Google CTF 2025 Quals Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+
+        
+          <a class="btn float-end" href="/posts/2025/2025-06-29-hkcert-ctf-4/">HKCERT CTF 2024 Quals Writeup (IV): The Reverse Challenges →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

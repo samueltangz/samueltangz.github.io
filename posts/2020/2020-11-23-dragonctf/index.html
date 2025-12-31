@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dragon CTF 2020 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Dragon CTF 2020 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2020-11-23T04:33:50&#43;08:00">2020-11-23</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/dragonctf/" class="text-muted text-decoration-none">#dragonctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p><em>Dragon CTF 2020</em> is definitely had my best CTF moments. There are big brain moments and I have been mind-blown for multiple times during the game. This time we have teamed up with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a>. I have solved all the crypto challenges and two challenges with my teammates.</p>
+<p>There are three challenges writeup in this post:</p>
+<ul>
+<li>Bit Flip (parts 2 and 3)</li>
+<li>Frying in motion</li>
+</ul>
+<h2 id="bit-flip-crypto-155324343-points">Bit Flip (Crypto, 155+324+343 points)<a href="#bit-flip-crypto-155324343-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>At the beginning, a 128-bit <code>alice_secret</code> (denoted as $a$) is generated. We are given an oracle that allows us to input a 256-bit value $v$. An PRNG $R$ uses $a\oplus v$ to derive:</p>
+<ol>
+<li>a 512-bit prime $p$ that is used for Diffie-Hellman, and</li>
+<li>a 64-bit secret $a$ that is Alice's secret key.</li>
+</ol>
+<p>For each oracle call, the following will be printed</p>
+<ol>
+<li>The number of <code>rng.getbits(512)</code> calls for $p$ to be a prime,</li>
+<li>Bob's public key (which is generated randomly in each call), $B$,</li>
+<li>The encrypted flag (with AES-CBC &amp; key is derived from the DH shared key):</li>
+</ol>
+<p>Of course, <em>the devil is in the detail</em>. The AES-CBC <code>key</code> is derived as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">dh_shared_key</span> <span class="o">=</span> <span class="mi">1337</span> <span class="o">^</span> <span class="nb">pow</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">key</span> <span class="o">=</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="n">dh_shared_key</span><span class="p">,</span> <span class="mi">16</span><span class="p">)[:</span><span class="mi">16</span><span class="p">]</span>
+</span></span></code></pre></div><p>Furthermore, the PRNG is simple. It is maintaining a 256-bit state $s$. 512-bit and 64-bit numbers are generated respectively with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">getbits</span><span class="p">(</span><span class="n">bits</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span> <span class="o">+</span> <span class="n">sha256</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">+=</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">output</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">getbits</span><span class="p">(</span><span class="n">bits</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span><span class="o">.</span><span class="n">digest</span><span class="p">()[</span><span class="o">-</span><span class="mi">8</span><span class="p">:]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">output</span>
+</span></span></code></pre></div><h4 id="the-plot-twist">The plot twist<a href="#the-plot-twist" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>This is the setting for part one. Parts two and three are pretty similar though.</p>
+<ul>
+<li>Parts 2 and 3 are <em>not</em> returning Bob's public key, and</li>
+<li>Part 3 uses the prime $p$ and check if $q := 2p+1$ is a prime. The prime $q$ (instead of $p$) is used for DH.</li>
+</ul>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-the-real-bit-flipping">Part I: The real bit-flipping<a href="#part-i-the-real-bit-flipping" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><em>Bit Flip 1</em> was solved in about 45 minutes. Basically we are able to recover $v$ from the number of <code>rng.getbits(512)</code> calls. Since I am sure that there will be writeups on this part available online, I am skipping this part for brevity.</p>
+<h4 id="part-ii-a-nightmare-on-long_to_bytes">Part II: A nightmare on <code>long_to_bytes</code><a href="#part-ii-a-nightmare-on-long_to_bytes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><em>Bit Flip 3</em> was solved in 1 hour - and we were the first to solve. But wait, why isn't part II on <em>Bit Flip 2</em>? The reason is simply because just I cannot solve it (yet).</p>
+
+
+<figure>
+  <img src="/images/2020-11-23-dragonctf/bit-flip-01.png" title="defund had the same question, too.">
+  
+  <figcaption>defund had the same question, too.</figcaption>
+  
+</figure>
+
+<p>The prime used for Diffie-Hellman can be 513-bit long. This makes the AES key derivation interesting - as <code>long_to_bytes(x, 16)</code> actually prepend null bytes until the output size is a multiple of 16. For example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">127</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;80000000000000000000000000000000&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">128</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;0000000000000000000000000000000100000000000000000000000000000000&#39;</span>
+</span></span></code></pre></div><p>Luckily (or unluckily) the shared key can be as large as 513 bits long. In that case, the first block would be <code>00 00 ... 00 00 01</code> - and this is the AES key.</p>
+<p>We do not even need to know Alice's nor Bob's key. Basically there is around 25% chance for the DH shared key to be 513-bit. When it happens, the constant key is used and we are able to decrypt the flag - <code>DrgnS{C0nst_A3S_K3y_1111111111111!}</code>. First blood 🩸!</p>
+<h4 id="part-iii-playing-mind-games-on-bit-flip-2">Part III: Playing mind-games on <em>Bit Flip 2</em><a href="#part-iii-playing-mind-games-on-bit-flip-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p><em>Bit Flip 2</em> was solved in about 12 hours. I was mind-blown when I know <em>da wae</em>. Since the DH key could never be 513 bits long anymore, we can no longer exploit in the way as described in <em>Bit Flip 3</em>.</p>
+<div class="alert warning">
+  <strong>Wait.</strong> This made me <em>very</em> puzzled: How do we find the shared key (or $g^{ab}\ (\text{mod}\ p)$) if Bob is not telling us anything?
+</div>
+<p>Basically we have three options:</p>
+<ol>
+<li>Make $a = 0$. This implies that $g^{ab} \equiv 1$, resulting in a constant key.</li>
+<li>Find $a$ and $p$ such that $g^a\in\mathbb{Z}_p^*$ has a small order. Hence $\{g^{ab}\in\mathbb{Z}_p^*\ |\ b\in\mathbb{Z}\}$ can be exhausted feasibly.</li>
+<li>Make $p$ 385-bit long (or 1-bit, 129-bit or 257-bit). Then we are able to reuse the exploit on <em>Bit Flip 3</em>.</li>
+</ol>
+<p>There is a point of time that over 10 teams have solved <em>Bit Flip 2</em> while only <em>hxp</em> and us have solved <em>Bit Flip 3</em>. If option 3 is the way to go, the number of solves would not be the same. Moreover, option 2 is barely possible in a perspective of math. That said, unless there is a vulnerability that I am not awared of, we may need to make $a = 0$. That is equivalent to <code>rng.getbits(64) == 0</code> and thus a 64-bit proof-of-work. Possible?</p>
+<p>During the research, I was wondering if there is a proof-of-work database that has a list of payloads with many trailing zeros as its hash. I was even wondering if there is someone ever able to solve a 64-bit proof-of-work (particularly on SHA256). Turns out I am too naive - <em>some</em> are able to solve a 76-bit proof-of-work in around 10 minutes. Who? The bitcoin network.</p>
+
+
+<figure>
+  <img src="/images/2020-11-23-dragonctf/bit-flip-02.png" title="Let&#39;s appreciate the number of zeros...">
+  
+  <figcaption>Let&#39;s appreciate the number of zeros...</figcaption>
+  
+</figure>
+
+<p>The <a href="https://en.bitcoin.it/wiki/Block_hashing_algorithm"
+   
+   target="_blank" rel="noopener noreferrer" >block hashing algorithm</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> for Bitcoin is SHA256. This is how block 125552 (the smallest hash as of June 2011) is computed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">d</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;0100000081cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a30&#39;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                  <span class="s1">&#39;8000000000000e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7&#39;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                  <span class="s1">&#39;affc8892b0f1fc122bc7f5d74df2b9441a42a14695&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># b9d751533593ac10cdfb7b8e03cad8babc67d8eaeac0a3699b82857dacac9390</span>
+</span></span><span class="line"><span class="cl"><span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1dbd981fe6985776b644b173a4d0385ddc1aa2a829688d1e0000000000000000</span>
+</span></span></code></pre></div><p>The above hash ends with 8 null bytes. If the below seed generates a prime in its first call of <code>rng.getbits(512)</code>, then <code>a = 0</code>:</p>
+<p><code>seed = 0xb9d751533593ac10cdfb7b8e03cad8babc67d8eaeac0a3699b82857dacac938c</code>.</p>
+<p>Unfortunately it is not. Luckily there are many inputs (available on the Bitcoin network) that generates eight trailing null bytes as its hash. We can simply look at the blocks and find the one we need. For me, I was using the block API from <em>blockcypher.com</em> to retrieve and compute the preimage of hashes. Eventually <a href="https://live.blockcypher.com/btc/block/657972"
+   
+   target="_blank" rel="noopener noreferrer" >block 657972</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> satisfies our needs and the Alice's secret key will be $a = 0$.</p>
+<p>That said, the AES key would be <code>00 00 ... 00 05 38</code> when $a = 0$ - and we are able to decrypt the flag: <code>DrgnS{B1tc0in_p0w3r_crypt0_brut3}</code>! &#x1f389;</p>
+<h2 id="frying-in-motion-crypto-324-points">Frying in motion (Crypto, 324 points)<a href="#frying-in-motion-crypto-324-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The challenge is simple. Upon connecting to the challenge server,</p>
+<ul>
+<li>257 HEX characters are generated, <code>strfry</code>-ed for <code>0x140000</code> times. Nothing is returned. (<em>This took around 5 seconds</em>)</li>
+<li>Players are allowed to send up to 4096 bytes. The server returns the <code>strfry</code>-ed input.</li>
+<li>64 HEX characters (denote as <code>fry_buf</code>) <code>strfry</code>-ed and returned.</li>
+<li>The player is expected to find <code>fry_buf</code>.</li>
+</ul>
+<p>More importantly, the challenge server has a timeout of 20 seconds. Hence, you have to compute from the <code>strfry</code>-ed response in 15 seconds.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-the-first-encounter">Part I: The first encounter<a href="#part-i-the-first-encounter" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<blockquote>
+<p>&quot;WTF. Yet another <code>strfry</code> question? It must be very boring.&quot; -- Mystiz</p>
+</blockquote>
+<p>This is the first comment I made to the challenge. It is actually much interesting than I thought and I have spent a good 5 hours for the challenge.</p>
+<p>The previous CTFs (for example, challenge from <a href="https://ctftime.org/task/10764"
+   
+   target="_blank" rel="noopener noreferrer" >ångstromCTF 2020</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and <a href="https://ctftime.org/task/11259"
+   
+   target="_blank" rel="noopener noreferrer" >DawgCTF 2020</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>) exploited on the small seed space that can be exhausted. In the previous versions of libc, the seeds for <code>strfry</code> is given by <code>time(NULL) ^ getpid()</code>. I was trying to print <code>time(NULL)</code> and <code>getpid()</code> alongside with the  <code>strfry</code> result, but the seed does not check out. What? Maybe the world is not peaceful anymore in <em>libc 2.31-0ubuntu9</em>. Let's download the source code and have a read.</p>
+<h4 id="part-ii-code-reading-game">Part II: Code-reading game<a href="#part-ii-code-reading-game" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Let's verify the first point - is the implementation for <code>strfry</code> changed?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// string/strfry.c
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="nf">strfry</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">string</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// omitted...
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">static</span> <span class="kt">char</span> <span class="n">state</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="n">rdata</span><span class="p">.</span><span class="n">state</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">__initstate_r</span> <span class="p">(</span><span class="nf">random_bits</span> <span class="p">(),</span>
+</span></span><span class="line"><span class="cl">		     <span class="n">state</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">state</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">rdata</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">init</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// omitted...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// include/random-bits.h
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint32_t</span>
+</span></span><span class="line"><span class="cl"><span class="nf">random_bits</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">timespec</span> <span class="n">tv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">__clock_gettime</span> <span class="p">(</span><span class="n">CLOCK_MONOTONIC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* Shuffle the lower bits to minimize the clock bias.  */</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">uint32_t</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">tv</span><span class="p">.</span><span class="n">tv_nsec</span> <span class="o">^</span> <span class="n">tv</span><span class="p">.</span><span class="n">tv_sec</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">ret</span> <span class="o">^=</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Although the string is fried in the same way, the seed is changed! Since the seed is 32 bits long, maybe I can just exhaust it. However it takes 5 seconds to <code>strfry</code> a 257-byte long string for 0x140000 times, it is not feasible to brute force with the challenge implementation. Let's read how random numbers are generated.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// stdlib/random_r.c
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="nf">__initstate_r</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">seed</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">arg_state</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	       <span class="k">struct</span> <span class="n">random_data</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// omitted...
+</span></span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="n">BREAK_3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">type</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">BREAK_4</span> <span class="o">?</span> <span class="nl">TYPE_3</span> <span class="p">:</span> <span class="n">TYPE_4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">BREAK_1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">BREAK_0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">goto</span> <span class="n">fail</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="n">type</span> <span class="o">=</span> <span class="n">TYPE_0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="n">type</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">BREAK_2</span> <span class="o">?</span> <span class="nl">TYPE_1</span> <span class="p">:</span> <span class="n">TYPE_2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">degree</span> <span class="o">=</span> <span class="n">random_poly_info</span><span class="p">.</span><span class="n">degrees</span><span class="p">[</span><span class="n">type</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">separation</span> <span class="o">=</span> <span class="n">random_poly_info</span><span class="p">.</span><span class="n">seps</span><span class="p">[</span><span class="n">type</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">buf</span><span class="o">-&gt;</span><span class="n">rand_type</span> <span class="o">=</span> <span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">buf</span><span class="o">-&gt;</span><span class="n">rand_sep</span> <span class="o">=</span> <span class="n">separation</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">buf</span><span class="o">-&gt;</span><span class="n">rand_deg</span> <span class="o">=</span> <span class="n">degree</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int32_t</span> <span class="o">*</span><span class="n">state</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">((</span><span class="kt">int32_t</span> <span class="o">*</span><span class="p">)</span> <span class="n">arg_state</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>	<span class="cm">/* First location.  */</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* Must set END_PTR before srandom.  */</span>
+</span></span><span class="line"><span class="cl">  <span class="n">buf</span><span class="o">-&gt;</span><span class="n">end_ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">state</span><span class="p">[</span><span class="n">degree</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">buf</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">__srandom_r</span> <span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">state</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">TYPE_0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">type</span> <span class="o">!=</span> <span class="n">TYPE_0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">state</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">rptr</span> <span class="o">-</span> <span class="n">state</span><span class="p">)</span> <span class="o">*</span> <span class="n">MAX_TYPES</span> <span class="o">+</span> <span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// omitted...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>strfry</code> uses a 32-byte state, which indicates that <code>TYPE_1</code> PRNG is used. Seven 32-bit unsigned integer is derived from the seed (denote it as <code>s[0]</code>, <code>s[1]</code>, ..., <code>s[6]</code>) and set the counter <code>c := 0</code>. This is the equivalent Python code.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">GlibcRandom</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">init_state</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">70</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">init_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">seed</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">h</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">seed</span> <span class="o">//</span> <span class="mi">127773</span><span class="p">,</span> <span class="n">seed</span> <span class="o">%</span> <span class="mi">127773</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">seed</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16807</span> <span class="o">*</span> <span class="n">l</span> <span class="o">-</span> <span class="mi">2836</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x7fffffff</span>
+</span></span><span class="line"><span class="cl">            <span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="n">state</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="p">[(</span><span class="n">t</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">%</span> <span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="n">t</span> <span class="o">%</span> <span class="mi">7</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="p">[(</span><span class="n">t</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">%</span> <span class="mi">7</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s</span><span class="p">[</span><span class="n">t</span> <span class="o">%</span> <span class="mi">7</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="p">[(</span><span class="n">t</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">%</span> <span class="mi">7</span><span class="p">]</span> <span class="o">&amp;=</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">7</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">v</span>
+</span></span></code></pre></div><h4 id="part-iii-fast-forwarding-the-states">Part III: Fast-forwarding the states<a href="#part-iii-fast-forwarding-the-states" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Fast-forwarding the PRNG is easy. This is similar on the <a href="/posts/2020/2020-09-08-confidencectf-team-trees/#42-fast-sequence-generation"
+   
+   >Team Trees</a> challenge in CONFidence CTF this year. We can skip states with the matrix implementation (and I am able to skip the details for this part, too). After all, 5M seeds can be checked per second. Since we have only 15 seconds to recover the seed, we are unable to find the entire search space (only 1.75% of the seed space is checked). In average, we can recover the seed from the <code>strfry</code> output in 15 seconds once every 60 times. Finally, if we are able to recover the seed, we can freely fry and unfry strings.</p>
+<p>After two hours, we have the flag: <code>DrgnS{Fr13d_57r1Ng5_4r3_tH3_Be5t_s7r1NgS!}</code>.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Dragon CTF 2020 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2020/2020-12-20-hxpctf-hyper/">← hxp CTF 2020: Hyper</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2020/2020-09-21-firebird-intro-ctf-rsa/">Firebird Intro CTF: Rotten Secured Algorithm →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

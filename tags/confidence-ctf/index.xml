@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Confidence-Ctf on Mystify</title>
+    <link>https://mystiz.hk/tags/confidence-ctf/</link>
+    <description>Recent content in Confidence-Ctf on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 08 Sep 2020 18:30:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/confidence-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CONFidence 2020 CTF: Team Trees</title>
+      <link>https://mystiz.hk/posts/2020/2020-09-08-confidencectf-team-trees/</link>
+      <pubDate>Tue, 08 Sep 2020 18:30:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2020/2020-09-08-confidencectf-team-trees/</guid>
+      <description>&lt;p&gt;This week, we have teamed up as &lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt; to play CONFidence 2020 CTF. We end up ranked 15, but we are more proud of ourselves able to solve a reversing challenge called Team Trees (395 points, 5 solves).&lt;/p&gt;&#xA;&lt;p&gt;In particular, we are the first-to-solve to the challenge. It took us around two hours to win the flag. This writeup is written by &lt;a href=&#34;https://twitter.com/harrier_lcc&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@harrier_lcc&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/mystiz613&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@mystiz613&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;We wanted to plant a lot of trees, but it&#39;s going kinda slow...&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

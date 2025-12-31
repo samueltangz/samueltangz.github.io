@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>idekCTF 2022* Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">idekCTF 2022* Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2023-03-12T21:07:00&#43;08:00">2023-03-12</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/idekctf/" class="text-muted text-decoration-none">#idekctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>idekCTF 2022* definitely has a fun and inspiring set of cryptography challenges. I played with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> and we solved 8 of the 10 crypto challenges.</p>
+<p>In this blog post, I'll include my solution on three of them: <em>Primonumerophobia</em> (10 solves), <em>Chronophobia</em> (5 solves) and <em>Decidophobia</em> (3 solves).</p>
+<h2 id="primonumerophobia">Primonumerophobia<a href="#primonumerophobia" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let $T = \{0, 4, 6, 10, 16, 18, 24, 28, 30, 34, 36, 40, 42, 44, 45\}$. An initial state $(t_0, t_1, ..., t_{46})$ with $t_0, t_1, ..., t_{46} \in \{0, 1\}$ is generated and define</p>
+<p>$$t_{i+47} = \bigoplus_{k \in T} t_{i+k} = t_i \oplus t_{i+4} \oplus ... \oplus t_{i+45}$$</p>
+<p>for $i \geq 0$. Two 512-bit primes $p$ and $q$ are generated by getting 512 consecutive bits from the LFSR state, i.e., $p$ and $q$ are the first two 512-bit primes in</p>
+<p>$$\begin{aligned}
+v_0 &amp; := 2^{511} t_0 + 2^{510} t_1 + ... + t_{511} \\
+v_1 &amp; := 2^{511} t_{512} + 2^{510} t_{513} + ... + t_{1023} \\
+&amp; \vdots \\
+v_k &amp; := 2^{511} t_{512k} + 2^{510} t_{512k+1} + ... + t_{512k+511} \\
+&amp; \vdots
+\end{aligned}$$</p>
+<p>It is given that $p = v_{1159}$ and $q = v_{1606}$. We are also given a RSA public key $n = pq$, $e = 65537$ and an encrypted flag $c$. The goal is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">78189483779073760819769596415493404181115737255987326126790953924148600157623709942134043192581448967829591214999561812461790206591977861764710056434977125005626712442593271233036617073503751799983263888626278748439349756982639988997517983470845431197233107232933125334078771472039280629203017666578936360521</span>
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="mi">39952631182502523101053953538875437560829302998610236142339435591980522271590392249355510253125310494063081880512061476177621613835835483055753316172267380484804011034657479491794064534740537749793563744927827732170347495398050941609682485707331552759412916426691849669362897656967530464847648838434750188588</span>
+</span></span></code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Assuming that the initial state is $t_0, t_1, ..., t_{46}$. Then</p>
+<p>$$\begin{cases}
+p = 2^{511} t_{593408} + 2^{510} t_{503409} + ... + 2 t_{593919} \\
+q = 2^{511} t_{822272} + 2^{510} t_{822273} + ... + 2 t_{822783}
+\end{cases}.$$</p>
+<p>Furthermore, for all $n \geq 0$, we can express $t_n$ in terms of $t_0, t_1, ..., t_{46}$.</p>
+<p>Since $p$ and $q$ are 512-bit primes, $t_{593408} = t_{593919} = t_{822272} = t_{822783} = 1$. We also can brute-force the lowest 24 bits of $p$ to obtain the lowest 24 bits of $q$. In that way, we have 50 bits of $t_j$'s:</p>
+<ul>
+<li>$t_{593408}$ (the MSB); $t_{593896}, t_{593897}, ..., t_{593919}$ (the 24 lowest bits) from $p$, and</li>
+<li>$t_{822272}; t_{822760}, t_{822761}, ..., t_{822783}$ from $q$.</li>
+</ul>
+<p>If we let $(s_0, s_1, ..., s_{49}) := (t_{593408}, t_{593897}, ..., t_{822783})$ and write every $t_i$ in terms of $s_j$'s (i.e., change of basis), we can effectively obtain $\tilde{p}$ and $\tilde{q}$ (guesses for $p$ and $q$ in each brute force attempt) and check if they are the factors of $n$.</p>
+<div class="alert warning">
+  <strong>🧭 Why don't we exhaust the lowest 23 bits of $p$ and $q$?</strong> In that way, we have 48 bits of $t_j$ already. In reality, the rank of the 48 $t_j$'s is only 46, which is not full rank. To resolve this, we have to exhaust 24 bits instead of 23.
+</div>
+
+<p>Effectively, we can recover the prime factors if $n$, compute the private key and decrypt the flag: <code>idek{th3_prim3_g3n3r4ti0n_is_c001_but_n0t_s3cur3_QAQ}</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="mh">0x9b95ba6e07875ef81ac1f20401e93fd68f486f1023460f5430094c581fdf09bad2b88e7341af13ed6fc767f920786269223a3a99a9303b716c5ba754ff70c549</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="mh">0xb735588161082688a93c6cfc2b664dfae13c936979b29d5431c4da306a3e6d9cc371600318d17452e749702f9fd889709f18cec6fdb0c5eb93f13800889ce101</span>
+</span></span></code></pre></div><h2 id="chronophobia">Chronophobia<a href="#chronophobia" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let $p, q$ be two 512-bit primes and let $n = pq$. Let also $k \in [128, 256]$ and $t \in [0, n)$. We are given $k$ and $t$. Denote $\text{f}(u)$ by</p>
+<p>$$\text{f}(u) = u^{2^{2^k}}\ \text{mod}\ n.$$</p>
+<p>We can send at most 1336 different $u$'s. Denote $v = \text{f}(u)$ and we will get the number of digits in $v$ and the first 200 digits of $v$. The goal is to compute $\text{f}(t)$ in 2 minutes.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To start with, we can send $t, t^2, ..., t^m$ to the server and obtain $\text{f}(t), \text{f}(t^2), ..., \text{f}(t^m)$.</p>
+<p>Let's denote $v_i := \text{f}(t^i) = {\color{lightgreen}a_i} + {\color{pink}x_i}$ with $a_i$ and $x_i$ are respectively the known and the unknown digits of $v_i$. It is expected that $x_i$ has 360 bits and $a_i$ has 664 bits.</p>
+<p>We can look at the below relation:</p>
+<p>$$\text{f}(t^{i + j}) \equiv t^{2^{2^k} (i+j)} \equiv t^{2^{2^k} i} \cdot t^{2^{2^k} j} \equiv \text{f}(t^i) \cdot \text{f}(t^j) \quad (\text{mod}\ n).$$</p>
+<p>If we substitute $a_i, a_j, a_{i+j}, x_i, x_j, x_{i+j}$ and denote $y_{ij} := x_i x_j$, we have</p>
+<p>$$\begin{aligned}
+&amp; a_{i+j} + x_{i+j} \equiv (a_i + x_i) \cdot (a_j + x_j) \equiv a_i a_j + a_i x_j + a_j x_i + x_i x_j \quad (\text{mod}\ n) \\
+\Longrightarrow \quad &amp; a_j {\color{pink}x_i} + a_i {\color{pink}x_j} -{\color{pink}x_{i+j}} + (a_i a_j - a_{i+j}) + {\color{pink}y_{ij}} \equiv 0 \quad (\text{mod}\ n)
+\end{aligned}$$</p>
+<p>The above congruence has around $360 \times 3 + 720 \times 1 = 1800$ unknown bits while carrying $1024$ bits of information, which is clearly not enough. On the other hand, when $i = j$, we also have $1440$ and $1024$ bits of unknown and information, respectively.</p>
+<p>$$2 a_i {\color{pink}x_i} - {\color{pink}x_{2i}} + (a_i^2 - a_{2i}) + {\color{pink}y_{ii}} \equiv 0 \quad (\text{mod}\ n).$$</p>
+<p>However, the congruences above could give us more information than unknowns in the long run. Below is an example where we use four congruences with $x_1, x_2, x_3, x_4$:</p>
+<p>$$\left\{\begin{array}{rcrcrcrcccc}
+2 a_1 {\color{pink}{x_1}} &amp; - &amp;       {\color{pink}{x_2}} &amp;   &amp;                         &amp;   &amp;                         &amp; + &amp; ({a_1}^2 - a_2) &amp; \equiv &amp; -{\color{pink}{y_{11}}} \\
+a_2 {\color{pink}{x_1}} &amp; + &amp;   a_1 {\color{pink}{x_2}} &amp; - &amp; {\color{pink}{x_3}}     &amp;   &amp;                         &amp; + &amp; (a_1 a_2 - a_3) &amp; \equiv &amp; -{\color{pink}{y_{12}}} \\
+a_3 {\color{pink}{x_1}} &amp;   &amp;                           &amp; + &amp; a_1 {\color{pink}{x_3}} &amp; - &amp; {\color{pink}{x_4}}     &amp; + &amp; (a_1 a_3 - a_4) &amp; \equiv &amp; -{\color{pink}{y_{13}}} \\
+&amp;   &amp; 2 a_2 {\color{pink}{x_2}} &amp;   &amp;                         &amp; - &amp; {\color{pink}{x_4}}     &amp; + &amp; ({a_2}^2 - a_4) &amp; \equiv &amp; -{\color{pink}{y_{22}}} \\
+\end{array}\right. \quad (\text{mod}\ n)$$</p>
+<p>There are around $4320$ unknown bits and $4096$ information bits. With this idea, we can expand further and use six congruences with $x_1, x_2, ..., x_5$. Let's convert this into a lattice as an example:</p>
+<p>$$\left[\begin{array}{cccc|ccccc}
+{a_1}^2 - a_2 &amp; a_1 a_2 - a_3 &amp; a_1 a_3 - a_4 &amp; {a_2}^2 - a_4 &amp; 1 &amp;   &amp;   &amp;   &amp;   \\
+2a_1          &amp; a_2           &amp; a_3           &amp;               &amp;   &amp; 1 &amp;   &amp;   &amp;   \\
+-1          &amp; a_1           &amp;               &amp; 2a_2          &amp;   &amp;   &amp; 1 &amp;   &amp;   \\
+&amp; -1            &amp; a_1           &amp;               &amp;   &amp;   &amp;   &amp; 1 &amp;   \\
+&amp;               &amp; -1            &amp; -1            &amp;   &amp;   &amp;   &amp;   &amp; 1 \\
+\hline
+n &amp;   &amp;   &amp;   \\
+&amp; n &amp;   &amp;   \\
+&amp;   &amp; n &amp;   \\
+&amp;   &amp;   &amp; n \\
+\end{array}\right]$$</p>
+<p>I expected to retrieve the vector</p>
+<p>$$\left[\begin{array}{cccc|ccccc} -y_{11} &amp; -y_{12} &amp; -y_{13} &amp; -y_{22} &amp; 1 &amp; x_1 &amp; x_2 &amp; x_3 &amp; x_4 \end{array}\right]$$</p>
+<p>if the size of the information is small enough. Since $4320 &gt; 4096$, I did not expect it to work. However, I obtained a vector which could served as the correct solution:</p>
+<p>$$\left[\begin{array}{cccc|ccccc} -y_{11} &amp; -y_{12} &amp; -y_{13}+x_4 &amp; -y_{22}+x_4 &amp; 1 &amp; x_1 &amp; x_2 &amp; x_3 &amp; 0 \end{array}\right].$$</p>
+<p>As we can see, $x_4$ magically merged into $y_{13}$ and $y_{22}$. In this way the size of the unknown is smaller than the size of the information (i.e. $4320 - 360 = 3960 &lt; 4096$). Effectively, we can obtain $x_1$ and compute the solution. This bring us the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">idek{St@rburst_str3@m!!!}
+</span></span></code></pre></div><h2 id="decidophobia">Decidophobia<a href="#decidophobia" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><strong>[RSA]</strong> Define three 512-bit primes $p, q, r$ and let $n = pqr$. Let $m \in [0, 2^{1500})$, $e = 65537$ and $c = m^e\ \text{mod}\ n$. We are given $n$ and $c$.</p>
+<p><strong>[Oblivious transfer]</strong> On the other hand, define two 384-bit primes $P$ and $Q$ and let $N = PQ$. Let also $E = 65537$ and $E \cdot D \equiv 1 (\text{mod}\ \phi(N))$.</p>
+<p>Let $x_1, x_2, x_3 \in [0, N)$. We are given $x_1, x_2$ and $x_3$. We are then asked to give an integer $v$. We will be given $c_1, c_2$ and $c_3$, where</p>
+<p>$$\begin{cases}
+c_1 = \left(\left(v - x_1\right)^D + p\right)\ \text{mod}\ N \\
+c_2 = \left(\left(v - x_2\right)^D + q\right)\ \text{mod}\ N \\
+c_3 = \left(\left(v - x_3\right)^D + r\right)\ \text{mod}\ N
+\end{cases}.$$</p>
+<p>The objective is to find $m$.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  📚 <strong>Unintended solution alert.</strong> My solution is unintended. If you want to look at the intended solution by <em>EggRoll-Taiyaki</em>, please read it <a href="https://github.com/EggRoll-Taiyaki/My-CTF-Challenges/tree/main/idekCTF/2022/Decidophobia"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.
+</div>
+
+<p>When we set $v = x_1$, we can effectively make $c_1 = p$. However, we also have</p>
+<p>$$\begin{cases}
+c_2 \equiv (v - x_2)^D + q \qquad (\text{mod}\ N) \\
+c_3 \equiv (v - x_3)^D + r \qquad (\text{mod}\ N)
+\end{cases}.$$</p>
+<p>Rearranging the terms, we have</p>
+<p>$$\begin{cases}
+(c_2 - q)^E \equiv v - x_2 \qquad (\text{mod}\ N) \\
+(c_3 - r)^E \equiv v - x_3 \qquad (\text{mod}\ N)
+\end{cases},$$</p>
+<p>and the only unknowns here are $q$ and $r$. If we multiply $(pq)^E$ to the both side of the second equation, we then have $p^E q^E (v - x_3) \equiv (pq)^E (c_3 - r)^E \equiv (pqc_3 - n)^E$, thus having</p>
+<p>$$(pc_3 {\color{pink}q} - n)^E - p^E (v - x_3) {\color{pink}q}^E \equiv 0 \qquad (\text{mod}\ N).$$</p>
+<p>Now we have two polynomials $\text{f}$ and $\text{g}$ such that $\text{f}(q) \equiv \text{g}(q) \equiv 0 \ (\text{mod}\ N)$. Since the value of $\text{gcd}(\text{f}, \text{g})$ is likely to be $x-q$, we can effectively recover $q$ and fully factor $n$. Finally, we got the flag and the first blood &#x1fa78;!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">idek{H0n3sty_1s_th3_b3st_p0l1cy?_N0p3_b3c4us3_w3_ar3_h@ck3rs!}
+</span></span></code></pre></div>
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          idekCTF 2022* Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2023/2023-03-29-acsc-1/">← ACSC 2023 Quals (I): Gotion and easySSTI</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2023/2023-03-06-mocsctf/">MOCSCTF 2023 Postmortem →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

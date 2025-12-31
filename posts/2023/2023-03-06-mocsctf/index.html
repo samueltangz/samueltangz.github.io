@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOCSCTF 2023 Postmortem | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">MOCSCTF 2023 Postmortem</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2023-03-06T00:45:00&#43;08:00">2023-03-06</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/mocsctf/" class="text-muted text-decoration-none">#mocsctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I prepared three challenges on behalf of <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a> for MOCSCTF, which is a 8-hour long CTF happened yesterday. This blogpost serves as the write-up for the three challenges that I wrote.</p>
+<p>There are two solves (out of 40 participants) for <em>Three-pass</em>, and zero solves for <em>jav-asr-ipt</em> and <em>Catch-22 Mini</em>.</p>
+<h2 id="three-pass">Three-pass<a href="#three-pass" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Shamir is a famous cryptographer. He invented the three-pass protocol, so I don't see it is unsafe.</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230304-mocsctf/three-pass/public/chall.py"
+   
+   target="_blank" rel="noopener noreferrer" >chall.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230304-mocsctf/three-pass/public/output.txt"
+   
+   target="_blank" rel="noopener noreferrer" >output.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>Let $(n, e_1)$ and $(n, e_2)$ be the RSA public keys of Alice and Bob, where $d_1$ and $d_2$ are their respective private keys. The flag, $m$, is transmitted from Alice to Bob via a three-pass protocol, specified below:</p>
+<ol>
+<li>Alice encrypts $m$, i.e., $c_1 := m^{e_1}\ \text{mod}\ n$ and sends it to Bob,</li>
+<li>Bob encrypts $c_1$, i.e., $c_2 := {c_1}^{e_2}\ \text{mod}\ n$ and sends it to Alice,</li>
+<li>Alice decrypts $c_2$, i.e., $c_3 := {c_2}^{d_1}\ \text{mod}\ n$ and sends it to Bob,</li>
+<li>Bob decrypts $c_3$ and obtains the flag.</li>
+</ol>
+<p>We have intercepted $c_1$, $c_2$ and $c_3$. The objective is to recover the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">10964288917862750817371943000644790354245952753624811184742882075573503291159213275792617289565174542016890536882446152316020614664981464561310177070588847541824015432685005516483258970286016579654507584001942145685835639042544771196025875926934824854654629287406804175169781542930744041035961354498413636479318500015887509695151706774163342176270668595764352803054030180712959407702145232968072095960248622217033412500318802588364053218099740479457499745048733598734525822270979536699859476431259697698977724661051925808662192259594147272928685323228026419764554817739443779978259966996524027223685447697163661582141</span>
+</span></span><span class="line"><span class="cl"><span class="n">e_a</span> <span class="o">=</span> <span class="mi">7850787509111121843704296046292796209765523362760822778441073322435061020720960202570760122216883325800836925397165034377438443919262547805439050014666281823875017212696850811879873382570464494837703959487875345718181692595018804771684090856135860439183994856735097837364198982869125965085926802347005468560464386462672258583800564648667864628707942109097607368504685011961161864010504692066710237072873338338305230789347300824187187203329273552252494078998862280494814565327762466244260365644318201153240217889101138476813458833584425652814637203342017834450974917962290891504378066826883314533426272066008529842659</span>
+</span></span><span class="line"><span class="cl"><span class="n">e_b</span> <span class="o">=</span> <span class="mi">4453987268676227673717138546198543778490256900761885216399493398056068349494658337928641078100794899095850901032758903950680172209634150955381186281328572137323548410693241837784440962944102633978874827798938332394944037503353368648953561717131174637446457475027140019091092814780388647445775628641143448349527427439477564690099543443277709928131151980500888754622299623842491816224578733956512936055767159814756376096327386916365143301608788828874264501835661518243456338370292578817419693818015476586557623659740708608431858063310083629564657171971965399525567277003986302573053057000412895654326773385514407577323</span>
+</span></span><span class="line"><span class="cl"><span class="n">c1</span> <span class="o">=</span> <span class="mi">635625603722527732406242842327753945350725694571974401488962916610274697646481993610344372428481397325589618737844538706053099675067921762751397619785858707957914817999667697230069995167574307245259456697677215623906029979279072230370958181299051620924365760774594664872675088357135514004300428557363385290172008755962046341521452462577198740003483664903692948347491024627628714880272778802999826100226453863040788568957321338962180604682917073805800695632705757598907639967058123378499630550480712280533714911130683207438745204963799144060687206195796524968658243175519491950409074500917177663168800511171334501803</span>
+</span></span><span class="line"><span class="cl"><span class="n">c2</span> <span class="o">=</span> <span class="mi">7795281813608171817794892741379735062226556576265028882723464622060019286100732342981451027687820523245444314645382694811723793808174497214300156934179794205555622005157083862445686945032043405320639519697203684857899172411018428771375767426980596031822470310203233833523614211317164419285700300611034139157137457296864576086638001016651797271883268571688978451037356211059045746855900975366642645162497731774792257449712576044309087316579987978439947563661504990736364718671512316976584629358223866771466264690390020136453075012318174610037220780428939084103590144731860113940987394856986607531349399972658436455908</span>
+</span></span><span class="line"><span class="cl"><span class="n">c3</span> <span class="o">=</span> <span class="mi">7977921283916873018972258656375438636109648078403403856621256960780183659895530492670743805496687518166195286817025982922117207776910469434997789880448174416587980565856067901272107239948266338560630544165615179249646506219882043808647728828971598358249751709624378172857533066558532071073613752930847449500166165240327454355080420431675080444647400925253148611373039389289751613423304374279739869798080453011631508870963029540554868047053218458677269611062574257854538626076547078009591179864813931791542273673139423996224246974845576047905869390859665905099569747606150666678631706721843828247029345061154431341829</span>
+</span></span></code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>If we write $c_1$, $c_2$ and $c_3$ into a relation of $m$, $e_1$, $e_2$ and $n$, they are:</p>
+<p>$$\left\{\begin{aligned}
+c_1 &amp;= m^{e_1} \ \text{mod}\ n \\
+c_2 &amp;= m^{e_1 e_2} \ \text{mod}\ n \\
+c_3 &amp;= m^{e_2} \ \text{mod}\ n
+\end{aligned}\right..$$</p>
+<p>In particular, since $\gcd(e_1, e_2) = 1$, we can obtain $x$ and $y$ such that $x e_1 + y e_2 = 1$ using the extended Euclidean algorithm. In that way we can recover $m$ by computing ${c_1}^x {c_3}^y$, because</p>
+<p>$${c_1}^x {c_3}^y = m^{e_1 \cdot x} \cdot m^{e_2 \cdot y} = m^{xe_1 + ye_2} = m^1 = m \ \text{mod}\ n.$$</p>
+<p>Therefore we have the flag <code>MOCSCTF{h0w_c0u1d_w3_m4k3_4_s3cur3_7hr33_p4s5}</code>.</p>
+<h2 id="jav-asr-ipt">jav-asr-ipt<a href="#jav-asr-ipt" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Mystiz understands that not everyone writes Python. He specifically creates a crypto challenge in Javascript so that you can run on browsers.</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230304-mocsctf/jav-asr-ipt/public/app.js"
+   
+   target="_blank" rel="noopener noreferrer" >app.js</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20230304-mocsctf/jav-asr-ipt/public/output.json"
+   
+   target="_blank" rel="noopener noreferrer" >output.json</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>This challenge implements the RSA algorithm in Javascript. In particular, the below snippet is how the 1024-bit primes $p$ and $q$ are generated.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">generatePrime</span><span class="p">(</span><span class="nx">p0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">p0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">1022</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">p</span> <span class="o">+=</span> <span class="nx">BigInt</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// isPrime implements the Miller-Rabin primality test
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// with the 50 smallest primes.
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">isPrime</span><span class="p">(</span><span class="nx">p</span><span class="p">))</span> <span class="k">return</span> <span class="nx">p</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Guaranteed that p - q has a large enough difference:
+</span></span></span><span class="line"><span class="cl"><span class="c1">// p = 0b11xxx...xxx and q = 0b10xxx...xxx
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">generatePrime</span><span class="p">(</span><span class="nx">BigInt</span><span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">)</span> <span class="o">**</span> <span class="nx">BigInt</span><span class="p">(</span><span class="s1">&#39;1023&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">q</span> <span class="o">=</span> <span class="nx">generatePrime</span><span class="p">(</span><span class="nx">BigInt</span><span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">)</span> <span class="o">**</span> <span class="nx">BigInt</span><span class="p">(</span><span class="s1">&#39;1023&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">BigInt</span><span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">)</span> <span class="o">**</span> <span class="nx">BigInt</span><span class="p">(</span><span class="s1">&#39;1022&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">p</span> <span class="o">*</span> <span class="nx">q</span>
+</span></span></code></pre></div><h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>If we look at the <code>generatePrime</code> function, it appears that $p$ is generated by 1022 random bits $x_0, x_1, ..., x_{1021}$, and</p>
+<p>$$p = 2^{1023} + x_0 + x_1 \cdot 2 + ... + x_{1021} \cdot 2^{1021}.$$</p>
+<p>Similarly for $q$. It seems to depend on 1022 random bits $y_0, y_1, ..., y_{1021}$:</p>
+<p>$$q = 2^{1023} + 2^{1022} + y_0 + y_1 \cdot 2 + ... + y_{1021} \cdot 2^{1021}.$$</p>
+<p>However, this is not the case. Below is a snippet from the JavaScript documentation on the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Left_shift"
+   
+   target="_blank" rel="noopener noreferrer" >left shift operator</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>:</p>
+<blockquote>
+<p>The left shift (<code>&lt;&lt;</code>) operator shifts the first operand the specified number of bits, modulo 32, to the left...</p>
+</blockquote>
+<p>With that said, when $i \geq 32$, $b_i$ are shifted $i \ \text{mod}\ 32$ bits instead of $i$ bits. Additionally, <code>1&lt;&lt;31</code> equals to $-2^{31}$.</p>
+<p>For instance, $p$ is still generated by $x_0, x_1, ..., x_{1021}$, but</p>
+<p>$$\begin{aligned}
+p &amp;= 2^{1023} - 2^{31} (x_{31} + x_{63} + ... + x_{991}) + 2^{30} (x_{30} + x_{62} + ... + x_{990}) \\
+&amp; \qquad + 2^{29} (x_{29} + x_{61} + ... + x_{1021}) + ... + (x_0 + x_{32} + ... + x_{992}).
+\end{aligned}$$</p>
+<p>Since $x_0, x_1, ..., x_{1021}$ are either 0 or 1, we can see that the upper bound of $p$ being</p>
+<p>$$\begin{aligned}
+p &amp;&lt; 2^{1023} - 2^{31} (0 + 0 + ... + 0) + 2^{30} (1 + 1 + ... + 1) \\
+&amp; \qquad + 2^{29} (1 + 1 + ... + 1) + ... + (1 + 1 + ... + 1) \\
+&amp; = 2^{1023} + 2^{30} \cdot 31 + 2^{29} \cdot 32 + ... + 32 \\
+&amp; &lt; 2^{1023} + 2^{30} \cdot 32 + 2^{29} \cdot 32 + ... + 32 \\
+&amp; &lt; 2^{1023} + 2^{31} \cdot 32 = 2^{1023} + 2^{36},
+\end{aligned}$$</p>
+<p>and its lower bound being</p>
+<p>$$\begin{aligned}
+p &amp;&gt; 2^{1023} - 2^{31} (1 + 1 + ... + 1) + 2^{30} (0 + 0 + ... + 0) \\
+&amp; \qquad + 2^{29} (0 + 0 + ... + 0) + ... + (0 + 0 + ... + 0) \\
+&amp; = 2^{1023} - 2^{31} \cdot 31 &gt; 2^{1023} - 2^{31} \cdot 32 = 2^{1023} - 2^{36}.
+\end{aligned}$$</p>
+<p>Thus we have $2^{1023} - 2^{36} &lt; p &lt; 2^{1023} + 2^{36}$. Similarly $3 \cdot 2^{1022} - 2^{36} &lt; q &lt; 3 \cdot 2^{1022} + 2^{36}$. We can obtain $p$ by exhausting the values in $(2^{1023} - 2^{36}, 2^{1023} + 2^{36})$ and check if it is a factor of $n$.</p>
+<h4 id="recover-p-and-q-mathematically">Recover $p$ and $q$ mathematically<a href="#recover-p-and-q-mathematically" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>This is an alternate solution apart from the brute-force approach.</p>
+<p>Let $-2^{36} &lt; \Delta p, \Delta q &lt; 2^{36}$ such that</p>
+<p>$$\left\{\begin{aligned}
+p &amp;= 2^{1023} + \Delta p \\
+q &amp;= 3 \cdot 2^{1022} + \Delta q
+\end{aligned}\right.$$</p>
+<p>Then $n = pq = (2^{1023} + \Delta p)(3 \cdot 2^{1022} + \Delta q) = 6 \cdot 2^{2044} + 2^{1022} \cdot (3 \Delta p + 2 \Delta q) + \Delta p \cdot \Delta q$.</p>
+<p>We can compute $n\ \text{mod}\ 2^{1022}$ to obtain $\Delta p \cdot \Delta q$. With that, we can deduce $3 \Delta p + 2 \Delta q$ as</p>
+<p>$$3 \Delta p + 2 \Delta q = (n - 6 \cdot 2^{2044} - \Delta p \cdot \Delta q) / 2^{1022}.$$</p>
+<p>Let $v := \Delta p \cdot \Delta q$ and $u := 3 \Delta p + 2 \Delta q$ be the values we obtained. We can combine both relations as a quadratic equation in $\Delta p$:</p>
+<p>$$- 3 \Delta p^2 + u \cdot \Delta p - 2v = 0.$$</p>
+<p>By solving the quadratic equation, we can obtain $\Delta p$ and is able to factor $n$.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="mh">0x8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000068b26bb1</span>
+</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">=</span> <span class="mh">0xc0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001772381d5</span>
+</span></span></code></pre></div><p>After that, we can compute the private key $d$ and obtain the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MOCSCTF{why_d0_w3_t4ke_m0d_32_to_th3_s3c0nd_op3r4nd}
+</span></span></code></pre></div><h2 id="catch-22-mini">Catch-22 Mini<a href="#catch-22-mini" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>You need a key to open the door... but what if the key is in the room?</p>
+<p>By the way, if you find this challenge similar to HKCERT CTF 2022's &quot;Catch-22&quot;, it is. I literally plagarized that, except that:</p>
+<ol>
+<li>I used CBC instead of ECB to encrypt the token, and</li>
+<li>I made the map a little bit smaller, and</li>
+<li>I changed the category from crypto to misc,</li>
+<li>I refacted the code a little bit to make the logic clearer.</li>
+</ol>
+<p>Not a solution: <a href="https://hackmd.io/@blackb6a/hkcert-ctf-2022-ii-en-6a196795"
+   
+   target="_blank" rel="noopener noreferrer" >https://hackmd.io/@blackb6a/hkcert-ctf-2022-ii-en-6a196795</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+<p>By the way, if you want the source code for Catch-22, there you go: <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20221111-hkcert-ctf/catch-22/public"
+   
+   target="_blank" rel="noopener noreferrer" >https://github.com/samueltangz/ctf-archive-created/tree/master/20221111-hkcert-ctf/catch-22/public</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+<p>http://HOST:PORT/</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20230304-mocsctf/catch-22/public"
+   
+   target="_blank" rel="noopener noreferrer" >source.zip</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given another web game. The player can navigate in the map and the goal is to access the flag.</p>
+
+
+<figure>
+  <img src="/images/2023-03-06-mocsctf/catch-22-summary.png" title="">
+  
+</figure>
+
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  &#x1f389; <strong>Credits.</strong> Thanks @LifeIsHard for testing the challenge and giving comments prior release.
+</div>
+
+<h4 id="comparing-catch-22-and-catch-22-mini">Comparing Catch-22 and Catch-22 Mini<a href="#comparing-catch-22-and-catch-22-mini" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since <em>Catch-22</em> is similar to <em>Catch-22 Mini</em>, let's look at the code and see the diff betwen the two challenges:</p>
+<pre tabindex="0"><code class="language-diff-js&nbsp;diff-highlight" data-lang="diff-js&nbsp;diff-highlight">  /* src/app.js */
+
+      const newToken = encryptToken({
+        username,
+-       x: 13,
+-       y: 5,
++       x: 5,
++       y: 1,
+        inventory: [],
+        onMapItems: [
+-         {item: ITEMS.KEY, x: 3, y: 4},
+-         {item: ITEMS.DOOR, x: 4, y: 5},
+-         {item: ITEMS.DOOR, x: 5, y: 5},
+-         {item: ITEMS.DOOR, x: 6, y: 5},
+-         {item: ITEMS.KEY, x: 15, y: 1},
++         {item: ITEMS.KEY, x: 2, y: 0},
++         {item: ITEMS.DOOR, x: 3, y: 1}
+        ]
+      })
+</code></pre><pre tabindex="0"><code class="language-diff-js&nbsp;diff-highlight" data-lang="diff-js&nbsp;diff-highlight">  /* src/actions.js */
+
+  function isWalkable (x, y, state) {
+    // You should not walk out of bounds
+    if (x &lt; 0 || x &gt;= MAP.length) return false
+    if (y &lt; 0 || y &gt;= MAP[x].length) return false
+
+    // You should not walk more than one blocks away
+    if (Math.abs(state.x - x) + Math.abs(state.y - y) != 1) return false
+    
+    // You should not walk if there is a door blocking
+    if (state.onMapItems.find(item =&gt; item.x === x &amp;&amp; item.y === y &amp;&amp; item.item === ITEMS.DOOR)) return false
+
+-   return [TILES.PATH, TILES.PATH_WITH_FLAG].includes(MAP[x][y])
++   // Update by Mystiz at (2022.12.27): Use &#34;not wall&#34; to determine for simplicity.
++   // return [TILES.PATH, TILES.PATH_WITH_FLAG].includes(MAP[x][y])
++   return ![TILES.WALL].includes(MAP[x][y])
+  }
+</code></pre><pre tabindex="0"><code class="language-diff-js&nbsp;diff-highlight" data-lang="diff-js&nbsp;diff-highlight">  /* src/constants.js */
+
+  const MAP = [
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.PATH, TILES.PATH_WITH_FLAG, TILES.PATH, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.PATH, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.PATH, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.PATH, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.PATH, TILES.WALL],
+-   [TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL, TILES.WALL],
++   [TILES.PATH, TILES.PATH_WITH_FLAG, TILES.PATH],
++   [TILES.PATH, TILES.PATH, TILES.PATH],
++   [TILES.PATH, TILES.PATH, TILES.PATH],
++   [TILES.WALL, TILES.PATH, TILES.WALL],
++   [TILES.PATH, TILES.PATH, TILES.PATH],
++   [TILES.PATH, TILES.PATH, TILES.PATH],
++   [TILES.PATH, TILES.PATH, TILES.PATH],
+  ]
+</code></pre><pre tabindex="0"><code class="language-diff-js&nbsp;diff-highlight" data-lang="diff-js&nbsp;diff-highlight">  /* src/util.js */
+
+  function encryptToken (state) {
+    const token = JSON.stringify(state)
+-   const cipher = crypto.createCipheriv(&#39;aes-128-ecb&#39;, key, null)
++   const cipher = crypto.createCipheriv(&#39;aes-128-cbc&#39;, key, Buffer.alloc(16))
+    cipher.setAutoPadding(true)
+    const encryptedToken = Buffer.concat([
++     Buffer.alloc(16),
+      cipher.update(token),
+      cipher.final()
+    ])
+    return encryptedToken.toString(&#39;hex&#39;)
+  }
+
+  function decryptToken (encryptedTokenHex) {
+    const encryptedToken = Buffer.from(encryptedTokenHex, &#39;hex&#39;)
+-   const cipher = crypto.createDecipheriv(&#39;aes-128-ecb&#39;, key, null)
++   const cipher = crypto.createDecipheriv(&#39;aes-128-cbc&#39;, key, encryptedToken.slice(0, 16))
+    cipher.setAutoPadding(true)
+    const token = Buffer.concat([
+-     cipher.update(encryptedToken),
++     cipher.update(encryptedToken.slice(16)),
+      cipher.final()
+    ]).toString()
+    const state = JSON.parse(token)
+    return { token, state }
+  }
+</code></pre><ul>
+<li><code>src/app.js</code> changes the initial position of the player (from $(13, 5)$ to $(5, 1)$) and updated the items on the map (removed one key and two doors).</li>
+<li><code>src/actions.js</code> replaces the <code>isWalkable</code> logic by using a blocklist instead of an allowlist.</li>
+<li><code>src/constants.js</code> defines a smaller map in play.</li>
+<li><code>src/util.js</code> uses AES-CBC to encrypt tokens (instead of AES-ECB) to mitigate the cut-and-paste attack.</li>
+</ul>
+<h4 id="the-mysterious-1--varepsilon--1">The mysterious $1 + \varepsilon = 1$<a href="#the-mysterious-1--varepsilon--1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The intended vulnerability this time was introduced by the new <code>isWalkable</code> method:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">isWalkable</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">state</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// You should not walk out of bounds
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">&gt;=</span> <span class="nx">MAP</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">&gt;=</span> <span class="nx">MAP</span><span class="p">[</span><span class="nx">x</span><span class="p">].</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// You should not walk more than one blocks away
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">y</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">// You should not walk if there is a door blocking
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">onMapItems</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">item</span> <span class="p">=&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">y</span> <span class="o">&amp;&amp;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">item</span> <span class="o">===</span> <span class="nx">ITEMS</span><span class="p">.</span><span class="nx">DOOR</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Update by Mystiz at (2022.12.27): Use &#34;not wall&#34; to determine for simplicity.
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// return [TILES.PATH, TILES.PATH_WITH_FLAG].includes(MAP[x][y])
+</span></span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="o">!</span><span class="p">[</span><span class="nx">TILES</span><span class="p">.</span><span class="nx">WALL</span><span class="p">].</span><span class="nx">includes</span><span class="p">(</span><span class="nx">MAP</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Previously in <em>Catch-22</em>, the destination tile was required to be either <code>TILES.PATH</code> or <code>TILES.PATH_WITH_FLAG</code> for the player to walk on. It is changed so that the tile is not <code>TILES.WALL</code>. Although they seemed equivalent, they are not. You can now walk on a tile if it is <code>undefined</code>.</p>
+<p>However, how do we walk on an <em>undefined</em> tile? Note that <code>x</code> and <code>y</code> need not to be integers. It is pretty tricky. For instance, if we are at $(5, 1)$, we cannot move to $(4.5, 1.5)$ because <code>MAP[4.5]</code> is <code>undefined</code>. <code>MAP[4.5][1.5]</code> would raise an <code>TypeError</code>, saying that we cannot read properties of undefined.</p>
+<p>To make <code>MAP[x][y]</code> undefined, we have to let <code>MAP[x]</code> returning an array first. With that said, <code>x</code> should be an integer and at the same time <code>y</code> should not. At $(4, 0)$, we can move to $(3, 0.0000000000000001)$. Let's look at the checks one by one:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// x = 3: it falls within 0 &lt;= x &lt; MAP.length = 7.
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">&gt;=</span> <span class="nx">MAP</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// y = 0.0000000000000001: it falls within 0 &lt;= y &lt; MAP[3].length = 3.
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">&gt;=</span> <span class="nx">MAP</span><span class="p">[</span><span class="nx">x</span><span class="p">].</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// |4 - 3| + |0 - 0.0000000000000001| = 1.0000000000000001...
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ❗ should be returning false here?
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">y</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// There is no onMapItems having coordinates (3, 0.0000000000000001).
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">onMapItems</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">item</span> <span class="p">=&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">y</span> <span class="o">&amp;&amp;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">item</span> <span class="o">===</span> <span class="nx">ITEMS</span><span class="p">.</span><span class="nx">DOOR</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Since MAP[3][0.0000000000000001] is undefined, it is not equal to TILES.WALL.
+</span></span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="o">!</span><span class="p">[</span><span class="nx">TILES</span><span class="p">.</span><span class="nx">WALL</span><span class="p">].</span><span class="nx">includes</span><span class="p">(</span><span class="nx">MAP</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">])</span>
+</span></span></code></pre></div><p>Let's have a little experiment on the Javascript console. The second line returns <code>1</code> instead of <code>1.0000000000000001</code> because Javascript follows IEEE754 for floating point numbers, which has a 53-bit precision:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="mi">0</span> <span class="o">+</span> <span class="mf">0.0000000000000001</span> <span class="c1">// outputs 1e-16
+</span></span></span><span class="line"><span class="cl"><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.0000000000000001</span> <span class="c1">// outputs 1
+</span></span></span></code></pre></div><p>With the above property, we can write a Javascript snippet and paste to the console (after the player enters the grid) to grab the flag.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">move</span><span class="p">(</span><span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span><span class="p">)</span> <span class="p">{</span> <span class="kr">await</span> <span class="nx">_action</span><span class="p">({</span><span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;move&#39;</span><span class="p">,</span> <span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span><span class="p">})</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">pickFlag</span><span class="p">()</span> <span class="p">{</span> <span class="kr">await</span> <span class="nx">_action</span><span class="p">({</span><span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;pick-flag&#39;</span><span class="p">})</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>                   <span class="c1">// (5, 1) -&gt; (5, 0)
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1">// (5, 0) -&gt; (4, 0)
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.0000000000000001</span><span class="p">)</span>  <span class="c1">// (4, 0) -&gt; (3, 0.0000000000000001)
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0000000000000001</span><span class="p">)</span> <span class="c1">// (3, 0.0000000000000001) -&gt; (2, 0)
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1">// (2, 0) -&gt; (1, 0)
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1">// (1, 0) -&gt; (0, 0)
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                    <span class="c1">// (0, 0) -&gt; (0, 1)
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">pickFlag</span><span class="p">()</span>
+</span></span></code></pre></div>
+
+<figure>
+  <img src="/images/2023-03-06-mocsctf/catch-22-flag.webp" title="Running the script in action.">
+  
+  <figcaption>Running the script in action.</figcaption>
+  
+</figure>
+
+<p>Running the script, we can get the flag <code>MOCSCTF{n0w_y0u_c4n_cl1p_thr0u9h}</code>.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          MOCSCTF 2023 Postmortem
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2023/2023-03-12-idekctf/">← idekCTF 2022* Writeup</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2023/2023-01-30-firebird-internal-ctf/">Firebird Internal CTF 2023 Writeup →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

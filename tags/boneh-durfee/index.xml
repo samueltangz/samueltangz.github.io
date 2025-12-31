@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Boneh-Durfee on Mystify</title>
+    <link>https://mystiz.hk/tags/boneh-durfee/</link>
+    <description>Recent content in Boneh-Durfee on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Oct 2021 20:26:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/boneh-durfee/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pbctf 2021: Seed Me &amp; Yet Another RSA</title>
+      <link>https://mystiz.hk/posts/2021/2021-10-11-pbctf/</link>
+      <pubDate>Mon, 11 Oct 2021 20:26:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2021/2021-10-11-pbctf/</guid>
+      <description>&lt;div class=&#34;alert warning&#34;&gt;&#xA;  &lt;strong&gt;What&#39;s the thumbnail?&lt;/strong&gt; I sent it to @rbtree after I sent him my solution on &lt;em&gt;Yet Another PRNG&lt;/em&gt; and he responded &amp;quot;oh this works?&amp;quot;.&#xA;&lt;/div&gt;&#xA;&#xA;&lt;p&gt;I am playing as a part of &lt;a href=&#34;https://twitter.com/blackb6a&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@blackb6a&lt;/a&gt; this time for perfect blue&#39;s annual &lt;em&gt;pbctf&lt;/em&gt;. This time there are six crypto challenges and I first blooded 🩸 half of them. I solved five of them, and collaborated with @TWY (who made 99% of the process) for &lt;em&gt;Seed Me&lt;/em&gt;. In this blog post, I will cover &lt;em&gt;Seed Me&lt;/em&gt; and &lt;em&gt;Yet Another RSA&lt;/em&gt;. I tried to make the whole post beginner friendly, hence included more details than necessary.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

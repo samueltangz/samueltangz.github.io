@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HKCERT CTF 2022 Postmortem (III): The Remaining Challenges | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HKCERT CTF 2022 Postmortem (III): The Remaining Challenges</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2022-12-24T16:46:02&#43;08:00">2022-12-24</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hkcert-ctf/" class="text-muted text-decoration-none">#hkcert-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/challenge-writing/" class="text-muted text-decoration-none">#challenge-writing</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/reverse/" class="text-muted text-decoration-none">#reverse</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/minecraft/" class="text-muted text-decoration-none">#minecraft</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>In the last part, I will include the two non-crypto challenges I wrote for HKCERT CTF 2022: <em>Numbers go brrr</em> and <em>Minecraft geoguessr</em>.</p>
+<h2 id="觀塘海濱音樂噴泉--numbers-go-brrr-reverse">​觀塘海濱音樂噴泉 / Numbers go brrr (Reverse)<a href="#觀塘海濱音樂噴泉--numbers-go-brrr-reverse" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>This program is generating 100 sets of random numbers and they are asking me to send something back, in exchange for a flag. Can you figure out how to get them through?</p>
+<p><code>nc HOST PORT</code></p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/numbers-go-brrr/public/solve.py"
+   
+   target="_blank" rel="noopener noreferrer" >solve.py</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>There is a <code>nc</code> service, and we will be given some numbers upon connecting. We are asked to send something each time the 🥺 emoji appeared. From the description, we will be given the flag after sending correct responses 100 times.</p>
+<pre class='language-bash command-line' data-output='2-4,6-10' data-user='mystiz' data-host='fixa'>
+<code class="language-bash">nc HOST PORT
+🔧 1 37 37 97
+🥺 33
+😡
+nc HOST PORT
+🔧 1 85 85 97
+🥺 85
+🔧 2 2 26 97
+🥺 24
+😡</code>
+</pre>
+
+<p>On top of that, there is an attachment called <code>solve.py</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">z3</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span><span class="p">,</span> <span class="n">mul</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.progress</span> <span class="kn">import</span> <span class="n">track</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">itertools</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># TODO: change this to the remote service</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;./chall&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">track</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s1">&#39;🔧 &#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">_s</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Int</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subss</span> <span class="o">=</span> <span class="p">[</span><span class="n">Int</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ss_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subps</span> <span class="o">=</span> <span class="p">[</span><span class="n">Int</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ps_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># The base conditions</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Not</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">q</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Implies</span><span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">,</span> <span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># The &#34;s&#34; and &#34;p&#34; requirements</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">subss</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">subps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">subss</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">subss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">subps</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">subps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">subss</span><span class="p">[</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="n">q</span> <span class="o">==</span> <span class="n">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">subps</span><span class="p">[</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="n">q</span> <span class="o">==</span> <span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">_s</span><span class="o">.</span><span class="n">check</span><span class="p">()</span> <span class="o">==</span> <span class="n">sat</span>
+</span></span><span class="line"><span class="cl">    <span class="n">md</span> <span class="o">=</span> <span class="n">_s</span><span class="o">.</span><span class="n">model</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x0s</span> <span class="o">=</span> <span class="p">[</span><span class="n">md</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s1">&#39;🥺 &#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">x0s</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span></code></pre></div><div class="alert danger">
+  <strong>🤯 Wait what, <code>solve.py</code>?</strong> Hear me out... This is not a mistake.
+</div>
+
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  &#x1f4ac; <strong>Presentation?</strong> If you prefer to read slides than words, please refer to the <a href="/images/2022-12-24-hkcert-ctf/20221128-hkcert-ctf-writeup-2.pdf"
+   
+   >slides</a> I used for <em>CUHK Open Innovation Lab's sharing</em> dated November 28, 2022.
+</div>
+
+<h4 id="part-i-an-unintended-solution">Part I: An unintended solution<a href="#part-i-an-unintended-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>To solve the challenge, we can just run <code>solve.py</code> and it is done. Just kidding, it is impossible to solve the challenge in this way. Let's read the solve script and see what is going on.</p>
+<h4 id="part-ii-understanding-the-solve-script">Part II: Understanding the solve script<a href="#part-ii-understanding-the-solve-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>There are 100 rounds in total. In each round, we will receive four numbers $m, s, p, q$ from the server and we need to find $(x_1, x_2, ..., x_m)$ satisfying the base conditions:</p>
+<ol>
+<li>$x_1 \leq x_2 \leq ... \leq x_m$,</li>
+<li>$0 &lt; x_i &lt; q$ for $i = 1, 2, ..., m$, and</li>
+<li>For any $i \neq j$, $x_i \neq x_j$.</li>
+</ol>
+<p>In addition, the $m$-tuple needs to satisfy the &quot;s&quot; and &quot;p&quot; requirements (short for <em>sum</em> and <em>product</em>, respectively):</p>
+<ol>
+<li>$x_1 + 2 x_2 + ... + m x_m \equiv s \ (\text{mod}\ q)$, and</li>
+<li>$x_1 \cdot 2 x_2 \cdot ... \cdot m x_m \ \equiv p \ (\text{mod}\ q)$.</li>
+</ol>
+<p>That is it! We can deduce the actual problem statement from the solution script, and we can simplify the base condition:</p>
+<p>$$0 &lt; x_1 &lt; x_2 &lt; ... &lt; x_m &lt; q.$$</p>
+<p>We can also simplify the product requirement:</p>
+<p>$$x_1 \cdot x_2 \cdot ... \cdot x_m \equiv p' \quad (\text{mod}\ q),$$</p>
+<p>where $p' \equiv p \cdot (1 \cdot 2 \cdot ... \cdot m)^{-1}\ \text{mod}\ q$.</p>
+<h4 id="part-iii-reducing-an-undetermined-system">Part III: Reducing an undetermined system<a href="#part-iii-reducing-an-undetermined-system" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>If we consider only the <em>sum</em> and <em>product</em> requirements, there are $m$ unknowns and two equations. If $m &gt; 2$, then the system is underdetermined:</p>
+<p>$$\begin{cases}
+x_1 + 2 x_2 + ... + m x_m &amp; \equiv s \quad (\text{mod}\ q) \\
+x_1 \cdot x_2 \cdot ... \cdot x_m&amp; \equiv p' \quad (\text{mod}\ q)
+\end{cases}$$</p>
+<div class="alert success">
+  🎯 <strong>Objective.</strong> In this section, we will reduce the challenge from $m &gt; 2$ to $m = 2$, and its solution will be discussed in the next part. For $m = 1$, it is obvious that the system is solvable if and only if $s = p$, with the solution being $x_0 = s$.
+</div>
+
+<p>This is easy. We can just assume that $x_1 = 1, x_2 = 2, ..., x_{m-2} = m-2$. What is remaining in the equations are:</p>
+<p>$$\begin{cases}
+1 + 2 \cdot 2 + ... + (m-2) \cdot (m-2) + (m-1) x_{m-1} + m x_m &amp; \equiv s \quad (\text{mod}\ q) \\
+1 \cdot 2 \cdot ... \cdot (m-2) \cdot x_{m-1} \cdot x_m &amp; \equiv p' \quad (\text{mod}\ q)
+\end{cases},$$</p>
+<p>which is equivalent to</p>
+<p>$$\begin{cases}
+(m-1) x_{m-1} + m x_m &amp; \equiv s' \quad (\text{mod}\ q) \\
+x_{m-1} \cdot x_m &amp; \equiv p'' \quad (\text{mod}\ q)
+\end{cases}.$$</p>
+<p>Here $s' = s - [1 + 2^2 + ... + (m-2)^2]\ (\text{mod}\ q)$ and $p'' = p' \cdot [1 \cdot 2 \cdot ... \cdot (m-2)]^{-1} \ (\text{mod}\ q)$.</p>
+<p>Now we have a different objective: Find $m-2 &lt; x_{m-1} &lt; x_m &lt; q$ such that the above system holds. Although the range of values are a little bit stricter, it is still easy to find a solution set.</p>
+<h4 id="part-iv-solving-a-system-of-two-equations-modulo-prime-q">Part IV: Solving a system of two equations, modulo prime $q$<a href="#part-iv-solving-a-system-of-two-equations-modulo-prime-q" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>From the two equations, we can just rewrite the sum condition:</p>
+<p>$$(m-1) \cdot x_{m-1} \equiv s - m \cdot x_m \quad (\text{mod}\ q).$$</p>
+<p>Substituting the above to the product condition, we have</p>
+<p>$$\begin{aligned}
+&amp; (s - m \cdot x_m) \cdot x_m \equiv (m-1) \cdot p'' \quad (\text{mod}\ q) \\
+&amp; \Longrightarrow m \cdot {x_m}^{2} - s \cdot x_m + (m-1) \cdot p'' \equiv 0 \quad (\text{mod}\ q),
+\end{aligned}$$</p>
+<p>which is a quadratic congruence in $x_m$. To solve this, we will first reduce it into the form $u^2 \equiv b \ (\text{mod}\ q)$.</p>
+<p>This is simple. We are essentially completing the square in modulo $q$:</p>
+<p>$$\begin{aligned}
+&amp; m \cdot {x_m}^{2} - s \cdot x_m + (m-1) \cdot p'' \equiv 0 \quad (\text{mod}\ q) \\
+&amp; \Longrightarrow {x_m}^{2} - (s \sdot m^{-1}) \cdot x_m + (m-1) \cdot m^{-1} \cdot p'' \equiv 0 \quad (\text{mod}\ q) \\
+&amp; \Longrightarrow {x_m}^{2} - 2 \cdot [s \sdot (2m)^{-1}] \cdot x_m + (m-1) \cdot m^{-1} \cdot p'' \equiv 0 \quad (\text{mod}\ q) \\
+&amp; \Longrightarrow {x_m}^{2} - 2 \cdot [s \sdot (2m)^{-1}] \cdot x_m + [s \sdot (2m)^{-1}]^2 \equiv [s \sdot (2m)^{-1}]^2 - (m-1) \cdot m^{-1} \cdot p'' \quad (\text{mod}\ q) \\
+&amp; \Longrightarrow [x_m - s \cdot (2m)^{-1}]^2 \equiv [s \sdot (2m)^{-1}]^2 - (m-1) \cdot m^{-1} \cdot p'' \quad (\text{mod}\ q)
+\end{aligned}$$</p>
+<p>With $u = x_m - s \cdot (2m)^{-1}$ and $b = [s \sdot (2m)^{-1}]^2 - (m-1) \cdot m^{-1} \cdot p''$, we have the equation $u^2 \equiv b \ (\text{mod}\ q)$. To find the values of $u$, we can apply the <a href="https://en.wikipedia.org/wiki/Tonelli%E2%80%93Shanks_algorithm"
+   
+   target="_blank" rel="noopener noreferrer" >Tonelli-Shanks algorithm</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. After that, we can compute $x_m$ from $u + s \cdot (2m)^{-1}$ and obtain $x_{m-1}$ easily.</p>
+<p>It is not uncommon that either no solutions exist, or $m-2 &lt; x_{m-1} &lt; x_m &lt; q$ does not hold. In these cases, we can use another set of values for $(x_1, x_2, ..., x_{m-3}, x_{m-2})$ such that $x_{m-2}$ is small enough. After that, we can find $x_{m-1}$ and $x_m$ with the above approach and stop when we have $x_{m-2} &lt; x_{m-1} &lt; x_m &lt; q$.</p>
+<p>With that implemented, we can finally pass the 100 rounds. We will eventually get the flag: <code>hkcert22{z3_i5_4n_sw1s5_4rmy_kn1f3_bu7_1t_i5_n0t_alw4y5_f4s7}</code>.</p>
+<h2 id="cga-香港電競館--minecraft-geoguessr-misc">CGA 香港電競館 / Minecraft Geoguessr (Misc)<a href="#cga-香港電競館--minecraft-geoguessr-misc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Do you know Rainbolt? If you send him a photo, he could immediately tell you where it was taken in.</p>
+<p>Can you do the same in the Minecraft world?</p>
+<p>Note: If you are desperate, you can watch <a href="https://www.youtube.com/watch?v=2KXcQ18JyMs"
+   
+   target="_blank" rel="noopener noreferrer" >Rainbolt's most insane geoguessr moments</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, or <a href="https://www.youtube.com/watch?v=Ekcseve-mOg&amp;list=PLhixgUqwRTjwvBI-hmbZ2rpkAl4lutnJG"
+   
+   target="_blank" rel="noopener noreferrer" >LiveOverflow's video series on Minecraft Hacking</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+<p>By the way, the map is generated with Minecraft 1.17.1. With that said, you may be unable to look for the better caves.</p>
+<p>https://HOST:PORT/</p>
+<p>Attachments: <a href="https://github.com/samueltangz/ctf-archive-created/blob/master/20221111-hkcert-ctf/minecraft-geoguessr/public/whereami.png"
+   
+   target="_blank" rel="noopener noreferrer" >whereami.png</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a web service that receives 5-tuples $(x, y, z, \theta, \varphi)$ from players, where $x, y, z$ are the coordinates, and $\theta$ and $\varphi$ are respectively the yaw and pitch. We will receive a screenshot taken in the specified location. Also, $-20000 \leq x, z \leq 20000$, $0 \leq y \leq 256$, $-180 \leq \theta \leq 180$, $-90 \leq \varphi \leq 90$.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-service.png" title="">
+  
+</figure>
+
+<p>On the other hand, we are also given the below screenshot, where only the prefix of the flag <code>hkcert22{</code> is shown. The objective is to recover the flag.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr.png" title="">
+  
+</figure>
+
+<div class="alert success">
+  <strong>🤩 Where does the inspiration come from?</strong> This challenge is inspired by <a href="https://www.youtube.com/watch?v=gSxcDYCK_lY"
+   
+   target="_blank" rel="noopener noreferrer" >&quot;They Cracked My Server!&quot;</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> by <em>@LiveOverflow</em> in the <em>Minecraft:HACKED</em> series.
+</div>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert success">
+  &#x1f4ac; <strong>Presentation?</strong> If you prefer to read slides than words, please refer to the <a href="/images/2022-12-24-hkcert-ctf/20221119-hkcert-ctf-writeup.pdf"
+   
+   >slides</a> I used for <em>HKCERT's livestream</em> dated November 19, 2022.
+</div>
+
+<h4 id="part-i-doing-some-osints-with-the-screenshot">Part I: Doing some OSINTs with the screenshot<a href="#part-i-doing-some-osints-with-the-screenshot" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The most attractive thing about the screenshot is the prefix of the flag. But what else can we retrieve from it?</p>
+<p>Let's talk about Minecraft history. <a href="https://twitter.com/SimplySarc" target="_blank" rel="nofollow">@SimplySarc</a> uploaded <a href="https://www.youtube.com/watch?v=NIs_LU9KH5c"
+   
+   target="_blank" rel="noopener noreferrer" >a video</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> in 2012 that showed that the rotation of lily pads is only dependent on their position. Also, snapshot 14w27b (for version 1.8) was released eight years ago. Below is an excerpt of the <a href="https://minecraft.fandom.com/wiki/Java_Edition_14w27b#General"
+   
+   target="_blank" rel="noopener noreferrer" >patch notes</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>:</p>
+<blockquote>
+<p>The block state files now support an array of models allowing for random models. As a result of this, grass blocks, dirt, sand, red sand, stone, netherrack, bedrock, and TNT all have their top texture randomly rotated.</p>
+</blockquote>
+<p>When they say &quot;random&quot;, it is dependent on the position like the lily pads. With that said, we can collect information from the grass blocks' rotation to find its coordinates. Surprising, right?</p>
+<p>A legendary GeoGuessr player, <a href="https://twitter.com/georainbolt" target="_blank" rel="nofollow">@georainbolt</a>, once said <a href="https://www.youtube.com/watch?v=iOCR73U8t6E"
+   
+   target="_blank" rel="noopener noreferrer" ><em>why touch grass when you can study grass</em></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. We can do the same in the Minecraft world. Now, look at a grass block. There are four rotations (rotated 0º, 90º, 180º and 270º).</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-grass-blocks.png" title="The four orientations of a grass block.">
+  
+  <figcaption>The four orientations of a grass block.</figcaption>
+  
+</figure>
+
+<p>Well, I know this is probably the most difficult part -- labelling. Let's identify the orientations of some grass blocks in the screenshot:</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-with-rotations.png" title="The screenshot with some grass blocks labelled with rotations.">
+  
+  <figcaption>The screenshot with some grass blocks labelled with rotations.</figcaption>
+  
+</figure>
+
+<p>From above, I collected the rotations of 22 grass blocks.</p>
+<table class="table table-striped table-bordered text-center" style="margin: 12px auto; width: auto;">
+  <tr>
+    <td>(0, 0, 0)<br>➡️</td>
+    <td>(0, 0, 1)<br>⬅️</td>
+    <td>(-1, 0, 1)<br>⬆️</td>
+    <td>(1, 0, 2)<br>⬅️</td>
+    <td>(0, 0, 2)<br>⬅️</td>
+    <td>(-1, 0, 2)<br>⬆️</td>
+  </tr>
+  <tr>
+    <td>(0, 0, 3)<br>⬇️</td>
+    <td>(-1, 0, 3)<br>⬆️</td>
+    <td>(0, 0, 4)<br>⬆️</td>
+    <td>(-1, 0, 4)<br>⬅️</td>
+    <td>(-2, 0, 4)<br>➡️</td>
+    <td>(0, 0, 5)<br>⬇️</td>
+  </tr>
+  <tr>
+    <td>(-1, -1, 5)<br>⬅️</td>
+    <td>(1, -1, 6)<br>⬆️</td>
+    <td>(0, -1, 6)<br>⬇️</td>
+    <td>(-1, -1, 6)<br>⬇️</td>
+    <td>(2, -1, 7)<br>⬅️</td>
+    <td>(1, -1, 7)<br>➡️</td>
+  </tr>
+  <tr>
+    <td>(2, -1, 8)<br>➡️</td>
+    <td>(1, -2, 8)<br>⬇️</td>
+    <td>(0, -2, 8)<br>➡️</td>
+    <td>(1, -2, 9)<br>➡️</td>
+    <td colspan="2"></td>
+  </tr>
+</table>
+<p>It is very unlikely (with the probability being $1/4^{22}$) for a patch of 22 blocks that has the same rotations. Thus, there should be only one matching coordinate if we scan through every block in $-20000 \leq x, z \leq 20000$ and $0 \leq y \leq 256$. Below is the pseudo-code that we are going to implement:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">From above, we know (x0+0, y0+0, z0+0) is pointing rightwards and
+</span></span><span class="line"><span class="cl">                    (x0+0, y0+0, z0+1) is pointing leftwards and ... and
+</span></span><span class="line"><span class="cl">                    (x0+1, y0-2, z0+9) is pointing rightwards
+</span></span><span class="line"><span class="cl">for some (x0, y0, z0).
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">For each -20000 &lt;= x &lt;= 20000, 0 &lt;= y &lt;= 256, -20000 &lt;= z &lt;= 20000:
+</span></span><span class="line"><span class="cl">  If (x+0, y+0, z+0) is pointing rightwards and
+</span></span><span class="line"><span class="cl">     (x+0, y+0, z+1) is pointing leftwards and ... and
+</span></span><span class="line"><span class="cl">     (x+1, y-2, z+9) is pointing rightwards, then:
+</span></span><span class="line"><span class="cl">    (x, y, z) are the coordinates we want!
+</span></span></code></pre></div><p>A final problem is we don't know which direction the player is facing. Luckily, as there are only four possibilities, we can simply exhaust them all. By the way, some players can identify the player's orientation, so they can speed up their algorithm (at least) four times faster than our brute-forcing approach!</p>
+<h4 id="part-ii-reverse-engineering-minecraft">Part II: Reverse engineering Minecraft<a href="#part-ii-reverse-engineering-minecraft" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert info">
+  🤔 <strong>Is reverse engineering necessary?</strong> No. We are not required to decompile and reverse engineer the source code of Minecraft to study the &quot;rotation&quot; of the blocks. There is a community of Minecraft working on reverse engineering (mostly on modding) and there are some resources discussing the rotation.
+</div>
+
+<p><em>hacker mann</em> uploaded <a href="https://www.youtube.com/watch?v=6__hO4cc1pA"
+   
+   target="_blank" rel="noopener noreferrer" >a video</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> in 2019 discussing a way to recover the coordinates from block rotation. The below code is a simplified, yet accurate way to compute the texture rotation of a block. It is a combination of multiple functions:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// An Java implementation of the `getRotation`</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">getRotation</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Math#getSeed</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="p">)(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">3129871</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">116129781L</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">y</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">42317861L</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">11L</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">seed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">16</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ModelBlockRenderer#tesselateWithAO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Random</span><span class="w"> </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Random</span><span class="p">(</span><span class="n">seed</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// WeightedBakedModel#getQuads</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">abs</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="na">nextLong</span><span class="p">())</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">4</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>Hereby <code>Random</code> is an implementation from the JDK, which can be referenced from their <a href="https://github.com/AdoptOpenJDK/openjdk-jdk16/blob/master/src/java.base/share/classes/java/util/Random.java"
+   
+   target="_blank" rel="noopener noreferrer" >source code</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>. To summarize, the random is a <em>linear congruential generator</em> (LCG), with the initial state, $s_0$, being</p>
+<p>$$s_0 := (\text{seed} \oplus \text{5DEECE66D}_{16}) \ \text{mod}\ 2^{48}.$$</p>
+<p>The subsequent states $s_1, s_2, ...$ are all 48 bits and deduced by the current state:</p>
+<p>$$s_{i+1} := (\text{5DEECE66D}<em>{16} \cdot s_i + \text{B}</em>{16}) \ \text{mod} \ 2^{48}.$$</p>
+<p>If the current state is $s_i$, then the output of <code>nextInt()</code> would be $y_i := \lfloor{ s_{i+1} / 2^{16} \rfloor}$. Simply put, it is the top 32 bits of the next state. Also, <code>nextLong()</code> is defined by the below code snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">nextLong</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">((</span><span class="kt">long</span><span class="p">)(</span><span class="n">next</span><span class="p">(</span><span class="n">32</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">32</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">next</span><span class="p">(</span><span class="n">32</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h4 id="part-iii-preparing-a-program-for-brute-forcing">Part III: Preparing a program for brute-forcing<a href="#part-iii-preparing-a-program-for-brute-forcing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert danger">
+  👊 <strong>Is brute force the only way to go?</strong> I am not sure. Please share with us if you have a solution without brute-forcing.
+</div>
+
+<p>From the above implementation, we know that the seed is derived from the coordinates of the block. This is my translation in <em>Golang</em> which optimized the algorithm a bit:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">getRotation</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int32</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">		long l = (long)(x * 3129871) ^ (long)z * 116129781L ^ (long)y;
+</span></span></span><span class="line"><span class="cl"><span class="cm">		l = l * l * 42317861L + l * 11L;
+</span></span></span><span class="line"><span class="cl"><span class="cm">		long seed = l &gt;&gt; 16;
+</span></span></span><span class="line"><span class="cl"><span class="cm">	*/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nx">x2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="nb">int32</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3129871</span><span class="p">))</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nx">z2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">116129781</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nx">l</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">x2</span><span class="w"> </span><span class="p">^</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="p">^</span><span class="w"> </span><span class="nx">z2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nx">l</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">l</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">l</span><span class="o">*</span><span class="mi">42317861</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="c1">// l = l*l*42317861 + l*11</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nx">seed</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">l</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">		Random random = new Random(seed);
+</span></span></span><span class="line"><span class="cl"><span class="cm">	*/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nx">seed</span><span class="w"> </span><span class="p">^=</span><span class="w"> </span><span class="mh">0x5DEECE66D</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">		return Math.abs(random.nextLong()) % 4;
+</span></span></span><span class="line"><span class="cl"><span class="cm">	*/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nx">v</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">int32</span><span class="p">((</span><span class="nx">seed</span><span class="o">*</span><span class="mh">0xBB20B4600A69</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x40942DE6BA</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="nx">v</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">-</span><span class="nx">v</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>Well, I didn't compare the running times of the implementations in Golang and Java, which may be similar. I use Golang simply because I rarely code in Java anyway.</p>
+<p>After that, what is missing is just a routine that exhausts the whole search space, and includes the block rotation we found from the screenshot. We can decrease the running time with multithreading, too.</p>
+<p>I implemented my solution using Golang. With 8 threads and search space being $-20000 \leq x, z \leq 20000$ and $64 \leq y &lt; 100$, it only takes 6 minutes to run.</p>
+<p>The coordinates we found are $(16551, 67, 4170)$. We can now ask our intern to teleport nearby for the whole flag: <code>hkcert22{s33d_cr34kin9_1s_r3ver53_4nd_cryp70_com61ned}</code>.</p>
+<div class="alert success">
+  🛠️ <strong>Alternate tools.</strong> <a href="https://github.com/19MisterX98/TextureRotations"
+   
+   target="_blank" rel="noopener noreferrer" >19MisterX98/TextureRotations</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> is a repository (in Java) that does the same thing. You can use the code to recover the coordinates.
+</div>
+
+<h4 id="part-iv-reducing-the-search-time">Part IV: Reducing the search time<a href="#part-iv-reducing-the-search-time" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>There are two notable ways to reduce the search time, provided by the contestants <a href="https://twitter.com/HotDawggyy" target="_blank" rel="nofollow">@HotDawggyy</a> and <em>Gameboy612</em>. We can recover the coordinates in less than ten seconds with either of the two improvements implemented. This is remarkable!</p>
+<h5 id="hey-look-at-the-clouds">Hey, look at the clouds!<a href="#hey-look-at-the-clouds" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<p><a href="https://twitter.com/HotDawggyy" target="_blank" rel="nofollow">@HotDawggyy</a> looked at the cloud and found that the $z$-coordinate should be roughly 4180 when taken modulo 6144. Assuming that the absolute error is 64 blocks, i.e., $4180-64 &lt; z\ \text{mod}\ 6144 &lt; 4180+64$. This reduced the search space by 98.0%.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-improvement-hotdawggy.png" title="OSINT with clouds? That&#39;s better than Rainbolt!">
+  
+  <figcaption>OSINT with clouds? That&#39;s better than Rainbolt!</figcaption>
+  
+</figure>
+
+<h5 id="look-at-the-water-too">Look at the water, too!<a href="#look-at-the-water-too" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<p>On the other hand, <em>Gameboy612</em> reduced the search space by determining the sea level. If we assume that the pool of water is at sea level (i.e., $y = 62$), we can just fix the $y$-coordinate to one single value. This reduces the search space by 97.2%.</p>
+
+
+<figure>
+  <img src="/images/2022-12-24-hkcert-ctf/minecraft-geoguessr-improvement-gameboy612.png" title="OSINT with water pools? That&#39;s better than Rainbolt too!">
+  
+  <figcaption>OSINT with water pools? That&#39;s better than Rainbolt too!</figcaption>
+  
+</figure>
+
+<p>Finally, it is impressive that <em>Gameboy612</em> is a secondary school student and their team got the first blood &#x1fa78; of this challenge. Congratulations!</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HKCERT CTF 2022 Postmortem (III): The Remaining Challenges
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2022/2022-12-31-retrospective/">← Retrospective 2022</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2022/2022-12-24-hkcert-ctf-2/">HKCERT CTF 2022 Postmortem (II): Harder Crypto Challenges →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

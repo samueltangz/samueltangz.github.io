@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HITCON CTF 2024 Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">HITCON CTF 2024 Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2024-07-20T20:10:00&#43;08:00">2024-07-20</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/hitcon-ctf/" class="text-muted text-decoration-none">#hitcon-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>The crypto challenge authors in HITCON 2024, <a href="https://twitter.com/maple3142" target="_blank" rel="nofollow">@maple3142</a> and <a href="https://twitter.com/_bronson113" target="_blank" rel="nofollow">@_bronson113</a> prepared a set of exciting and difficult challenges.</p>
+<p>I collaborated with <a href="https://twitter.com/thehackerscrew1" target="_blank" rel="nofollow">@thehackerscrew1</a> as a guest player this time. In this blog post, we will cover three challenges: ZKPoF, PCBC Revenge and Hyper512.</p>
+<h2 id="zkpof">ZKPoF<a href="#zkpof" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>This challenge implements the proof-of-knowledge protocol for factoring specified in Poupard and Stern's paper<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, where the server and us take turn being the verifier.</p>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/zkpof-protocol.png" title="">
+  
+</figure>
+
+<p>In the challenge, we have $A = 2^{1000}$ and $B = 2^{80}$. We are the verifier and the server is the prover on the first part of the connection. We can ask for up to 311 proofs:</p>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/zkpof-as-verifier.png" title="">
+  
+</figure>
+
+<p>The roles are swapped on the second part. We are asked to construct 13 proofs:</p>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/zkpof-as-prover.png" title="">
+  
+</figure>
+
+<p>The objective is to successfully construct proofs when we are the prover.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-yes-mystizs-trick">Part I: Yes Mystiz's trick<a href="#part-i-yes-mystizs-trick" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<div class="alert info">
+  🤔 <strong>What Mystiz's trick?</strong> I made a crypto challenge in Bauhinia CTF where the intended solution is to abuse negative numbers. Later in Balsn CTF 2023, @Utaha wrote a challenge and threw the &quot;No Mystiz's trick&quot; exception when the players send negative numbers to the server.
+</div>
+
+<p>The first thing I see is $e$ can be negative when we are the verifiers... Apparently <a href="https://twitter.com/maple3142" target="_blank" rel="nofollow">@maple3142</a> is not as careful as @Utaha!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">zkpof</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># I act as the prover</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span> <span class="o">=</span> <span class="n">getRandomRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">e</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&#34;e = &#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">e</span> <span class="o">&gt;=</span> <span class="n">B</span><span class="p">:</span> <span class="c1"># 👈 WARNING: This can be negative</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&#34;e too large&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span>
+</span></span><span class="line"><span class="cl">    <span class="n">transcript</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;x&#34;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&#34;e&#34;</span><span class="p">:</span> <span class="n">e</span><span class="p">,</span> <span class="s2">&#34;y&#34;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">transcript</span><span class="p">)</span>
+</span></span></code></pre></div><p>I immediately assumed that we can send $e = -A$, and we can obtain $y = r - (n - \phi) \cdot A$ from the verifier. Since $r \in [0, A)$, we can recover $\phi$ effectively. Let's go!</p>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/zkpof-negative-y.png" title="">
+  
+</figure>
+
+<p>Wait no. It runs <code>assert zkpof_verify(z, t, n)</code> before we are given the transcript. Since the $y$ we have is negative, we did not fulfil the condition $0 \le y \lt A$:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">zkpof_verify</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">transcript</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">transcript</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&#34;x&#34;</span><span class="p">,</span> <span class="s2">&#34;e&#34;</span><span class="p">,</span> <span class="s2">&#34;y&#34;</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">A</span> <span class="ow">and</span> <span class="nb">pow</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="n">x</span>
+</span></span></code></pre></div><p>Fortunately, this is not the end of the world. Notably, the server is running Python 3.12, where we will be condemned when a large number like $10^{4300}$ is constructed<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.</p>
+<p>Let's look again at code snippet that we act as the verifiers:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">z</span> <span class="o">=</span> <span class="n">rand</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">t</span> <span class="o">=</span> <span class="n">zkpof</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="n">zkpof_verify</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span></code></pre></div><p>There are multiple reasons that the above snippet will lead to an exception, where #1 and #2 come from <code>zkpof</code>, and #3 comes from <code>zkpof_verify</code>:</p>
+<ol>
+<li><code>Error: e too large</code> if $e \ge B$.</li>
+<li><code>Error: Exceeds the limit (4300 digits)...</code> if $|y| \ge 10^{4300}$.</li>
+<li><code>Error:</code> if $y &lt; 0$ or $y \ge A$ or $z^{y - ne} \not\equiv x \ (\text{mod}\ n)$.</li>
+</ol>
+<p>Now we can know whether $y &lt; -10^{4300}$ from the server's response. For instance, we can send $e = -\lceil 10^{4300} / 2^{512} \rceil$ to check whether $\phi \le n - 2^{512}$. We will can leak one bit of $\phi$ using binary search by choosing appropriate $e$s. Since we have 311 oracle calls, we can leak 311 bits of $n - \phi$. Since $n - \phi = p + q - 1 &lt; 2^{513}$, we only have around 200 bits that remained unknown.</p>
+<h4 id="part-ii-lattice-for-the-win">Part II: Lattice for the win<a href="#part-ii-lattice-for-the-win" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Now we have an approximation of $p + q = n - \phi + 1$ (we have 311/513 bits of it), we can estimate $p$ by first computing $p - q = \sqrt{(p + q)^2 - 4n}$ (assuming $p &gt; q$) then obtain</p>
+<p>$$
+p = \frac{1}{2}(p + q) + \frac{1}{2}(p - q).
+$$</p>
+<p>Now we have an approximated $p$ (namely $\tilde p$), which the error is around 200 bits. Since we have a large portion of $p$, we can recover the rest using LLL. We can use the polynomial $\text{f}(x) = \tilde p + x$ and look for small roots over modulo $n$. With $p$ recovered, we can now construct valid proofs as a prover and convince the server for the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hitcon{the_error_is_leaking_some_knowledge}
+</span></span></code></pre></div><h2 id="pcbc-revenge">PCBC Revenge<a href="#pcbc-revenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are given the $\text{Encrypt}$ function, which is based on a custom mode of operation with three keys, $k_0$, $k_1$ and $k_2$. The implementation is given in the Python snippet below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cipher</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">prev_block</span> <span class="o">=</span> <span class="n">iv</span> <span class="c1"># 👈 &#34;iv&#34; is a constant per connection</span>
+</span></span><span class="line"><span class="cl">    <span class="n">counter1</span> <span class="o">=</span> <span class="n">counter</span><span class="p">(</span><span class="n">nonce1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">counter2</span> <span class="o">=</span> <span class="n">counter</span><span class="p">(</span><span class="n">nonce2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">get_blocks</span><span class="p">(</span><span class="n">pad</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">BLOCK_SIZE</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">enc1</span> <span class="o">=</span> <span class="n">AES_ECB_enc</span><span class="p">(</span><span class="n">key_ctr1</span><span class="p">,</span> <span class="nb">next</span><span class="p">(</span><span class="n">counter1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">enc2</span> <span class="o">=</span> <span class="n">AES_ECB_enc</span><span class="p">(</span><span class="n">key_cbc</span><span class="p">,</span> <span class="n">xor</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">prev_block</span><span class="p">,</span> <span class="n">enc1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">enc3</span> <span class="o">=</span> <span class="n">AES_ECB_enc</span><span class="p">(</span><span class="n">key_ctr2</span><span class="p">,</span> <span class="nb">next</span><span class="p">(</span><span class="n">counter2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 👆 &#34;key_cbc&#34;, &#34;key_ctr1&#34; and &#34;key_ctr2&#34; will be labeled as k0, k1 and k2</span>
+</span></span><span class="line"><span class="cl">        <span class="n">enc4</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">enc3</span><span class="p">,</span> <span class="n">enc2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prev_block</span> <span class="o">=</span> <span class="n">xor</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">enc4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">+=</span> <span class="n">enc4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">iv</span> <span class="o">+</span> <span class="n">cipher</span>
+</span></span></code></pre></div><div class="alert info">
+  📋 <strong>Notation.</strong> For simplicity, I will use $\mathcal{E}_j$ (resp. $\mathcal{D}_j$) as the function that encrypts (resp. decrypts) one block using the key $k_j$, for $j = 0, 1, 2$.
+</div>
+
+<p>The below figure shows one round of the given mode of operation for $i = 1, 2, ...$:</p>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/pcbc-encrypt.png" title="The mode of operation in the challenge.">
+  
+  <figcaption>The mode of operation in the challenge.</figcaption>
+  
+</figure>
+
+<p>Here $m_0 = \texttt{00 00 ... 00}$. Also, for $i = 0, 1, ...$, we have</p>
+<p>$$r_i = \mathcal{E}_1(\text{nonce}_1 + i) \quad \text{and} \quad t_i = \mathcal{E}_2(\text{nonce}_2 + 1).$$</p>
+<p>When connected to the server, we are given the encrypted flag $c_\text{flag}$. We are also given the two functions below, and we can call them as much as we want:</p>
+<ol>
+<li><strong>[Generate a plaintext-ciphertext pair]</strong> We send $0 \le l &lt; 4096$ to the server. The server generates a message $m$ of length $l$ and computes $c = \text{Encrypt}(m)$. We are then given $(m, c)$. Note that the IV remains unchanged throughout the connection.</li>
+<li><strong>[Padding oracle]</strong> We send $c = (c_0, c_1, ..., c_n)$ to the server. The server decrypts it and checks if the flag is a substring of $m$, or there is an exception. Note that $c_0$ should be unchanged.</li>
+</ol>
+<div class="alert warning">
+  🔥 <strong>This challenge is a revenge.</strong> The challenge author also referred us to <a href="https://github.com/bronson113/My_CTF_Challenges/tree/main/b01lersCTF2024/counter_block_chaining"
+   
+   target="_blank" rel="noopener noreferrer" >Counter Block Chaining</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> he wrote for b01lers CTF 2024, where (1) we don't have the first function, and (2) $c_0$ can be arbitrary for the second function.
+</div>
+
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-why-it-is-easy-when-iv-can-be-controlled">Part I: Why it is easy when IV can be controlled?<a href="#part-i-why-it-is-easy-when-iv-can-be-controlled" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/pcbc-multiple-0.png" title="">
+  
+</figure>
+
+<p>Suppose that a ciphertext for $(m_1, m_2, ..., m_n)$ is $(c_0, c_1, ..., c_n)$. In the <em>Counter Block Chaining</em> challenge, we were able to control the initialization vector. By changing the IV from $c_0$ to $c'_0$, we have</p>
+<p>$$
+m_1 \oplus m'_1 = m_2 \oplus m'_2 = ... = m_n \oplus m'_n = c_0 \oplus c'_0.
+$$</p>
+<p>With this, we can attack the padding oracle in the same way we do for the CBC mode. For instance, if we want to recover the last byte of $m_n$, we can make the last byte of $c'_0$ to be $\texttt{00}$, $\texttt{01}$, ..., $\texttt{FF}$ until $(c_0', c_1, ..., c_n)$ corresponds to a plaintext that has a valid PKCS7 padding. In that case, the trailing byte of $m_n'$ will be $\texttt{01}$, thus we can deduce the trailing byte of $m_n$ using $m_n = m'_n \oplus c_0 \oplus c'_0$.</p>
+<h4 id="part-ii-we-cannot-control-the-iv">Part II: We cannot control the IV!<a href="#part-ii-we-cannot-control-the-iv" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>In this challenge, we can no longer flip $c_0$ to generate an arbitrary $m_n$ for the padding oracle. To make matters worse, for $i = 1, 2, ..., n$, $m_i$ is dependent of $c_i$. We do not have a simple relation like the above.</p>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/pcbc-multiple-i.png" title="">
+  
+</figure>
+
+<p>If we change the $i$-th block of the ciphertext from $c_i$ to $c'_i$, we have</p>
+<p>$$
+\begin{aligned}
+&amp; m_{i+1} \oplus m'_{i+1} = m_{i+2} \oplus m'_{i+2} = ... = m_n \oplus m'_n \\
+&amp;\qquad = \mathcal{D}_0(c_i \oplus t_{i-1}) \oplus \mathcal{D}_0(c_i' \oplus t_{i-1}) \oplus c_i \oplus c_i' \\
+&amp;\qquad = m_i \oplus m_i' \oplus c_i \oplus c_i'.
+\end{aligned}$$</p>
+<hr>
+<p>Now we want to recover the plaintext $(m_{0,1}, ..., m_{0,n})$ from its ciphertext $(c_{0,0}, ..., c_{0,n})$. We need two known plaintext-ciphertext pairs that is 129 blocks longer, namely,</p>
+<p>$$\begin{aligned}
+&amp; (m_{1,1}, ..., m_{1, n+129}) \xrightarrow{\text{Encrypt}} (c_{1,0}, ..., c_{1, n+129}) \\
+&amp; (m_{2,1}, ..., m_{2, n+129}) \xrightarrow{\text{Encrypt}} (c_{2,0}, ..., c_{2, n+129})
+\end{aligned}$$</p>
+<p>Denote $\Delta_{ij} := m_{1, j} \oplus m_{i, 1} \oplus c_{1, j} \oplus c_{i, j}$ for $i = 1, 2$ and $j = 0, 1, ..., n+128$. Additionally, we would want that for any $u \in [0, 2^{128})$, there exists $i_1, ..., i_{128} \in \{0, 1\}$ such that</p>
+<p>$$\Delta_{i_1, n+1} \oplus \Delta_{i_2, n+2} \oplus ... \oplus \Delta_{i_{128}, n+128} = u.$$</p>
+<p>We can generate two such plaintext-ciphertext pairs using the first function. Now suppose that we want to recover the last byte of $m_{0, 1}$. We will use</p>
+<p>$$(c_{1, 0}, c_{0, 1}, c_{1, 2}, ..., c_{1, n}, c_{i_1, n+1}, ..., c_{i_{128}, n+128}, c_{1, n+129}).$$</p>
+<div class="alert danger">
+  😕 <strong>What is this mess?</strong> The first $n+1$ ciphertext blocks is the ciphertext for $c_1$, except for the $c_{1, 1}$. We swapped that with $c_{0, 1}$ because we want to &quot;leak&quot; its corresponding plaintext, $m_{0, 1}$. On the other hand, we will add another 129 blocks either from $c_1$ or $c_2$. We will control them to leak the plaintext block byte-by-byte using the padding oracle.
+</div>
+
+<p>For the ciphertext, its last message block, $\tilde{m}_{n+129}$, would be</p>
+<p>$$\begin{aligned}
+\tilde{m}_{n+129} &amp;= m_{n+129} \oplus \Delta_{0, 1} \oplus \Delta_{i_1, n+1} \oplus ... \oplus \Delta_{i_{128}, n+128} \\
+&amp;= m_{n+129} \oplus (m_{1, 1} \oplus m_{0, 1} \oplus c_{1, 1} \oplus c_{0, 1}) \oplus \Delta_{i_1, n+1} \oplus ... \oplus \Delta_{i_{128}, n+128}.
+\end{aligned}$$</p>
+<p>Rearranging, we have</p>
+<p>$$m_{1, 1} = \tilde{m}_{n+129} \oplus m_{n+129} \oplus m_{0, 1} \oplus c_{1, 1} \oplus c_{0, 1} \oplus \Delta_{i_1, n+1} \oplus ... \oplus \Delta_{i_{128}, n+128}.$$</p>
+<p>The only unknown variables would be $\tilde{m}_{n+129}$ and $m_{0, 1}$. However, if we are sending this ciphertext to the second function, we will be informed if $\tilde{m}_{n+129}$ has a valid PKCS7 padding. Thus we can control $\Delta_{i_1, n+1} \oplus ... \oplus \Delta_{i_{128}, n+128}$ by solving a linear system over $\text{GF}(2)$. If $\tilde{m}_{n+129}$ ends with <code>01</code> when $\Delta_{i_1, n+1} \oplus ... \oplus \Delta_{i_{128}, n+128} = u$, then the padding is valid and we can recover the last byte of $m_{1, 1}$ by looking at the last byte of the above equality.</p>
+<p>Repeating the process, we are able to recover the entire flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hitcon{just_a_normal_padding_oracle_with_some_linear_algebra..._horray!_1f4614e8211bddb81b05b}
+</span></span></code></pre></div><h2 id="hyper512">Hyper512<a href="#hyper512" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are given the below stream cipher which makes use of four 128-bit LFSRs:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Cipher</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">lfsr1</span> <span class="o">=</span> <span class="n">LFSR</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">MASK1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">&gt;&gt;=</span> <span class="mi">128</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">lfsr2</span> <span class="o">=</span> <span class="n">LFSR</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">MASK2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">&gt;&gt;=</span> <span class="mi">128</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">lfsr3</span> <span class="o">=</span> <span class="n">LFSR</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">MASK3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">&gt;&gt;=</span> <span class="mi">128</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">lfsr4</span> <span class="o">=</span> <span class="n">LFSR</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">MASK4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">bit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr1</span><span class="p">()</span> <span class="o">^</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr1</span><span class="p">()</span> <span class="o">^</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr1</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr2</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr3</span><span class="p">()</span> <span class="o">^</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr3</span><span class="p">()</span> <span class="o">^</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr3</span><span class="p">()</span> <span class="o">^</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr3</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr4</span><span class="p">()</span> <span class="o">^</span> <span class="bp">self</span><span class="o">.</span><span class="n">lfsr4</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sha256</span><span class="p">(</span><span class="nb">str</span><span class="p">((</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="mi">3142</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">                <span class="n">b</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">            <span class="k">yield</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pt</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">x</span> <span class="o">^</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">())])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ct</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+</span></span></code></pre></div><p>We are given a ciphertext encrypted with the above <code>Cipher</code>, where its plaintext is 4096 null bytes followed by the flag. The objective is to recover the flag.</p>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+
+
+<figure>
+  <img src="/images/2024-07-20-hitcon-ctf/hyper512-truth-table.png" title="A truth table of the output bits based on the LFSRs.">
+  
+  <figcaption>A truth table of the output bits based on the LFSRs.</figcaption>
+  
+</figure>
+
+<p>Let $x_i, y_i, z_i, w_i, \text{output}_i$ be the $i$-th bit from <code>lfsr1</code>, <code>lfsr2</code>, <code>lfsr3</code>, <code>lfsr4</code> and the output. @KLPP observed that if $\text{output}_i = 1$, then $y_i = 1$ or $z_i = 1$. This is equivalent to $(y_i - 1) (z_i - 1) = 0$.</p>
+<p>Additionally, we can express $y_i$ (resp. $z_i$) in terms of $y_1, ..., y_{128}$ (resp. $z_1, ..., z_{128}$) given the masks. Let's write $y_i = a_{i,1} y_1 + ... + a_{i,128} y_{128}$ and $z_i = b_{i,1} z_1 + ... + b_{i,128} z_{128}$, and we know those $a_{ij}$ and $b_{ij}$'s.</p>
+<p>To reiterate, for each $i$ such that $\text{output}_i = 1$, we have</p>
+<p>$$(a_{i,1} y_1 + ... + a_{i,128} y_{128} - 1)(b_{i,1} z_1 + ... + b_{i,128} z_{128} - 1) = 0.$$</p>
+<p>We can expand that and obtain the long equation below:</p>
+<p>$$\begin{aligned}
+&amp; (a_{i,1}b_{i,1} \cdot {\color{red}{y_1z_1}} + ... + a_{i,128}b_{i,128} \cdot {\color{red}{y_{128}z_{128}}}) \\
+&amp; \qquad + (a_{i,1} \cdot {\color{red}{y_1}} + ... + a_{i,128} \cdot {\color{red}y_{128}}) + (b_{i,1} \cdot {\color{red}{z_1}} + ... + b_{i,128} \cdot {\color{red}{z_{128}}}) = 1
+\end{aligned}$$</p>
+<p>We can try to linearize the equation since there will be 16368 such equations given in <code>output.txt</code> (one equation upon $\text{output}_1 = 1$):</p>
+<p>$$\begin{aligned}
+&amp; (a_{i,1}b_{i,1} \cdot {\color{red}{u_1}} + ... + a_{i,128}b_{i,128} \cdot {\color{red}{u_{16384}}}) \\
+&amp; \qquad + (a_{i,1} \cdot {\color{red}{u_{16385}}} + ... + a_{i,128} \cdot {\color{red}u_{16512}}) + (b_{i,1} \cdot {\color{red}{u_{16513}}} + ... + b_{i,128} \cdot {\color{red}{u_{16640}}}) = 1
+\end{aligned}$$</p>
+<p>Now we have 16640 unknowns, we have 272 degrees of freedom. Fortunately, we can pick three $x_i$'s and assume that they are zeroes. This makes all the $u_j$'s depending on the $x_i$'s are zeroes, too. We only need to guess 8 times on average to obtain the correct $u_j$'s (thus $y_1, ..., y_{128}$ and $z_1, ..., z_{128}$).</p>
+<p>Now we have $y_i$ and $z_i$'s. To proceed, we see from the truth table that the only case when $(y_i, z_i, \text{output}_i) = (0, 1, 0)$ is $(x_i, w_i) = (1, 1)$. We can collect 256 such values to recover $x_1, ..., x_{128}$ and $w_1, ..., w_{128}$. Since the key is fully recovered, we can proceed to retrieve the flag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hitcon{larger_states_is_still_no_match_of_fast_correlation_attacks!}
+</span></span></code></pre></div><div class="alert warning">
+  🙅🏽‍♂️ <strong>Unintended!</strong> As mentioned in the flag, the intended solution is the fast correlation attack. @maple3142 mentioned that his solver took less than 10s.
+</div>
+
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>G. Poupard, J. Stern (2000). &quot;Short Proofs of Knowledge for Factoring&quot;<br/><a href="https://www.di.ens.fr/~stern/data/St84.pdf"
+   
+   target="_blank" rel="noopener noreferrer" >https://www.di.ens.fr/~stern/data/St84.pdf</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Python Software Foundation (2022). &quot;Notable security feature in 3.10.7&quot;<br><a href="https://docs.python.org/3/whatsnew/3.10.html#notable-security-feature-in-3-10-7"
+   
+   target="_blank" rel="noopener noreferrer" >https://docs.python.org/3/whatsnew/3.10.html#notable-security-feature-in-3-10-7</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          HITCON CTF 2024 Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2024/2024-09-28-blazctf/">← BlazCTF 2024 Writeup</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2024/2024-06-24-google-ctf-3/">Google CTF 2024 (III): IDEA →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

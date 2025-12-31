@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEF CON CTF Quals 2021: Day 1 | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">DEF CON CTF Quals 2021: Day 1</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-05-04T01:13:00&#43;08:00">2021-05-04</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/defcon/" class="text-muted text-decoration-none">#defcon</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I played DEF CON CTF Quals once again with <a href="https://twitter.com/Shellphish" target="_blank" rel="nofollow">@Shellphish</a> and we ended up at the 10th place. This blog post describes what actually was going on from my side. If you are looking for an informative blog post, this is not a good-read for you. There would be a little useful information, since I am just hanging around most of the time. I will even shamelessly copy some memes online to make the blog post looked rich in content.</p>
+<p>After all, I am only able to solve <em>nooombers</em> (on day 1), <em>qoo-or-ooo</em> and <em>back-to-qoo</em> (on day 2). What happened on day 2 from my point of view is considerably more interesting.</p>
+<h2 id="challenge-nooombers">Challenge: nooombers<a href="#challenge-nooombers" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p><em><strong>nooombers</strong> (44 solves, 127 points)</em></p>
+<p>I really do not understand what this is about, but my cousin told me that once he managed to got a flag out of this. I was able to copy from my cousin's shell parts of his interactions with the server. You can find them in interaction1.txt and interaction2.txt. Unfortunately, they are incomplete.</p>
+<p><code>nooombers.challenges.ooo 8765</code></p>
+<p>Files: <a href="https://scoreboard2021.oooverflow.io/challenge_files/dc7308186e1ed06bb875d3c5ffb966acdcfd9c7433a6c67f821ce5af1ae43048/interaction1.txt"
+   
+   target="_blank" rel="noopener noreferrer" >interaction1.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://scoreboard2021.oooverflow.io/challenge_files/dc7308186e1ed06bb875d3c5ffb966acdcfd9c7433a6c67f821ce5af1ae43048/interaction2.txt"
+   
+   target="_blank" rel="noopener noreferrer" >interaction2.txt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<div class="alert info">
+  Solved with @Paul, @Subwire and more.
+</div>
+
+<h3 id="part-i-understanding-the-challenge">Part I: Understanding the challenge<a href="#part-i-understanding-the-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 10:45 (165 minutes in)</em> ⏲️ ⏲️</p>
+<p>It is good to be greeted in the morning with a crypto challenge. I am pretty excited to see a crypto challenge in a pwn-intensive CTF. Let's see what is it about. I bet it is attributed to @fish since I am seeing a bunch of 魚's (i.e., the Chinese word of fish).</p>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 11:08 (188 minutes in)</em> ⏲️ ⏲️</p>
+<p>After a while, I learned how to interact with the server. In <code>interaction1.txt</code>, there are multiple copies of the below string:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">髛髛髛   # Title, maybe?
+</span></span><span class="line"><span class="cl">鬆      # Operation 0
+</span></span><span class="line"><span class="cl">魢      # Operation 1
+</span></span><span class="line"><span class="cl">魀      # Operation 2
+</span></span><span class="line"><span class="cl">鯞      # Operation 3
+</span></span><span class="line"><span class="cl">鮂      # Operation 4
+</span></span><span class="line"><span class="cl">魻      # Operation 5
+</span></span><span class="line"><span class="cl">鬼      # Operation 6
+</span></span><span class="line"><span class="cl">鮳      # Operation 7
+</span></span><span class="line"><span class="cl">鯑      # Operation 8
+</span></span><span class="line"><span class="cl">鮽      # Operation 9
+</span></span><span class="line"><span class="cl">魵      # Operation 10
+</span></span><span class="line"><span class="cl">髛      # Send me something!
+</span></span></code></pre></div><p>They are actually the menu. On top of that, they have defined 11 operations, namely <code>鬆</code>, <code>魢</code>, ... up to <code>魵</code>. Furthermore, <code>髛</code> is somewhere asking for inputs. At this moment, the only operation I knew it <code>魵</code>, which is an exit. Also, worth noting that the character set changes on each <code>nc</code> connection.</p>
+<p>We are then able to send one of the above operations. For instance, <code>鬆</code>. It then return a line of gibberish:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">鬆 鱷鳘鰬鰛鳘鰑鳌鲯鳗鲳...鱈鲒鲲鱱鳣鰂鳇鲫鳃鳾
+</span></span></code></pre></div><p>One thing I suspected is the long strings are actually used repeatedly. Therefore, I tried to translate <code>interaction1.txt</code> into something that is slightly more readable. Each <code>OP_*</code> is a single character representing an operation, and <code>RET_*_*</code> is a 144-character string represents the return values of the operations.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">Welcome to nooombers! Press enter to start...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_0
+</span></span><span class="line"><span class="cl">OP_0 RET_0_1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_1
+</span></span><span class="line"><span class="cl">INPUT RET_0_1
+</span></span><span class="line"><span class="cl">OP_1 RET_0_1 RET_1_1 RET_1_2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_0_1
+</span></span><span class="line"><span class="cl">INPUT RET_1_2
+</span></span><span class="line"><span class="cl">OP_3 RET_0_1 RET_1_2 RET_1_1 RET_3_1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_2
+</span></span><span class="line"><span class="cl">INPUT RET_0_1
+</span></span><span class="line"><span class="cl">OP_2 RET_0_1 RET_1_1 RET_2_1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_4
+</span></span><span class="line"><span class="cl">INPUT RET_0_1
+</span></span><span class="line"><span class="cl">INPUT RET_2_1
+</span></span><span class="line"><span class="cl">OP_4 RET_0_1 RET_2_1 RET_1_1 RET_4_1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_1
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_1 RET_4_1 RET_1_1 RET_4_1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_4_1 RET_4_1 RET_1_1 RET_3_2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_2
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_2 RET_4_1 RET_1_1 RET_3_3
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_3
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_3 RET_4_1 RET_1_1 RET_3_4
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_4
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_4 RET_4_1 RET_1_1 RET_3_5
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_5
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_5 RET_4_1 RET_1_1 RET_3_6
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_6
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_6 RET_4_1 RET_1_1 RET_3_7
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_7
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_7 RET_4_1 RET_1_1 RET_3_8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_8
+</span></span><span class="line"><span class="cl">INPUT RET_4_1
+</span></span><span class="line"><span class="cl">OP_3 RET_3_8 RET_4_1 RET_1_1 RET_3_9
+</span></span><span class="line"><span class="cl">Too much! Disabling one option...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU (OP_9 REMOVED)
+</span></span><span class="line"><span class="cl">INPUT OP_4
+</span></span><span class="line"><span class="cl">INPUT RET_3_2
+</span></span><span class="line"><span class="cl">INPUT RET_3_3
+</span></span><span class="line"><span class="cl">OP_4 RET_3_2 RET_3_3 RET_1_1 RET_3_6
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MENU (OP_9 REMOVED)
+</span></span><span class="line"><span class="cl">INPUT OP_6
+</span></span><span class="line"><span class="cl">INPUT RET_3_3
+</span></span><span class="line"><span class="cl">INPUT RET_3_2
+</span></span></code></pre></div><p>I have also translated <code>interaction2.txt</code> and knew that <code>OP_9</code> is the operation that win us the flag. That said, if we are too annoying (i.e., sending too much queries), we're not able to get flag anymore.</p>
+<h3 id="part-ii-a-wild-but-legit-guess">Part II: A wild but legit guess<a href="#part-ii-a-wild-but-legit-guess" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 11:51 (231 minutes in)</em> ⏲️ ⏲️</p>
+<p>While I am looking at the translated <code>interaction1.txt</code>, a strange idea popped up to my mind. Would the below operation represent $2\times3 = 6$? We can observe, from below, that <code>OP_4(RET_3_2, RET_3_3) = (RET_1_1, RET_3_6)</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MENU (OP_9 REMOVED)
+</span></span><span class="line"><span class="cl">INPUT OP_4
+</span></span><span class="line"><span class="cl">INPUT RET_3_2
+</span></span><span class="line"><span class="cl">INPUT RET_3_3
+</span></span><span class="line"><span class="cl">OP_4 RET_3_2 RET_3_3 RET_1_1 RET_3_6
+</span></span></code></pre></div><p>Hence, we assume that <code>OP_4</code> is the multiplication operation. Also, <code>RET_3_2 = 2</code>, <code>RET_3_3 = 3</code>, <code>RET_3_6 = 6</code>. Base on the assumption, I don't think we are ambitious to assume that <code>RET_3_k = k</code> for all $k &gt; 1$, <code>RET_3_1 = 0</code> and <code>RET_4_1 = 1</code>. Last but not least, <code>OP_3</code> is the addition operation.</p>
+<h3 id="part-iii-recovering-the-functions">Part III: Recovering the functions<a href="#part-iii-recovering-the-functions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 12:37 (277 minutes in)</em> ⏲️ ⏲️</p>
+<p>I experimented for a while and I was pretty convinced that my guess is correct. It was pretty unbelieveable that I am able to guess well.</p>
+<p>Let's translate <code>interaction1.txt</code> mathematically and fill in what we knew. Since <code>RET_1_1</code> is returned in every call (except the first), I am going to skip it. I am using $x_{i, j}$ as a replacement for <code>RET_i_j</code>:</p>
+<ul>
+<li>$\text{OP}_0() = x_{0, 1}$</li>
+<li>$\text{OP}_1(x_{0, 1}) = x_{1, 2}$</li>
+<li>$x_{0, 1} + x_{1, 2} = x_{3, 1}$</li>
+<li>$\text{OP}_2(x_{0, 1}) = x_{2, 1}$</li>
+<li>$x_{0, 1} \times x_{2, 1} = 1$</li>
+<li>$x_{3, 1} + 1 = 1$</li>
+<li>$1 + 1 = 2$</li>
+<li>$2 + 1 = 3$</li>
+<li>$3 + 1 = 4$</li>
+<li>$4 + 1 = 5$</li>
+<li>$5 + 1 = 6$</li>
+<li>$6 + 1 = 7$</li>
+<li>$7 + 1 = 8$</li>
+<li>$8 + 1 = 9$</li>
+<li>$2 \times 3 = 6$</li>
+</ul>
+<p>From above, it is evident that $x_{3, 1} = 0$ and $x_{2, 1} = {x_{0, 1}}^{-1}$. Hence $x_{1, 2} = -x_{0, 1}$. We are able to further derive that $\text{OP}_1$ and $\text{OP}_2$ is an inverse operator for addition and multiplication, respectively (i.e., $\text{OP}_1(x) = -x$ and $\text{OP}_2(x) = x^{-1}$). With more tests (for example, knowing that $x_{1, 1} \times x_{1, 1} = x_{1, 1} + x_{1, 1} = 0$), it is verified that those operations are using $x_{1, 1}$ is the modulo. Let's summarize what we have in the below table:</p>
+<table class="table table-striped table-bordered">
+  <thead>
+    
+    <tr>
+      
+      <th>
+        Operation
+      </th>
+      
+      <th>
+        Description
+      </th>
+      
+    </tr>
+    
+  </thead>
+  <tbody>
+    
+    <tr>
+      
+      <td>
+        $\text{OP}_0()$
+      </td>
+      
+      <td>
+        return a random number... maybe
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $\text{OP}_1(x)$
+      </td>
+      
+      <td>
+        return $-x\ \text{mod}\ q$
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $\text{OP}_2(x)$
+      </td>
+      
+      <td>
+        return $x^{-1}\ \text{mod}\ q$
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $\text{OP}_3(x, y)$
+      </td>
+      
+      <td>
+        return $x + y\ \text{mod}\ q$
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td>
+        $\text{OP}_4(x, y)$
+      </td>
+      
+      <td>
+        return $xy\ \text{mod}\ q$
+      </td>
+      
+    </tr>
+    
+  </tbody>
+</table>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 13:30 (330 minutes in)</em> ⏲️ ⏲️</p>
+<p>We have further guessed (and experimented) that $\text{OP}_5$ is another multiplication and $\text{OP}_6$ is exponentation. At first, I didn't know why are there two multiplications, it took me some time that they are operated on a different modulus (denote it as $p$).</p>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 13:33 (333 minutes in)</em> ⏲️ ⏲️</p>
+<p><em>Me: What is the deal for operation 7? There are so much asterisks... Let's skip it.</em></p>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 14:03 (363 minutes in)</em> ⏲️ ⏲️</p>
+<p>Instead of a simple mathematical operation, $\text{OP}_8$ takes three parameters and runs several arithmetic operations, and eventually return one value. Let's translate a sample response of the function call...</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_8
+</span></span><span class="line"><span class="cl">INPUT X1 
+</span></span><span class="line"><span class="cl">INPUT X2
+</span></span><span class="line"><span class="cl">INPUT X3
+</span></span><span class="line"><span class="cl">MODINV X3 Q Y1
+</span></span><span class="line"><span class="cl">MUL X1 Y1 Q Y2
+</span></span><span class="line"><span class="cl">MUL X2 Y1 Q Y3
+</span></span><span class="line"><span class="cl">POW R1 Y2 P Y4
+</span></span><span class="line"><span class="cl">POW R2 Y3 P Y5
+</span></span><span class="line"><span class="cl">MUL Y4 Y5 P Y6
+</span></span><span class="line"><span class="cl">OP_0 Y7
+</span></span><span class="line"><span class="cl">NEG Y7 Q Y8
+</span></span><span class="line"><span class="cl">ADD Y6 Y7 Q Y9
+</span></span><span class="line"><span class="cl">ADD Y9 Y8 Q Y10
+</span></span><span class="line"><span class="cl">OP_8 X1 X2 X3 Y10
+</span></span></code></pre></div><p>Let's express $y_{10}$ (the output) in terms of $x_1, x_2, x_3$ (the inputs) mathematically.</p>
+<p>$$\begin{aligned}
+y_{10} &amp;= (y_9 + y_8)\ \text{mod}\ q \\
+&amp;= [(y_6 + y_7) + (-y_7)]\ \text{mod}\ q \\
+&amp;= y_6\ \text{mod}\ q \\
+&amp;= (y_4y_5\ \text{mod}\ p)\ \text{mod}\ q \\
+&amp;= ({r_1}^{y_2} {r_2}^{y_3}\ \text{mod}\ p)\ \text{mod}\ q \\
+&amp;= ({r_1}^{x_1 y_1\ \text{mod}\ q} {r_2}^{x_2 y_1\ \text{mod}\ q}\ \text{mod}\ p)\ \text{mod}\ q \\
+&amp;= ({r_1}^{x_1/x_3\ \text{mod}\ q} {r_2}^{x_2/x_3\ \text{mod}\ q}\ \text{mod}\ p)\ \text{mod}\ q
+\end{aligned}$$</p>
+<p>Here they have introduced two more unknowns $r_1$ and $r_2$ those are kept unchanged in the same connection.</p>
+<div class="alert warning">
+  <strong>What is that?</strong> During the contest, I feel like this is implementing something but I could not recall. After the contest, @N00bcak and @rbtree reminded me that was actually the data signature algorithm (DSA). Turns out operation 8 is a function verifying if your signature $(x_2, x_3)$ is correct, given the digest $x_1$. Hereby $r_1$ and $r_2$ corresponds to the generator and public key, respectively.
+</div>
+
+<h3 id="part-iv-identifing-the-objective-and-getting-through">Part IV: Identifing the objective and getting through<a href="#part-iv-identifing-the-objective-and-getting-through" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 14:36 (396 minutes in)</em> ⏲️ ⏲️</p>
+<p>Operation 9 is literally the most important function that we gotta look into. Since we knew most of the operations, it is pretty easy to understand what it does. Well, it is just $\text{OP}_9(x_2, x_3) = \text{OP}_8(r_0, x_2, x_3)$ for some fixed $r_0$. Now let's bring in our translated <code>interaction2.txt</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">MENU
+</span></span><span class="line"><span class="cl">INPUT OP_9
+</span></span><span class="line"><span class="cl">INPUT X2
+</span></span><span class="line"><span class="cl">INPUT X3
+</span></span><span class="line"><span class="cl">MODINV X3 Q Y1
+</span></span><span class="line"><span class="cl">MUL R0 Y1 Q Y2
+</span></span><span class="line"><span class="cl">MUL X2 Y1 Q Y3
+</span></span><span class="line"><span class="cl">POW R1 Y2 P Y4
+</span></span><span class="line"><span class="cl">POW R2 Y3 P Y5
+</span></span><span class="line"><span class="cl">MUL Y4 Y5 P Y6
+</span></span><span class="line"><span class="cl">OP_0 Y7
+</span></span><span class="line"><span class="cl">NEG Y7 Q Y8
+</span></span><span class="line"><span class="cl">ADD Y6 Y7 Q Y9
+</span></span><span class="line"><span class="cl">ADD Y9 Y8 Q X2
+</span></span><span class="line"><span class="cl">OP_9 R0 X2 X3 X2
+</span></span><span class="line"><span class="cl">Correct signature! This is the flag:
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></div><p>Since the output for $\text{OP}_9$ is $x_2$, I assumed that our objective is to find $x_2, x_3$ such that</p>
+<p>$$({r_1}^{r_0/x_3\ \text{mod}\ q}{r_2}^{x_2/x_3\ \text{mod}\ q}\ \text{mod}\ p)\ \text{mod}\ q = x_2.$$</p>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 15:08 (428 minutes in)</em> ⏲️ ⏲️</p>
+<p>I was expecting that everything would be simpler if I can make</p>
+<p>$$x_2 = {r_1}^{r_0/x_3} = {r_2}^{x_2/x_3} = 1.$$</p>
+<p><strong>It did happen.</strong> I was randomly messing around with the operations and found that they have mistakenly defined <code>MODINV(0) = 0</code>. That said, I can set $x_2 = 1$ and $x_3 = 0$...</p>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 15:10 (430 minutes in)</em> ⏲️ ⏲️</p>
+<p>The flag pops right away: <code>OOO{D0Y0uUnd3rstandWh4tANumberIs?}</code>! Not so crypto, eh?</p>
+<div class="alert danger">
+  <strong>Slack alert!</strong> I am definitely being slack since there are no more crypto challenges in the rest of the day. 95% of the content onwards is pointless.
+</div>
+
+<h3 id="part-v-postmortem">Part V: Postmortem<a href="#part-v-postmortem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The crypto involved in this challenge is digital signature algorithm (DSA). I went through some discussions after the contest, and turns out operation 7 is the signing process for DSA, for a given digest. I think the intented solution involves the poor random number generation with $\text{OP}_0$ used in signing.</p>
+<h2 id="challenge-exploit-for-dummies">Challenge: exploit-for-dummies<a href="#challenge-exploit-for-dummies" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 15:33 (453 minutes in)</em> ⏲️ ⏲️</p>
+<p>Since I have nothing to do, I hopped into the challenge and tried to find the answers for the unsolved trivia questions. Seeing no crypto, I decided to have a break.</p>
+<h2 id="side-story-inspecting-the-challenge-api">Side story: Inspecting the <code>/challenge</code> API<a href="#side-story-inspecting-the-challenge-api" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 16:06 (486 minutes in)</em> ⏲️ ⏲️</p>
+<p>I took some time integrating <em>ctfbot</em> to ping teammates when there is a challenge update. While I was inspecting the <code>/challenge</code> API, I saw something fishy...</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="err">/*</span> <span class="err">omitted...</span> <span class="err">*/</span> <span class="nt">&#34;unopened_by_category&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&#34;haiku&#34;</span><span class="p">:</span> <span class="mi">9</span><span class="p">}}}</span>
+</span></span></code></pre></div><p>Wait, does it mean that there are only nine challenges yet-to-be released?</p>
+<h2 id="challenge-mooosl">Challenge: mooosl<a href="#challenge-mooosl" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 19:51 (711 minutes in)</em> ⏲️ ⏲️</p>
+<blockquote>
+<p><em>kylebot — Today 19:51</em><br>
+This is a hash collision+musl libc<br>
+The bug is that the next pointer is not cleared after delete<br>
+What we can do is: find a pair of different keys hashed into a same bucket, one of them of length 1</p>
+<p><em>Samuel — Today 19:52</em><br>
+hash collision! need help?</p>
+<p><em>kylebot — Today 19:52</em><br>
+And then bruteforce the byte by querying it<br>
+I'm not on a computer rn<br>
+But yes. We need many collisions</p>
+</blockquote>
+<p>Shortly after, @Robin sent me the code for the hash algorithm.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kr">__int64</span> <span class="kr">__fastcall</span> <span class="nf">sub_13DB</span><span class="p">(</span><span class="kr">__int64</span> <span class="n">a1</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kr">__int64</span> <span class="n">a2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+14h] [rbp-Ch]
+</span></span></span><span class="line"><span class="cl">  <span class="kr">__int64</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [rsp+18h] [rbp-8h]
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">v4</span> <span class="o">=</span> <span class="mi">2021LL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">a2</span> <span class="o">&gt;</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v4</span> <span class="o">=</span> <span class="mi">322401073</span> <span class="o">*</span> <span class="n">v4</span> <span class="o">+</span> <span class="o">*</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">a1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">v4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Wow, it is pretty easy! This would be a little practice on lattices, right?</p>
+<blockquote>
+<p><em>kylebot — Today 19:54</em><br>
+@Samuel also<br>
+Mod 0x1000</p>
+</blockquote>
+<p>Bummer, it is a different story under modulo 0x1000. Everyone can find collisions easily...</p>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 21:00 (780 minutes in)</em> ⏲️ ⏲️</p>
+<p>I finished the collider that finds collision in $\mathcal{O}(1)$. It finds infinitely many preimages those have the same digest. Well, I don't even know what is it used.</p>
+<h2 id="challenge-rick">Challenge: rick<a href="#challenge-rick" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p style="text-align: center; padding: 12px;">⏲️ ⏲️ <em>Day 1, 21:02 (782 minutes in)</em> ⏲️ ⏲️</p>
+<p>I was once baited by crypto-related terms. This time it is <em>rick</em>.</p>
+<blockquote>
+<p><em>Paul — Today 21:02</em><br>
+if you could undo the encryption though, that'd be super helpful</p>
+<p><em>R3x — Today 21:03</em><br>
+isn't the encryption just xoring with letters RICK?</p>
+</blockquote>
+<p>Oof. This challenge seemed fun but I did not investigate any further. I have strong teammates, after all.</p>
+<h2 id="side-story-creating-a-crypto-challenge">Side story: Creating a crypto challenge<a href="#side-story-creating-a-crypto-challenge" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert warning">
+  <strong>Good that you read up to here.</strong> Maybe you will be slightly benefited for the next CTF I help organizing!
+</div>
+
+<p>I was inspired by <em>nooombers</em> to create a CTF challenge. Of course, I am not going to mention what is it. I am still unable to write an exploit after until now...</p>
+<h2 id="end-of-day-1">End of day 1<a href="#end-of-day-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The organizers decided to release two more challenges near the end of the day (under GMT+8). Well, both of them are categorized as <em>reverse-pwn</em>. I rather go to bed...</p>
+<blockquote>
+<p><em>Samuel — Today 23:52</em><br>
+darn you ooo<br>
+wake me up when there is a crypto</p>
+<p><em>GH0S1 — Today 23:52</em><br>
+@Samuel cryptocurrency?</p>
+<p><em>GH0S7_1N_7H3_F1NG3RS — Today 23:53</em><br>
+@Samuel this is cryptocurrency</p>
+</blockquote>
+<p>Never mind, good night. Wait, no, it actually matters - <em>crypto is not cryptocurrency but cryptography</em>.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          DEF CON CTF Quals 2021: Day 1
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-05-06-defcon-quals-2/">← DEF CON CTF Quals 2021: Day 2</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-04-19-plaidctf-leaky-block-cipher/">PlaidCTF 2021: Leaky Block Cipher →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

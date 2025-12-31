@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeetCode Practice: Day 2 | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">LeetCode Practice: Day 2</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-06-18T21:30:00&#43;08:00">2021-06-18</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/algorithms/" class="text-muted text-decoration-none">#algorithms</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/leetcode/" class="text-muted text-decoration-none">#leetcode</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>The problems today are <em>Construct the Lexicographically Largest Valid Sequence</em><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, <em>Make Sum Divisible by P</em><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>, <em>Find the Winner of an Array Game</em><sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>, <em>Valid Permutations for DI Sequence</em><sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> and <em>Closest Subsequence Sum</em><sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup>.</p>
+<p>The solution scripts are pushed on my Github repository: <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1718.py"
+   
+   target="_blank" rel="noopener noreferrer" >A</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1535.py"
+   
+   target="_blank" rel="noopener noreferrer" >B</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1755.py"
+   
+   target="_blank" rel="noopener noreferrer" >C</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>, <a href="https://github.com/samueltangz/leetcode-solution/blob/master/1590.py"
+   
+   target="_blank" rel="noopener noreferrer" >D</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> and <a href="https://github.com/samueltangz/leetcode-solution/blob/master/903.py"
+   
+   target="_blank" rel="noopener noreferrer" >E</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>.</p>
+<div class="mermaid">
+  
+gantt
+  dateFormat  YYYY-MM-DD HH:mm
+  axisFormat  %H:%M
+
+  section Problem A
+  A           :2021-06-17 22:33, 14m
+
+  section Problem B
+  B           :2021-06-17 22:47, 10m
+  B           :2021-06-17 23:28, 32m
+
+  section Problem C
+  C           :2021-06-17 22:57, 10m
+
+  section Problem D
+  D           :2021-06-17 23:07, 4m
+  D           :2021-06-18 00:00, 37m
+
+  section Problem E
+  E           :2021-06-17 23:11, 17m
+
+</div>
+  
+<h2 id="a-construct-the-lexicographically-largest-valid-sequence">A. Construct the Lexicographically Largest Valid Sequence<a href="#a-construct-the-lexicographically-largest-valid-sequence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="commentary">Commentary<a href="#commentary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="alert info">
+  <strong>Idea.</strong> Put the largest unfilled number on the leftmost entry that is empty - if it is impossible, backtrack and remove the previously inserted number.
+</div>
+
+<p>Suppose that $n = 5$ in our example. Initially there is an array of nine empty entries and none of the numbers are used.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node [shape=&amp;#34;rect&amp;#34;]
+  
+  &amp;#34;_________&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>
+
+<p>The largest unused number that can be filled on the first entry is 5. Let's fill it into the first (and the sixth due to constraints):</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node [shape=&amp;#34;rect&amp;#34;]
+  
+  &amp;#34;5____5___&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>
+
+<p>The unused numbers are $\{1, 2, 3, 4\}$. The largest unused number that fits on the second entry is 3. Note that 4 is not feasible because the sixth entry is already filled.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node [shape=&amp;#34;rect&amp;#34;]
+
+  &amp;#34;53__35___&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>
+
+<p>We then can fit 4 and 1 to the third and the fourth entries, respectively:</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node [shape=&amp;#34;rect&amp;#34;]
+  rankdir=TB
+
+  &amp;#34;534_354__&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  &amp;#34;5341354__&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;1&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  &amp;#34;534_354__&amp;#34; -&amp;gt; &amp;#34;5341354__&amp;#34;[color=&amp;#34;transparent&amp;#34;]
+
+  }
+  </div>
+</div>
+
+<p>However, the only unused number is 2 and it does not fit to the remaining entries. Hence, we will backtrack to the previous state.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node [shape=&amp;#34;rect&amp;#34;]
+
+  &amp;#34;534_354__&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>
+
+<p>The only number that fits to the fourth entry is 1. Since we have already tested it, there are no solutions and the previous state is further backtracked.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node [shape=&amp;#34;rect&amp;#34;]
+
+  &amp;#34;53__35___&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  }
+  </div>
+</div>
+
+<p>From above, putting 4 into the third entry yields no valid solutions. We will put the next possible number, which is 1. Filling in the remaining entries we have the lexigraphically largest sequence.</p>
+<div class="text-center pb-3">
+  <div class="graphviz">
+  digraph {
+    graph [bgcolor="transparent"]
+    node [color="#ffe4e1", fontcolor="#ffe4e1", fillcolor="#33333c", style="filled"]
+    edge [color="#ffe4e1", fontcolor="#ffe4e1"]
+
+    
+  node [shape=&amp;#34;rect&amp;#34;]
+
+  &amp;#34;531_35___&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;1&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  &amp;#34;531435_4_&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;1&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  &amp;#34;531435242&amp;#34; [label=&amp;lt;
+    &amp;lt;TABLE border=&amp;#34;0&amp;#34; cellspacing=&amp;#34;5&amp;#34;&amp;gt;
+      &amp;lt;TR&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;1&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;3&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;5&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;2&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;4&amp;lt;/TD&amp;gt;
+        &amp;lt;TD border=&amp;#34;3&amp;#34; width=&amp;#34;30&amp;#34; height=&amp;#34;30&amp;#34;&amp;gt;2&amp;lt;/TD&amp;gt;
+      &amp;lt;/TR&amp;gt;
+    &amp;lt;/TABLE&amp;gt;&amp;gt;]
+
+  &amp;#34;531_35___&amp;#34; -&amp;gt; &amp;#34;531435_4_&amp;#34;[color=&amp;#34;transparent&amp;#34;]
+  &amp;#34;531435_4_&amp;#34; -&amp;gt; &amp;#34;531435242&amp;#34;[color=&amp;#34;transparent&amp;#34;]
+
+  }
+  </div>
+</div>
+
+<div class="alert danger">
+  <strong>This looks unsound!</strong> The time complexity is $\mathcal{O}(n!)$. Although $1 \leq n \leq 20$, $n!$ is still very big. I am not convinced that a solution is always found early on.
+</div>
+
+<h3 id="timeline">Timeline<a href="#timeline" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>[2021.06.17 22:33] Start</li>
+<li>[2021.06.17 22:47] First attempt (AC)</li>
+</ul>
+<h2 id="b-make-sum-divisible-by-p">B. Make Sum Divisible by P<a href="#b-make-sum-divisible-by-p" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="commentary-1">Commentary<a href="#commentary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We are given an array of $1 \leq n \leq 10^5$ elements $a_1, a_2, ..., a_n$. The objective is to remove the shortest subarray such that the sum of the remaining entries is divisible by a given modulo $p$.</p>
+<p>My approach is to compute two partial sums, $L_k$ and $R_k$ for $k = 0, 1, ..., n$:</p>
+<p>$$L_k = \left(+\sum_{i=1}^k a_i\right)\ \text{mod}\ p, \qquad R_k = \left(-\sum_{i=k+1}^n a_i\right)\ \text{mod}\ p.$$</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">minSubarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">left_partial_sums</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">right_partial_sums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">left_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">%</span> <span class="n">p</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">right_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">right_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">%</span> <span class="n">p</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># Omitted. Let&#39;s cover that later.</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Example 1 from the Problem</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span>    <span class="o">=</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">left_partial_sums</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="c1"># before modulo: [  0,  3,  4,  8, 10]</span>
+</span></span><span class="line"><span class="cl"><span class="n">right_partial_sums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="c1"># before modulo: [-10, -7, -6, -2,  0]</span>
+</span></span></code></pre></div><p>What are the partial sums for? Let's make a claim:</p>
+<div class="alert success">
+  <strong>Claim.</strong> If $a_{m+1}, a_{m+2}, ..., a_{m+k}$ are removed so that the sum of the remaining entries is divisible by $p$, then $L_m = R_{m+k}$.
+</div>
+
+<p><strong>Proof.</strong> The below operations are taken under modulo $p$.</p>
+<p>$$\begin{aligned}
+&amp; (a_1 + a_2 + ... + a_m) + (a_{m+k+1} + a_{m+k+2} + ... + a_n) \\
+&amp; \quad \equiv \sum_{i=1}^m a_i + \sum_{i=m+k+1}^{n} a_{i} \\
+&amp; \quad \equiv \sum_{i=1}^m a_i - \left(-\sum_{i=m+k+1}^{n} a_{i}\right) \\
+&amp; \quad \equiv L_m - R_{m+k} \\
+&amp; \quad \equiv 0
+\end{aligned}$$</p>
+<p>From the above claim, we can remove either one of the following subarray to achieve our goal:</p>
+<ol>
+<li>$a_1, a_2$ (the remaining entries are 4 and 2, which sums to 6);</li>
+<li>$a_1, a_2, a_3, a_4$ (this should be rejected because all entries are removed);</li>
+<li>$a_3$ (the remaining entries are 3, 1 and 2).</li>
+</ol>
+<p>We could remove only one element to make the sum divisible by 6.</p>
+<h4 id="one-careless-mistake">One careless mistake<a href="#one-careless-mistake" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>I received a TLE while solving this. The below code is extracted from the attempt:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">minSubarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Omitted...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">lhs</span><span class="p">[</span><span class="n">left_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">lhs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">left_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rhs</span><span class="p">[</span><span class="n">right_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">right_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">        <span class="c1"># Omitted...</span>
+</span></span></code></pre></div><p>I initially thought that the time complexity for the above snippet is $\mathcal{O}(n)$. It is instead $\mathcal{O}(n^2)$ because we need to copy the slice every time it is referred. I used <code>append</code> to improve the time complexity.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">minSubarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Omitted...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">lhs</span><span class="p">[</span><span class="n">left_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">lhs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">left_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">[])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">lhs</span><span class="p">[</span><span class="n">left_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rhs</span><span class="p">[</span><span class="n">right_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">right_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">[])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rhs</span><span class="p">[</span><span class="n">right_partial_sums</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Omitted...</span>
+</span></span></code></pre></div><h3 id="timeline-1">Timeline<a href="#timeline-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>[2021.06.17 22:47] Start</li>
+<li>[2021.06.17 22:57] Paused</li>
+<li>[2021.06.17 23:28] Resumed</li>
+<li>[2021.06.17 23:50] First attempt (WA: 132/142)
+<ul>
+<li>Reason: Computed an incorrect index.</li>
+</ul>
+</li>
+<li>[2021.06.18 23:54] Second attempt (TLE: 139/142)
+<ul>
+<li>Reason: As stated <a href="#one-careless-mistake"
+   
+   >above</a>.</li>
+</ul>
+</li>
+<li>[2021.06.18 00:00] Third attempt (AC)</li>
+</ul>
+<h2 id="c-find-the-winner-of-an-array-game">C. Find the Winner of an Array Game<a href="#c-find-the-winner-of-an-array-game" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  <strong>Idea.</strong> It is a simple simulation question... It is equivalent by removing the loser instead of moving it to the end of the array. Note that the losers won't win again because the numbers of the winners should be increasing.
+</div>
+
+<h3 id="timeline-2">Timeline<a href="#timeline-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>[2021.06.17 22:57] Start</li>
+<li>[2021.06.17 23:07] First attempt (AC)</li>
+</ul>
+<h2 id="d-valid-permutations-for-di-sequence">D. Valid Permutations for DI Sequence<a href="#d-valid-permutations-for-di-sequence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  <strong>Idea.</strong> Use dynamic programming where <code>dp[i][j]</code> is the number of permutations such that <code>a[i]</code> is the <code>j</code>-th largest amongst <code>a[0]</code>, <code>a[1]</code>, ..., <code>a[i]</code>.
+</div>
+
+<h3 id="timeline-3">Timeline<a href="#timeline-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>[2021.06.17 23:07] Start</li>
+<li>[2021.06.17 23:11] Paused</li>
+<li>[2021.06.18 00:00] Resumed</li>
+<li>[2021.06.18 00:10] Hinted</li>
+<li>[2021.06.18 00:37] First attempt (AC)</li>
+</ul>
+<h2 id="e-closest-subsequence-sum">E. Closest Subsequence Sum<a href="#e-closest-subsequence-sum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert info">
+  <strong>Idea.</strong> This is a pretty standard meet-in-the-middle challenge that decreases the number of checks for brute-force from $2^{40}$ to $2^{21}$.
+</div>
+
+<h3 id="timeline-4">Timeline<a href="#timeline-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>[2021.06.17 23:11] Start</li>
+<li>[2021.06.17 23:21] First attempt (WA: 0/73)
+<ul>
+<li>Reason: I misclicked submit during testing...</li>
+</ul>
+</li>
+<li>[2021.06.17 23:28] Second attempt (AC)</li>
+</ul>
+<h2 id="postmortem">Postmortem<a href="#postmortem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Surprisingly, I was used to solve dynamic programming problems effectively when I was in ACM-ICPC team. However it took far more time for me to figure out that D was a DP problem. On the other hand, I received less incorrect attempts. Does it mean that I am more careful than yesterday?</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>LeetCode &quot;Construct the Lexicographically Largest Valid Sequence&quot;<br><a href="https://leetcode.com/problems/construct-the-lexicographically-largest-valid-sequence/"
+   
+   target="_blank" rel="noopener noreferrer" >https://leetcode.com/problems/construct-the-lexicographically-largest-valid-sequence/</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>LeetCode &quot;Make Sum Divisible by P&quot;<br><a href="https://leetcode.com/problems/make-sum-divisible-by-p/"
+   
+   target="_blank" rel="noopener noreferrer" >https://leetcode.com/problems/make-sum-divisible-by-p/</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>LeetCode &quot;Find the Winner of an Array Game&quot;<br><a href="https://leetcode.com/problems/find-the-winner-of-an-array-game/"
+   
+   target="_blank" rel="noopener noreferrer" >https://leetcode.com/problems/find-the-winner-of-an-array-game/</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
+<p>LeetCode &quot;Valid Permutations for DI Sequence&quot;<br><a href="https://leetcode.com/problems/valid-permutations-for-di-sequence/"
+   
+   target="_blank" rel="noopener noreferrer" >https://leetcode.com/problems/valid-permutations-for-di-sequence/</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5">
+<p>LeetCode &quot;Closest Subsequence Sum&quot;<br><a href="https://leetcode.com/problems/closest-subsequence-sum/"
+   
+   target="_blank" rel="noopener noreferrer" >https://leetcode.com/problems/closest-subsequence-sum/</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          LeetCode Practice: Day 2
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-06-19-leetcode-3/">← LeetCode Practice: Day 3</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-06-17-leetcode-1/">LeetCode Practice: Day 1 →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nuttyshell-Ctf on Mystify</title>
+    <link>https://mystiz.hk/tags/nuttyshell-ctf/</link>
+    <description>Recent content in Nuttyshell-Ctf on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 05 May 2025 01:27:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/nuttyshell-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NuttyShell CTF 2025: memo-ry</title>
+      <link>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</link>
+      <pubDate>Mon, 05 May 2025 01:27:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2025/2025-05-05-puctf-memo-ry/</guid>
+      <description>&lt;p&gt;I played NuttyShell CTF 2025 organized by the Hong Kong Polytechnic University, and came across @siunam&#39;s web challenges. In particular, &lt;em&gt;memo-ry&lt;/em&gt; is a hard challenge that required players to chain multiple vulnerabilities to retrieve the flag. I found it really fun and decided to compile a writeup for this.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Memo-ry is a 90% finished web application that allows users to read, create, and edit different memos. For security reasons, this web application has 3 roles, which are &amp;quot;Guest&amp;quot;, &amp;quot;Author&amp;quot;, and &amp;quot;Administrator&amp;quot;. It also has the following features:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

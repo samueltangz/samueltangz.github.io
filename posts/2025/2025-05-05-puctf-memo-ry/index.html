@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NuttyShell CTF 2025: memo-ry | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">NuttyShell CTF 2025: memo-ry</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2025-05-05T01:27:00&#43;08:00">2025-05-05</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/nuttyshell-ctf/" class="text-muted text-decoration-none">#nuttyshell-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/web/" class="text-muted text-decoration-none">#web</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>I played NuttyShell CTF 2025 organized by the Hong Kong Polytechnic University, and came across @siunam's web challenges. In particular, <em>memo-ry</em> is a hard challenge that required players to chain multiple vulnerabilities to retrieve the flag. I found it really fun and decided to compile a writeup for this.</p>
+<h2 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>Memo-ry is a 90% finished web application that allows users to read, create, and edit different memos. For security reasons, this web application has 3 roles, which are &quot;Guest&quot;, &quot;Author&quot;, and &quot;Administrator&quot;. It also has the following features:</p>
+<ol>
+<li>Guest users can read/create memos (required approval if visibility is set to public).</li>
+<li>Author user (mid-level privilege) can read/create/approve memos.</li>
+<li>Administrator (high-level privilege) can read/create/approve/edit memos.</li>
+<li>Memo's visibility can be set to either public or private.</li>
+<li>Users are allowed to use limited HTML code in their memo's content.</li>
+<li>Users can change their username.</li>
+</ol>
+<ul>
+<li>Memo-ry website: <code>http://HOST:PORT</code></li>
+<li>Admin bot: <code>http://HOST:PORT/report</code></li>
+</ul>
+<p>Author: siunam<br>
+Flag Format: <code>PUCTF25{[a-zA-Z0-9_]+_[a-fA-F0-9]{32}}</code></p>
+<p>Attachment: <a href="https://github.com/siunam321/My-CTF-Challenges/tree/main/PUCTF-2025/web/Memo-ry/public"
+   
+   target="_blank" rel="noopener noreferrer" ><code>Memo-ry.tar.gz</code></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg></p>
+</blockquote>
+<p>We are given a memo-related webapp. There is a bot that signs in as @siunam (an author) that visits an arbitrary page and click the approval button after it is loaded. The objective is to read the flag from the an admin's hidden memo.</p>
+
+
+<figure>
+  <img src="/images/2025-05-05-puctf/memo-ry-banner.png" title="">
+  
+</figure>
+
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<div class="alert success">
+  📖 <strong>Read!</strong> Please also read the <a href="https://siunam321.github.io/ctf/PUCTF-2025/web/Memo-ry/"
+   
+   target="_blank" rel="noopener noreferrer" >official writeup</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> from @siunam too.
+</div>
+
+<h3 id="prologue---what-to-do">Prologue - What to do?<a href="#prologue---what-to-do" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We would like to pivot our editor, @siunam to read the hidden memo from the admin.</p>
+<p>We can inject a limited set of HTML elements on the <code>/approve</code> view by manipulating the <code>notice</code> parameter and the unapproved memos. However, the CSP is enabled with <code>script-src</code> being a random nonce, it doesn't seem possible to perform XSS. Instead, there is a chain of vulnerabilities:</p>
+<ol>
+<li>🐞 <strong>DOM clobbering on <code>GET /approve</code>.</strong><br>
+Implication: Makes @siunam call an arbitrary <code>GET</code> endpoint.</li>
+<li>🐛 <strong>Open redirect on <code>GET /edit</code>.</strong><br>
+Implication: Makes @siunam call an arbitrary external <code>GET</code> endpoint.</li>
+<li>🕷️ <strong>ID hijacking on <code>GET /approve</code>.</strong><br>
+Implication: Makes @siunam call an arbitrary <code>POST</code> endpoint.</li>
+<li>🪲 <strong>Improper <code>bcrypt</code> usage on <code>POST /api/username</code>.</strong><br>
+Implication: Invalidates @siunam's password.</li>
+<li>🦟 <strong>Broken authentication on <code>PUT /api/memo/:id</code>.</strong><br>
+Implication: Updates the flag memo to visible.</li>
+</ol>
+<h3 id="part-i-dom-clobbering">Part I: DOM clobbering<a href="#part-i-dom-clobbering" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Below shows a snippet of <code>/app/src/views/approve.ejs</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">MEMO_CSRF_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;&lt;%= csrfToken %&gt;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">MEMO_CSRF_ACTION</span> <span class="o">=</span> <span class="s1">&#39;&lt;%= csrfAction %&gt;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">DOMPURIFY_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ALLOWED_ATTR</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;alt&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">,</span> <span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;class&#39;</span><span class="p">,</span> <span class="s1">&#39;disabled&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ALLOWED_TAGS</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">,</span> <span class="s1">&#39;h2&#39;</span><span class="p">,</span> <span class="s1">&#39;h3&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;strong&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;br&#39;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ALLOW_ARIA_ATTR</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ALLOW_DATA_ATTR</span><span class="o">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kr">async</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">searchParameters</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URLSearchParams</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">searchParameters</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="s1">&#39;notice&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">notice</span> <span class="o">=</span> <span class="nx">searchParameters</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;notice&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">dirtyNotice</span> <span class="o">=</span> <span class="sb">`&lt;h3&gt;Notice from the memo&#39;s user: </span><span class="si">${</span><span class="nx">notice</span><span class="si">}</span><span class="sb">&lt;/h3&gt;`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">cleanNotice</span> <span class="o">=</span> <span class="nx">DOMPurify</span><span class="p">.</span><span class="nx">sanitize</span><span class="p">(</span><span class="nx">dirtyNotice</span><span class="p">,</span> <span class="nx">DOMPURIFY_CONFIG</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.container&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">cleanNotice</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// TODO: implement get unapproved memos by username
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// var user = { username: localStorage.getItem(&#39;username&#39;) };
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">user</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">data</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`/api/memos/</span><span class="si">${</span><span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">data</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/unapproved-memos&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></div><p>We are able to insert tags like <code>alt</code>, <code>href</code> and so on into the container. Also, note that the <code>user</code> variable near the end is not defined elsewhere.</p>
+<p>It is surprising to see that one could overwrite <code>user.username</code> to <code>foo</code> by creating the below DOM element<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">a</span> <span class="na">id</span><span class="o">=</span><span class="s">user</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;ftp:foo:bar@a&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>With that, we can overwrite <code>user.username</code> to an arbitrary value. Now @siunam will be calling an arbitrary <code>GET</code> endpoint when he loads the page. Then what?</p>
+<h3 id="part-ii-open-redirect-plus-id-hijacking">Part II: Open redirect, plus ID hijacking<a href="#part-ii-open-redirect-plus-id-hijacking" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let's continue reading <code>/app/src/views/approve.ejs</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">memoCounter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">memo</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">memo</span><span class="p">.</span><span class="nx">approved</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="kd">var</span> <span class="nx">memoElement</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;div class=&#34;memo&#34;&gt;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">memoElement</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;h3&gt;&lt;/h3&gt;&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="sb">`Memo #</span><span class="si">${</span><span class="nx">memoCounter</span><span class="si">}</span><span class="sb">`</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">memoElement</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;&lt;/h2&gt;&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">memo</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span><span class="sb"> - </span><span class="si">${</span><span class="nx">memo</span><span class="p">.</span><span class="nx">username</span><span class="si">}</span><span class="sb">`</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">memoElement</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;&lt;/p&gt;&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">memo</span><span class="p">.</span><span class="nx">body</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="kd">var</span> <span class="nx">approveFormElement</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;form id=&#34;approve-memo-form&#34;&gt;&lt;/form&gt;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">approveFormElement</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;input type=&#34;hidden&#34; name=&#34;id&#34;&gt;&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="nx">memo</span><span class="p">.</span><span class="nx">id</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">approveFormElement</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;input type=&#34;hidden&#34; name=&#34;title&#34;&gt;&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="nx">memo</span><span class="p">.</span><span class="nx">title</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">approveFormElement</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;input type=&#34;submit&#34; value=&#34;Approve&#34;&gt;&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">memoElement</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">approveFormElement</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.container&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">memoElement</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="nx">memoCounter</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="s1">&#39;#approve-memo-form&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#approve-memo-form input[name=&#34;id&#34;]&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#approve-memo-form input[name=&#34;title&#34;]&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// TODO: implement logging the memo&#39;s approval details. i.e.: approved by whom, when, approval reason, etc. 
+</span></span></span><span class="line"><span class="cl">      <span class="c1">// Currently we&#39;re sending the memo&#39;s title for a placeholder.
+</span></span></span><span class="line"><span class="cl">      <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="sb">`/api/memo/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">/approve`</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">title</span><span class="p">,</span>
+</span></span></code></pre></div><p>We want to control <code>id</code> in the AJAX call so that we could trigger a <code>POST</code> request on @siunam's side when he approves a memo. For instance, if we set <code>id</code> to <code>../username?</code> and the title to <code>{&quot;username&quot;:&quot;AAAAA...AAA&quot;}</code>, he will change his username to <em>AAAAA...AAA</em> (we will call him <em>A98A</em> for simplicity) to pwner's liking. An example JSON object would be below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;approved&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;{\&#34;username\&#34;:\&#34;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\&#34;}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;../username?&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>The <code>GET</code> endpoints provided by the webapp is kind of restricted. There are no API endpoints that would return a JSON object with an arbitrary ID.</p>
+<p>Fortunately, there is an open redirect on <code>GET /edit</code>. Every non-admin user will be redirected to the URL specified by the <code>redirect</code> parameter. Below shows a snippet of <code>/app/src/views.js</code> that reflects the logic:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/edit&#39;</span><span class="p">,</span> <span class="nx">authenticationMiddleware</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">role</span> <span class="o">!==</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">redirectUrl</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">redirect</span> <span class="o">||</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="nx">redirectUrl</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">csrfToken</span> <span class="o">=</span> <span class="nx">csrf</span><span class="p">.</span><span class="nx">generateCSRFToken</span><span class="p">(</span><span class="nx">TEMP_MEMO_CSRF_ACTION</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;edit&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">nonce</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">cspNonce</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">csrfToken</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">csrfAction</span><span class="o">:</span> <span class="nx">TEMP_MEMO_CSRF_ACTION</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>When @siunam visits <code>GET /edit?redirect=http://bad.mystiz.hk:1337</code>, the request will be redirected to <code>http://bad.mystiz.hk:1337</code>. If we serves the above JSON object as the response, then @siunam will have his username updated.</p>
+<p>@siunam is renamed to <em>A98A</em>. Now what?</p>
+<h3 id="part-iii-improper-bcrypt-usage">Part III: Improper <code>bcrypt</code> usage<a href="#part-iii-improper-bcrypt-usage" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Even @siunam becomes <em>A98A</em>, we are still unable to sign in as an editor... or can we?</p>
+<p>We can try to sign in with the password <code>123456</code>. Surprisingly it worked - isn't the password long and secure? Turns out this is a behaviour of <code>bcrypt</code>, where only the first 72 bytes is used to compute the hash<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>:</p>
+<blockquote>
+<p>Per bcrypt implementation, only the first 72 bytes of a string are used. Any extra bytes are ignored when matching passwords.</p>
+</blockquote>
+<div class="alert info">
+  🤓 <strong>Sniped!</strong> I knew the behaviour because I wanted to use this as a challenge...
+</div>
+
+<p>If the username being <code>AAAAA...AA</code> (100 <code>A</code>'s) and the password being <code>password</code>, then the preimage would be <code>AAAAA...AA|password</code>. Since the first 72 bytes will be used to compute the hash, the below equality holds:</p>
+<p>$$\texttt{bcrypt}(\underbrace{\texttt{AAA...AA}}_{100\ \texttt{A}\text{'s}}\texttt{|password}, \text{salt}=🧂) = \texttt{bcrypt}(\underbrace{\texttt{AAA...AA}}_{72\ \texttt{A}\text{'s}}, \text{salt}=🧂)$$</p>
+<p>When we attempt to log in as <em>A98A</em>, the password we provided will also be truncated. Thus we are able to sign in as <em>A98A</em> and to approve memos. Where do we go from here?</p>
+<h3 id="part-iv-broken-authentication">Part IV: Broken authentication<a href="#part-iv-broken-authentication" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Well, although <code>GET /edit</code> would redirect <em>A98A</em> away, the actual API is still usable for editors. <em>A98A</em> could still edit memos and change their visibility. The below snippet for <code>/app/src/api.js</code> shows that <code>/api/memo/:id</code> only redirects guests away, not the editors:</p>
+<pre tabindex="0"><code class="language-javascript=62" data-lang="javascript=62">router.put(&#39;/api/memo/:id&#39;, authenticationMiddleware, csrf.CSRFMiddleware, async (req, res) =&gt; {
+    try {
+        if (req.session.role === &#39;guest&#39;) {
+            throw new Error(&#39;Unauthorized&#39;);
+        }
+</code></pre><p>By updating the visibility, we brought the flag memo to light:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">PUCTF25{CL1ENt_TRavEr5e_T0_ThE_fla9_paTh_JSn5bRetRoFNYVJ5VSqDxf5Rx98imWg4}
+</span></span></code></pre></div>
+
+<figure>
+  <img src="/images/2025-05-05-puctf/memo-ry-flag.png" title="">
+  
+</figure>
+
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Gareth Heyes (2020) &quot;DOM Clobbering strikes back&quot; <br><a href="https://portswigger.net/research/dom-clobbering-strikes-back"
+   
+   target="_blank" rel="noopener noreferrer" >https://portswigger.net/research/dom-clobbering-strikes-back</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>kelektiv (2023): &quot;node.bcrypt.js&quot;<br><a href="https://www.npmjs.com/package/bcrypt"
+   
+   target="_blank" rel="noopener noreferrer" >https://www.npmjs.com/package/bcrypt</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          NuttyShell CTF 2025: memo-ry
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2025/2025-06-29-hkcert-ctf-1/">← HKCERT CTF 2024 Quals Writeup (I): RSA LCG and Pigeon Post</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2024/2024-12-31-retrospective/">Retrospective 2024 →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

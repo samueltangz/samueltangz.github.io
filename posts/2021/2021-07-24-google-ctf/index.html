@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google CTF 2021 Quals Writeup | Mystify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+  integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+  integrity="sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+        <script src="/js/main.f2979a93a325fecf9605263bd141398a311c8e23388ed7dcff74f92f7e632866.js" integrity="sha256-8peak6Ml/s&#43;WBSY70UE5ijEcjiM4jtfc/3T5L35jKGY=" crossorigin="anonymous"></script>
+        <script src="/js/prism.0ecb34b0181efd0f9aa6d1a8fc2e4814ffbdd9acc78d93d02a94e01f64f87f35.js" integrity="sha256-Dss0sBge/Q&#43;aptGo/C5IFP&#43;92azHjZPQKpTgH2T4fzU=" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="overflow-y-scroll">
+  <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="/">Mystify</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        
+        
+          <a class="nav-link " href="/about-me/">
+            About Me 
+          </a>
+        
+          <a class="nav-link " href="/blogroll/">
+            Blogroll 
+          </a>
+        
+          <a class="nav-link " href="/crypto-in-ctf/">
+            Crypto in CTF 
+          </a>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <div class="container mt-3">
+      
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <h1 class="post-title">Google CTF 2021 Quals Writeup</h1>
+
+      
+      <div class="text-muted pb-4">
+        
+          
+          
+          <time datetime="2021-07-24T14:42:00&#43;08:00">2021-07-24</time>
+        
+        
+        <span class="px-1">::</span>
+        
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/ctf/" class="text-muted text-decoration-none">#ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/google-ctf/" class="text-muted text-decoration-none">#google-ctf</a>
+          </span>
+        
+          <span class="badge rounded-pill bg-secondary">
+            <a href="https://mystiz.hk/tags/crypto/" class="text-muted text-decoration-none">#crypto</a>
+          </span>
+        
+      </div>
+      
+
+      <div class="post-content js-toc-content"><div>
+          <p>This is me playing another Google CTF with <a href="https://twitter.com/blackb6a" target="_blank" rel="nofollow">@blackb6a</a>, ending up on the 25th place. I aced the crypto challenges and solved some challenges with my teammates. I have a strong feeling that Black Bauhinia grown a lot between the two Google CTFs and I am often backed by my teammates this time. Anyway, I will be covering all of the crypto challenges in this blog post.</p>
+<h2 id="h1">H1<a href="#h1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary">Challenge Summary<a href="#challenge-summary" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Crypto is not real hacking, they say.</p>
+</blockquote>
+<p>Alice and Bob have a private key $d_A, d_B$ respectively and they are used for both ECDSA and ECDH. They derive a shared secret for encryption with ECDH and sign with ECDSA-SHA512.</p>
+<p>We are given four messages those are sent between Alice and Bob (two from Alice and two from Bob). Denote the $i$-th message, ciphertext and signature being respectively $m_i$, $c_i$ and $(r_i, s_i)$ - Hereby $m_1$ and $m_3$ are signed by Alice and the rest are signed by Bob. We are given all of them except $m_3$. The objective is to recover $m_3$ where the flag resides.</p>
+<p>Notably, the entropy for the <code>RNG</code> while generating ECDSA nonces is 128 bits long.</p>
+<h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let's look at the source code snippets those generate the nonce.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">RNG</span><span class="p">(</span><span class="n">nbits</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nbytes</span> <span class="o">=</span> <span class="n">nbits</span> <span class="o">//</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">    <span class="n">B</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="n">nbytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">([</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">))])</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="n">nbits</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># This is how they derive the nonce for ECDSA signatures</span>
+</span></span><span class="line"><span class="cl"><span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">RNG</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">bit_length</span><span class="p">(),</span> <span class="mi">16843009</span><span class="p">,</span> <span class="mi">4294967296</span><span class="p">))</span>
+</span></span></code></pre></div><p>The nonce is in the form of $k = x_0 + Ax_1 + ... + A^{15}x_{15}$, where $A = 16843009$. Here $0 \leq x_j &lt; 256$ for each $j = 0, 1, ..., 15$.</p>
+<p>Since we have two messages those are signed by Bob, it is more reasonable to find his secret key, $d$. The following are a pair of congruences those satisfied:</p>
+<p>$$\left\{\begin{aligned}
+k_2 s_2 \equiv z_2 + r_2 d\ (\text{mod}\ q) \\
+k_4 s_4 \equiv z_4 + r_4 d\ (\text{mod}\ q) \\
+\end{aligned}\right.$$</p>
+<p>From above, $(r_i, s_i)$ and $z_i$ are respectively the $i$-th signature and the $i$-th digest - and they are known. The remaining variables, i.e., $k_2, k_4, d$, are unknown.</p>
+<p>We can combine the two congruences by multipling the first congruence with $r_4$ and the second with $r_2$. In that way we can eliminate one unknown $d$:</p>
+<p>$$k_2 s_2 r_4 - k_4 s_4 r_2 \equiv z_2 r_4 - z_4 r_2\ (\text{mod}\ q).$$</p>
+<p>Breaking down $k_2$ and $k_4$ into 16 variables: $k_i = x_{i,0} + Ax_{i,1} + ... + A^{15}x_{i,15}$, we then can proceed into the final equation:</p>
+<p>$$\begin{aligned}
+s_2 r_4 x_{2,0} &amp; + s_2 r_4 A x_{2,1} + ... + s_2 r_4 A^{15} x_{2,15} \\
+&amp; - s_4 r_2 x_{4,0} - s_4 r_2 A x_{4,1} - ... - s_4 r_2 A^{15} x_{4,15} - qy \\
+&amp; = z_2 r_4 - z_4 r_2.
+\end{aligned}$$</p>
+<p>From above, $0 \leq x_{i, j} &lt; 256$ and $y \in \mathbb{Z}$. We then can use LLL to solve for $x_{i, j}$'s, hence recovering $k_i$'s and thus $d$. I shared a way to solve those problems in LLL in <a href="/posts/2021/2021-02-28-aeroctf/#part-ii-retrieving-eis-via-lll"
+   
+   ><em>horcrux</em> in AeroCTF 2021</a> and you can refer to that if you are interested.</p>
+<p>Finally we have the flag: <code>CTF{But_in_real_life_devs_would_never_use_such_a_buggy_RNG_right?}</code>.</p>
+<p>Regarding to the flag, that is definitely a <em>no</em> and I recalled <a href="https://github.com/ethereum/EIPs/issues/1756"
+   
+   target="_blank" rel="noopener noreferrer" >ERC-1756</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+    <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
+</svg> for Ethereum (which is luckily not standardized).</p>
+<h2 id="pythia">pythia<a href="#pythia" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-1">Challenge Summary<a href="#challenge-summary-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Yet another oracle, but the queries are costly and limited so be frugal with them.</p>
+</blockquote>
+<p>A nine-letter password is split into three parts. Three keys are derived from each part of the passwords (namely $k_0, k_1, k_2$). We are given the below operations:</p>
+<ol>
+<li><strong>Set key</strong> specifies the key $\mathcal{K} = k_i$ we will be using in the subsequent operations.</li>
+<li><strong>Read flag</strong> requests the user to send the password. If it is correct, then the flag is revealed.</li>
+<li><strong>Decrypt text</strong> decrypts a specified ciphertext using $\mathcal{K}$ with AES-GCM. <em>Only</em> return if the ciphertext is decrypted successfully.</li>
+</ol>
+<p>The goal is to read the flag within 150 calls.</p>
+<h3 id="solution-1">Solution<a href="#solution-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-formulating-gcm-mathematically">Part I: Formulating GCM mathematically<a href="#part-i-formulating-gcm-mathematically" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+
+
+<figure>
+  <img src="/images/2021-07-24-googlectf/gcm.png" title="The Galois Counter Mode. Credit: Wikipedia">
+  
+  <figcaption>The Galois Counter Mode. Credit: Wikipedia</figcaption>
+  
+</figure>
+
+<p>In the challenge, the authenticated data is empty. We can simply substitute <em>Auth Data 1</em> in the above figure to be zero. Denote $T$ to be the authentication tag, $(C_1, C_2, ..., C_n)$ be the ciphertext blocks, $L$ be the block that specifies the length, $H := \text{Enc}(0)$ and $M := \text{Enc}(IV)$. This is an equation relating all of the variables (Note that it is operated over $\text{GF}(2^{128})$):</p>
+<p>$$C_1 H^{n+1} + C_2 H^n + ... + C_n H^2 + LH + M = T.$$</p>
+<h4 id="part-ii-how-is-the-math-useful">Part II: How is the math useful?<a href="#part-ii-how-is-the-math-useful" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>It is pretty evident that we need around 8.8K calls if we eliminate the keys one by one. That said, we should be able to eliminate <em>many</em> keys at once... But how?</p>
+<p>Suppose that the $IV$ is fixed and we have $H_i := \text{Enc}_{k_i}(0)$ and $M_i := \text{Enc}_{k_i}(IV)$ for each key derived from the three character password. Let's assume that we are able to find $(C_1, C_2, ..., C_n, T)$ such that:</p>
+<p>$$\left\{\begin{aligned}
+\htmlStyle{color: yellow;}{C_1} {H_1}^{n+1} + \htmlStyle{color: yellow;}{C_2} {H_1}^n + ... + \htmlStyle{color: yellow;}{C_n} {H_1}^2 + \htmlStyle{color: yellow;}{T} &amp;= LH_1 + M_1 \\
+\htmlStyle{color: yellow;}{C_1} {H_2}^{n+1} + \htmlStyle{color: yellow;}{C_2} {H_2}^n + ... + \htmlStyle{color: yellow;}{C_n} {H_2}^2 + \htmlStyle{color: yellow;}{T} &amp;= LH_2 + M_2 \\
+&amp;... \\
+\htmlStyle{color: yellow;}{C_1} {H_k}^{n+1} + \htmlStyle{color: yellow;}{C_2} {H_k}^n + ... + \htmlStyle{color: yellow;}{C_n} {H_k}^2 + \htmlStyle{color: yellow;}{T} &amp;= LH_k + M_k
+\end{aligned}\right.$$</p>
+<p>We can see that $(C_1, C_2, ..., C_n, T)$ in the $k$ equations are affine! We can solve them as a system of linear of equations. It is very likely that the solution does not fit the remaining pairs of $(H_i, M_i)$ (where $i = k+1, k+2, ...$) because there is only $1/2^{128}$ chance resulting in a false positive. We are able to eliminate $k$ possibilities if <em>decrypt key</em> returns a negative result, and result in $k$ possibilities otherwise.</p>
+<p>Unfortunately, it is infeasible to use binary search since the first step would make $k = 26^3/2$ and the complexity for solving system of linear equations is more or less $\mathcal{O}(k^3)$ - which would take forever.</p>
+<p>We have 150 oracle calls in total, it could be generally broken down into the following procedure:</p>
+<ol>
+<li>Determine <code>password[0:3]</code> within 49 oracle calls via <em>decrypt flag</em>.</li>
+<li>Switch the active key to $k_1$ via <em>set key</em>.</li>
+<li>Determine <code>password[3:6]</code> within 49 oracle calls via <em>decrypt flag</em>.</li>
+<li>Switch the active key to $k_2$ via <em>set key</em>.</li>
+<li>Determine <code>password[6:9]</code> within 49 oracle calls via <em>decrypt flag</em>.</li>
+<li>Retrieve the flag via <em>read flag</em>.</li>
+</ol>
+<p>We need to recover $k_i$ within 49 oracle calls. In our case, we decided to employ a probabilistic approach solving the challenge.</p>
+<ul>
+<li>For the first 41 rounds, we pick 256 different keys and compute $(C_1, C_2, ..., C_n, H)$ such that the selected keys could decrypt correctly.</li>
+<li>If there is an <em>decrypt text</em> in any of the 41 rounds, then there are only 256 possible keys for $k_i$. We can use binary search to test for the correct $k_i$. This takes 8 rounds.</li>
+</ul>
+<p>Note that there is a ~40% chance such that the first round would fail. That is why the approach is probabilistic.</p>
+<h4 id="part-iii-crowdsourcing-for-the-flag">Part III: Crowdsourcing for the Flag<a href="#part-iii-crowdsourcing-for-the-flag" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Now there are one problem. Since the chance for getting a flag in one go is around 20%, and it takes 25 minutes for the script to complete. Using a single instance is not a clever approach and I decided to hand the script to <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> and <a href="https://twitter.com/hoifanrd" target="_blank" rel="nofollow">@hoifanrd</a> so that we could run the script together. They had different approaches running my script: <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> decided to run six instances simultaneously and <a href="https://twitter.com/hoifanrd" target="_blank" rel="nofollow">@hoifanrd</a> ran a single instance.</p>
+<p>Eventually, <a href="https://twitter.com/hoifanrd" target="_blank" rel="nofollow">@hoifanrd</a> was so lucky that he got the flag before <a href="https://twitter.com/harrier_lcc" target="_blank" rel="nofollow">@harrier_lcc</a> is able to get a single byte of the password (in any of his six instances).</p>
+<pre class='language-bash command-line' data-output='2-30' data-user='hoifanrd' data-host='kali'>
+<code class="language-bash">python3 solve.py
+[&#43;] Starting local process &#39;/usr/bin/sage&#39;: pid 14141
+[&#43;] Opening connection to pythia.2021.ctfcompetition.com on port 1337: Done
+[ ] Trying key #0 and [0, 256)
+[ ] ...
+[ ] Trying key #0 and [1536, 1792)
+[*] Found a range for key #0: [1536, 1792). Let&#39;s do binary search!
+[ ] Reduced the range of the key #0: [1536, 1664).
+[ ] ...
+[ ] Reduced the range of the key #0: [1595, 1596).
+[*] Found key #0: b&#39;cjj&#39;
+[ ] Trying key #1 and [0, 256)
+[ ] ...
+[ ] Trying key #1 and [768, 1024)
+[*] Found a range for key #1: [768, 1024). Let&#39;s do binary search!
+[ ] Reduced the range of the key #1: [896, 1024).
+[ ] ...
+[ ] Reduced the range of the key #1: [900, 901).
+[*] Found key #1: b&#39;biq&#39;
+[ ] Trying key #2 and [0, 256)
+[ ] ...
+[ ] Trying key #2 and [3584, 3840)
+[*] Found a range for key #2: [3584, 3840). Let&#39;s do binary search!
+[ ] Reduced the range of the key #2: [3712, 3840).
+[ ] ...
+[ ] Reduced the range of the key #2: [3837, 3838).
+[*] Found key #2: b&#39;frp&#39;
+[*] Got the flag! b&#39;ACCESS GRANTED: CTF{gCm_1s_n0t_v3ry_r0bust_4nd_1_sh0uld_us3_s0m3th1ng_els3_h3r3}&#39;
+[*] Closed connection to pythia.2021.ctfcompetition.com port 1337
+[*] Stopped process &#39;/usr/bin/sage&#39; (pid 14141)</code>
+</pre>
+
+
+
+<figure>
+  <img src="/images/2021-07-24-googlectf/pythia-harrier.png" title="This is how lucky @harrier is.">
+  
+  <figcaption>This is how lucky @harrier is.</figcaption>
+  
+</figure>
+
+<p>Apart from the drama about the fortune (and more on the misfortune), we have the flag: <code>CTF{gCm_1s_n0t_v3ry_r0bust_4nd_1_sh0uld_us3_s0m3th1ng_els3_h3r3}</code>.</p>
+<h2 id="story">story<a href="#story" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-2">Challenge Summary<a href="#challenge-summary-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>Please, tell me a beautiful story.</p>
+</blockquote>
+<p>When connected to the server, we are asked to send a message $m_1$ and $\text{CRC}(m_1)$ will be returned (We do not have the source code for the CRC). The server then sends a target $c_2$. The objective is to send $m_2$ such that</p>
+<ol>
+<li>$c_2 = \text{CRC}(m_2)$ and,</li>
+<li>the lowercase for $m_1$ is the same as the lowercase for $m_2$.</li>
+</ol>
+<h3 id="solution-2">Solution<a href="#solution-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It is evident that the content of $m_1$ does not matter, as long as it passes the hidden condition they impose (If the condition does <em>not</em> hold, it returns <code>Your story is too short. Bye!</code>), which I bet it is something related to the length. In our case, sending 1000 <code>b</code>'s suffices.</p>
+<p>Although we do not know what are the parameters for the CRC function, it is known that CRC itself is affine. With that being said, for any three messages $x, y, z$ with equal lengths, we have</p>
+<p>$$\text{CRC}(x) \oplus \text{CRC}(y) \oplus \text{CRC}(z) = \text{CRC}(x \oplus y \oplus z).$$</p>
+<p>How do we make use of this? I am presenting a not-so-efficient algorithm. To begin, we connect to the server and compute the CRCs for <code>bbb...b</code>, <code>Bbb...b</code>, <code>bBb...b</code>, ..., <code>bbb...B</code> (denote them by $m_1, r_1, r_2, ..., r_n$ and their digests by $c_1, h_1, h_2, ..., h_n$). If we are given $c_2$ asked to find a $m_2$ that satisfies the conditions stated in the challenge summary, what can we do?</p>
+<p>Suppose that $m_2$ consists of <code>b</code> and <code>B</code>'s and it has the same length of $m_1$. We can denote the indexes for <code>B</code> being $n_1, n_2, ..., n_k$. Then</p>
+<p>$$m_2 = m_1 \oplus (m_1 \oplus r_{n_1}) \oplus (m_1 \oplus r_{n_2}) \oplus ... \oplus (m_1 \oplus r_{n_k}).$$</p>
+<p>$$\begin{aligned}
+c_2 = \text{CRC}(m_2) &amp;= \text{CRC}(m_1 \oplus (m_1 \oplus r_{n_1}) \oplus (m_1 \oplus r_{n_2}) \oplus ... \oplus (m_1 \oplus r_{n_k})) \\
+&amp;= \text{CRC}(m_1) \oplus \text{CRC}(r_{n_1}) \oplus \text{CRC}(m_1 \oplus (m_1 \oplus r_{n_2}) \oplus ... \oplus (m_1 \oplus r_{n_k})) \\
+&amp;= (c_1 \oplus h_{n_1}) \oplus \text{CRC}(m_1 \oplus (m_1 \oplus r_{n_2}) \oplus ... \oplus (m_1 \oplus r_{n_k})) \\
+&amp;= (c_1 \oplus h_{n_1}) \oplus \text{CRC}(m_1) \oplus \text{CRC}(r_{n_2}) \oplus \text{CRC}(m_1 \oplus (m_1 \oplus r_{n_3}) \oplus ... \oplus (m_1 \oplus r_{n_k})) \\
+&amp;= (c_1 \oplus h_{n_1}) \oplus  (c_1 \oplus h_{n_2}) \oplus \text{CRC}(m_1 \oplus (m_1 \oplus r_{n_3}) \oplus ... \oplus (m_1 \oplus r_{n_k})) \\
+&amp; ... \\
+&amp;= (c_1 \oplus h_{n_1}) \oplus  (c_1 \oplus h_{n_2}) \oplus ... \oplus (c_1 \oplus h_{n_k}) \oplus \text{CRC}(m_1) \\
+&amp;= (c_1 \oplus h_{n_1}) \oplus  (c_1 \oplus h_{n_2}) \oplus ... \oplus (c_1 \oplus h_{n_k}) \oplus c_1
+\end{aligned}$$</p>
+<p>In that case, it is equivalent to solve for $x_i$'s in $(\dagger)$, with $x_i \in \{0, 1\}$ for all $i$'s:</p>
+<p>$$(c_1 \oplus h_1) x_1 \oplus (c_1 \oplus h_2) x_2 \oplus ... \oplus (c_1 \oplus h_n) x_n = c_1 \oplus c_2 \qquad\qquad (\dagger)$$</p>
+<p>We can construct $m_2$ with $(x_1, x_2, ..., x_n)$ and send it to the server. Then we have the flag: <code>CTF{eb64749d08bd99b681f2bc75aa65eab35a80310f7426f6872ba869d244e37135}</code>!</p>
+<h2 id="tiramisu">tiramisu<a href="#tiramisu" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-3">Challenge Summary<a href="#challenge-summary-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>In this challenge, you establish a secure channel with the server.
+Good luck!</p>
+</blockquote>
+<p>When connected to the server, it sends a <code>ServerHello</code> message that includes the server's public key for ECDH (on the curve <em>P-224</em>), as well as the flag encrypted with server's ECDH private key. We will be replying a <code>ClientHello</code> message that the point should be either on <em>P-224</em> or <em>P-256</em>. We will be sending <code>SessionMessage</code>s which is a encrypted and HMACed payload when a secure channel is established. If the HMAC is correct and the content can be correctly decrypted, the server will be responding with another <code>SessionMessage</code> with a slightly changed IV. The objective is to decrypt the flag.</p>
+<p>Note that the server's key does not change upon reconnect.</p>
+<h3 id="solution-3">Solution<a href="#solution-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h4 id="part-i-invalid-curve-attack-but-how">Part I: Invalid curve attack, but how?<a href="#part-i-invalid-curve-attack-but-how" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Since I am developing with Golang and gRPC at work, I did not spend a lot of time understanding the source code. The thing that struggled me the most is the challenge itself... Well, it was pretty evident that we are going to pick the points on P-256 and cast an invalid curve attack on P-224. However, we should pick invalid points $A$ with $A \in \mathcal{P}_{256}$ such that $qA = O$ for a small $q$. This seems difficult - and it really is!</p>
+<p>After an uncountable amount of time, I found that I overlooked one thing: The $x$ and $y$-coordinates need not to be staying in zero and the modulus. Let $A := (x_0, y_0)$ be a point over $\mathbb{Z}_{p_{224}}$ such that $qA = O$ for some small $q$. If we pick $x$ and $y$ such that</p>
+<p>$$\left\{\begin{aligned}
+&amp;x \equiv x_G &amp;\ (\text{mod}\ p_{256}) \\
+&amp;x \equiv x_0 &amp;\ (\text{mod}\ p_{224}) \\
+\end{aligned}\right.
+\qquad\text{and}\qquad
+\left\{\begin{aligned}
+&amp;y \equiv y_G &amp;\ (\text{mod}\ p_{256}) \\
+&amp;y \equiv y_0 &amp;\ (\text{mod}\ p_{224}) \\
+\end{aligned}\right.$$</p>
+<p>Then $(x, y)$ is a valid point on $\mathcal{P}_{256}$ and it is also a point with small order under modulo $p_{224}$.</p>
+<h4 id="part-ii-invalid-curve-attack-but-what-is-that">Part II: Invalid curve attack, but what is that?<a href="#part-ii-invalid-curve-attack-but-what-is-that" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>For elliptic curve Diffie-Hellman key exchange, the opposite party computes a shared secret $S$ with the formula $S := \beta A$, where $A$ is our public key and $b$ is their private key.</p>
+<p>Suppose that we are able to find $A$ with $qA = O$ for small $q$. Then the shared secret is pretty limited - it is either $O$, $A$, $2A$, ..., $(q-1)A$.</p>
+<p>Unfortunately, we generally cannot find such $A$s as a point on the standard curves since the curve order should be prime. To find such $A \in \mathbb{Z}_{p_{224}}^2$, we can simply generate random $b'$s and determine the order, $\rho$, of the curve $\mathcal{C}: y^2 \equiv x^3 + ax + b'\ (\text{mod}\ p_{224})$. Computing $\rho$ is a task for Sagemath. If $G$ is a generator of $\mathcal{C}$ and the $k$ is a factor of $\rho$, it implies that $A := (\rho/k) G$ satisfies $kA = O$.</p>
+<h4 id="part-iii-pulling-off-the-attack">Part III: Pulling off the attack<a href="#part-iii-pulling-off-the-attack" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>In the challenge, the server is multiplying their secret key $\alpha$ to the point we gave ($A$ in our case) and its $x$-coordinate becomes the shared secret. This is a little bit different from what we had on part II. Look at the following fact:</p>
+<div class="alert info">
+  <strong>Fact.</strong> The $x$-coordinates for $kA$ is equal to the $x$-coordinates for $-kA$.
+</div>
+
+<p>With that said, if we send the server our forged public key ($A$, with order $q$), then we are able to find two $k\in [0, q)$ such that the $x$-coordinate of $kA$ is the shared secret. We then have $\alpha = \pm k\ (\text{mod}\ q)$.</p>
+<p>If we have $n$ pairs of $(k_i, q_i)$'s, we are able to compute the possible values of $\alpha$ using Chinese remainder theorem. It is also important to <em>not</em> find small $q_i$s as the number of candidates is growing exponentially in terms of $n$.</p>
+<p>$$\left\{\begin{aligned}
+\alpha &amp;= \pm k_1\ (\text{mod}\ q_1) \\
+\alpha &amp;= \pm k_2\ (\text{mod}\ q_2) \\
+&amp; ... \\
+\alpha &amp;= \pm k_n\ (\text{mod}\ q_n)
+\end{aligned}\right.$$</p>
+<p>By generating such invalid curves and computing the candidates of $\alpha$, we can eventually find the correct private key and hence the flag: <code>CTF{ChocolateDoesNotAskSillyQuestionsChocolateUnderstands}</code>.</p>
+<h2 id="tonality">tonality<a href="#tonality" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="challenge-summary-4">Challenge Summary<a href="#challenge-summary-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<blockquote>
+<p>In this challenge, you have access to a signing oracle.
+Good luck!</p>
+</blockquote>
+<p>The server generates a private key $x$ on <em>P-256</em> upon connect. We are allowed to pick $\alpha$ and the server will sign $m_0$ with the private key $\alpha x$. The objective is to forge a signature for $m_1$ using the private key $x$ in a subsequent request.</p>
+<h3 id="solution-4">Solution<a href="#solution-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>This is yet another ECDSA challenge in the CTF. Let's recall a condition that made the signature valid, given that $z$ is derived by the message digest, $d$ is the private key, $(r, s)$ is the signature and $k$ is a random nonce generated when signing:</p>
+<p>$$ks \equiv z + rd\ (\text{mod}\ q)$$</p>
+<p>Note that $k$ and $r$ are dependent to each other because $r$ is the $x$-coordinate of $k \cdot G$.</p>
+<p>Let's formulate the whole question mathematically. Here are the steps:</p>
+<ol>
+<li>We are given two digests $z_1$ and $z_2$.</li>
+<li><strong>[Sign]</strong> We are able to pick an $\alpha$ and we will be given $(r_1, s_1)$ such that $(\dagger)$ holds.</li>
+<li><strong>[Forge]</strong> We send $(r_2, s_2)$ satisfying $(\dagger\dagger)$ and will be granted the flag.</li>
+</ol>
+<p>$$\begin{matrix}
+k_1 s_1 \equiv z_1 + \alpha r_1 d\ (\text{mod}\ q) \qquad\qquad &amp; (\dagger) \\
+k_2 s_2 \equiv z_2 + r_2 d\ (\text{mod}\ q) \qquad\qquad &amp; (\dagger\dagger)
+\end{matrix}$$</p>
+<p>Since $k_1$ and $r_1$ are correlated, we rather <em>not</em> change any of them between the signing and the forging steps. That said, $k_1 = k_2$ and $r_1 = r_2$. With that said, $(\dagger\dagger)$ can be rewritten into $(\dagger\dagger')$.</p>
+<p>$$k_1 s_2 \equiv z_2 + r_1 d\ (\text{mod}\ q) \qquad\qquad (\dagger\dagger')$$</p>
+<p>Now we should think what $\alpha$ is. Since $s_2$ is the only remaining variable that we could control, we better make the right hand side for $(\dagger)$ into $z_2 + r_1d$. In that case, we can pick $\alpha = z_1 / z_2$.</p>
+<p>$$k_1 s_1 \equiv z_1 + \frac{z_1}{z_2} r_1 d\ (\text{mod}\ q) \qquad\qquad (\dagger')$$</p>
+<p>Multiplying both sides of $(\dagger')$ by $z_2 / z_1$, we then have</p>
+<p>$$k_1 \frac{s_1z_2}{z_1} \equiv z_2 + r_1 d\ (\text{mod}\ q) \qquad\qquad (\dagger'')$$</p>
+<p>Comparing $(\dagger'')$ and $(\dagger\dagger')$, we can see that $s_2 = s_1z_2 / z_1$.</p>
+<p>With the idea implemented, we have the flag: <code>CTF{TheySayTheEmptyCanRattlesTheMost}</code>.</p>
+
+        </div></div>
+
+      
+      <aside class="toc-container">
+        <a href="#" class="toc-title-link">
+          Google CTF 2021 Quals Writeup
+        </a>
+        <div class="js-toc"></div>
+      </aside>
+      
+
+      
+      <div class="py-3">
+        
+          <a class="btn" href="/posts/2021/2021-08-10-uiuctf-phpfuck/">← UIUCTF 2021: phpfuck</a>
+        
+
+        
+          <a class="btn float-end" href="/posts/2021/2021-06-19-leetcode-3/">LeetCode Practice: Day 3 →</a>
+        
+      </div>
+      
+
+    </div>
+  </div>
+
+    </div>
+  </main>
+  <div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+  </footer>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css"
+  integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js"
+  integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }], trust: true })"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.24.0/dist/viz-global.min.js"></script>
+<script>
+Viz.instance().then(viz => {
+  const unescape = function (s) {
+    const t = s.replace(/&amp;/g, '&')
+    return t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#34;/g, '"')
+  }
+
+  document.querySelectorAll('[class=graphviz]').forEach(node => {
+    const source = unescape(node.innerText);
+    console.log(source);
+    const svg = viz.renderSVGElement(source, { engine: 'dot' });
+    console.log(2);
+    node.parentNode.appendChild(svg);
+    node.style.display = 'none';
+  });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.js"
+  integrity="sha512-BZUSsJAPNtkd+kdY/bD7hvQKZ5zlgWt++KGy/Pa/5uEJNgs0jZ6JaX6MuclRUanowuxmhb5S3LRPEa3QmrUVfA==" crossorigin="anonymous"
+  referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.36.4/tocbot.min.css"
+  integrity="sha512-/ANQiHMqpRl+E0zEAd250N21OOmJsYbhiJWY0Y8yG0TII47yZn1+gDNobMlf+h/FTyImprLXYgXbX3bCYyq/vg==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+<script type="text/javascript">
+tocbot.init({
+  headingSelector: 'h1, h2, h3, h4',
+  orderedList: false,
+  collapseDepth: 2,
+  headingsOffset: 60,
+  scrollSmoothOffset: -60
+})
+</script>
+
+
+<script>
+  document.querySelectorAll('pre code').forEach(el => {
+    console.log(el)
+    const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
+    if (!lang) return;
+
+    
+    if (lang.startsWith('language-diff-')) {
+      el.classList.add('diff-highlight');
+    }
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  htmlLabels: true,
+  securityLevel: "loose",
+  theme: 'base',
+  themeVariables: {
+    background: '#22222c',
+    primaryColor: '#33333c',
+    primaryTextColor: '#ffe4e1',
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>B6actf on Mystify</title>
+    <link>https://mystiz.hk/tags/b6actf/</link>
+    <description>Recent content in B6actf on Mystify</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 21 Aug 2023 09:45:00 +0800</lastBuildDate>
+    <atom:link href="https://mystiz.hk/tags/b6actf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bauhinia CTF 2023: How to Stop Time</title>
+      <link>https://mystiz.hk/posts/2023/2023-08-21-b6actf/</link>
+      <pubDate>Mon, 21 Aug 2023 09:45:00 +0800</pubDate>
+      <guid>https://mystiz.hk/posts/2023/2023-08-21-b6actf/</guid>
+      <description>&lt;p&gt;After four years of team formation, we organized our first edition of Bauhinia CTF last weekend. There are over 650 teams registered and over 200 teams scored. This year, I made one crypto challenge, &lt;em&gt;How to Stop Time&lt;/em&gt;. I also coauthored a web/crypto challenge, &lt;em&gt;Amnesia&lt;/em&gt;, with &lt;a href=&#34;https://twitter.com/chthollic_&#34; target=&#34;_blank&#34; rel=&#34;nofollow&#34;&gt;@chthollic_&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;This post is served as a short writeup of &lt;em&gt;How to Stop Time&lt;/em&gt;, a crypto challenge with six solves during the contest period.&lt;/p&gt;&#xA;&lt;h2 id=&#34;challenge-summary&#34;&gt;Challenge Summary&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;em&gt;Good CTF challenges never die. They will be remembered and reused.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
