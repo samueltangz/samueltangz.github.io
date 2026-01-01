@@ -1162,8 +1162,8 @@
 <p>where $m_1, m_2, m_3$ are 32-bits and $M$ is a 64-bit known constants. Also, let $a_{ij}$ be 20-bit known constants and for $k \leq 3$,</p>
 <p>$$
 \begin{cases}\begin{aligned}
-x_k &amp;:= a_{11} x_{k-3} + a_{12} x_{k-2} + a_{13} x_{k-1} \
-y_k &amp;:= a_{21} y_{k-3} + a_{22} y_{k-2} + a_{23} y_{k-1} \
+x_k &amp;:= a_{11} x_{k-3} + a_{12} x_{k-2} + a_{13} x_{k-1} \\
+y_k &amp;:= a_{21} y_{k-3} + a_{22} y_{k-2} + a_{23} y_{k-1} \\
 z_k &amp;:= a_{31} z_{k-3} + a_{32} z_{k-2} + a_{33} z_{k-1}
 \end{aligned}\end{cases}.
 $$</p>
@@ -1176,7 +1176,7 @@ $$</p>
 </ul>
 <p>We are given a RSA public key $n, e$ and an encrypted flag $c$. Hereby $n$ is 1024-bit number which is a product of two 512-bit primes $p, q$ (they are both in the form of $a^2 + 3b^2$). It is also known that $d$ is 400-bit long.</p>
 <p>Remarkably, the <em>multiply</em> operation is performed under a group $\mathcal{G}$ with</p>
-<p>$$\mathcal{G} = \mathbb{Z}_n^2 \cup (\mathbb{Z}_n\times{\varepsilon}) \cup {\varepsilon}^2.$$</p>
+<p>$$\mathcal{G} = \mathbb{Z}_n^2 \cup (\mathbb{Z}_n\times\{\varepsilon\}) \cup \{\varepsilon\}^2.$$</p>
 <p>Also $|\mathcal{G}| = (p^2+p+1)(q^2+q+1)$. The objective is to recover the flag from $c$.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Note: The challenge used `add` but I think it would be better to call it `multiply`.</span>
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">mod</span><span class="p">):</span>
@@ -1262,11 +1262,11 @@ $$</p>
 <p>When connected to the server, a LWE private key $s \in \mathbb{Z}_q^{128}$ and 384 sets of public key $(p_1, r_1), (p_2, r_2), ..., (p_{384}, r_{384}) \in \mathbb{Z}_q^{128} \times \mathbb{Z}_q$ are also generated. Also, a LFSR state $t = (t_1, t_2, ..., t_{384})$ with $t_1, t_2, ..., t_{384} \in \{0, 1\}$ is generated.</p>
 <p>The flag is encrypted bit-by-bit. The ciphertext of the $i$-th bit of the message, $m_i$, is defined by:</p>
 <p>$$\begin{cases}
-c_{i, 0} &amp;= (t_1 \cdot p_1 + t_2 \cdot p_2 + ... + t_{384} \cdot p_{384})\ \text{mod}\ q \
+c_{i, 0} &amp;= (t_1 \cdot p_1 + t_2 \cdot p_2 + ... + t_{384} \cdot p_{384})\ \text{mod}\ q \\
 c_{i, 1} &amp;= (t_1 \cdot r_1 + t_2 \cdot r_2 + ... + t_{384} \cdot r_{384} + 8205m_i)\ \text{mod}\ q
 \end{cases}$$</p>
 <p>Additionally, after a bit is encrypted, the LFSR state is updated with</p>
-<p>$$(t'<em>1, t'<em>2, ..., t'</em>{384}) := \left(t_2, t_3, ..., \text{NEXT}(t_1, t_2, ..., t</em>{384})\right).$$</p>
+<p>$$(t'_1, t'_2, ..., t'_{384}) := \left(t_2, t_3, ..., \text{NEXT}(t_1, t_2, ..., t_{384})\right).$$</p>
 <p>We are given $(p_1, r_1), (p_2, r_2), ..., (p_{384}, r_{384})$ and encrypted flag $(c_{1,0}, c_{1,1}), (c_{2,0}, c_{2,1}), ...$. We are then able to access the decryption oracle. The goal is to recover the flag.</p>
 <h2 id="bsides-ahmedabad-ctf-2021">BSides Ahmedabad CTF 2021<a href="#bsides-ahmedabad-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="dlppp">dlppp<a href="#dlppp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -1283,7 +1283,7 @@ c_{i, 1} &amp;= (t_1 \cdot r_1 + t_2 \cdot r_2 + ... + t_{384} \cdot r_{384} + 8
 <li>Tags: <code>rsa</code>, <code>math</code></li>
 </ul>
 <p>Let $p$ and $q$ be 1024-bit prime and $n = p\cdot q$ be a 2048-bit RSA modulus. Let $e = 65537$ and $m$ be the secret message. We are given the $n$ and the ciphertext $c = m^e\ \text{mod}\ n$. Additionally, we are given</p>
-<p>$$s = \sum_{k=0}^{q-1} \lfloor{\frac{p\cdot k}{q}}\rfloor.$$</p>
+<p>$$s = \sum_{k=0}^{q-1} \left\lfloor{\frac{p\cdot k}{q}}\right\rfloor.$$</p>
 <p>The objective is to recover the secret message $m$.</p>
 <h3 id="ssssrng-">SSSS.RNG 🔥<a href="#ssssrng-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
@@ -1551,7 +1551,7 @@ c_{i, 1} &amp;= (t_1 \cdot r_1 + t_2 \cdot r_2 + ... + t_{384} \cdot r_{384} + 8
 </ul>
 <p>We are given the parameters of the LCG that is used to generate primes for RSA, namely, $r_A$, $r_B$ and $r_M$ (all of them are 512-bit primes). Let $x_0$ be the seed and the $k$-th output is defined by</p>
 <p>$$x_k = (r_Ax_{k-1} + r_B)\ \text{mod}\ r_M.$$</p>
-<p>Suppose that $p = x_m$ and $q = x_{m+\Delta m}$ ($x_{m+1}, x_{m+2}, ..., x_{m+\Delta m-1}$ are not primes). We are also given $n = pq$, $e = 65537$ and the encrypted flag $c$. The objective is to recover the flag.</p>
+<p>Suppose that $p = x_m$ and $q = x_{m+\Delta m}$, and $x_{m+1}, x_{m+2}, ..., x_{m+\Delta m-1}$ are not primes. We are also given $n = pq$, $e = 65537$ and the encrypted flag $c$. The objective is to recover the flag.</p>
 <h3 id="magic-rsa">magic rsa<a href="#magic-rsa" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 27/288</li>
@@ -1618,9 +1618,9 @@ c_{i, 1} &amp;= (t_1 \cdot r_1 + t_2 \cdot r_2 + ... + t_{384} \cdot r_{384} + 8
 </ul>
 <p>Let $n = pq, e = 65537$ be a RSA public key ($p$ and $q$ are 512-bit long). The flag is broken into two parts $m_1, m_2$ such that $m_1, m_2 &lt; 2^{256}$. Let $M$ be the matrix</p>
 <p>$$\left[\begin{matrix}
-r_1p &amp; r_2p &amp; r_3p &amp; r_4p \
-0 &amp; r_5m_1 &amp; r_6m_1 &amp; r_7m_1 \
-0 &amp; 0 &amp; r_8m_2 &amp; r_9m_2 \
+r_1p &amp; r_2p &amp; r_3p &amp; r_4p \\
+0 &amp; r_5m_1 &amp; r_6m_1 &amp; r_7m_1 \\
+0 &amp; 0 &amp; r_8m_2 &amp; r_9m_2 \\
 0 &amp; 0 &amp; 0 &amp; r_10
 \end{matrix}\right].$$</p>
 <p>Here $r_1, r_2, ..., r_{10}$ are 768-bit primes. We are given $n, e$ and $M^e\ \text{mod}\ n$. The objective is to recover $(m_1, m_2)$ for the flag.</p>
@@ -1701,7 +1701,7 @@ r_1p &amp; r_2p &amp; r_3p &amp; r_4p \
 <li>Difficulty: ⭐⭐⭐⭐</li>
 <li>Tags: <code>ecdh</code></li>
 </ul>
-<p>The challenge is similar to <em>zipfel</em> except that we are no longer given $\text{ver}_A$.</p>
+<p>The challenge is similar to <em>kipferl</em> except that we are no longer given $\text{ver}_A$.</p>
 <h3 id="infinity">infinity<a href="#infinity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 11/150</li>
@@ -1773,7 +1773,7 @@ r_1p &amp; r_2p &amp; r_3p &amp; r_4p \
 </ul>
 <p>An asymmetric cipher is defined in this challenge. Let $p$ be a prime and $d \in [2, p)$ be the private key. The public key is given by $(A, Q) \in \text{GL}_2(p) \times \text{GL}_2(p)$ with $Q = A^d$. A ciphertext $(C, E) \in \text{GL}_2(p) \times \text{GL}_2(p)$ of the message $M \in \text{GL}_2(p)$ is given by:</p>
 <p>$$\begin{cases}
-C = A^r \
+C = A^r \\
 E = Q^r \cdot M
 \end{cases},$$</p>
 <p>where $r \in [2, p)$ is randomly generated. We are given a prime $p$ and the four matrices $A, Q, C, E \in \text{GL}_2(p)$ (as below). The objective is to recover $M$, i.e., the flag.</p>
@@ -1828,7 +1828,7 @@ E = Q^r \cdot M
   </main>
   <div class="container">
   <footer class="py-3 my-4 border-top">
-    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+    <p class="text-center text-body-secondary">&copy; 2026 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
   </footer>
 </div>
 

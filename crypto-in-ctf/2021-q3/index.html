@@ -2113,7 +2113,7 @@
 <li>Tags: <code>ecc</code></li>
 </ul>
 <p>Given an elliptic curve $\mathcal{C}: y^2 = x^3 + ax + b$ over a prime field $\text{GF}(p)$ (where $p$ is a 64-bit prime). Also, the largest prime factor of the curve's order is 28-bit long. Find $d$ such that $Q = dG$ for given $G$ and $Q$.</p>
-<p><em>Credits: TWY.</em></p>
+<p><em>Thanks @TWY for the challenge summary.</em></p>
 <h3 id="yahtzee">yahtzee<a href="#yahtzee" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 103/1418</li>
@@ -2210,14 +2210,14 @@
 <li>Difficulty: ⭐</li>
 <li>Tags: <code>rsa</code></li>
 </ul>
-<p>We are given the RSA public $n$ and $e := 5$ and a ciphertext $c$ (of the message $m$). Given that $0 &lt; m^5 &lt; 1000 n$, find $m$.</p>
+<p>We are given the RSA public modulus $n$, the public modulus $e := 5$ and a ciphertext $c$ of the message $m$. Given that $0 &lt; m^5 &lt; 1000 n$, find $m$.</p>
 <h3 id="lines">Lines<a href="#lines" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 128/1018</li>
 <li>Difficulty: ⭐</li>
 <li>Tags: <code>math</code></li>
 </ul>
-<p>We are given a $p$ and $g$. Two numbers $a$ and $b$ are generated privately and the shared secret $s := g^{ab}\ (\text{mod}\ p)$ is computed. Messages are encrypted as $c = m\cdot s\ (\text{mod}\ p)$.</p>
+<p>We are given a $p$ and $g$. Two numbers $a$ and $b$ are generated privately and the shared secret $s$ is given by $s := g^{ab}\ (\text{mod}\ p)$. Messages are encrypted as $c = m\cdot s\ (\text{mod}\ p)$.</p>
 <p>Two pairs of messages $(m_1, c_1)$ and $(m_2, c_2)$ are encrypted in this way. We are given $c_1, m_2, c_2$ and the objective is to find $m_1$ - which is the flag.</p>
 <h3 id="flip-flops">Flip Flops<a href="#flip-flops" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
@@ -2701,7 +2701,7 @@ $$</p>
 <li>Tags: <code>quantum</code></li>
 </ul>
 <p>When connected to the server, 50 qubits $\lvert q_1 \rangle, \lvert q_2 \rangle, ..., \lvert q_{50} \rangle$ are generated and we are allowed to perform operations on those qubits. The objective is to recover the initial state of the qubits.</p>
-<p><em>Credits: hoifanrd</em></p>
+<p><em>Thanks @hoifanrd for the challenge summary.</em></p>
 <h3 id="mystery_stream">mystery_stream<a href="#mystery_stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>Solves: 10/904</li>
@@ -2876,7 +2876,7 @@ $$</p>
 <li>Tags: <code>ctr</code></li>
 </ul>
 <p>Suppose that there is a master password $\mathcal{P}$ which derives the <em>encryption key</em> $k_\mathcal{E}$ and the <em>MAC key</em> $k_\mathcal{M}$. A message $m$ is encrypted by the function $\text{Encrypt}(m)$ by:</p>
-<p>$$\text{Encrypt}(m) = \nu\ |\ \text{AESCTR}<em>{k</em>\mathcal{E}}\left(\text{Encode}\left(m\ |\ \text{MAC}<em>{k</em>\mathcal{M}}\left(m\right)\right), \text{nonce}=\nu\right).$$</p>
+<p>$$\text{Encrypt}(m) = \nu\ ||\ \text{AESCTR}_{k_\mathcal{E}}\left(\text{Encode}\left(m\ ||\ \text{MAC}_{k_\mathcal{M}}\left(m\right)\right), \text{nonce}=\nu\right).$$</p>
 <p>Remarkably, $\text{Encode}$ is a function that encode a $n$-bit message into a $2n$-bit message. Each <code>0</code> bit will be encoded into <code>00</code> and otherwise encoded into either <code>01</code> or <code>10</code> (picked randomly).</p>
 <p>We are given an encrypted $\mathcal{P}$ and a oracle $\mathcal{O}$ - we are able to supply a ciphertext $c$:</p>
 <ul>
@@ -2892,7 +2892,7 @@ $$</p>
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>factor</code></li>
 </ul>
-<p>We are given 512-bit moduli $n_1, n_2, ..., n_{2^{22}}$, where</p>
+<p>We are given 512-bit moduli $n_1, n_2, ..., n_{2^{22}}$ with $n_k = p_k \cdot q_k$, where</p>
 <ul>
 <li>$p_k = x + r_k$ with $0 \leq x &lt; 2^{176}$, $0 \leq r_k &lt; 2^{24}$, and</li>
 <li>$q_k$ is a 312-bit prime.</li>
@@ -2904,7 +2904,7 @@ $$</p>
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>factor</code></li>
 </ul>
-<p>We are given 512-bit moduli $n_1, n_2, ..., n_{2^7}$, where</p>
+<p>We are given 512-bit moduli $n_1, n_2, ..., n_{2^7}$ with $n_k = p_k \cdot q_k$, where</p>
 <ul>
 <li>$p_k = x + r_k$ with $0 \leq x &lt; 2^{208}$, $0 \leq r_k &lt; 2^{104}$, and</li>
 <li>$q_k$ is a 200-bit prime.</li>
@@ -2929,7 +2929,7 @@ $$</p>
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>discrete log</code></li>
 </ul>
-<p>When connected to the server, we are given $n$, $g = 2$ and $y_i$ (where $y_i \equiv g^{x_i}\ (\text{mod}\ n)$ for some integers $x_i$) for $i = 1, 2$. It is also known that the order for $g$ modulo $n$ is of $m$ bits.</p>
+<p>When connected to the server, we are given $n$, $g = 2$ and $y_i$ for $i = 1, 2$ such that there exists some $x_i$ with $y_i \equiv g^{x_i}\ (\text{mod}\ n)$. It is also known that the order for $g$ modulo $n$ is of $m$ bits.</p>
 <p>We have an oracle $\mathcal{O}(y)$ which finds the $x \in [0, q)$ such that $g^x \equiv y \ (\text{mod}\ n)$ and returns</p>
 <ul>
 <li><code>-1</code> if such $x$ does not exist,</li>
@@ -2953,24 +2953,24 @@ $$</p>
 <li>Tags: <code>cbc</code>, <code>padding oracle</code></li>
 </ul>
 <p>Let $\mathcal{K}$ be a key and $\mathcal{IV}_1, \mathcal{IV}_2$ be two IVs. Define the encryption function $\mathcal{E}$ by:</p>
-<p>$$\mathcal{E}(m) = \text{AES-CBC}_{\mathcal{K}, \mathcal{IV}<em>2}\left(\text{AES-CBC}</em>{\mathcal{K}, \mathcal{IV}_1}\left(m\right)\right)$$</p>
+<p>$$\mathcal{E}(m) = \text{AES-CBC}_{\mathcal{K}, \mathcal{IV}_2}\left(\text{AES-CBC}_{\mathcal{K}, \mathcal{IV}_1}\left(m\right)\right)$$</p>
 <p>When connected to the server, an AES key $\mathcal{K}$ and two IVs $\mathcal{IV}_1, \mathcal{IV}_2$ are generated. There are two functions provided from the server:</p>
 <ol>
 <li>
 <p><strong>Create user</strong> requests for a username $n$ and a corresponding token $t$, defined below, is returned.</p>
-<p>$$t := \mathcal{E}(\text{{<code>username&quot;:}\ n\text{, </code>is_admin&quot;: false}})$$</p>
+<p>$$t := \mathcal{E}(\texttt{\{&quot;username&quot;: }n\texttt{, &quot;is\_admin&quot;: false\}})$$</p>
 <p>If a username is not provided, then the below token is returned (note that we do not know $n_0$):</p>
-<p>$$t := \mathcal{E}(\text{{<code>username&quot;:}\ n_0\text{, </code>is_admin&quot;: true}})$$</p>
+<p>$$t := \mathcal{E}(\texttt{\{&quot;username&quot;: }n_0\texttt{, &quot;is\_admin&quot;: true\}})$$</p>
 </li>
 <li>
 <p><strong>Login</strong> requests a username $n$ and a token $t$ and performs the below routine:</p>
-</li>
-</ol>
 <ul>
 <li>Decrypts $t$ and unpad. Returns <code>Failed to login! Check your token again</code> if an exception is caught (for example, the ciphertext size is not a multiple of 16, the padding is invalid, etc).</li>
 <li>Parses the JSON object. Returns <code>Failed to login! Your token is malformed</code> if an exception is caught.</li>
 <li>Gets the <code>username</code> and compares with $n$. Returns <code>Failed to login! Check your username again</code> if the values do not match.</li>
 </ul>
+</li>
+</ol>
 <p>The objective is to login as an admin, i.e., <code>is_admin</code> is truthy.</p>
 <h3 id="secret-saver">Secret Saver<a href="#secret-saver" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
@@ -3076,7 +3076,7 @@ $$</p>
   </main>
   <div class="container">
   <footer class="py-3 my-4 border-top">
-    <p class="text-center text-body-secondary">&copy; 2025 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
+    <p class="text-center text-body-secondary">&copy; 2026 Powered by <em>Hugo</em>. Theme crafted by <em>Mystiz</em> with Bootstrap 5, inspired from <em>Terminal</em>.</p>
   </footer>
 </div>
 
