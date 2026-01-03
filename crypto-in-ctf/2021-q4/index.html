@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
   integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
   referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/main.min.e0d3493d996b65055f87a93e94627d58325b4f40eae7e97eed960541aab132ca.css" integrity="sha256-4NNJPZlrZQVfh6k&#43;lGJ9WDJbT0Dq5&#43;l&#43;7ZYFQaqxMso=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
@@ -58,7 +58,7 @@
     <div class="container mt-3">
       
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
       <h1 class="post-title">Crypto in CTF: Q4 2021</h1>
 
       
@@ -1315,7 +1315,7 @@ c_{i, 1} &amp;= (t_1 \cdot r_1 + t_2 \cdot r_2 + ... + t_{384} \cdot r_{384} + 8
 <p>We are given $n_i = p_i\cdot q_i$ and $c_i = m^{11}\cdot r_i\ \text{mod}\ n_i$ for $i = 1, 2, ..., 11$. The objective is to recover $m$.</p>
 <h2 id="hkcert-ctf-2021">HKCERT CTF 2021<a href="#hkcert-ctf-2021" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <div class="alert success">
-  &#x1f389; <strong>A shameless plug.</strong> Thanks <em>Mystiz</em> (myself) for allowing me to promote my own challenges here! However, I dare not to mark them 🔥 although they are all subjectively great. The attachments are available <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20211112-hkcert-ctf"
+  &#x1f389; <strong>A shameless plug.</strong> Thanks myself for allowing me to promote my own challenges here! However, I dare not to mark them 🔥 although they are all subjectively great. The attachments are available <a href="https://github.com/samueltangz/ctf-archive-created/tree/master/20211112-hkcert-ctf"
    
    target="_blank" rel="noopener noreferrer" >here</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
     <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
@@ -1821,6 +1821,8 @@ E = Q^r \cdot M
 
       
 
+      
+
     </div>
   </div>
 
@@ -1850,9 +1852,7 @@ Viz.instance().then(viz => {
 
   document.querySelectorAll('[class=graphviz]').forEach(node => {
     const source = unescape(node.innerText);
-    console.log(source);
     const svg = viz.renderSVGElement(source, { engine: 'dot' });
-    console.log(2);
     node.parentNode.appendChild(svg);
     node.style.display = 'none';
   });
@@ -1879,7 +1879,6 @@ tocbot.init({
 
 <script>
   document.querySelectorAll('pre code').forEach(el => {
-    console.log(el)
     const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
     if (!lang) return;
 

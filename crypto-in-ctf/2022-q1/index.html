@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
   integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
   referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/main.min.e0d3493d996b65055f87a93e94627d58325b4f40eae7e97eed960541aab132ca.css" integrity="sha256-4NNJPZlrZQVfh6k&#43;lGJ9WDJbT0Dq5&#43;l&#43;7ZYFQaqxMso=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
@@ -58,7 +58,7 @@
     <div class="container mt-3">
       
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
       <h1 class="post-title">Crypto in CTF: Q1 2022</h1>
 
       
@@ -592,7 +592,7 @@
 <li>Solves: 162/1127</li>
 <li>Difficulty: ⭐</li>
 <li>Tags: <code>rsa</code></li>
-<li>Author: <em>ireland</em></li>
+<li>Author: @ireland</li>
 </ul>
 <p>We are given a RSA public key $(n, e)$ and the encrypted flag $c$. The prime factors of $n$ (i.e., $p$ and $q$) are 128-bit long and are generated such that $p \equiv q \equiv 1\ (\text{mod}\ e^2)$.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="mi">57996511214023134147551927572747727074259762800050285360155793732008227782157</span>
@@ -604,7 +604,7 @@
 <li>Solves: 44/1127</li>
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>lfsr</code></li>
-<li>Author: <em>ireland</em></li>
+<li>Author: @ireland</li>
 </ul>
 <p>Suppose that there is a 64-bit LFSR and we have the feedback polynomial. We are asked to give a $n$ with $2^{27} &lt; n &lt; 2^{31}$ when connected to the server. We are then given up to 1023 queries to generate random numbers in $[0, n)$ via rejection sampling with algorithm $\mathcal{A}$ and obtain the number of attempts to generate such an number (the generated number is not given, however). After that, we are asked the seed and will be given the flag when the seed is correct.</p>
 <p>Algorithm $\mathcal{A}$ is specified below (we are only given $\text{count}$ in the challenge):</p>
@@ -619,7 +619,7 @@
 <li>Solves: 17/1127</li>
 <li>Difficulty: ⭐⭐</li>
 <li>Tags: <code>lfsr</code></li>
-<li>Author: <em>ireland</em></li>
+<li>Author: @ireland</li>
 </ul>
 <p>Suppose that there is a 45-bit LFSR and we have the feedback polynomial. We are given 20000 bits from the LFSR (yet for every bit, there is a 20% chance that it is flipped) when connected to the server. We are asked to find the seed in 60 seconds and will be given the flag when the key is correct.</p>
 <h3 id="commitment-issues-">commitment-issues 🔥<a href="#commitment-issues-" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -627,7 +627,7 @@
 <li>Solves: 16/1127</li>
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>rsa</code></li>
-<li>Author: <em>gripingberry</em></li>
+<li>Author: @gripingberry</li>
 </ul>
 <p>Define a commitment scheme $\mathcal{C}$ that uses a composite modulus $n$ (which is a product of two 1024-bit primes $p, q$ with $p, q \neq 1\ (\text{mod}\ 5)$). To commit a secret $s$:</p>
 <ol>
@@ -657,7 +657,7 @@
 <li>Solves: 6/1127</li>
 <li>Difficulty: ❓</li>
 <li>Tags: <code>?</code></li>
-<li>Author: <em>ireland</em></li>
+<li>Author: @ireland</li>
 </ul>
 <div class="alert warning">
   <strong>Needs more information.</strong> I am unsure about this challenge yet. I will update the details later.
@@ -668,7 +668,7 @@
 <li>Solves: 1/1127</li>
 <li>Difficulty: ❓</li>
 <li>Tags: <code>?</code></li>
-<li>Author: <em>ireland</em></li>
+<li>Author: @ireland</li>
 </ul>
 <div class="alert warning">
   <strong>Needs more information.</strong> I am unsure about this challenge yet. I will update the details later.
@@ -812,7 +812,7 @@
 <li>Solves: 10/141</li>
 <li>Difficulty: ⭐⭐⭐</li>
 <li>Tags: <code>math</code>, <code>rsa</code></li>
-<li>Author: <em>BarkingDog</em></li>
+<li>Author: @BarkingDog</li>
 </ul>
 <p>When connected to the server, a 296-bit random number $r$ is generated. We can call the below operations as many time as we wish:</p>
 <ol>
@@ -1016,6 +1016,8 @@ x_1 \\ \vdots \\ x_n
 
       
 
+      
+
     </div>
   </div>
 
@@ -1045,9 +1047,7 @@ Viz.instance().then(viz => {
 
   document.querySelectorAll('[class=graphviz]').forEach(node => {
     const source = unescape(node.innerText);
-    console.log(source);
     const svg = viz.renderSVGElement(source, { engine: 'dot' });
-    console.log(2);
     node.parentNode.appendChild(svg);
     node.style.display = 'none';
   });
@@ -1074,7 +1074,6 @@ tocbot.init({
 
 <script>
   document.querySelectorAll('pre code').forEach(el => {
-    console.log(el)
     const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
     if (!lang) return;
 

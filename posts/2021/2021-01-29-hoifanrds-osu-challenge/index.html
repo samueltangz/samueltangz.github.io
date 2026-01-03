@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
   integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
   referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/main.min.e0d3493d996b65055f87a93e94627d58325b4f40eae7e97eed960541aab132ca.css" integrity="sha256-4NNJPZlrZQVfh6k&#43;lGJ9WDJbT0Dq5&#43;l&#43;7ZYFQaqxMso=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
@@ -58,7 +58,7 @@
     <div class="container mt-3">
       
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
       <h1 class="post-title">hoifanrd&#39;s osu! Challenge</h1>
 
       
@@ -89,7 +89,7 @@
 </div>
 
 <p>This is a beginning of a new series of blog posts that I review CTF challenges those are not publicly accessible. Generally I will spend some time to solve the challenge while discussing with the author, and give some feedback of the challenge.</p>
-<p>To kick-start, let's look at <em>hoifanrd</em> from Firebird CTF team has shared a challenge he created some days ago.</p>
+<p>To kick-start, let's look at @hoifanrd from Firebird CTF team has shared a challenge he created some days ago.</p>
 <div class="alert info">
   Some readers may not be familiar of <em>Firebird CTF team</em>. It is formed by students from the <em>Hong Kong University of Science and Technology</em> (HKUST). I was not a student there, but most of my teammates of Black Bauhinia were. Hence, it is natural I got invited to the Discord server. This is their team on <a href="https://ctftime.org/team/65249"
    
@@ -99,7 +99,7 @@
 </div>
 
 <h2 id="background">Background<a href="#background" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<p>At around 11pm of January 25, I received a direct message from <em>hoifanrd</em> that he is going to make a guessy challenge. I replied &quot;make it&quot; in few minutes. On the next morning, I saw a challenge came alive in the Discord server of the Firebird CTF team.</p>
+<p>At around 11pm of January 25, I received a direct message from @hoifanrd that he is going to make a guessy challenge. I replied &quot;make it&quot; in few minutes. On the next morning, I saw a challenge came alive in the Discord server of the Firebird CTF team.</p>
 
 
 <figure>
@@ -136,8 +136,8 @@
 <p>The journey starts here...
 <code>ZmhuM2U5U2pkeDA=</code></p>
 </blockquote>
-<p>Noticing that the string being encoded in base64 is not hard. Decoding it, I have <code>fhn3e9Sjdx0</code>. Knowing that being an <em>osu!</em>-related challenge, I thought this is an username he created in <em>osu!</em>. Turns out it isn't. I honestly had no clues and searched <code>osu fhn3e9Sjdx0</code> on Google. It returns only one entry - A YouTube video recording the <em>osu!</em> gameplay of <em>firebat92</em>. Well it is very likely to be unrelated. I don't even know the reason it came to my search result, since the second keyword isn't found anywhere. In particular, the video ID is <code>jbTebNnwarg</code>, which is not what I expected.</p>
-<p>Well... I was messing around and tried to plug <code>fhn3e9Sjdx0</code> as the video ID. <em>Video unavailable</em>. However, one thing I learnt is that the video ID of YouTube is 11 characters long... Coincidence? Later I was reminded by <em>hoifanrd</em> that the challenge description I received is not up-to-date. For the updated one, it is <code>?i=fhn3e9Sjdx0</code> decoded. I am more convinced that it is a YouTube video. Let's figure out how to convert the <code>i</code> into <code>v</code>?</p>
+<p>Noticing that the string being encoded in base64 is not hard. Decoding it, I have <code>fhn3e9Sjdx0</code>. Knowing that being an <em>osu!</em>-related challenge, I thought this is an username he created in <em>osu!</em>. Turns out it isn't. I honestly had no clues and searched <code>osu fhn3e9Sjdx0</code> on Google. It returns only one entry - A YouTube video recording the <em>osu!</em> gameplay of @firebat92. Well it is very likely to be unrelated. I don't even know the reason it came to my search result, since the second keyword isn't found anywhere. In particular, the video ID is <code>jbTebNnwarg</code>, which is not what I expected.</p>
+<p>Well... I was messing around and tried to plug <code>fhn3e9Sjdx0</code> as the video ID. <em>Video unavailable</em>. However, one thing I learnt is that the video ID of YouTube is 11 characters long... Coincidence? Later I was reminded by @hoifanrd that the challenge description I received is not up-to-date. For the updated one, it is <code>?i=fhn3e9Sjdx0</code> decoded. I am more convinced that it is a YouTube video. Let's figure out how to convert the <code>i</code> into <code>v</code>?</p>
 <p>The first thing I think is <em>Caesar cipher</em>. I bet it wouldn't be <em>Vigenere cipher</em> owing to its short message, and I would definitely question the author's knowledge on computer science if it is Vigenere cipher. I threw the ciphertext to cryptii.com and eventually found <code>?v=sua3r9Fwqk0</code>...</p>
 
 
@@ -151,10 +151,10 @@
 <p>&#x23f0; <em>Time elapsed: 10 minutes.</em></p>
 <h3 id="part-ii-figuring-out-that-being-a-wav-stego">Part II: Figuring out that being a <code>.wav</code> stego...<a href="#part-ii-figuring-out-that-being-a-wav-stego" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <div class="alert warning">
-  It is almost impossible to solve the challenge by myself since this part. I am heavily hinted by <em>hoifanrd</em>.
+  It is almost impossible to solve the challenge by myself since this part. I am heavily hinted by @hoifanrd.
 </div>
 
-<p><em>hoifanrd</em> played two beatmaps in the video. They are</p>
+<p>@hoifanrd played two beatmaps in the video. They are</p>
 <ol>
 <li><a href="https://osu.ppy.sh/beatmapsets/1337388#osu/2770393"
    
@@ -163,11 +163,11 @@
 </svg> (0:00-3:47), and</li>
 <li><a href="https://osu.ppy.sh/beatmapsets/1339791#osu/2775742"
    
-   target="_blank" rel="noopener noreferrer" >Koyoi Tsuki no Yakata Nite (Cover) [Hard] mapped by <em>hoifanrd</em></a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
+   target="_blank" rel="noopener noreferrer" >Koyoi Tsuki no Yakata Nite (Cover) [Hard] mapped by @hoifanrd</a><svg t="1713426496023" style="margin: 0 0 0 5px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8864" width="10" height="10">
     <path d="M1001.627381 394.106435a44.521739 44.521739 0 1 1-88.598261 0V208.228174l-398.914783 398.914783a54.049391 54.049391 0 1 1-76.577391-76.310261l397.579131-397.490087h-182.984348a44.78887 44.78887 0 1 1 0-89.043479h298.740869c1.335652 0 2.226087 0.534261 3.561739 0.623305s1.78087-0.623304 2.671305-0.623305a40.069565 40.069565 0 0 1 27.158261 11.620174c1.157565 0.667826 2.226087 1.513739 3.116521 2.448696 0.890435 0.979478 1.78087 2.092522 2.671305 3.161043a41.360696 41.360696 0 0 1 11.575652 27.158261c0 0.979478-0.445217 1.825391-0.445218 2.80487s0.445217 2.359652 0.445218 3.650783v298.963478zM111.192598 934.956522h712.347826v-400.695652h89.043479v400.695652a89.043478 89.043478 0 0 1-89.043479 89.043478H111.192598a89.043478 89.043478 0 0 1-89.043478-89.043478V222.608696a89.043478 89.043478 0 0 1 89.043478-89.043479h400.695652v89.043479H111.192598v712.347826z" fill="#666666" p-id="8865"></path>
 </svg> (3:55-7:43).</li>
 </ol>
-<p>Knowing that being a stego challenge, it must be the second beatmap that the secret is hidden. At first, I wanted to see if something inside the video. I was soon stopped by <em>hoifanrd</em> and pointed that I am not on the right track. Well, since we can download the beatmap from osu.ppy.sh, let's download the beatmap and analyse. It is an <code>.osz</code> file that can be opened like zip file.</p>
+<p>Knowing that being a stego challenge, it must be the second beatmap that the secret is hidden. At first, I wanted to see if something inside the video. I was soon stopped by @hoifanrd and pointed that I am not on the right track. Well, since we can download the beatmap from osu.ppy.sh, let's download the beatmap and analyse. It is an <code>.osz</code> file that can be opened like zip file.</p>
 
 
 <figure>
@@ -177,14 +177,14 @@
 
 <p>I suspect that there is only one file with the secret hidden. I could immediately eliminate five files because they are modified earlier than Jan 25, the day he told me that he had an idea. I quickly looked into the three <code>.osu</code> files and didn't find anything fishy. After all, it is very likely to be a <code>.wav</code> stego.</p>
 <div class="alert info">
-  Of course, I would not have the above conclusion unless <em>hoifanrd</em> confirms that. He also informed me that there should be a <em>passphrase</em>...
+  Of course, I would not have the above conclusion unless @hoifanrd confirms that. He also informed me that there should be a <em>passphrase</em>...
 </div>
 
 <p>Okay, so what I have to do is to find both the <em>passphrase</em> and the correct <em>tool</em> hiding the secret bits.</p>
 <p>&#x23f0; <em>Time elapsed: 75 minutes (+ 65 minutes).</em></p>
 <h3 id="part-iii-finding-the-passphrase">Part III: Finding the passphrase<a href="#part-iii-finding-the-passphrase" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>After a long break (i.e. my working hours), I am back to the challenge. Without the passphrase, I am unable to tell if the tool is correct. Hence I decided to find the passphrase first. Knowing that there are two beatmaps in the video those serve their own purpose, I was focusing on the first gameplay. If the second gameplay contains the secret, then the key must be hidden in the first one.</p>
-<p>Well... I made no progress for an hour and at some point of time I decided to stream on the Discord server. Eventually <em>hoifanrd</em> thinks I am too weak and decided to give me some hints:</p>
+<p>Well... I made no progress for an hour and at some point of time I decided to stream on the Discord server. Eventually @hoifanrd thinks I am too weak and decided to give me some hints:</p>
 <blockquote>
 <p>It should be something that is easy to aware... notice the cursor</p>
 </blockquote>
@@ -317,7 +317,7 @@
 </span></span><span class="line"><span class="cl">7 2 1 2 1 3 1 2
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">I like playing puzzle...
-</span></span></code></pre></div><p>Unfortunately, <em>hoifanrd</em> noticed that the message isn't correct owing to some issues regarding to line breaks. I have received an updated message from him:</p>
+</span></span></code></pre></div><p>Unfortunately, @hoifanrd noticed that the message isn't correct owing to some issues regarding to line breaks. I have received an updated message from him:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">7 2 2 1 1 7
 </span></span><span class="line"><span class="cl">1 1 2 1 1 1
 </span></span><span class="line"><span class="cl">1 3 1 1 6 2 1 3 1
@@ -412,7 +412,7 @@
 <li>Solve the puzzle from the secret for the flag</li>
 </ol>
 <p>The challenge is not difficult itself, but I am very sure that I am unable to solve it on my own. Parts 1 and 5 are okay. I would think part 4 is guessy if it is not <em>steghide</em>. However, parts 2 and 3 are the toughest parts. They are the most guessy, but at the same time I learnt something interesting.</p>
-<p>To solve parts 2 and 3, you need to know what <em>hoifanrd</em> thinks (or wait until he gives hints). There are two beatmaps, and the reason why it got to be <em>two</em> is:</p>
+<p>To solve parts 2 and 3, you need to know what @hoifanrd thinks (or wait until he gives hints). There are two beatmaps, and the reason why it got to be <em>two</em> is:</p>
 <ol>
 <li>The replay will be uploaded only if the gameplay is one of the top 1000 games in a given <em>ranked beatmap</em>. The first beatmap (Hyakka Ryouran Hanafubuki) satisfies the condition, hence you are able to download the replay from osu.ppy.sh.</li>
 <li>Needless to say, you can hide steganographically the <code>.wav</code> file in your own beatmaps.</li>
@@ -431,6 +431,26 @@
       
 
       
+      <hr />
+      <script src="https://giscus.app/client.js"
+        data-repo="samueltangz/samueltangz.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzMDI0MjQyMjE="
+        data-category="General"
+        data-category-id="DIC_kwDOEgagnc4C0haj"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+      </script>
+      
+
+      
+      <hr />
       <div class="py-3">
         
           <a class="btn" href="/posts/2021/2021-02-01-justctf-oracles/">← justCTF 2020: Oracles</a>
@@ -471,9 +491,7 @@ Viz.instance().then(viz => {
 
   document.querySelectorAll('[class=graphviz]').forEach(node => {
     const source = unescape(node.innerText);
-    console.log(source);
     const svg = viz.renderSVGElement(source, { engine: 'dot' });
-    console.log(2);
     node.parentNode.appendChild(svg);
     node.style.display = 'none';
   });
@@ -500,7 +518,6 @@ tocbot.init({
 
 <script>
   document.querySelectorAll('pre code').forEach(el => {
-    console.log(el)
     const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
     if (!lang) return;
 

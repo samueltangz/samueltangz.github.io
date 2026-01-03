@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
   integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
   referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/main.min.e0d3493d996b65055f87a93e94627d58325b4f40eae7e97eed960541aab132ca.css" integrity="sha256-4NNJPZlrZQVfh6k&#43;lGJ9WDJbT0Dq5&#43;l&#43;7ZYFQaqxMso=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
@@ -58,7 +58,7 @@
     <div class="container mt-3">
       
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
       <h1 class="post-title">HKCERT CTF 2023 Postmortem (III): The Remaining Challenges</h1>
 
       
@@ -548,663 +548,648 @@ MOV [R8+0x400587], 0x4c
 <h3 id="solution-4">Solution<a href="#solution-4" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>We are given the binary for the backend written in C and a HTTP client. The backend uses protocol buffers and websocket to allow interactions with the web.</p>
 <p>As the challenge author, I will just skip the reverse engineering part and share the source code directly.</p>
-
-
-
-  <div class="collapsable-code">
-    <input id="617342859" type="checkbox" checked />
-    <label for="617342859">
-      <span class="collapsable-code__language">c</span>
-      <span class="collapsable-code__title">Source code for game.c</span>
-      <span class="collapsable-code__toggle" data-label-expand="[△]" data-label-collapse="[▽]"></span>
-    </label>
-    <pre class="language-c" ><code>
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;assert.h&gt;
-#include &lt;string.h&gt;
-#include &lt;unistd.h&gt;
-#include &lt;ws.h&gt;
-#include &#34;maze_runner.pb-c.h&#34;
-
-#define GRID_COLS 55
-#define GRID_ROWS 55
-#define COORD(x, y) (GRID_COLS * y &#43; x)
-#define DIST2(x, y) ((x) * (x) &#43; (y) * (y))
-#define TILESET_SIZE 12
-#define ITEM_COUNT 4
-#define MAX_CLIENTS 1024
-
-typedef struct GameTile GameTile;
-typedef struct Player Player;
-typedef struct Monster Monster;
-
-typedef struct Context
-{
-    GameTile **tileset;
-    GameTile **grid;
-    Player *player;
-    Monster *monster;
-    int *inventory;
-    char *message;
-    ws_cli_conn_t *client;
-} Context;
-
-typedef struct Player
-{
-    int x;
-    int y;
-    int facing;
-    int health;
-} Player;
-
-typedef struct Monster
-{
-    int x;
-    int y;
-} Monster;
-
-typedef struct GameTile
-{
-    int type;
-    void (*on_enter)(Context *ctx, int x, int y);
-    void (*on_interact)(Context *ctx, int x, int y);
-    int is_walkable;
-    int is_interactable;
-} GameTile;
-
-// ---
-
-unsigned long long int GRID[] = {
-    0, 0, 0, 2459530691549855744, 144680483117212162, 2450523355428823554, 2306443351725048354, 137975832616, 9007199793717280, 9042384163708960, 2450558539798685984, 153722729841951266, 2450523492867768866, 2345624797730, 2305843009215791104, 35321811050496, 536879136, 2450523492865671168, 153687544932999714, 2459565738516677154, 2305878202748379682, 2314885393377402912, 2314885530281582624, 2305843147189518368, 2450558676702994944, 2450523492867768834, 153687682908815906, 2305878193621565986, 35321813147648, 9042384163708928, 9007336695791648, 153687544930902562, 144680483115115010, 153687682906718722, 2305878194122793474, 2314885392842629152, 2305843009750573056, 2449958335265374208, 144680483115115010, 2459565876492509730, 144680346215129602, 9007337230565922, 538968064, 9007337230565376, 153685474722979872, 2459565875957735938, 2459530691583549986, 153722729841959426, 2314850345907396610, 9042383628935168, 2305878194122653728, 153722721216233504, 2450523492330897954, 2459565738516677154, 144715668026163714, 2314885530279477280, 2314885393379491872, 0, 2459530554110902272, 144715530048242178, 2459565875955638818, 9607679205057058, 2305878331563704352, 2314885392840532000, 0, 144715530585120768, 2450523354891944450, 2459565875955630626, 9044591812682274, 9007199254749216, 2314885530816356352, 2305843009213693952, 2459565738518774304, 153687544932991490, 2459565875955630626, 2305878339648365090, 2305878331026841600, 2314885530279485472, 2314885392840523776, 153687545467765250, 153687682906726946, 2459565875955630594, 2314885530850034178, 2305878331024736288, 2314885530816356384, 153157709678510080, 2450558539261936130, 153687682369856002, 144715667487195650, 35322350141954, 8192, 2314885530816356352, 2459563668847731234, 2459565876494606882, 5927337589569888802, 144680487954305634, 137438962178, 35184908967936, 2459000718894309408, 2459530683498897442, 144680346213032482, 144680345678250530, 144680346215121410, 2305843146652647458, 9007199254749216, 137977929760, 2459565739021967392, 144715667489292802, 144680346215121442, 2450523355428823586, 9007336693702656, 9007337232662528, 2105376, 144680345678127136, 153722867280912898, 2459530554144588290, 2315415366607708706, 2305878331563712544, 2314885530279485472, 32, 153722729839861792, 144680345678250498, 2459565875955638818, 9044591812682274, 2305843147191615520, 9007199793717248, 0, 153687682371944992, 2450523354889855522, 2459565876494598690, 2305878340187333154, 2305843146652655616, 2105376, 0, 153687682371953152, 2459565875957735970, 153722866744042018, 137474744866, 137977921536, 2305843009750573088, 35184911056928, 153687682906726946, 153687544930902562, 2459565738516677122, 2314850346444390914, 2314885530279477248, 2314885530816348192, 144150509886898208, 2450558539798807074, 2450523492330897922, 153722729302983170, 2305843146654745122, 9042383628935200, 2305878331563712512, 153685474725068832, 2459565739053548066, 144715668024066562, 144715530050339330, 9042384163700738, 9007336695791648, 2305878194122661888, 2459565730432032800, 2450523354889855490, 2450558677237760546, 153722729302991362, 9007337230565408, 2314885530281574432, 9007199791620128, 153722729271402528, 153722729302991362, 144715530048242210, 565157602402850, 2314885393377402880, 2105344, 35184911065088, 2450523424146063392, 144680345678250498, 144680483117203970, 3035428494472512002, 2314850346444267552, 2314850346446364672, 2314885393379500064, 2459530691585638443, 2459530692120420898, 2459565875957735970, 9160491554, 0, 0, 0, 0};
-
-void on_default_enter(Context *ctx, int x, int y) {}
-
-void on_default_interact(Context *ctx, int x, int y) {}
-
-void on_key_1_interact(Context *ctx, int x, int y)
-{
-    char *message = malloc(20 &#43; 1);
-    strcpy(message, &#34;You picked up a key.&#34;);
-    ctx-&gt;message = message;
-
-    ctx-&gt;inventory[0] &#43;= 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_key_2_interact(Context *ctx, int x, int y)
-{
-    char *message = malloc(20 &#43; 1);
-    strcpy(message, &#34;You picked up a key.&#34;);
-    ctx-&gt;message = message;
-
-    ctx-&gt;inventory[1] &#43;= 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_key_3_interact(Context *ctx, int x, int y)
-{
-    char *message = malloc(20 &#43; 1);
-    strcpy(message, &#34;You picked up a key.&#34;);
-    ctx-&gt;message = message;
-
-    ctx-&gt;inventory[2] &#43;= 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_key_4_interact(Context *ctx, int x, int y)
-{
-    char *message = malloc(20 &#43; 1);
-    strcpy(message, &#34;You picked up a key.&#34;);
-    ctx-&gt;message = message;
-
-    ctx-&gt;inventory[3] &#43;= 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_gate_1_interact(Context *ctx, int x, int y)
-{
-    if (ctx-&gt;inventory[0] == 0)
-    {
-        char *message = malloc(32 &#43; 1);
-        strcpy(message, &#34;You don&#39;t have the required key!&#34;);
-        ctx-&gt;message = message;
-        return;
-    }
-    else
-    {
-        char *message = malloc(22 &#43; 1);
-        strcpy(message, &#34;You unlocked a gate.&#34;);
-        ctx-&gt;message = message;
-    }
-    ctx-&gt;inventory[0]--;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_gate_2_interact(Context *ctx, int x, int y)
-{
-    if (ctx-&gt;inventory[1] == 0)
-    {
-        char *message = malloc(32 &#43; 1);
-        strcpy(message, &#34;You don&#39;t have the required key!&#34;);
-        ctx-&gt;message = message;
-        return;
-    }
-    else
-    {
-        char *message = malloc(22 &#43; 1);
-        strcpy(message, &#34;You unlocked a gate.&#34;);
-        ctx-&gt;message = message;
-    }
-    ctx-&gt;inventory[1]--;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_gate_3_interact(Context *ctx, int x, int y)
-{
-    if (ctx-&gt;inventory[2] == 0)
-    {
-        char *message = malloc(32 &#43; 1);
-        strcpy(message, &#34;You don&#39;t have the required key!&#34;);
-        ctx-&gt;message = message;
-        return;
-    }
-    else
-    {
-        char *message = malloc(22 &#43; 1);
-        strcpy(message, &#34;You unlocked a gate.&#34;);
-        ctx-&gt;message = message;
-    }
-    ctx-&gt;inventory[2]--;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_gate_4_interact(Context *ctx, int x, int y)
-{
-    if (ctx-&gt;inventory[3] == 0)
-    {
-        char *message = malloc(32 &#43; 1);
-        strcpy(message, &#34;You don&#39;t have the required key!&#34;);
-        ctx-&gt;message = message;
-        return;
-    }
-    else
-    {
-        char *message = malloc(22 &#43; 1);
-        strcpy(message, &#34;You unlocked a gate.&#34;);
-        ctx-&gt;message = message;
-    }
-    ctx-&gt;inventory[3]--;
-    ctx-&gt;grid[COORD(x, y)]-&gt;type = 2;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable = 1;
-    ctx-&gt;grid[COORD(x, y)]-&gt;on_interact = on_default_interact;
-    ctx-&gt;grid[COORD(x, y)]-&gt;is_interactable = 0;
-}
-
-void on_flag_interact(Context *ctx, int x, int y)
-{
-    FILE *fd = fopen(&#34;flag.txt&#34;, &#34;r&#34;);
-    char flag[128];
-    char *message = malloc(256);
-
-    fscanf(fd, &#34;%s&#34;, flag);
-    sprintf(message, &#34;Congratulations! You got the flag: %s.\n&#34;, flag);
-    ctx-&gt;message = message;
-}
-
-int walk(Context *ctx, int dx, int dy)
-{
-    int x1 = ctx-&gt;player-&gt;x, y1 = ctx-&gt;player-&gt;y;
-
-    int x2 = x1 &#43; dx, y2 = y1 &#43; dy;
-
-    if (!ctx-&gt;grid[COORD(x2, y2)]-&gt;is_walkable)
-        return 1;
-    if (ctx-&gt;monster-&gt;x == x2 &amp;&amp; ctx-&gt;monster-&gt;y == y2)
-        return 1;
-    ctx-&gt;player-&gt;x &#43;= dx;
-    ctx-&gt;player-&gt;y &#43;= dy;
-    ctx-&gt;grid[COORD(x2, y2)]-&gt;on_enter(ctx, x2, y2);
-    return 0;
-}
-
-int DXS[4] = {&#43;0, &#43;1, &#43;0, -1};
-int DYS[4] = {-1, &#43;0, &#43;1, &#43;0};
-
-int FAN_XXS[4] = {0, &#43;1, 0, -1};
-int FAN_XYS[4] = {&#43;1, 0, -1, 0};
-int FAN_YXS[4] = {-1, 0, &#43;1, 0};
-int FAN_YYS[4] = {0, &#43;1, 0, -1};
-
-Context *ctxs[MAX_CLIENTS];
-
-void send_state_via_ws(Context *ctx)
-{
-    if (ctx == NULL)
-        return;
-    ws_cli_conn_t *client = ctx-&gt;client;
-
-    int x = ctx-&gt;player-&gt;x;
-    int y = ctx-&gt;player-&gt;y;
-
-    int x2 = ctx-&gt;player-&gt;x &#43; DXS[ctx-&gt;player-&gt;facing];
-    int y2 = ctx-&gt;player-&gt;y &#43; DYS[ctx-&gt;player-&gt;facing];
-
-    Response res = RESPONSE__INIT;
-
-    // grids
-    Tile **grids = malloc(25 * sizeof(Tile *));
-    int n_grids = 0;
-
-    for (int i = 0; i &lt; 5; i&#43;&#43;)
-    {
-        for (int j = -i; j &lt;= i; j&#43;&#43;)
-        {
-            Tile *tile = malloc(sizeof(Tile));
-            tile__init(tile);
-            tile-&gt;offset_horizontal = i;
-            tile-&gt;offset_vertical = j;
-
-            int x = ctx-&gt;player-&gt;x &#43; FAN_XXS[ctx-&gt;player-&gt;facing] * i &#43; FAN_XYS[ctx-&gt;player-&gt;facing] * j;
-            int y = ctx-&gt;player-&gt;y &#43; FAN_YXS[ctx-&gt;player-&gt;facing] * i &#43; FAN_YYS[ctx-&gt;player-&gt;facing] * j;
-
-            int type;
-            if (x &lt; 0 || x &gt;= GRID_COLS)
-                type = 0;
-            else if (y &lt; 0 || y &gt;= GRID_ROWS)
-                type = 0;
-            else
-                type = ctx-&gt;grid[COORD(x, y)]-&gt;type;
-            tile-&gt;type = type;
-            grids[n_grids&#43;&#43;] = tile;
-        }
-    }
-
-    res.n_grids = n_grids;
-    res.grids = grids;
-
-    // entities
-    Entity **entities = malloc(25 * sizeof(Entity *));
-    int n_entities = 0;
-
-    for (int i = 0; i &lt; 5; i&#43;&#43;)
-    {
-        for (int j = -i; j &lt;= i; j&#43;&#43;)
-        {
-            Entity *entity = malloc(sizeof(Entity));
-            entity__init(entity);
-            entity-&gt;offset_horizontal = i;
-            entity-&gt;offset_vertical = j;
-
-            int x = ctx-&gt;player-&gt;x &#43; FAN_XXS[ctx-&gt;player-&gt;facing] * i &#43; FAN_XYS[ctx-&gt;player-&gt;facing] * j;
-            int y = ctx-&gt;player-&gt;y &#43; FAN_YXS[ctx-&gt;player-&gt;facing] * i &#43; FAN_YYS[ctx-&gt;player-&gt;facing] * j;
-
-            if (ctx-&gt;monster-&gt;x == x &amp;&amp; ctx-&gt;monster-&gt;y == y)
-                entity-&gt;type = 1;
-
-            entities[n_entities&#43;&#43;] = entity;
-        }
-    }
-
-    res.n_entities = n_entities;
-    res.entities = entities;
-
-    // inventory
-    res.n_item_counts = ITEM_COUNT;
-    res.item_counts = ctx-&gt;inventory;
-
-    // message
-    res.message = ctx-&gt;message;
-
-    // possible moves
-    int n_possible_moves = 0;
-    Move possible_moves[4] = {0};
-    possible_moves[n_possible_moves&#43;&#43;] = MOVE__LEFT;
-    possible_moves[n_possible_moves&#43;&#43;] = MOVE__RIGHT;
-    if (0 &lt;= x2 &amp;&amp; x2 &lt; GRID_COLS &amp;&amp;
-        0 &lt;= y2 &amp;&amp; y2 &lt; GRID_ROWS &amp;&amp;
-        ctx-&gt;grid[COORD(x2, y2)]-&gt;is_walkable)
-        possible_moves[n_possible_moves&#43;&#43;] = MOVE__FORWARD;
-    if (0 &lt;= x2 &amp;&amp; x2 &lt; GRID_COLS &amp;&amp;
-        0 &lt;= y2 &amp;&amp; y2 &lt; GRID_ROWS &amp;&amp;
-        ctx-&gt;grid[COORD(x2, y2)]-&gt;is_interactable)
-        possible_moves[n_possible_moves&#43;&#43;] = MOVE__INTERACT;
-
-    res.n_possible_moves = n_possible_moves;
-    res.possible_moves = possible_moves;
-
-    res.health = ctx-&gt;player-&gt;health;
-
-    size_t packed_response_size = response__get_packed_size(&amp;res);
-    char *packed_response = malloc(packed_response_size);
-    response__pack(&amp;res, packed_response);
-    ws_sendframe_bin(client, packed_response, packed_response_size);
-
-    if (ctx-&gt;message != NULL)
-    {
-        free(ctx-&gt;message);
-        ctx-&gt;message = NULL;
-    }
-    for (int i = 0; i &lt; 25; i&#43;&#43;)
-        free(grids[i]);
-    free(grids);
-    free(packed_response);
-
-void onopen(ws_cli_conn_t *client)
-{
-    char *cli;
-    cli = ws_getaddress(client);
-
-    int client_id = ws_get_id(client);
-
-    // ---
-
-    GameTile *wall_tile = malloc(sizeof(GameTile));
-    wall_tile-&gt;type = 0;
-    wall_tile-&gt;on_enter = on_default_enter;
-    wall_tile-&gt;on_interact = on_default_interact;
-    wall_tile-&gt;is_walkable = 0;
-    wall_tile-&gt;is_interactable = 0;
-
-    GameTile *fake_wall_tile = malloc(sizeof(GameTile));
-    fake_wall_tile-&gt;type = 1;
-    fake_wall_tile-&gt;on_enter = on_default_enter;
-    fake_wall_tile-&gt;on_interact = on_default_interact;
-    fake_wall_tile-&gt;is_walkable = 1;
-    fake_wall_tile-&gt;is_interactable = 0;
-
-    GameTile *walk_tile = malloc(sizeof(GameTile));
-    walk_tile-&gt;type = 2;
-    walk_tile-&gt;on_enter = on_default_enter;
-    walk_tile-&gt;on_interact = on_default_interact;
-    walk_tile-&gt;is_walkable = 1;
-    walk_tile-&gt;is_interactable = 0;
-
-    GameTile *flag_tile = malloc(sizeof(GameTile));
-    flag_tile-&gt;type = 3;
-    flag_tile-&gt;on_enter = on_default_enter;
-    flag_tile-&gt;on_interact = on_flag_interact;
-    flag_tile-&gt;is_walkable = 0;
-    flag_tile-&gt;is_interactable = 1;
-
-    GameTile *gate_1_tile = malloc(sizeof(GameTile));
-    gate_1_tile-&gt;type = 4;
-    gate_1_tile-&gt;on_enter = on_default_enter;
-    gate_1_tile-&gt;on_interact = on_gate_1_interact;
-    gate_1_tile-&gt;is_walkable = 0;
-    gate_1_tile-&gt;is_interactable = 1;
-
-    GameTile *gate_2_tile = malloc(sizeof(GameTile));
-    gate_2_tile-&gt;type = 5;
-    gate_2_tile-&gt;on_enter = on_default_enter;
-    gate_2_tile-&gt;on_interact = on_gate_2_interact;
-    gate_2_tile-&gt;is_walkable = 0;
-    gate_2_tile-&gt;is_interactable = 1;
-
-    GameTile *gate_3_tile = malloc(sizeof(GameTile));
-    gate_3_tile-&gt;type = 6;
-    gate_3_tile-&gt;on_enter = on_default_enter;
-    gate_3_tile-&gt;on_interact = on_gate_3_interact;
-    gate_3_tile-&gt;is_walkable = 0;
-    gate_3_tile-&gt;is_interactable = 1;
-
-    GameTile *gate_4_tile = malloc(sizeof(GameTile));
-    gate_4_tile-&gt;type = 7;
-    gate_4_tile-&gt;on_enter = on_default_enter;
-    gate_4_tile-&gt;on_interact = on_gate_4_interact;
-    gate_4_tile-&gt;is_walkable = 0;
-    gate_4_tile-&gt;is_interactable = 1;
-
-    GameTile *key_1_tile = malloc(sizeof(GameTile));
-    key_1_tile-&gt;type = 8;
-    key_1_tile-&gt;on_enter = on_default_enter;
-    key_1_tile-&gt;on_interact = on_key_1_interact;
-    key_1_tile-&gt;is_walkable = 0;
-    key_1_tile-&gt;is_interactable = 1;
-
-    GameTile *key_2_tile = malloc(sizeof(GameTile));
-    key_2_tile-&gt;type = 9;
-    key_2_tile-&gt;on_enter = on_default_enter;
-    key_2_tile-&gt;on_interact = on_key_2_interact;
-    key_2_tile-&gt;is_walkable = 0;
-    key_2_tile-&gt;is_interactable = 1;
-
-    GameTile *key_3_tile = malloc(sizeof(GameTile));
-    key_3_tile-&gt;type = 10;
-    key_3_tile-&gt;on_enter = on_default_enter;
-    key_3_tile-&gt;on_interact = on_key_3_interact;
-    key_3_tile-&gt;is_walkable = 0;
-    key_3_tile-&gt;is_interactable = 1;
-
-    GameTile *key_4_tile = malloc(sizeof(GameTile));
-    key_4_tile-&gt;type = 11;
-    key_4_tile-&gt;on_enter = on_default_enter;
-    key_4_tile-&gt;on_interact = on_key_4_interact;
-    key_4_tile-&gt;is_walkable = 0;
-    key_4_tile-&gt;is_interactable = 1;
-
-    GameTile **tileset = malloc(TILESET_SIZE * sizeof(GameTile *));
-    tileset[0] = wall_tile;
-    tileset[1] = fake_wall_tile;
-    tileset[2] = walk_tile;
-    tileset[3] = flag_tile;
-    tileset[4] = gate_1_tile;
-    tileset[5] = gate_2_tile;
-    tileset[6] = gate_3_tile;
-    tileset[7] = gate_4_tile;
-    tileset[8] = key_1_tile;
-    tileset[9] = key_2_tile;
-    tileset[10] = key_3_tile;
-    tileset[11] = key_4_tile;
-
-    GameTile **grid = malloc(GRID_ROWS * GRID_COLS * sizeof(GameTile *));
-    for (int x = 0; x &lt; GRID_COLS; x&#43;&#43;)
-        for (int y = 0; y &lt; GRID_ROWS; y&#43;&#43;)
-        {
-            unsigned long long int range_grid = GRID[COORD(x, y) &gt;&gt; 4];
-            grid[COORD(x, y)] = tileset[(range_grid &gt;&gt; (4 * (COORD(x, y) &amp; 0xf))) &amp; 0xf];
-        }
-
-    Player *player = malloc(sizeof(Player));
-    player-&gt;x = 3;
-    player-&gt;y = 27;
-    player-&gt;facing = 1;
-    player-&gt;health = 100;
-
-    Monster *monster = malloc(sizeof(Monster));
-    monster-&gt;x = GRID_COLS - 4;
-    monster-&gt;y = GRID_ROWS - 4;
-
-    int *inventory = malloc(sizeof(int) * ITEM_COUNT);
-
-    memset(inventory, 0, sizeof(int) * ITEM_COUNT);
-
-    Context *ctx = malloc(sizeof(Context));
-    ctx-&gt;tileset = tileset;
-    ctx-&gt;grid = grid;
-    ctx-&gt;player = player;
-    ctx-&gt;monster = monster;
-    ctx-&gt;inventory = inventory;
-    ctx-&gt;client = client;
-    ctx-&gt;message = NULL;
-
-    send_state_via_ws(ctx);
-
-    ctxs[client_id] = ctx;
-}
-
-void onclose(ws_cli_conn_t *client)
-{
-    char *cli;
-    cli = ws_getaddress(client);
-    int client_id = ws_get_id(client);
-
-    Context *ctx = ctxs[client_id];
-
-    for (int i = 0; i &lt; TILESET_SIZE; i&#43;&#43;)
-        free(ctx-&gt;tileset[i]);
-    free(ctx-&gt;tileset);
-    free(ctx-&gt;grid);
-    free(ctx-&gt;player);
-    free(ctx-&gt;monster);
-    free(ctx-&gt;inventory);
-    free(ctx);
-    ctxs[client_id] = NULL;
-}
-
-void onmessage(ws_cli_conn_t *client,
-               const unsigned char *msg, uint64_t size, int type)
-{
-    char *cli;
-    cli = ws_getaddress(client);
-
-    int client_id = ws_get_id(client);
-    Context *ctx = ctxs[client_id];
-
-    Request *req = request__unpack(NULL, size, msg);
-    if (req == NULL)
-        return;
-
-    switch (req-&gt;move)
-    {
-    case MOVE__LEFT:
-        ctx-&gt;player-&gt;facing = (ctx-&gt;player-&gt;facing - 1) &amp; 3;
-        break;
-    case MOVE__RIGHT:
-        ctx-&gt;player-&gt;facing = (ctx-&gt;player-&gt;facing &#43; 1) &amp; 3;
-        break;
-    case MOVE__FORWARD:
-        int dx = DXS[ctx-&gt;player-&gt;facing];
-        int dy = DYS[ctx-&gt;player-&gt;facing];
-        walk(ctx, dx, dy);
-        break;
-    case MOVE__INTERACT:
-        int x = ctx-&gt;player-&gt;x &#43; DXS[ctx-&gt;player-&gt;facing];
-        int y = ctx-&gt;player-&gt;y &#43; DYS[ctx-&gt;player-&gt;facing];
-        ctx-&gt;grid[COORD(x, y)]-&gt;on_interact(ctx, x, y);
-        break;
-    default:
-        return;
-    }
-    send_state_via_ws(ctx);
-}
-
-int sgn(int x)
-{
-    if (x == 0)
-        return 0;
-    if (x &lt; 0)
-        return -1;
-    return 1;
-}
-
-// Return 1 if the game is still running, 0 otherwise
-int tick(Context *ctx)
-{
-    int dx = ctx-&gt;player-&gt;x - ctx-&gt;monster-&gt;x;
-    int dy = ctx-&gt;player-&gt;y - ctx-&gt;monster-&gt;y;
-
-    ctx-&gt;player-&gt;health -= 1;
-    if (ctx-&gt;player-&gt;health == 0)
-        return 0;
-
-    if (DIST2(dx, dy) == 1)
-    {
-        ctx-&gt;player-&gt;health -= 10;
-        if (ctx-&gt;player-&gt;health &lt;= 0)
-        {
-            ctx-&gt;player-&gt;health = 0;
-            return 0;
-        }
-        char *message = malloc(27 &#43; 1);
-        strcpy(message, &#34;You were bitten by a snake!&#34;);
-        ctx-&gt;message = message;
-    }
-    else if (DIST2(dx, dy) &lt;= 10 * 10)
-    {
-        int facing = 0;
-        if (abs(dx) &gt;= abs(dy))
-        {
-            facing = 2 - sgn(dx);
-        }
-        else
-        {
-            facing = 1 &#43; sgn(dy);
-        }
-
-        int x = ctx-&gt;monster-&gt;x &#43; DXS[facing];
-        int y = ctx-&gt;monster-&gt;y &#43; DYS[facing];
-        if (ctx-&gt;grid[COORD(x, y)]-&gt;is_walkable)
-        {
-            ctx-&gt;monster-&gt;x = x;
-            ctx-&gt;monster-&gt;y = y;
-        }
-    }
-
-    return 1;
-}
-
-int main()
-{
-    struct ws_events evs;
-    evs.onopen = &amp;onopen;
-    evs.onclose = &amp;onclose;
-    evs.onmessage = &amp;onmessage;
-
-    ws_socket(&amp;evs, 8080, 1, 1000);
-
-    while (1)
-    {
-        for (int i = 0; i &lt; MAX_CLIENTS; i&#43;&#43;)
-        {
-            Context *ctx = ctxs[i];
-            if (ctx == NULL)
-                continue;
-            int is_alive = tick(ctx);
-            if (!is_alive)
-            {
-                char *message = malloc(25 &#43; 1);
-                strcpy(message, &#34;You ran out of stamina...&#34;);
-                ctx-&gt;message = message;
-            }
-            send_state_via_ws(ctx);
-            if (!is_alive)
-            {
-                ws_cli_conn_t *client = ctx-&gt;client;
-                ws_close_client(client);
-            }
-        }
-        sleep(1);
-    }
-
-    return 0;
-}
-</code></pre>
-  </div>
-
-
-<p>When connected to the server, the binary will run the <code>onopen</code> function and define a context specific to the client. A <code>Context</code> struct is created and the struct members are defined and it stores the current game state, which will be constantly updated during the gameplay. If we look at the variable <code>GRID</code> and the tileset, we are able to draw the game map by ourselves:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;assert.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;ws.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;maze_runner.pb-c.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define GRID_COLS 55
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define GRID_ROWS 55
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define COORD(x, y) (GRID_COLS * y + x)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define DIST2(x, y) ((x) * (x) + (y) * (y))
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define TILESET_SIZE 12
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ITEM_COUNT 4
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MAX_CLIENTS 1024
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">GameTile</span> <span class="n">GameTile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">Player</span> <span class="n">Player</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">Monster</span> <span class="n">Monster</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">Context</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">**</span><span class="n">tileset</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">**</span><span class="n">grid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Player</span> <span class="o">*</span><span class="n">player</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Monster</span> <span class="o">*</span><span class="n">monster</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="o">*</span><span class="n">inventory</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">ws_cli_conn_t</span> <span class="o">*</span><span class="n">client</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Context</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">Player</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">facing</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">health</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Player</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">Monster</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Monster</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">GameTile</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">on_enter</span><span class="p">)(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">on_interact</span><span class="p">)(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">is_walkable</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">is_interactable</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">GameTile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ---
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">GRID</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2459530691549855744</span><span class="p">,</span> <span class="mi">144680483117212162</span><span class="p">,</span> <span class="mi">2450523355428823554</span><span class="p">,</span> <span class="mi">2306443351725048354</span><span class="p">,</span> <span class="mi">137975832616</span><span class="p">,</span> <span class="mi">9007199793717280</span><span class="p">,</span> <span class="mi">9042384163708960</span><span class="p">,</span> <span class="mi">2450558539798685984</span><span class="p">,</span> <span class="mi">153722729841951266</span><span class="p">,</span> <span class="mi">2450523492867768866</span><span class="p">,</span> <span class="mi">2345624797730</span><span class="p">,</span> <span class="mi">2305843009215791104</span><span class="p">,</span> <span class="mi">35321811050496</span><span class="p">,</span> <span class="mi">536879136</span><span class="p">,</span> <span class="mi">2450523492865671168</span><span class="p">,</span> <span class="mi">153687544932999714</span><span class="p">,</span> <span class="mi">2459565738516677154</span><span class="p">,</span> <span class="mi">2305878202748379682</span><span class="p">,</span> <span class="mi">2314885393377402912</span><span class="p">,</span> <span class="mi">2314885530281582624</span><span class="p">,</span> <span class="mi">2305843147189518368</span><span class="p">,</span> <span class="mi">2450558676702994944</span><span class="p">,</span> <span class="mi">2450523492867768834</span><span class="p">,</span> <span class="mi">153687682908815906</span><span class="p">,</span> <span class="mi">2305878193621565986</span><span class="p">,</span> <span class="mi">35321813147648</span><span class="p">,</span> <span class="mi">9042384163708928</span><span class="p">,</span> <span class="mi">9007336695791648</span><span class="p">,</span> <span class="mi">153687544930902562</span><span class="p">,</span> <span class="mi">144680483115115010</span><span class="p">,</span> <span class="mi">153687682906718722</span><span class="p">,</span> <span class="mi">2305878194122793474</span><span class="p">,</span> <span class="mi">2314885392842629152</span><span class="p">,</span> <span class="mi">2305843009750573056</span><span class="p">,</span> <span class="mi">2449958335265374208</span><span class="p">,</span> <span class="mi">144680483115115010</span><span class="p">,</span> <span class="mi">2459565876492509730</span><span class="p">,</span> <span class="mi">144680346215129602</span><span class="p">,</span> <span class="mi">9007337230565922</span><span class="p">,</span> <span class="mi">538968064</span><span class="p">,</span> <span class="mi">9007337230565376</span><span class="p">,</span> <span class="mi">153685474722979872</span><span class="p">,</span> <span class="mi">2459565875957735938</span><span class="p">,</span> <span class="mi">2459530691583549986</span><span class="p">,</span> <span class="mi">153722729841959426</span><span class="p">,</span> <span class="mi">2314850345907396610</span><span class="p">,</span> <span class="mi">9042383628935168</span><span class="p">,</span> <span class="mi">2305878194122653728</span><span class="p">,</span> <span class="mi">153722721216233504</span><span class="p">,</span> <span class="mi">2450523492330897954</span><span class="p">,</span> <span class="mi">2459565738516677154</span><span class="p">,</span> <span class="mi">144715668026163714</span><span class="p">,</span> <span class="mi">2314885530279477280</span><span class="p">,</span> <span class="mi">2314885393379491872</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2459530554110902272</span><span class="p">,</span> <span class="mi">144715530048242178</span><span class="p">,</span> <span class="mi">2459565875955638818</span><span class="p">,</span> <span class="mi">9607679205057058</span><span class="p">,</span> <span class="mi">2305878331563704352</span><span class="p">,</span> <span class="mi">2314885392840532000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">144715530585120768</span><span class="p">,</span> <span class="mi">2450523354891944450</span><span class="p">,</span> <span class="mi">2459565875955630626</span><span class="p">,</span> <span class="mi">9044591812682274</span><span class="p">,</span> <span class="mi">9007199254749216</span><span class="p">,</span> <span class="mi">2314885530816356352</span><span class="p">,</span> <span class="mi">2305843009213693952</span><span class="p">,</span> <span class="mi">2459565738518774304</span><span class="p">,</span> <span class="mi">153687544932991490</span><span class="p">,</span> <span class="mi">2459565875955630626</span><span class="p">,</span> <span class="mi">2305878339648365090</span><span class="p">,</span> <span class="mi">2305878331026841600</span><span class="p">,</span> <span class="mi">2314885530279485472</span><span class="p">,</span> <span class="mi">2314885392840523776</span><span class="p">,</span> <span class="mi">153687545467765250</span><span class="p">,</span> <span class="mi">153687682906726946</span><span class="p">,</span> <span class="mi">2459565875955630594</span><span class="p">,</span> <span class="mi">2314885530850034178</span><span class="p">,</span> <span class="mi">2305878331024736288</span><span class="p">,</span> <span class="mi">2314885530816356384</span><span class="p">,</span> <span class="mi">153157709678510080</span><span class="p">,</span> <span class="mi">2450558539261936130</span><span class="p">,</span> <span class="mi">153687682369856002</span><span class="p">,</span> <span class="mi">144715667487195650</span><span class="p">,</span> <span class="mi">35322350141954</span><span class="p">,</span> <span class="mi">8192</span><span class="p">,</span> <span class="mi">2314885530816356352</span><span class="p">,</span> <span class="mi">2459563668847731234</span><span class="p">,</span> <span class="mi">2459565876494606882</span><span class="p">,</span> <span class="mi">5927337589569888802</span><span class="p">,</span> <span class="mi">144680487954305634</span><span class="p">,</span> <span class="mi">137438962178</span><span class="p">,</span> <span class="mi">35184908967936</span><span class="p">,</span> <span class="mi">2459000718894309408</span><span class="p">,</span> <span class="mi">2459530683498897442</span><span class="p">,</span> <span class="mi">144680346213032482</span><span class="p">,</span> <span class="mi">144680345678250530</span><span class="p">,</span> <span class="mi">144680346215121410</span><span class="p">,</span> <span class="mi">2305843146652647458</span><span class="p">,</span> <span class="mi">9007199254749216</span><span class="p">,</span> <span class="mi">137977929760</span><span class="p">,</span> <span class="mi">2459565739021967392</span><span class="p">,</span> <span class="mi">144715667489292802</span><span class="p">,</span> <span class="mi">144680346215121442</span><span class="p">,</span> <span class="mi">2450523355428823586</span><span class="p">,</span> <span class="mi">9007336693702656</span><span class="p">,</span> <span class="mi">9007337232662528</span><span class="p">,</span> <span class="mi">2105376</span><span class="p">,</span> <span class="mi">144680345678127136</span><span class="p">,</span> <span class="mi">153722867280912898</span><span class="p">,</span> <span class="mi">2459530554144588290</span><span class="p">,</span> <span class="mi">2315415366607708706</span><span class="p">,</span> <span class="mi">2305878331563712544</span><span class="p">,</span> <span class="mi">2314885530279485472</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">153722729839861792</span><span class="p">,</span> <span class="mi">144680345678250498</span><span class="p">,</span> <span class="mi">2459565875955638818</span><span class="p">,</span> <span class="mi">9044591812682274</span><span class="p">,</span> <span class="mi">2305843147191615520</span><span class="p">,</span> <span class="mi">9007199793717248</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">153687682371944992</span><span class="p">,</span> <span class="mi">2450523354889855522</span><span class="p">,</span> <span class="mi">2459565876494598690</span><span class="p">,</span> <span class="mi">2305878340187333154</span><span class="p">,</span> <span class="mi">2305843146652655616</span><span class="p">,</span> <span class="mi">2105376</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">153687682371953152</span><span class="p">,</span> <span class="mi">2459565875957735970</span><span class="p">,</span> <span class="mi">153722866744042018</span><span class="p">,</span> <span class="mi">137474744866</span><span class="p">,</span> <span class="mi">137977921536</span><span class="p">,</span> <span class="mi">2305843009750573088</span><span class="p">,</span> <span class="mi">35184911056928</span><span class="p">,</span> <span class="mi">153687682906726946</span><span class="p">,</span> <span class="mi">153687544930902562</span><span class="p">,</span> <span class="mi">2459565738516677122</span><span class="p">,</span> <span class="mi">2314850346444390914</span><span class="p">,</span> <span class="mi">2314885530279477248</span><span class="p">,</span> <span class="mi">2314885530816348192</span><span class="p">,</span> <span class="mi">144150509886898208</span><span class="p">,</span> <span class="mi">2450558539798807074</span><span class="p">,</span> <span class="mi">2450523492330897922</span><span class="p">,</span> <span class="mi">153722729302983170</span><span class="p">,</span> <span class="mi">2305843146654745122</span><span class="p">,</span> <span class="mi">9042383628935200</span><span class="p">,</span> <span class="mi">2305878331563712512</span><span class="p">,</span> <span class="mi">153685474725068832</span><span class="p">,</span> <span class="mi">2459565739053548066</span><span class="p">,</span> <span class="mi">144715668024066562</span><span class="p">,</span> <span class="mi">144715530050339330</span><span class="p">,</span> <span class="mi">9042384163700738</span><span class="p">,</span> <span class="mi">9007336695791648</span><span class="p">,</span> <span class="mi">2305878194122661888</span><span class="p">,</span> <span class="mi">2459565730432032800</span><span class="p">,</span> <span class="mi">2450523354889855490</span><span class="p">,</span> <span class="mi">2450558677237760546</span><span class="p">,</span> <span class="mi">153722729302991362</span><span class="p">,</span> <span class="mi">9007337230565408</span><span class="p">,</span> <span class="mi">2314885530281574432</span><span class="p">,</span> <span class="mi">9007199791620128</span><span class="p">,</span> <span class="mi">153722729271402528</span><span class="p">,</span> <span class="mi">153722729302991362</span><span class="p">,</span> <span class="mi">144715530048242210</span><span class="p">,</span> <span class="mi">565157602402850</span><span class="p">,</span> <span class="mi">2314885393377402880</span><span class="p">,</span> <span class="mi">2105344</span><span class="p">,</span> <span class="mi">35184911065088</span><span class="p">,</span> <span class="mi">2450523424146063392</span><span class="p">,</span> <span class="mi">144680345678250498</span><span class="p">,</span> <span class="mi">144680483117203970</span><span class="p">,</span> <span class="mi">3035428494472512002</span><span class="p">,</span> <span class="mi">2314850346444267552</span><span class="p">,</span> <span class="mi">2314850346446364672</span><span class="p">,</span> <span class="mi">2314885393379500064</span><span class="p">,</span> <span class="mi">2459530691585638443</span><span class="p">,</span> <span class="mi">2459530692120420898</span><span class="p">,</span> <span class="mi">2459565875957735970</span><span class="p">,</span> <span class="mi">9160491554</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_default_enter</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_default_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_key_1_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You picked up a key.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_key_2_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You picked up a key.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_key_3_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You picked up a key.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_key_4_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You picked up a key.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_gate_1_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">32</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You don&#39;t have the required key!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">22</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You unlocked a gate.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_gate_2_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">32</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You don&#39;t have the required key!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">22</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You unlocked a gate.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_gate_3_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">32</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You don&#39;t have the required key!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">22</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You unlocked a gate.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_gate_4_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">32</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You don&#39;t have the required key!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">22</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You unlocked a gate.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">on_flag_interact</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FILE</span> <span class="o">*</span><span class="n">fd</span> <span class="o">=</span> <span class="nf">fopen</span><span class="p">(</span><span class="s">&#34;flag.txt&#34;</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">flag</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">256</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">fscanf</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s">&#34;%s&#34;</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sprintf</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;Congratulations! You got the flag: %s.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">walk</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">dy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">==</span> <span class="n">x2</span> <span class="o">&amp;&amp;</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">==</span> <span class="n">y2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">+=</span> <span class="n">dx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">+=</span> <span class="n">dy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)]</span><span class="o">-&gt;</span><span class="nf">on_enter</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">DXS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">DYS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">FAN_XXS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">FAN_XYS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">FAN_YXS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">FAN_YYS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Context</span> <span class="o">*</span><span class="n">ctxs</span><span class="p">[</span><span class="n">MAX_CLIENTS</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">send_state_via_ws</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">ws_cli_conn_t</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">client</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">+</span> <span class="n">DXS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">+</span> <span class="n">DYS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Response</span> <span class="n">res</span> <span class="o">=</span> <span class="n">RESPONSE__INIT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// grids
+</span></span></span><span class="line"><span class="cl">    <span class="n">Tile</span> <span class="o">**</span><span class="n">grids</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Tile</span> <span class="o">*</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n_grids</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Tile</span> <span class="o">*</span><span class="n">tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Tile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">tile__init</span><span class="p">(</span><span class="n">tile</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tile</span><span class="o">-&gt;</span><span class="n">offset_horizontal</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tile</span><span class="o">-&gt;</span><span class="n">offset_vertical</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">+</span> <span class="n">FAN_XXS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">FAN_XYS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">+</span> <span class="n">FAN_YXS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">FAN_YYS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">GRID_COLS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="n">GRID_ROWS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">                <span class="n">type</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">grids</span><span class="p">[</span><span class="n">n_grids</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">n_grids</span> <span class="o">=</span> <span class="n">n_grids</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">grids</span> <span class="o">=</span> <span class="n">grids</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// entities
+</span></span></span><span class="line"><span class="cl">    <span class="n">Entity</span> <span class="o">**</span><span class="n">entities</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Entity</span> <span class="o">*</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n_entities</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Entity</span> <span class="o">*</span><span class="n">entity</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Entity</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">entity__init</span><span class="p">(</span><span class="n">entity</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">entity</span><span class="o">-&gt;</span><span class="n">offset_horizontal</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">entity</span><span class="o">-&gt;</span><span class="n">offset_vertical</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">+</span> <span class="n">FAN_XXS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">FAN_XYS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">+</span> <span class="n">FAN_YXS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">FAN_YYS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">]</span> <span class="o">*</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">==</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">entity</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">entities</span><span class="p">[</span><span class="n">n_entities</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">entity</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">n_entities</span> <span class="o">=</span> <span class="n">n_entities</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">entities</span> <span class="o">=</span> <span class="n">entities</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// inventory
+</span></span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">n_item_counts</span> <span class="o">=</span> <span class="n">ITEM_COUNT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">item_counts</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// message
+</span></span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// possible moves
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n_possible_moves</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Move</span> <span class="n">possible_moves</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">possible_moves</span><span class="p">[</span><span class="n">n_possible_moves</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">MOVE__LEFT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">possible_moves</span><span class="p">[</span><span class="n">n_possible_moves</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">MOVE__RIGHT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x2</span> <span class="o">&amp;&amp;</span> <span class="n">x2</span> <span class="o">&lt;</span> <span class="n">GRID_COLS</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">        <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y2</span> <span class="o">&amp;&amp;</span> <span class="n">y2</span> <span class="o">&lt;</span> <span class="n">GRID_ROWS</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">possible_moves</span><span class="p">[</span><span class="n">n_possible_moves</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">MOVE__FORWARD</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x2</span> <span class="o">&amp;&amp;</span> <span class="n">x2</span> <span class="o">&lt;</span> <span class="n">GRID_COLS</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">        <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y2</span> <span class="o">&amp;&amp;</span> <span class="n">y2</span> <span class="o">&lt;</span> <span class="n">GRID_ROWS</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_interactable</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">possible_moves</span><span class="p">[</span><span class="n">n_possible_moves</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">MOVE__INTERACT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">n_possible_moves</span> <span class="o">=</span> <span class="n">n_possible_moves</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">possible_moves</span> <span class="o">=</span> <span class="n">possible_moves</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">health</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">health</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">size_t</span> <span class="n">packed_response_size</span> <span class="o">=</span> <span class="nf">response__get_packed_size</span><span class="p">(</span><span class="o">&amp;</span><span class="n">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">packed_response</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="n">packed_response_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">response__pack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">res</span><span class="p">,</span> <span class="n">packed_response</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ws_sendframe_bin</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">packed_response</span><span class="p">,</span> <span class="n">packed_response_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">25</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">free</span><span class="p">(</span><span class="n">grids</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">grids</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">packed_response</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">onopen</span><span class="p">(</span><span class="kt">ws_cli_conn_t</span> <span class="o">*</span><span class="n">client</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">cli</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cli</span> <span class="o">=</span> <span class="nf">ws_getaddress</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">client_id</span> <span class="o">=</span> <span class="nf">ws_get_id</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// ---
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">wall_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wall_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wall_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wall_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wall_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">wall_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">fake_wall_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fake_wall_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fake_wall_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fake_wall_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fake_wall_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fake_wall_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">walk_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">walk_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">walk_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">walk_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_default_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">walk_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">walk_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">flag_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_flag_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">gate_1_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_1_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_1_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_1_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_gate_1_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_1_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_1_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">gate_2_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_2_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_2_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_2_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_gate_2_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_2_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_2_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">gate_3_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_3_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_3_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_3_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_gate_3_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_3_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_3_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">gate_4_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_4_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_4_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_4_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_gate_4_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_4_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gate_4_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">key_1_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_1_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_1_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_1_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_key_1_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_1_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_1_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">key_2_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_2_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_2_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_2_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_key_2_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_2_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_2_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">key_3_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_3_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_3_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_3_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_key_3_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_3_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_3_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">*</span><span class="n">key_4_tile</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_4_tile</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_4_tile</span><span class="o">-&gt;</span><span class="n">on_enter</span> <span class="o">=</span> <span class="n">on_default_enter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_4_tile</span><span class="o">-&gt;</span><span class="n">on_interact</span> <span class="o">=</span> <span class="n">on_key_4_interact</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_4_tile</span><span class="o">-&gt;</span><span class="n">is_walkable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_4_tile</span><span class="o">-&gt;</span><span class="n">is_interactable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">**</span><span class="n">tileset</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="n">TILESET_SIZE</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span> <span class="o">*</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">wall_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_wall_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">walk_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">flag_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">gate_1_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">gate_2_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">gate_3_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">gate_4_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_1_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_2_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_3_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tileset</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_4_tile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">GameTile</span> <span class="o">**</span><span class="n">grid</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="n">GRID_ROWS</span> <span class="o">*</span> <span class="n">GRID_COLS</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">GameTile</span> <span class="o">*</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">GRID_COLS</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">GRID_ROWS</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">range_grid</span> <span class="o">=</span> <span class="n">GRID</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tileset</span><span class="p">[(</span><span class="n">range_grid</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Player</span> <span class="o">*</span><span class="n">player</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Player</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="mi">27</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">player</span><span class="o">-&gt;</span><span class="n">health</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Monster</span> <span class="o">*</span><span class="n">monster</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Monster</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">monster</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">GRID_COLS</span> <span class="o">-</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">monster</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="n">GRID_ROWS</span> <span class="o">-</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="o">*</span><span class="n">inventory</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">ITEM_COUNT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="n">inventory</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">ITEM_COUNT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Context</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">tileset</span> <span class="o">=</span> <span class="n">tileset</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span> <span class="o">=</span> <span class="n">player</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span> <span class="o">=</span> <span class="n">monster</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span> <span class="o">=</span> <span class="n">inventory</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">send_state_via_ws</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ctxs</span><span class="p">[</span><span class="n">client_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">onclose</span><span class="p">(</span><span class="kt">ws_cli_conn_t</span> <span class="o">*</span><span class="n">client</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">cli</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cli</span> <span class="o">=</span> <span class="nf">ws_getaddress</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">client_id</span> <span class="o">=</span> <span class="nf">ws_get_id</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctxs</span><span class="p">[</span><span class="n">client_id</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">TILESET_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">tileset</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">tileset</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">inventory</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctxs</span><span class="p">[</span><span class="n">client_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">onmessage</span><span class="p">(</span><span class="kt">ws_cli_conn_t</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">cli</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cli</span> <span class="o">=</span> <span class="nf">ws_getaddress</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">client_id</span> <span class="o">=</span> <span class="nf">ws_get_id</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctxs</span><span class="p">[</span><span class="n">client_id</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Request</span> <span class="o">*</span><span class="n">req</span> <span class="o">=</span> <span class="nf">request__unpack</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">req</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">switch</span> <span class="p">(</span><span class="n">req</span><span class="o">-&gt;</span><span class="n">move</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">MOVE__LEFT</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">MOVE__RIGHT</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span> <span class="o">=</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">MOVE__FORWARD</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">DXS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">DYS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">walk</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nl">MOVE__INTERACT</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">+</span> <span class="n">DXS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">+</span> <span class="n">DYS</span><span class="p">[</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="nf">on_interact</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">default</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">send_state_via_ws</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">sgn</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Return 1 if the game is still running, 0 otherwise
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">tick</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">-</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">-</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">health</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">health</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nf">DIST2</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">health</span> <span class="o">-=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">health</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">player</span><span class="o">-&gt;</span><span class="n">health</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">27</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You were bitten by a snake!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nf">DIST2</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">facing</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nf">abs</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nf">abs</span><span class="p">(</span><span class="n">dy</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">facing</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">-</span> <span class="nf">sgn</span><span class="p">(</span><span class="n">dx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">facing</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nf">sgn</span><span class="p">(</span><span class="n">dy</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">+</span> <span class="n">DXS</span><span class="p">[</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">+</span> <span class="n">DYS</span><span class="p">[</span><span class="n">facing</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">grid</span><span class="p">[</span><span class="nf">COORD</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span><span class="o">-&gt;</span><span class="n">is_walkable</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">monster</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">ws_events</span> <span class="n">evs</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">evs</span><span class="p">.</span><span class="n">onopen</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">onopen</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">evs</span><span class="p">.</span><span class="n">onclose</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">onclose</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">evs</span><span class="p">.</span><span class="n">onmessage</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">onmessage</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">ws_socket</span><span class="p">(</span><span class="o">&amp;</span><span class="n">evs</span><span class="p">,</span> <span class="mi">8080</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">MAX_CLIENTS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Context</span> <span class="o">*</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctxs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">is_alive</span> <span class="o">=</span> <span class="nf">tick</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_alive</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">char</span> <span class="o">*</span><span class="n">message</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="mi">25</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nf">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s">&#34;You ran out of stamina...&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">send_state_via_ws</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_alive</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">ws_cli_conn_t</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">-&gt;</span><span class="n">client</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="nf">ws_close_client</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>When connected to the server, the binary will run the <code>onopen</code> function and define a context specific to the client. A <code>Context</code> struct is created and the struct members are defined and it stores the current game state, which will be constantly updated during the gameplay. If we look at the variable <code>GRID</code> and the tileset, we are able to draw the game map by ourselves:</p>
 
 
 <figure>
@@ -1339,7 +1324,7 @@ int main()
 <p>Now we can skip the first gate and unlock the remaining gates. What is left is to walk towards the flag tile and interact with it, yielding the flag:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">hkcert23{h0w_d1d_y0u_f1nd_s0_m4ny_vu1n3r461117y_47_th3_s4m3_t1m3??}
 </span></span></code></pre></div><h3 id="postmortem">Postmortem<a href="#postmortem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<p>I am very happy that the challenge actually worked. This is one of the challenges I wrote in late October, which is less than one month before the CTF begins. Good that it is still a decent challenge. Since the main focus is to identify bugs rather than dig deep into reverse engineering, I decided to implement the backend in C. Given that I am such an inexperienced C programmer, I am very grateful that the challenge was not pwnable (at least during the contest period).</p>
+<p>I am very happy that the challenge actually worked. This is one of the challenges I wrote in late October, which is less than one month before the CTF begins. Good that it is still a decent challenge. Since the main focus is to identify bugs rather than dig deep into reverse engineering, I decided to implement the backend in C. Given that I am such an inexperienced C programmer, I am very grateful that the challenge did not become a pwnable one (at least during the contest period).</p>
 
 
 <figure>
@@ -1400,6 +1385,26 @@ int main()
       
 
       
+      <hr />
+      <script src="https://giscus.app/client.js"
+        data-repo="samueltangz/samueltangz.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzMDI0MjQyMjE="
+        data-category="General"
+        data-category-id="DIC_kwDOEgagnc4C0haj"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+      </script>
+      
+
+      
+      <hr />
       <div class="py-3">
         
           <a class="btn" href="/posts/2024/2024-02-03-tetctf-adapt/">← TetCTF 2024: adapt</a>
@@ -1440,9 +1445,7 @@ Viz.instance().then(viz => {
 
   document.querySelectorAll('[class=graphviz]').forEach(node => {
     const source = unescape(node.innerText);
-    console.log(source);
     const svg = viz.renderSVGElement(source, { engine: 'dot' });
-    console.log(2);
     node.parentNode.appendChild(svg);
     node.style.display = 'none';
   });
@@ -1469,7 +1472,6 @@ tocbot.init({
 
 <script>
   document.querySelectorAll('pre code').forEach(el => {
-    console.log(el)
     const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
     if (!lang) return;
 

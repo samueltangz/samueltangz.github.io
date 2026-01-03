@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
   integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous"
   referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="/css/main.min.27b43d01a5c4432e35e87df4c1026d71d0e56b69b492a4e65a5564c213f27fa9.css" integrity="sha256-J7Q9AaXEQy416H30wQJtcdDla2m0kqTmWlVkwhPyf6k=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/main.min.e0d3493d996b65055f87a93e94627d58325b4f40eae7e97eed960541aab132ca.css" integrity="sha256-4NNJPZlrZQVfh6k&#43;lGJ9WDJbT0Dq5&#43;l&#43;7ZYFQaqxMso=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/prism.min.ebb6c0bd3fe6ed4e16ec09f3b52903ee18ddfb21e33b6882030d951a91b213e4.css" integrity="sha256-67bAvT/m7U4W7AnztSkD7hjd&#43;yHjO2iCAw2VGpGyE&#43;Q=" crossorigin="anonymous">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
@@ -58,7 +58,7 @@
     <div class="container mt-3">
       
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
       <h1 class="post-title">Firebird Internal CTF 2023 Writeup</h1>
 
       
@@ -99,7 +99,7 @@
 </svg>. This time I wrote three crypto challenges: <em>Randomsum</em>, <em>Shelter</em> and <em>Threerider</em>.</p>
 <p>There were 24 teams participating. There were three solves for <em>Randomsum</em>, while <em>Shelter</em> and <em>Threerider</em> were unsolved during the CTF.</p>
 <div class="alert success">
-  &#x1f389; <strong>Thank you!</strong> Kudos to <em>@LifeIsHard</em> for reading the write-up and giving me comments (including those erratas) so that I could improve the blog post!
+  &#x1f389; <strong>Thank you!</strong> Kudos to @LifeIsHard for reading the write-up and giving me comments (including those erratas) so that I could improve the blog post!
 </div>
 
 <h2 id="randomsum">Randomsum<a href="#randomsum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
@@ -145,7 +145,7 @@
 </span></span></code></pre></div><h3 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Since we are given $t$ (i.e., 1318 distinct bits of $p$ and $q$), we can immediately apply from section 4.3.1<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> to factorize $n$. In short, $p$ and $q$ can be obtained with branch-and-prune algorithm by checking $n\ \text{mod}\ 2$, $n\ \text{mod}\ 2^2$ and so on.</p>
 <div class="alert info">
-  🙋 <strong>Alternate solution.</strong> <em>Mushroom1</em> used z3 to recover $p$ and $q$. I am surprised that the challenge can be solved with z3.
+  🙋 <strong>Alternate solution.</strong> @Mushroom1 used z3 to recover $p$ and $q$. I am surprised that the challenge can be solved with z3.
 </div>
 
 <h3 id="solution-script">Solution script<a href="#solution-script" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -602,6 +602,26 @@ x_j = 0 &amp; \text{otherwise}
       
 
       
+      <hr />
+      <script src="https://giscus.app/client.js"
+        data-repo="samueltangz/samueltangz.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzMDI0MjQyMjE="
+        data-category="General"
+        data-category-id="DIC_kwDOEgagnc4C0haj"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+      </script>
+      
+
+      
+      <hr />
       <div class="py-3">
         
           <a class="btn" href="/posts/2023/2023-03-06-mocsctf/">← MOCSCTF 2023 Postmortem</a>
@@ -642,9 +662,7 @@ Viz.instance().then(viz => {
 
   document.querySelectorAll('[class=graphviz]').forEach(node => {
     const source = unescape(node.innerText);
-    console.log(source);
     const svg = viz.renderSVGElement(source, { engine: 'dot' });
-    console.log(2);
     node.parentNode.appendChild(svg);
     node.style.display = 'none';
   });
@@ -671,7 +689,6 @@ tocbot.init({
 
 <script>
   document.querySelectorAll('pre code').forEach(el => {
-    console.log(el)
     const lang = Array.from(el.classList).find(className => className.startsWith('language-'));
     if (!lang) return;
 
